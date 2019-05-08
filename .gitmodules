@@ -1,0 +1,3 @@
+[submodule "02_EFForTS-LGraf"]
+	path = 02_EFForTS-LGraf
+	url = https://github.com/nldoc/EFForTS-LGraf.git
