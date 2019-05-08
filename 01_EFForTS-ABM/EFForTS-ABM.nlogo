@@ -1426,22 +1426,11 @@ Input/Output
 15.0
 1
 
-INPUTBOX
+CHOOSER
 1295
 840
 1405
-900
-gr-foldername
-EFForTS-LGraf
-1
-0
-String
-
-CHOOSER
-1295
-900
-1405
-945
+885
 gr-default.maps
 gr-default.maps
 "forest-non-forest" "landuse" "landuse-type" "field-patches" "household-patches" "forestcluster"
@@ -1449,9 +1438,9 @@ gr-default.maps
 
 CHOOSER
 1295
-945
+885
 1405
-990
+930
 gr-write-household-ids
 gr-write-household-ids
 "only-first-households" "layered-files"
@@ -1804,9 +1793,9 @@ go-once-profiler?
 
 SLIDER
 135
-975
+1005
 250
-1008
+1038
 gr-min-dist-roads
 gr-min-dist-roads
 1
@@ -1819,9 +1808,9 @@ HORIZONTAL
 
 SLIDER
 135
-1005
+1035
 250
-1038
+1068
 gr-perlin-octaves
 gr-perlin-octaves
 1
@@ -1834,9 +1823,9 @@ HORIZONTAL
 
 SLIDER
 135
-1035
+1065
 250
-1068
+1098
 gr-perlin-persistence
 gr-perlin-persistence
 0
@@ -1849,9 +1838,9 @@ HORIZONTAL
 
 SLIDER
 135
-1065
+1095
 250
-1098
+1128
 gr-cone-angle
 gr-cone-angle
 0
@@ -1864,9 +1853,9 @@ HORIZONTAL
 
 SLIDER
 135
-1095
+1125
 250
-1128
+1158
 gr-dist-weight
 gr-dist-weight
 0
@@ -2937,10 +2926,10 @@ NIL
 HORIZONTAL
 
 INPUTBOX
+135
+945
 250
-1065
-355
-1125
+1005
 gr-road-map-id
 jambi1
 1

@@ -134,7 +134,6 @@ to set-efforts-lgraf-defaults
   set gr-LUT-2-specialize 0
   set gr-LUT-3-specialize 0
   set gr-LUT-4-specialize 0
-  set gr-foldername "EFForTS-LGraf"
   set gr-default.maps "landuse-type"
   set gr-write-household-ids "only-first-households"
   

@@ -17,7 +17,7 @@ To import-maps
     set folder-connection "../02_EFForTS-LGraf/1_Model/EFForTS-LGraf/output"
   ]
   [
-    set folder-connection read-folder-connection
+    set folder-connection (word "input/maps/" which-map) ;read-folder-connection
   ]
 
   ; imports externally produced map as input for the model
@@ -31,119 +31,12 @@ end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To-report read-folder-connection
-  
-  let connection 0
-  if which-map = "one-farmer"
-  [
-    set connection "one-farmer"
-  ] 
-
-  if which-map = "five-farmers"
-  [
-    set connection "five-farmers" 
-  ]
-  
-  if which-map = "five-farmers2"
-  [
-    set connection "five-farmers2" 
-  ]
-  
-  if which-map = "five-farmers3"
-  [
-    set connection "five-farmers3" 
-  ]
-  
-  if which-map = "ten-farmers"
-  [
-    set connection "ten-farmers" 
-  ]
-  
-  if which-map = "ten-farmers2"
-  [
-    set connection "ten-farmers2" 
-  ]
-  
-  if which-map = "twenty-farmers"
-  [
-    set connection "twenty-farmers" 
-  ]
-  
-  if which-map = "twenty-farmers2"
-  [
-    set connection "twenty-farmers2" 
-  ]
-  
-  if which-map = "thirty-farmers2"
-  [
-    set connection "thirty-farmers2" 
-  ]
-  
-  if which-map = "fifty-farmers"
-  [
-    set connection "fifty-farmers" 
-  ]
-  
-  if which-map = "fifty-farmers2"
-  [
-    set connection "fifty-farmers2" 
-  ]
-  
-  if which-map = "fifty-farmers4"
-  [
-    set connection "fifty-farmers4" 
-  ]
-  
-  if which-map = "fifty-farmers5"
-  [
-    set connection "fifty-farmers5" 
-  ]
-  
-  if which-map = "hundred-farmers"
-  [
-    set connection "hundred-farmers" 
-  ]
-  
-  if which-map = "hundred-farmers2"
-  [
-    set connection "hundred-farmers2" 
-  ]
-  
-  if which-map = "hundred-farmers3"
-  [
-    set connection "hundred-farmers3" 
-  ]
-  
-  if which-map = "twohundred-farmers"
-  [
-    set connection "twohundred-farmers" 
-  ]
-  
-  if which-map = "twohundred-farmers-big-plantations"
-  [
-    set connection "twohundred-farmers-big-plantations" 
-  ]
-  if which-map = "fourhundred-farmers"
-  [
-    set connection "fourhundred-farmers" 
-  ]
-  
-  if which-map = "one-farmer-one-field"
-  [
-    set connection "one-farmer-one-field"
-  ] 
-  
-  report connection
-End  
-
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 To read-road-file [folder-connection]
   ;loads road rasterfile and coordinate system and sets gis:envelope
   ;resizes the world size to fit the map extent and matches the gis:envelope to the world transformation 
    
-  gis:load-coordinate-system (word "input/maps/" folder-connection "/road-raster.prj")
-  set road-file gis:load-dataset (word "input/maps/" folder-connection "/road-raster.asc")
+  gis:load-coordinate-system (word folder-connection "/road-raster.prj")
+  set road-file gis:load-dataset (word folder-connection "/road-raster.asc")
   set envelope gis:envelope-of road-file
   set number-of-cells-x gis:width-of road-file
   set number-of-cells-y gis:height-of road-file
@@ -160,7 +53,7 @@ End
 
 To read-homebase-file [folder-connection]
  ;reads the raster file containing the homebase cells of farmers  
- let homebase-file gis:load-dataset (word "input/maps/" folder-connection "/homebase-raster.asc")
+ let homebase-file gis:load-dataset (word folder-connection "/homebase-raster.asc")
  
  gis:apply-raster homebase-file p_homebase ; puts values from the raster data into the patch variable 
   ask patches  
@@ -196,7 +89,7 @@ end
 
 To read-ownership-file [folder-connection]
   
-  let ownership-file gis:load-dataset (word "input/maps/" folder-connection "/ownership-raster.asc")
+  let ownership-file gis:load-dataset (word folder-connection "/ownership-raster.asc")
 
   gis:apply-raster ownership-file p_owner ; puts values from the raster data into the patch variable 
 
@@ -216,7 +109,7 @@ End
 
 To read-patch-id-file [folder-connection]
   
-  let patch-id-file gis:load-dataset (word "input/maps/" folder-connection "/patch-id-raster.asc")
+  let patch-id-file gis:load-dataset (word folder-connection "/patch-id-raster.asc")
   
   
   gis:apply-raster patch-id-file p_id ; puts values from the raster data into the patch variable 
@@ -243,7 +136,7 @@ End
 
 To read-land-use-type-file [folder-connection]
   
-  let land-use-file gis:load-dataset (word "input/maps/" folder-connection "/land-use-type-raster.asc")
+  let land-use-file gis:load-dataset (word folder-connection "/land-use-type-raster.asc")
   gis:apply-raster land-use-file p_landuse ; puts values from the raster data into the patch variable 
   
   ;; Reclassify:
