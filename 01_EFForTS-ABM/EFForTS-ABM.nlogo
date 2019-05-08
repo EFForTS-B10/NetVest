@@ -848,7 +848,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "EFForTS-LGraf"
-15
+20
 
 CHOOSER
 5
@@ -1801,21 +1801,6 @@ go-once-profiler?
 1
 1
 -1000
-
-SLIDER
-135
-945
-250
-978
-gr-road-map-nr
-gr-road-map-nr
-1
-5
-3.0
-1
-1
-NIL
-HORIZONTAL
 
 SLIDER
 135
@@ -2950,6 +2935,17 @@ immigrant-wealth-factor
 1
 NIL
 HORIZONTAL
+
+INPUTBOX
+250
+1065
+355
+1125
+gr-road-map-id
+jambi1
+1
+0
+String
 
 @#$#@#$#@
 ## Abstract of corresponding publication

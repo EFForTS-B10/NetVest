@@ -14,7 +14,7 @@ To import-maps
   ifelse (which-map = "EFForTS-LGraf")
   [
     ls_run_graffe
-    set folder-connection gr-foldername
+    set folder-connection "../02_EFForTS-LGraf/1_Model/EFForTS-LGraf/output"
   ]
   [
     set folder-connection read-folder-connection
@@ -294,7 +294,7 @@ to ls_run_graffe
   ;; Reset levelspace and load the model
   ls:reset
   let LGraf-GUI? false
-  let EFForTS-LGraf "EFForTS-LGraf.nlogo"
+  let EFForTS-LGraf "../02_EFForTS-LGraf/1_Model/EFForTS-LGraf/EFForTS-LGraf.nlogo"
   ifelse (LGraf-GUI?)[ls:create-interactive-models 1 EFForTS-LGraf][ls:create-models 1 EFForTS-LGraf]
   print "--EFForTS-LGraf successfully loaded--"
   
@@ -315,8 +315,8 @@ to ls_run_graffe
   ;; Roads
   ls:let gr-road.algorithm gr-road.algorithm
   ls:ask ls:models [set road.algorithm gr-road.algorithm]
-  ls:let gr-road-map-nr gr-road-map-nr
-  ls:ask ls:models [set road-map-nr gr-road-map-nr]
+  ls:let gr-road-map-id gr-road-map-id
+  ls:ask ls:models [set road-map-id gr-road-map-id]
   ls:let gr-total-road-length gr-total-road-length
   ls:ask ls:models [set total-road-length gr-total-road-length]
   ls:let gr-min-dist-roads gr-min-dist-roads
@@ -427,7 +427,7 @@ to ls_run_graffe
   ls:ask ls:models [set LUT-4-specialize gr-LUT-3-specialize]
   ls:let gr-LUT-4-specialize gr-LUT-4-specialize
   ls:ask ls:models [set LUT-5-specialize gr-LUT-4-specialize]  
-  ls:let gr-foldername gr-foldername
+  ls:let gr-foldername "output"
   ls:ask ls:models [set foldername gr-foldername]
   ls:let gr-default.maps gr-default.maps
   ls:ask ls:models [set default.maps gr-default.maps]
