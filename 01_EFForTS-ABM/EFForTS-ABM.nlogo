@@ -117,6 +117,8 @@ lms-own
   lm_seller_who
   lm_seller_area
   lm_seller_wealth
+  lm_seller_lut0_ineff
+  lm_seller_lut1_ineff
   lm_poolall_wealth
   lm_poolall_immigrant
   lm_poolpot_wealth
@@ -125,7 +127,8 @@ lms-own
   lm_buyer_area
   lm_buyer_wealth
   lm_buyer_immigrant
-
+  lm_buyer_lut0_ineff
+  lm_buyer_lut1_ineff
 ]
 
 ; Define agent properties:
@@ -848,7 +851,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "EFForTS-LGraf"
-20
+16
 
 CHOOSER
 5
@@ -2891,9 +2894,9 @@ PENS
 MONITOR
 2245
 85
-2335
+2377
 130
-hh_area_mean
+hh_area_mean (cells)
 precision mean [h_area] of hhs 3
 17
 1
@@ -2905,7 +2908,7 @@ INPUTBOX
 1942
 1135
 immigrant-xp-bonus
-[0.9 -0.5]
+[0.5 -0.5]
 1
 0
 String

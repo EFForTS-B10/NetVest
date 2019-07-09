@@ -1,0 +1,76 @@
+---
+title: "EFForTS-ABM landmarket summary"
+author: "Jan Salecker"
+date: "2019 M04 3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This repository will summarize the analysis on newly introduced landmarket feature within the EFForTS-ABM.
+
+We need to find a good story.
+
+Interesting interactions are:
+landmarkets affect the distribution of wealth and land-uses.
+Heterogeneity and learning affect landmarkets.
+Prices and Landscapes affect landmarkets.
+
+As model input we could use:
+* Different landscapes
+* Different Price scenarios (smoothing)
+
+As model output we could look at:
+* Distribution of land-uses (landscape metrics)
+* Distribution of wealth
+* Aggregated metrics (consolidation, immigration)
+
+Maybe we could relate the distribution of wealth to other metrics, e.g. carbon/biodiversity/inputs
+
+
+## Hypotheses:
+
+* H1: Landmarkets lead to consolidation
+* H1.1: Large smallholders are more likely to buy land 
+
+
+## Analyses:
+
+* Start with simple model: no heterogeneity, no learning, historical prices
+
+* H1: Landmarkets lead to consolidation
+** Measure household sizes and landmarket events over time
+
+* H1.1: smallholders with large area are more likely to buy land, smallholders with small area are more likely to sell land
+** Create output when landmarkets happen about the propertie of all households in the buyer pool
+** Measure: h_wealth, h_area, h_inefficiencies, h_immigrant?
+** Create a plot about properties of selling households and buying households over time
+
+
+```{r echo=FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz("digraph {
+
+graph [layout = dot, rankdir = LR]
+
+# define the global styles of the nodes. We can override these in box if we wish
+node [shape = rectangle, style = filled, fillcolor = Linen]
+
+input1 [label = 'Landscapes', shape = folder, fillcolor = Beige]
+input2 [label = 'Prices', shape = folder, fillcolor = Beige]
+ABM [label =  'EFForTS-ABM', fillcolor = gold]
+output1 [label = 'Landmarket effects']
+output2 [label= 'hh properties']
+
+# edge definitions with the node IDs
+{input1 input2}  -> ABM -> {output1 output2}
+}")
+
+```
+
+
+

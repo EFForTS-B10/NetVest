@@ -60,6 +60,8 @@ to landmarket-output-set-lm-seller [lm_current lm_seller]
     set lm_seller_who [who] of lm_seller
     set lm_seller_area [h_area] of lm_seller
     set lm_seller_wealth [h_wealth] of lm_seller
+    set lm_seller_lut0_ineff item 0 [h_inefficiencies] of lm_seller
+    set lm_seller_lut1_ineff item 1 [h_inefficiencies] of lm_seller
   ]
 end
 
@@ -96,6 +98,8 @@ to landmarket-output-set-lm-buyer-postbuy [lm_current buyer.who]
   [
     set lm_buyer_who buyer.who
     set lm_buyer_area ifelse-value (buyer.who != -999) [[h_area] of hh buyer.who][-999]
+    set lm_buyer_lut0_ineff ifelse-value(buyer.who != -999) [item 0 [h_inefficiencies] of hh buyer.who][-999]
+    set lm_buyer_lut1_ineff ifelse-value(buyer.who != -999) [item 1 [h_inefficiencies] of hh buyer.who][-999]
   ]
 end
 
