@@ -1,7 +1,4 @@
  
-
-
-;
 ;to-report linear-function-given-two-points [P1 P2]
 ;
 ;  ;; Calculate linear functions given two points:
@@ -19,8 +16,6 @@
 ;  
 ;end
 ;
-
-
 
 to test-decide-management
   
@@ -41,12 +36,7 @@ to test-decide-management
     set h_management replace-item 1 h_management 0
    ask h_patches [set p_management item p_landuse [h_management] of myself] 
   ]
-    
-    
-  
 end
-
-
 
 to test-clustering
   
@@ -62,15 +52,6 @@ to test-clustering
     ask patches with [p_id = pid.i]
     [
       set neighboring.pids lput filter [i -> i != pid.i] remove-duplicates [p_id] of neighbors neighboring.pids
-    ]
-    
-    
-    
-  ]
-  
-  
-  
-  
-  
-  
+    ] 
+  ]  
 end

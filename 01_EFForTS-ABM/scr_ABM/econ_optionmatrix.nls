@@ -175,7 +175,7 @@ to-report make-options-matrix-social [number-of-fields]
   
   ;; MAGIC NUMBERS:
   let timeframe 10
-  let conv_prob n-values length LUT-ids [0.3]
+  let conv_prob n-values length LUT-ids [social-conversion-prob]
   let options-matrix "one-field" ; "all"
   
   ;; Generate the options matrix for one field per year -- could be expanded to all options

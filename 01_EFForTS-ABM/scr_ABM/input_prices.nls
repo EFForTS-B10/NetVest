@@ -147,7 +147,7 @@ to-report create-prices-rw [lut nticks]
  repeat (nticks - 1)
  [
     ;; Draw variation:
-    let variation random-normal runresult (word "LUT-" lut "-price") runresult (word "LUT-" lut "-price-sd")
+    let variation random-normal runresult (word "LUT-" lut "-price-mu") runresult (word "LUT-" lut "-price-sd")
     ;; Calculate new prices:
     let price-new actual-price + variation
     ;; Check if prices are negative:
