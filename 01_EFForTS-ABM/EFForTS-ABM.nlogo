@@ -16,7 +16,7 @@ __includes [
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
   "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_birds.nls" "scr_ABM/ecol_invest_plantdiv.nls" "scr_ABM/ecol_invest_plantdiv_SAR.nls"
-  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls"
+  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
 ]
 
 ; Extensions used in this NetLogo model:
@@ -876,7 +876,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "EFForTS-LGraf"
-16
+20
 
 CHOOSER
 5
@@ -886,7 +886,7 @@ CHOOSER
 land-use-change-decision
 land-use-change-decision
 "only-one-field-per-year" "all-options" "social-options"
-2
+0
 
 TEXTBOX
 10
@@ -1480,7 +1480,7 @@ INPUTBOX
 590
 335
 LUT-0-folder
-oilpalm
+oilpalm_labor_high
 1
 0
 String
@@ -1491,7 +1491,7 @@ INPUTBOX
 590
 395
 LUT-1-folder
-rubber
+rubber_env
 1
 0
 String
@@ -3117,7 +3117,7 @@ CHOOSER
 trade-off-x
 trade-off-x
 "carbon" "consumption" "plantdiv"
-1
+2
 
 CHOOSER
 2660

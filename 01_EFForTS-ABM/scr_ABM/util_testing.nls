@@ -25,7 +25,7 @@ to test-decide-management
     ;; check if household has rubber fields:
     if (any? h_patches with [p_landuse = 1])
     [
-      print (word "I am a rubber farmer switching to fallow: " h_netcashflow_exp)
+      ;print (word "I am a rubber farmer switching to fallow: " h_netcashflow_exp)
       set h_management replace-item 1 h_management 1
       ask h_patches [set p_management item p_landuse [h_management] of myself]
     ]

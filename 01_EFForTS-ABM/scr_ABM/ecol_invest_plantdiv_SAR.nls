@@ -14,23 +14,25 @@ to init_invest_plantdiv
   
   ; Adjust landuse values 
   ; -> This is a temporary fix -> I might think about how to change the structure of the code to work with other landuse values
-  adjust-landuse-invest
+  ;adjust-landuse-invest
   
   ;; Read globals:
   ;; First we have to read species probability data:
   plantdiv_read_data 
   plantdiv_calculate_weights
   
+  ;; In tick 0, the sar value cannot be calculated accurately, because there are no technical inputs, etc on the plots...
+   
   ;; Do first calculation for initial landscape:
   ;; Here we calculate the actual MBV values
-  plantdiv_calculate_sar
+  ;plantdiv_calculate_sar
   ;; Set sar_t0
-  set sar_t0 sar_t
+  ;set sar_t0 sar_t
   ;; Calculate ratio:
-  set sar_ratio (sar_t / sar_t0)
+  ;set sar_ratio (sar_t / sar_t0)
   
   ; Adjust landuse values back to abm mode:
-  adjust-landuse-abm
+  ;adjust-landuse-abm
   
 end
 
@@ -40,9 +42,12 @@ to update_invest-Plantdiv
   ; -> This is a temporary fix -> I might think about how to change the structure of the code to work with other landuse values
   adjust-landuse-invest
   
-  ;; Do first calculation for initial landscape:
-  ;; Here we calculate the actual MBV values
+  ;; Calculate sar value of landscape:
   plantdiv_calculate_sar
+  
+  ;; If this is the first time sar is calculated, store it a s t0:
+  if (sar_t0 = 0) [set sar_t0 sar_t]
+  
   ;; Calculate ratio:
   set sar_ratio (sar_t / sar_t0)
   
@@ -127,7 +132,7 @@ to plantdiv_calculate_weights
   ;; SImple assumption - we give high weight to all species, which are forest only:
   let nr-of-species length plantdiv_all_probs
   let ws_default 1 ;(1 / nr-of-species)
-  let ws_bonus 5
+  let ws_bonus 10
   set ws_list []
   
   ;; Count species with forest only:
@@ -327,49 +332,94 @@ to-report crt-Qx-matrix
  
   ask patches
   [
-    let q_x calculate-patch-quality
+    let q_x ifelse-value (p_landuse = 4) [calculate-patch-quality-forest][calculate-patch-quality-agri]
     matrix:set Qx_temp pxcor pycor q_x
   ]
   
   report Qx_temp
 end
 
-to-report calculate-patch-quality
+;to-report calculate-patch-quality
+;  
+;  ; we set all forest cells to 1
+;  ; we set all agriculture cells to 0.5
+;  ; we give an edge bonus to all cells that have an edge to forest
+;  ; finally, for all agricultural cells we reduce the quality depending on age with age 0 = min quality
+;  
+;  let q-forest-const 1
+;  let q-agri-max 0.5
+;  let q-edge-bonus 0.1
+;  let q-agri-min 0.1
+;  let q-p_age-best 15
+;  let q-p_age-step (q-agri-max / q-p_age-best)
+;  
+;  let q_x 0
+;  
+;  ;; Forest:
+;  ifelse (p_landuse = 4)
+;  [
+;    set q_x q-forest-const
+;  ]
+;  [ ;; Agriculture:
+;    set q_x q-agri-max   ;ifelse-value (any? neighbors with [p_landuse = 4]) [q-agri-max][q-agri-max - q-noedge-malus]
+;    
+;    ;; Scale to p_age:
+;    if (p_age < q-p_age-best)
+;    [
+;      let age-diff q-p_age-best - p_age
+;      set q_x q_x - (age-diff * q-p_age-step)
+;    ]
+;    
+;    ;; Edge bonus:
+;    if (any? neighbors with [p_landuse = 4]) [set q_x q_x + q-edge-bonus]
+;    
+;  ]
+;  
+;  report q_x
+;    
+;end
+
+to-report calculate-patch-quality-forest  ; patch function
   
-  ; we set all forest cells to 1
-  ; we set all agriculture cells to 0.5
-  ; we give an edge bonus to all cells that have an edge to forest
-  ; finally, for all agricultural cells we reduce the quality depending on age with age 0 = min quality
+  let hq_forest 1
+  report hq_forest
+
+end
+
+to-report calculate-patch-quality-agri  ; patch function
   
-  let q-forest-const 1
-  let q-agri-max 0.5
-  let q-edge-bonus 0.1
-  let q-agri-min 0.1
-  let q-p_age-best 15
-  let q-p_age-step (q-agri-max / q-p_age-best)
+  ;; Patch quality is a function of patch_age, amount of forest edges and technical inputs:
+  ;; High plantation age is better than very young age
+  ;; More forest edges are better
+  ;; Low technical inputs are better
   
-  let q_x 0
+  ;; We may use a regression model to model this relationship, butfor now we just use simple assumptions:
   
-  ;; Forest:
-  ifelse (p_landuse = 4)
-  [
-    set q_x q-forest-const
-  ]
-  [ ;; Agriculture:
-    set q_x q-agri-max   ;ifelse-value (any? neighbors with [p_landuse = 4]) [q-agri-max][q-agri-max - q-noedge-malus]
+  ;; Scale tinput to 0..1
+  ;; NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+  let tinput_min 0
+  let tinput_max 185
+  let tinput_scaled (((p_tinput - tinput_min) * (1 - 0)) / (tinput_max - tinput_min)) + 0
+  set tinput_scaled (1 - tinput_scaled)  ;; reverse (high tinput = low quality)
     
-    ;; Scale to p_age:
-    if (p_age < q-p_age-best)
-    [
-      let age-diff q-p_age-best - p_age
-      set q_x q_x - (age-diff * q-p_age-step)
-    ]
-    
-    ;; Edge bonus:
-    if (any? neighbors with [p_landuse = 4]) [set q_x q_x + q-edge-bonus]
-    
-  ]
+  ;; Scale edge cells to 0..1
+  let edge_min 0
+  let edge_max 8
+  let p_edge count neighbors with [p_landuse = 4]
+  let edge_scaled (((p_edge - edge_min) * (1 - 0)) / (edge_max - edge_min)) + 0
   
-  report q_x
-    
+  ;; Scale plantation age to 0..1
+  let age_min 0
+  let age_max 50
+  let age_scaled (((p_age - age_min) * (1 - 0)) / (age_max - age_min)) + 0
+  
+  ;; Calculate weighted mean score:
+  let w_tinput 0.4
+  let w_age 0.4
+  let w_edge 0.2
+  
+  let hq_weighted (((tinput_scaled * w_tinput) + (edge_scaled * w_edge) + (age_scaled * w_age)) / (w_tinput + w_age + w_edge))
+  ;print hq_weighted
+  report hq_weighted
+  
 end

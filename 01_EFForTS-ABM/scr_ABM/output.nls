@@ -611,4 +611,3 @@ to-report log-land-use-change-summary [luc_logs t0 t1]
   report luc_log_summary
   
 end
-
