@@ -906,7 +906,7 @@ CHOOSER
 price_scenario
 price_scenario
 "constant_prices" "variable_prices" "correlated_prices_1" "random_walk" "historical_trends" "production-related"
-4
+1
 
 INPUTBOX
 665
@@ -914,7 +914,7 @@ INPUTBOX
 745
 335
 LUT-0-price
-90.0
+78.0
 1
 0
 Number
@@ -925,7 +925,7 @@ INPUTBOX
 745
 395
 LUT-1-price
-1100.0
+620.0
 1
 0
 Number
@@ -1645,7 +1645,7 @@ INPUTBOX
 825
 335
 LUT-0-price-sd
-1.9
+30.0
 1
 0
 Number
@@ -1656,7 +1656,7 @@ INPUTBOX
 825
 395
 LUT-1-price-sd
-11.0
+255.0
 1
 0
 Number
@@ -2522,16 +2522,6 @@ TEXTBOX
 == Monitors ==
 17
 105.0
-1
-
-TEXTBOX
-2415
-15
-2660
-211
-TODO:\n- repair inaccessible areas\n- landmarket: immigrant households need to create social nw links!!\n\n- ADD: incorporate h_exincome for expected cashflow predictions!
-18
-0.0
 1
 
 INPUTBOX
