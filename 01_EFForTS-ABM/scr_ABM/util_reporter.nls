@@ -3,16 +3,36 @@
 
 ;; Land-uses:
 to-report lut0.yield.sum
-  report precision sum map [? -> ifelse-value(is-list? ?)[item 0 ?][0]] [h_production] of hhs 3
+  let lut0.yield 0
+  if (any? hhs) 
+  [
+    set lut0.yield precision sum map [? -> ifelse-value(is-list? ?)[item 0 ?][0]] [h_production] of hhs 3
+  ]
+  report lut0.yield
 end
 to-report lut1.yield.sum
-  report precision sum map [? -> ifelse-value(is-list? ?)[item 1 ?][0]] [h_production] of hhs 3
+  let lut1.yield 0
+  if (any? hhs)
+  [
+    set lut1.yield precision sum map [? -> ifelse-value(is-list? ?)[item 1 ?][0]] [h_production] of hhs 3
+  ]
+  report lut1.yield
 end
 to-report lut0.yield.mean
-  report precision mean map [? -> ifelse-value(is-list? ?)[item 0 ?][0]] [h_production] of hhs 3
+  let lut0.yield 0
+  if (any? hhs)
+  [
+    set lut0.yield precision mean map [? -> ifelse-value(is-list? ?)[item 0 ?][0]] [h_production] of hhs 3
+  ]
+  report lut0.yield
 end
 to-report lut1.yield.mean
-  report precision mean map [? -> ifelse-value(is-list? ?)[item 1 ?][0]] [h_production] of hhs 3
+  let lut1.yield 0
+  if (any? hhs)
+  [
+    set lut1.yield precision mean map [? -> ifelse-value(is-list? ?)[item 1 ?][0]] [h_production] of hhs 3
+  ]
+  report lut1.yield
 end
 to-report lut0.carbon
   report item 1 item 0 carbon
@@ -41,10 +61,20 @@ to-report hh.count.immigrant
   report count hhs with [h_immigrant? = TRUE]
 end
 to-report hh.area.mean
-  report precision mean [h_area] of hhs 3
+  let hh.area 0
+  if (any? hhs)
+  [
+    set hh.area precision mean [h_area] of hhs 3
+  ]
+  report hh.area
 end
 to-report hh.area.sum
-  report precision mean [h_area] of hhs 3
+  let hh.area 0
+  if (any? hhs)
+  [
+    set hh.area precision sum [h_area] of hhs 3
+  ]
+  report hh.area
 end
 to-report hh.consumption.mean
   report mean_hh_consumption
