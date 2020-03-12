@@ -12,4 +12,3 @@ If changes are made within the EFForTS-LGraf repository we need to update the mo
 To do this, delete the subfolder"EFForTS-LGraf" in the local working copy.
 Then perform `git submodule --init` in the current R session terminal to load the current version from the master branch.
 
-## Test
