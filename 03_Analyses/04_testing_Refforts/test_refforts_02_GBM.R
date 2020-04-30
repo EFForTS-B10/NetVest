@@ -118,6 +118,9 @@ results <- run_nl_all(nl, split=10)
 setsim(nl, "simoutput") <- results
 saveRDS(nl, file = file.path(outpath, "sims_prices_GBM.rds"))
 
+nl <- readRDS(file.path(outpath, "sims_prices_GBM.rds"))
+results <- nl@simdesign@simoutput
+
 # remove step 0:
 results_1 <- results %>% dplyr::filter(`[step]` > 0)
 setsim(nl, "simoutput") <- results_1
