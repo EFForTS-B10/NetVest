@@ -1065,7 +1065,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-1
+0
 1
 -1000
 
@@ -2937,7 +2937,7 @@ immigrant-wealth-factor
 immigrant-wealth-factor
 1
 100
-1.0
+5.0
 1
 1
 NIL
@@ -3129,6 +3129,17 @@ social-conversion-prob
 1
 0
 Number
+
+INPUTBOX
+420
+70
+500
+130
+idrunnum
+NIL
+1
+0
+String
 
 @#$#@#$#@
 ## Abstract of corresponding publication

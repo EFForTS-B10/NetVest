@@ -293,57 +293,60 @@ end
 ;###################################################################################
 
 To write-map-files
-   ;produces a raster file with 0 for non-road cells and 1 for road cells
-
-   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
-
-   let xcount 0
-   let ycount max-pycor
-   let ycount-raster 0
-   while [ycount >= 0]
-   [
-     while[xcount <= max-pxcor]
-     [
-       ;print xcount
-       ;print ycount
-
-       gis:set-raster-value new-raster xcount ycount-raster [p_road] of patch xcount ycount
-       set xcount xcount + 1
-     ]
-     set xcount 0
-     set ycount ycount - 1
-     set ycount-raster ycount-raster + 1
-   ]
-
-   let filename (word "model-output/" but-first (word (1000 + ticks)) "_road-map.asc")
-   if (file-exists? filename) [file-delete filename]
-   gis:store-dataset new-raster filename
-; Write landuse map
-   set new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
-
-   set xcount 0
-   set ycount max-pycor
-   set ycount-raster 0
-   while [ycount >= 0]
-   [
-     while[xcount <= max-pxcor]
-     [
-       ;print xcount
-       ;print ycount
-
-       gis:set-raster-value new-raster xcount ycount-raster [p_landuse] of patch xcount ycount
-       set xcount xcount + 1
-     ]
-     set xcount 0
-     set ycount ycount - 1
-     set ycount-raster ycount-raster + 1
-   ]
-
-   set filename (word "model-output/" but-first (word (1000 + ticks)) "_landuse-map.asc")
-   if (file-exists? filename) [file-delete filename]
-   gis:store-dataset new-raster filename
-
+  write-lut-map
+  write-road-map
 End
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+to write-lut-map
+  ; Write landuse map
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      ;print xcount
+      ;print ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_landuse] of patch xcount ycount
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
+
+  let filename (word "output/lut_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename  
+end
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+to write-road-map
+  ;produces a raster file with 0 for non-road cells and 1 for road cells
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      ;print xcount
+      ;print ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_road] of patch xcount ycount
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
+
+  let filename (word "output/road_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -352,7 +355,7 @@ to write-hh-data-to-file
   ;; Write a file each timestep with turtle data
   ;; The file has the following structure:
   ;; runnum   step   hh-ID  h_inefficiency_op   h_inefficiency_rm   netcashflow    netcashflow_expected
-  let hh-data-file (word "model-output/" but-first (word (1000 + behaviorspace-run-number)) "_hh-data.txt")
+  let hh-data-file (word "output/" but-first (word (1000 + behaviorspace-run-number)) "_hh-data.txt")
   
   
   ;; Check if a new file should be written:
@@ -411,7 +414,7 @@ end
 
 to export-inefficiency-distribution
  
-  let filename (word "model-output/" but-first (word (100 + behaviorspace-run-number)) "_" but-first (word (1000 + ticks)) "_inefficiency_distribution.txt")
+  let filename (word "output/" but-first (word (100 + behaviorspace-run-number)) "_" but-first (word (1000 + ticks)) "_inefficiency_distribution.txt")
   if (file-exists? filename) [file-delete filename]
   
   file-open filename

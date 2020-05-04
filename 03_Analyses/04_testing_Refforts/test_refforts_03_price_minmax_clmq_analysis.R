@@ -6,89 +6,22 @@ library(nlrx)
 library(tidyverse)
 
 
-nl <- readRDS(file = file.path("03_Analyses/sims_constantprices_ff.rds"))
+#nl <- readRDS(file = file.path("03_Analyses/sims_constantprices_ff.rds"))
+
+nl <- readRDS(file = file.path("03_Analyses/04_testing_Refforts/sims_constantprices_ff_heterogenous.rds"))
 results <- nl@simdesign@simoutput
 
 
+## Calculate landscape metrics:
+nl_sp <- nlrx::nl_to_raster(nl_spatial)
+#nl_sp <- nlrx::nl_to_raster(nl)
+metrics <- c("lsm_l_ed", "lsm_l_shdi", "lsm_l_lsi", "lsm_l_lpi")
+results <- cbind(nl_sp,
+                 landscapemetrics::calculate_lsm(nl_sp$spatial.raster, what=metrics) %>% 
+                   dplyr::select(layer, metric, value) %>% 
+                   tidyr::pivot_wider(names_from=metric, values_from = value))
+  
 
-results_50 <- results %>% dplyr::filter(`[step]` == 49)
-
-ggplot(results_50, aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=lut1.fraction)) +
-  geom_tile() +
-  scale_fill_viridis_c()
-#scale_fill_gradient2(low="red", mid="white", high="blue", midpoint = 0.5)
-
-ggplot(results_50, aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=hh.area.mean)) +
-  geom_tile() +
-  scale_fill_viridis_c()
-
-
-## classify (quantiles)
-
-p.lut <- results %>% 
-  dplyr::filter(`[step]` >= 25) %>% 
-  group_by(siminputrow, `LUT-0-price`, `LUT-1-price`) %>% 
-  dplyr::summarise(lut1.fraction = mean(lut1.fraction)) %>% 
-  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, lut1.fraction) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::mutate(lut1.fraction.group = dplyr::ntile(lut1.fraction, 4)) %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=as.factor(lut1.fraction.group))) +
-  geom_tile() +
-  scale_fill_viridis_d() +
-  guides(fill = guide_legend(title="lut1"))
-
-p.area <- results %>% 
-  dplyr::filter(`[step]` >= 25) %>% 
-  group_by(siminputrow, `LUT-0-price`, `LUT-1-price`) %>% 
-  dplyr::summarise(hh.area.mean = mean(hh.area.mean)) %>% 
-  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, hh.area.mean) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::mutate(hh.area.mean.group = dplyr::ntile(hh.area.mean, 4)) %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=as.factor(hh.area.mean.group))) +
-  geom_tile() +
-  scale_fill_viridis_d() +
-  guides(fill = guide_legend(title="area"))
-
-
-p.sar <- results %>% 
-  dplyr::filter(`[step]` >= 25) %>% 
-  group_by(siminputrow, `LUT-0-price`, `LUT-1-price`) %>% 
-  dplyr::summarise(p.sar = mean(p.sar)) %>% 
-  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, p.sar) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::mutate(p.sar.group = dplyr::ntile(p.sar, 4)) %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=as.factor(p.sar.group))) +
-  geom_tile() +
-  scale_fill_viridis_d() +
-  guides(fill = guide_legend(title="sar"))
-
-
-p.con <- results %>% 
-  dplyr::filter(`[step]` >= 25) %>% 
-  group_by(siminputrow, `LUT-0-price`, `LUT-1-price`) %>% 
-  dplyr::summarise(hh.consumption.mean = mean(hh.consumption.mean)) %>% 
-  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, hh.consumption.mean) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::mutate(hh.consumption.mean.group = dplyr::ntile(hh.consumption.mean, 4)) %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=as.factor(hh.consumption.mean.group))) +
-  geom_tile() +
-  scale_fill_viridis_d() +
-  guides(fill = guide_legend(title="cons"))
-
-p.car <- results %>% 
-  dplyr::filter(`[step]` >= 25) %>% 
-  group_by(siminputrow, `LUT-0-price`, `LUT-1-price`) %>% 
-  dplyr::summarise(carbon = mean(lut0.carbon + lut1.carbon)) %>% 
-  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, carbon) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::mutate(carbon.group = dplyr::ntile(carbon, 4)) %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=as.factor(carbon.group))) +
-  geom_tile() +
-  scale_fill_viridis_d() +
-  guides(fill = guide_legend(title="carb"))
-
-
-cowplot::plot_grid(p.lut, p.area, p.sar, p.con, p.car)
 
 
 ######## FACET VERSION:
@@ -111,53 +44,71 @@ results %>%
   ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=factor(value))) +
   facet_wrap(~name) +
   geom_tile() +
-  scale_fill_viridis_d()
+  scale_fill_viridis_d(option = "E")
 
 ggsave("03_Analyses/04_testing_Refforts/prices_ff.png")
 
 ### Without carbon:
 
-classes <- 10
+classes <- 8
+vars <- c("rubber_area", "oilpalm_area", "household_size", "capitalstock", "consumption", "biodiversity")
 results_quartiles <- results %>% 
   dplyr::filter(`[step]` >= 25) %>% 
   group_by(siminputrow, `LUT-0-price`, `LUT-1-price`) %>% 
-  dplyr::summarise(rubber = mean(lut1.fraction),
-                   area = mean(hh.area.mean),
-                   biodiversity = mean(p.sar),
-                   consumption = mean(hh.consumption.mean)) %>% 
-  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, rubber, area, biodiversity, consumption) %>% 
+  dplyr::summarise(rubber_area = mean(lut1.fraction),
+                   oilpalm_area = mean(lut0.fraction),
+                   household_size = mean(hh.area.mean),
+                   capitalstock = mean(p.capitalstock.mean),
+                   consumption = mean(hh.consumption.mean),
+                   biodiversity = mean(p.sar)) %>% 
+  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, rubber_area, oilpalm_area, household_size, capitalstock, consumption, biodiversity) %>% 
   dplyr::ungroup() %>% 
-  dplyr::mutate_at(c("rubber", "area", "biodiversity", "consumption"), ~dplyr::ntile(., classes))
+  dplyr::mutate_at(vars, ~dplyr::ntile(., classes))
 
 ## Plot 1:
-results_quartiles %>% 
-  tidyr::pivot_longer(cols=c("rubber", "area", "biodiversity", "consumption")) %>%
-  dplyr::mutate(name = factor(name, levels=c("rubber", "area", "biodiversity", "consumption"))) %>% 
+p1 <- results_quartiles %>% 
+  tidyr::pivot_longer(cols=vars) %>%
+  dplyr::mutate(name = factor(name, levels=vars)) %>% 
   ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=factor(value))) +
   facet_wrap(~name) +
   geom_tile() +
+  xlab("palm oil price [$/ton]") +
+  ylab("rubber price [$/ton]") +
   scale_fill_viridis_d() +
-  guides(fill=guide_legend(title="ntile"))
+  guides(fill="none") +
+  theme_tufte(base_size = 11)
 
 ## Calculate trade-off:
-results_quartiles %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=biodiversity + consumption)) +
+p2 <- results_quartiles %>% 
+  dplyr::mutate(to = consumption + biodiversity) %>%
+  dplyr::mutate(to = dplyr::ntile(to, 3)) %>% 
+  dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, to) %>% 
+  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=to)) +
   geom_tile() +
-  scale_fill_viridis_c()
-  
+  scale_fill_viridis_c() +
+  xlab("palm oil price [$/ton]") +
+  ylab("rubber price [$/ton]") +
+  guides(fill="none") +
+  theme_tufte(base_size = 11)
+
+cowplot::plot_grid(p1, p2, 
+                   rel_widths = c(3,2), 
+                   labels = c("", "consumption + biodiversity"), 
+                   label_fontfamily = "serif", 
+                   label_size = 11, 
+                   label_fontface = "plain")
+ggsave("03_Analyses/04_testing_Refforts/prices_ff_tradeoff.png", units = "cm", width=24, height=12, dpi=300)
+
+
 results_quartiles %>% 
-  dplyr::select(`LUT-0-price`, `LUT-1-price`, biodiversity, consumption) %>% 
-  tidyr::pivot_longer(cols=c("biodiversity", "consumption")) %>%
-  ggplot(., aes(x=`LUT-0-price`, y=value, color=name)) +
-  geom_line()
-
-
-
-#  dplyr::mutate(to = biodiversity + consumption) %>% 
- # dplyr::mutate(to = dplyr::ntile(to, classes)) %>% 
-  tidyr::pivot_longer(cols=c("rubber", "area", "biodiversity", "consumption")) %>%
-  dplyr::mutate(name = factor(name, levels=c("rubber", "area", "biodiversity", "consumption"))) %>% 
-  ggplot(., aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=factor(value))) +
-  facet_wrap(~name) +
+  dplyr::select(-siminputrow, -`LUT-0-price`, -`LUT-1-price`) %>% 
+  cor(., method="kendall") %>% 
+  data.frame(.) %>% 
+  dplyr::mutate(row = rownames(.)) %>% 
+  tidyr::gather(column, Correlation, -row) %>% 
+  dplyr::mutate(Correlation = round(Correlation, digits=2)) %>% 
+  ggplot(., aes(x=row, y=column, fill=Correlation)) +
   geom_tile() +
-  scale_fill_viridis_d()
+  paletteer::scale_fill_paletteer_c("pals::ocean.curl", direction = -1)
+
+ggsave("03_Analyses/04_testing_Refforts/prices_ff_correlations.png", units = "cm", width=20, height=12, dpi=300)
