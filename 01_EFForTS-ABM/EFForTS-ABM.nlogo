@@ -134,10 +134,11 @@ lms-own
   ; Landmarket output:
   lm_seller_who
   lm_seller_area
-  lm_seller_hpatches
+  lm_seller_fields
   lm_seller_wealth
   lm_seller_lut0_ineff
   lm_seller_lut1_ineff
+  lm_land_price
   lm_poolall_wealth
   lm_poolall_immigrant
   lm_poolpot_wealth
@@ -260,8 +261,6 @@ End
 
 To go
 
-  ;landmarket-remove-old-lms
-
   ;; Check if screenshot output should be created
   store-screenshot
 
@@ -270,6 +269,7 @@ To go
 
   ; Check if households have to many consecutive years with debts and freeze them if needed
   sort-out-bankrupt-turtles
+  landmarket-auction
   increase-hh-age
 
   ; Update agricultaral area (if households have been frozen)
@@ -343,9 +343,9 @@ to go-profiler
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-840
+900
 70
-1548
+1608
 779
 -1
 -1
@@ -370,9 +370,9 @@ ticks
 30.0
 
 PLOT
-2030
+2085
 40
-2240
+2295
 195
 Prices
 Year
@@ -387,9 +387,9 @@ false
 PENS
 
 PLOT
-1560
+1615
 40
-1795
+1850
 195
 LUT-fractions (owned patches)
 NIL
@@ -412,10 +412,10 @@ PENS
 "rm_env_lo" 1.0 2 -1184463 true "" ""
 
 PLOT
-1895
+1940
 240
-2225
-545
+2195
+460
 Household wealth
 NIL
 NIL
@@ -485,10 +485,10 @@ NIL
 1
 
 PLOT
-2225
-545
-2575
-840
+2195
+460
+2450
+680
 Household capitalstock [$]
 NIL
 NIL
@@ -507,9 +507,9 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 PLOT
-1795
+1850
 40
-2030
+2085
 195
 Carbon in agricultural area
 Time [years]
@@ -533,9 +533,9 @@ PENS
 "tot-carbon-env-lo" 1.0 2 -7500403 true "" ""
 
 BUTTON
-895
+955
 35
-950
+1010
 68
 -
 set-patch-size round (patch-size - 2)
@@ -550,9 +550,9 @@ NIL
 1
 
 BUTTON
-841
+901
 35
-896
+956
 68
 +
 set-patch-size round (patch-size + 2)
@@ -567,9 +567,9 @@ NIL
 1
 
 BUTTON
-950
+1010
 35
-1035
+1095
 68
 inspect rnd hh
 inspect one-of turtles
@@ -584,9 +584,9 @@ NIL
 1
 
 BUTTON
-1035
+1095
 35
-1130
+1190
 68
 inspect rnd patch
 inspect one-of patches
@@ -601,10 +601,10 @@ NIL
 1
 
 PLOT
-1895
-545
-2225
-840
+1940
+460
+2195
+680
 Household expected netcashflow of chosen option
 NIL
 NIL
@@ -634,10 +634,10 @@ SHOW-OUTPUT?
 -1000
 
 PLOT
-2225
+2195
 240
-2575
-545
+2450
+460
 Household consumption
 NIL
 NIL
@@ -656,9 +656,9 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 TEXTBOX
-1565
+1620
 10
-1825
+1880
 31
 == Landscape level output ==
 17
@@ -666,9 +666,9 @@ TEXTBOX
 1
 
 TEXTBOX
-840
+900
 10
-1555
+1615
 28
 == World output ================================================
 17
@@ -706,9 +706,9 @@ TEXTBOX
 1
 
 BUTTON
-1130
+1190
 35
-1275
+1335
 68
 NIL
 paint-fields-by-households
@@ -723,9 +723,9 @@ NIL
 1
 
 BUTTON
-1275
+1335
 35
-1330
+1390
 68
 NIL
 paint
@@ -740,10 +740,10 @@ NIL
 1
 
 SWITCH
-165
-625
-305
-658
+335
+435
+475
+468
 landmarket?
 landmarket?
 0
@@ -751,9 +751,9 @@ landmarket?
 -1000
 
 MONITOR
-2245
+2300
 40
-2320
+2375
 85
 active_hhs
 count hhs
@@ -762,9 +762,9 @@ count hhs
 11
 
 MONITOR
-2320
+2375
 40
-2392
+2447
 85
 immigrants
 count hhs with [h_immigrant? = TRUE]
@@ -910,23 +910,23 @@ price_scenario
 0
 
 INPUTBOX
-665
+660
 275
-745
+730
 335
 LUT-0-price
-78.0
+22.0
 1
 0
 Number
 
 INPUTBOX
-665
+660
 335
-745
+730
 395
 LUT-1-price
-620.0
+376.0
 1
 0
 Number
@@ -1092,20 +1092,20 @@ setup-hh-network
 3
 
 TEXTBOX
-320
-415
-430
-433
+165
+595
+275
+613
 Household Finances
 12
 0.0
 1
 
 INPUTBOX
-320
-435
-385
-495
+165
+615
+230
+675
 land_price
 750.0
 1
@@ -1476,9 +1476,9 @@ gr-write-household-ids
 0
 
 INPUTBOX
-495
+490
 275
-590
+585
 335
 LUT-0-folder
 oilpalm
@@ -1487,9 +1487,9 @@ oilpalm
 String
 
 INPUTBOX
-495
+490
 335
-590
+585
 395
 LUT-1-folder
 rubber
@@ -1498,9 +1498,9 @@ rubber
 String
 
 INPUTBOX
-495
+490
 395
-590
+585
 455
 LUT-2-folder
 0
@@ -1509,9 +1509,9 @@ LUT-2-folder
 String
 
 INPUTBOX
-495
+490
 515
-590
+585
 575
 LUT-4-folder
 0
@@ -1520,9 +1520,9 @@ LUT-4-folder
 String
 
 INPUTBOX
-495
+490
 455
-590
+585
 515
 LUT-3-folder
 0
@@ -1531,9 +1531,9 @@ LUT-3-folder
 String
 
 INPUTBOX
-590
+585
 335
-665
+660
 395
 LUT-1-color
 44.0
@@ -1542,9 +1542,9 @@ LUT-1-color
 Color
 
 INPUTBOX
-590
+585
 395
-665
+660
 455
 LUT-2-color
 34.0
@@ -1553,9 +1553,9 @@ LUT-2-color
 Color
 
 INPUTBOX
-590
+585
 455
-665
+660
 515
 LUT-3-color
 84.0
@@ -1564,9 +1564,9 @@ LUT-3-color
 Color
 
 INPUTBOX
-590
+585
 515
-665
+660
 575
 LUT-4-color
 134.0
@@ -1575,9 +1575,9 @@ LUT-4-color
 Color
 
 INPUTBOX
-590
+585
 275
-665
+660
 335
 LUT-0-color
 24.0
@@ -1586,9 +1586,9 @@ LUT-0-color
 Color
 
 INPUTBOX
-635
+760
 600
-705
+830
 660
 matrix-color
 52.0
@@ -1597,9 +1597,9 @@ matrix-color
 Color
 
 INPUTBOX
-635
+760
 660
-705
+830
 720
 inacc-color
 5.0
@@ -1608,9 +1608,9 @@ inacc-color
 Color
 
 INPUTBOX
-665
+660
 395
-745
+730
 455
 LUT-2-price
 1100.0
@@ -1619,9 +1619,9 @@ LUT-2-price
 Number
 
 INPUTBOX
-665
+660
 455
-745
+730
 515
 LUT-3-price
 0.0
@@ -1630,9 +1630,9 @@ LUT-3-price
 Number
 
 INPUTBOX
-665
+660
 515
-745
+730
 575
 LUT-4-price
 0.0
@@ -1641,9 +1641,9 @@ LUT-4-price
 Number
 
 INPUTBOX
-745
+815
 275
-825
+895
 335
 LUT-0-price-sd
 30.0
@@ -1652,9 +1652,9 @@ LUT-0-price-sd
 Number
 
 INPUTBOX
-745
+815
 335
-825
+895
 395
 LUT-1-price-sd
 255.0
@@ -1663,9 +1663,9 @@ LUT-1-price-sd
 Number
 
 INPUTBOX
-745
+815
 395
-825
+895
 455
 LUT-2-price-sd
 0.0
@@ -1674,9 +1674,9 @@ LUT-2-price-sd
 Number
 
 INPUTBOX
-745
+815
 455
-825
+895
 515
 LUT-3-price-sd
 0.0
@@ -1685,9 +1685,9 @@ LUT-3-price-sd
 Number
 
 INPUTBOX
-745
+815
 515
-825
+895
 575
 LUT-4-price-sd
 0.0
@@ -1706,9 +1706,9 @@ TEXTBOX
 1
 
 TEXTBOX
-525
+520
 255
-560
+555
 273
 Folder
 12
@@ -1716,9 +1716,9 @@ Folder
 1
 
 TEXTBOX
-610
+605
 255
-650
+645
 273
 Colors
 12
@@ -1726,9 +1726,9 @@ Colors
 1
 
 TEXTBOX
-695
+690
 255
-730
+725
 273
 Price
 12
@@ -1736,9 +1736,9 @@ Price
 1
 
 TEXTBOX
-765
+825
 240
-815
+875
 275
 Price \nvariation
 12
@@ -1768,19 +1768,19 @@ LUT-ids-manage
 11
 
 TEXTBOX
-170
-605
-320
-623
+340
+415
+490
+433
 Land market
 12
 0.0
 1
 
 INPUTBOX
-705
+830
 660
-765
+890
 720
 hh-color
 8.0
@@ -1789,9 +1789,9 @@ hh-color
 Color
 
 INPUTBOX
-705
+830
 600
-765
+890
 660
 road-color
 9.9
@@ -1800,9 +1800,9 @@ road-color
 Color
 
 TEXTBOX
-640
+765
 580
-790
+915
 598
 Colors
 12
@@ -2406,10 +2406,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-165
-660
-305
-693
+335
+470
+475
+503
 buyer_pool_n
 buyer_pool_n
 1
@@ -2421,10 +2421,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-165
-695
-305
-728
+335
+505
+475
+538
 immigrant_probability
 immigrant_probability
 0
@@ -2436,10 +2436,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-165
-730
-305
-763
+335
+540
+475
+573
 land_price_increase
 land_price_increase
 0
@@ -2451,10 +2451,10 @@ NIL
 HORIZONTAL
 
 SLIDER
+165
+675
 320
-495
-475
-528
+708
 rent_rate_capital_lend
 rent_rate_capital_lend
 0
@@ -2466,10 +2466,10 @@ NIL
 HORIZONTAL
 
 SLIDER
+165
+710
 320
-530
-475
-563
+743
 rent_rate_capital_borrow
 rent_rate_capital_borrow
 0
@@ -2481,10 +2481,10 @@ NIL
 HORIZONTAL
 
 SLIDER
+165
+745
 320
-565
-475
-598
+778
 rent_rate_land
 rent_rate_land
 0
@@ -2506,9 +2506,9 @@ IDs of loaded land-use\nand management files:
 1
 
 TEXTBOX
-1900
+1955
 210
-2230
+2285
 235
 == Aggregated household output ==
 17
@@ -2516,9 +2516,9 @@ TEXTBOX
 1
 
 TEXTBOX
-2250
+2305
 10
-2400
+2455
 31
 == Monitors ==
 17
@@ -2526,10 +2526,10 @@ TEXTBOX
 1
 
 INPUTBOX
-765
-600
-825
-660
+760
+720
+830
+780
 links-color
 105.0
 1
@@ -2537,10 +2537,10 @@ links-color
 Color
 
 INPUTBOX
-385
-435
-475
-495
+230
+615
+320
+675
 external_income
 500.0
 1
@@ -2565,9 +2565,9 @@ NIL
 1
 
 PLOT
-1560
+1615
 240
-1720
+1775
 360
 LUT-0-mean-yield
 NIL
@@ -2582,9 +2582,9 @@ false
 PENS
 
 PLOT
-1720
+1775
 240
-1880
+1935
 360
 LUT-0-mean-yield-gap
 NIL
@@ -2599,9 +2599,9 @@ false
 PENS
 
 PLOT
-1560
+1615
 360
-1720
+1775
 480
 LUT-1-mean-yield
 NIL
@@ -2616,9 +2616,9 @@ false
 PENS
 
 PLOT
-1560
+1615
 480
-1720
+1775
 600
 LUT-2-mean-yield
 NIL
@@ -2633,9 +2633,9 @@ false
 PENS
 
 PLOT
-1720
+1775
 360
-1880
+1935
 480
 LUT-1-mean-yield-gap
 NIL
@@ -2650,9 +2650,9 @@ false
 PENS
 
 PLOT
-1720
+1775
 480
-1880
+1935
 600
 LUT-2-mean-yield-gap
 NIL
@@ -2667,9 +2667,9 @@ false
 PENS
 
 PLOT
-1560
+1615
 600
-1720
+1775
 720
 LUT-3-mean-yield
 NIL
@@ -2684,9 +2684,9 @@ false
 PENS
 
 PLOT
-1560
+1615
 720
-1720
+1775
 840
 LUT-4-mean-yield
 NIL
@@ -2701,9 +2701,9 @@ false
 PENS
 
 PLOT
-1720
+1775
 600
-1880
+1935
 720
 LUT-3-mean-yield-gap
 NIL
@@ -2718,9 +2718,9 @@ false
 PENS
 
 PLOT
-1720
+1775
 720
-1880
+1935
 840
 LUT-4-mean-yield-gap
 NIL
@@ -2735,9 +2735,9 @@ false
 PENS
 
 TEXTBOX
-1565
+1620
 210
-1750
+1805
 228
 == LUT level output ==
 17
@@ -2745,10 +2745,10 @@ TEXTBOX
 1
 
 INPUTBOX
-315
-625
-395
-685
+490
+600
+570
+660
 hh_age_alpha
 14.24
 1
@@ -2756,10 +2756,10 @@ hh_age_alpha
 Number
 
 INPUTBOX
-395
-625
-485
-685
+570
+600
+660
+660
 hh_age_lambda
 0.31
 1
@@ -2767,10 +2767,10 @@ hh_age_lambda
 Number
 
 INPUTBOX
-315
-685
-395
-745
+490
+660
+570
+720
 hh_age_min
 18.0
 1
@@ -2778,10 +2778,10 @@ hh_age_min
 Number
 
 INPUTBOX
-395
-685
-485
-745
+570
+660
+660
+720
 hh_age_max
 80.0
 1
@@ -2789,20 +2789,20 @@ hh_age_max
 Number
 
 TEXTBOX
-325
-605
-475
-623
+500
+580
+650
+598
 Household age
 12
 0.0
 1
 
 SLIDER
-485
-685
-605
-718
+490
+720
+660
+753
 takeover_prob
 takeover_prob
 0
@@ -2814,10 +2814,10 @@ NIL
 HORIZONTAL
 
 INPUTBOX
-485
-625
-575
-685
+660
+600
+750
+660
 age_generation
 40.0
 1
@@ -2825,10 +2825,10 @@ age_generation
 Number
 
 PLOT
-2225
-840
-2425
-990
+2195
+680
+2450
+900
 household age
 NIL
 NIL
@@ -2843,10 +2843,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [h_age] of hhs"
 
 SWITCH
-1585
-885
-1707
-918
+2735
+85
+2857
+118
 allow-fallow?
 allow-fallow?
 1
@@ -2854,9 +2854,9 @@ allow-fallow?
 -1000
 
 BUTTON
-1330
+1390
 35
-1412
+1472
 68
 color_age
 go\nask patches [set pcolor scale-color red p_age 0 50]
@@ -2886,10 +2886,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1895
-840
-2225
-1015
+1940
+680
+2195
+900
 Household area
 NIL
 NIL
@@ -2908,9 +2908,9 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 MONITOR
-2245
+2300
 85
-2377
+2432
 130
 hh_area_mean (cells)
 precision mean [h_area] of hhs 3
@@ -2919,10 +2919,10 @@ precision mean [h_area] of hhs 3
 11
 
 INPUTBOX
-1580
-920
-1797
-980
+335
+575
+475
+635
 immigrant-xp-bonus
 [1 1]
 1
@@ -2930,15 +2930,15 @@ immigrant-xp-bonus
 String
 
 SLIDER
-1580
-980
-1762
-1013
+335
+635
+475
+668
 immigrant-wealth-factor
 immigrant-wealth-factor
 1
 100
-15.0
+10.0
 1
 1
 NIL
@@ -2956,10 +2956,10 @@ jambi1
 String
 
 INPUTBOX
-735
-40
-820
-100
+730
+275
+815
+335
 LUT-0-price-mu
 1.9
 1
@@ -2967,10 +2967,10 @@ LUT-0-price-mu
 Number
 
 INPUTBOX
-740
-105
-825
-165
+730
+335
+815
+395
 LUT-1-price-mu
 11.0
 1
@@ -2978,10 +2978,10 @@ LUT-1-price-mu
 Number
 
 BUTTON
-2910
-30
-3107
-63
+2480
+550
+2640
+583
 NIL
 calculate_patch_bird_richness
 NIL
@@ -2995,10 +2995,10 @@ NIL
 1
 
 BUTTON
-2915
-65
-3067
-98
+2480
+585
+2640
+618
 NIL
 visualize-bird-richness
 NIL
@@ -3012,10 +3012,10 @@ NIL
 1
 
 SWITCH
-2910
-100
-3072
-133
+2480
+515
+2640
+548
 calc_bird_richness?
 calc_bird_richness?
 1
@@ -3023,10 +3023,10 @@ calc_bird_richness?
 -1000
 
 SWITCH
-2690
-30
-2832
-63
+2480
+75
+2622
+108
 invest_plantdiv?
 invest_plantdiv?
 1
@@ -3034,10 +3034,10 @@ invest_plantdiv?
 -1000
 
 PLOT
-2690
-110
-2890
-260
+2480
+155
+2680
+305
 invest_plantdiv
 NIL
 NIL
@@ -3053,10 +3053,10 @@ PENS
 "zero" 1.0 0 -7500403 true "" "plot 1"
 
 MONITOR
-2690
-65
-2890
+2480
 110
+2680
+155
 NIL
 sar_ratio
 17
@@ -3064,10 +3064,10 @@ sar_ratio
 11
 
 PLOT
-2690
-260
-2890
-410
+2480
+305
+2680
+455
 invest_plantdiv_sar_species
 NIL
 NIL
@@ -3082,10 +3082,10 @@ PENS
 "default" 0.1 1 -16777216 true "" "histogram sar"
 
 PLOT
-2660
-435
-3110
-830
+2475
+670
+2770
+880
 Trade-offs
 NIL
 NIL
@@ -3101,20 +3101,20 @@ PENS
 "point" 2.0 2 -1 true "" ""
 
 CHOOSER
-2985
-830
-3110
-875
+2645
+880
+2770
+925
 trade-off-x
 trade-off-x
 "carbon" "consumption" "plantdiv"
 1
 
 CHOOSER
-2660
-830
-2785
-875
+2475
+880
+2600
+925
 trade-off-y
 trade-off-y
 "carbon" "consumption" "plantdiv"
@@ -3141,6 +3141,100 @@ NIL
 1
 0
 String
+
+MONITOR
+2300
+130
+2380
+175
+NIL
+count lms
+17
+1
+11
+
+TEXTBOX
+2475
+10
+2650
+28
+== TESTING AREA ==
+17
+105.0
+1
+
+TEXTBOX
+2485
+50
+2685
+68
+Preliminary inVEST biodiversity module:
+11
+0.0
+1
+
+TEXTBOX
+2485
+465
+2635
+506
+Preliminary bird species richness biodiversity model (Mats Mahnken):
+11
+0.0
+1
+
+TEXTBOX
+2480
+640
+2630
+658
+Preliminary TRADE-OFF plot
+11
+0.0
+1
+
+INPUTBOX
+730
+395
+815
+455
+LUT-2-price-mu
+0.0
+1
+0
+Number
+
+INPUTBOX
+730
+455
+815
+515
+LUT-3-price-mu
+0.0
+1
+0
+Number
+
+INPUTBOX
+730
+515
+815
+575
+LUT-4-price-mu
+0.0
+1
+0
+Number
+
+TEXTBOX
+2740
+40
+2890
+81
+Preliminary fallow option.\nOnly works with specific land-use folders
+11
+0.0
+1
 
 @#$#@#$#@
 ## Abstract of corresponding publication

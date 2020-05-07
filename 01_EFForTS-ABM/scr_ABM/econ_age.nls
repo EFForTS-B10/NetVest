@@ -20,7 +20,7 @@ to increase-hh-age
         if (landmarket?)
         [
           ;; Offer the fields on the land market:
-          landmarket h_patches
+          landmarket-init
         ]
         die
       ]

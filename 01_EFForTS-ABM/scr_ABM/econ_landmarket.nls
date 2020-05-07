@@ -1,108 +1,103 @@
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-to landmarket [fields]
+to landmarket-init ;[fields]
 
-  ;print "----------------------------"
-  ;; In this procedure a set of field ids can be bought by other agents
-  ;; These agents can be either from the local neighborhood or immigrants which enter the model
+  ;; In this procedure, we initialize a landmarket turtle
+  ;; This turtle stores all relevant information on the seller (fields, prices) and buyers
+  
   let lm_seller self
-
-  ;; First we create an lm turtle which stores data about this market transactions:
-  let lm_current landmarket-output-create-lm
-  ;;>>>> OUTPUT landmarket metrics: Set seller stats of lm turtle:
-  landmarket-output-set-lm-seller lm_current lm_seller
   
-  ;; Determine the land price
-  let price-for-land landmarket-estimate-land-price fields
-  ;print (word "Landmarket open: Fields: " fields " Price: " price-for-land)
-  
-  ;; Set up the pool of potential buyers
-  let pool landmarket-create-buyers-pool fields
-  
-  ;>>>> OUTPUT landmarket metrics: Set pool stats of lm turtle:
-  landmarket-output-set-lm-pollall lm_current pool
-  
-  ;; Calculate financial yield for potential buyers:
-  set pool landmarket-calc-financial-yield fields pool price-for-land
-  
-  ;;>>>> OUTPUT landmarket metrics of remaining potential buyers
-  landmarket-output-set-lm-pollpot lm_current pool
-
-  ;; If there are buyers remaining, select the buyer with the highest financial yield:
-  let buyer.who landmarket-determine-buyer-who pool
-  
-   ;; OUTPUT landmarket metrics of seller: 
-  landmarket-output-set-lm-buyer-prebuy lm_current buyer.who
-
-  ;; Process landmarket transaction (update agent variables, kill remaining pool agents, ...)
-  set buyer.who landmarket-select-buyer fields pool buyer.who
-  
-  landmarket-output-set-lm-buyer-postbuy lm_current buyer.who
- 
-end
-
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-to-report landmarket-output-create-lm
-  let lm_current nobody
   hatch-lms 1 
   [
     set hidden? true
     set lm_ticks ticks
-    set lm_current self
-  ]
-  report lm_current
-end
-  
-to landmarket-output-set-lm-seller [lm_current lm_seller]
-  ;; OUTPUT landmarket metrics of seller: 
-  ask lm_current
-  [
     set lm_seller_who [who] of lm_seller
     set lm_seller_area [h_area] of lm_seller
+    set lm_seller_fields [h_patches] of lm_seller
     set lm_seller_wealth [h_wealth] of lm_seller
     set lm_seller_lut0_ineff item 0 [h_inefficiencies] of lm_seller
     set lm_seller_lut1_ineff item 1 [h_inefficiencies] of lm_seller
+    
+    set lm_land_price landmarket-estimate-land-price lm_seller_fields
   ]
+
+
+  
+  ;; Determine the land price
+ ; let price-for-land landmarket-estimate-land-price fields
+  ;print (word "Landmarket open: Fields: " fields " Price: " price-for-land)
+  
+  ;; Set up the pool of potential buyers
+ ; let pool landmarket-create-buyers-pool fields
+  
+  ;>>>> OUTPUT landmarket metrics: Set pool stats of lm turtle:
+;  landmarket-output-set-lm-pollall lm_current pool
+  
+  ;; Calculate financial yield for potential buyers:
+;  set pool landmarket-calc-financial-yield fields pool price-for-land
+  
+  ;;>>>> OUTPUT landmarket metrics of remaining potential buyers
+ ; landmarket-output-set-lm-pollpot lm_current pool
+
+  ;; If there are buyers remaining, select the buyer with the highest financial yield:
+ ; let buyer.who landmarket-determine-buyer-who pool
+  
+   ;; OUTPUT landmarket metrics of seller: 
+ ; landmarket-output-set-lm-buyer-prebuy lm_current buyer.who
+
+  ;; Process landmarket transaction (update agent variables, kill remaining pool agents, ...)
+ ; set buyer.who landmarket-select-buyer fields pool buyer.who
+  
+ ; landmarket-output-set-lm-buyer-postbuy lm_current buyer.who
+ 
 end
 
-to landmarket-output-set-lm-pollall [lm_current pool]
-  ;; OUTPUT landmarket metrics of seller: 
-  ask lm_current
+to landmarket-auction
+  
+  ;print "----------------------------"
+  ;; In this procedure a set of field ids can be bought by other agents
+  ;; These agents can be either from the local neighborhood or immigrants which enter the model
+  
+  ask lms
   [
+    ;; Create a buyer pool for this market:
+    let pool landmarket-create-buyers-pool
+
+    ;; Store pool data in lm turtle:
     set lm_poolall_wealth mean [h_wealth] of pool
     set lm_poolall_immigrant count pool with [h_immigrant? = TRUE] / count pool
-  ]
-end
+    
+    ;; Calculate financial yield for potential buyers and report only a pool of potential buyers
+    set pool landmarket-calc-financial-yield lm_seller_fields pool lm_land_price
 
-to landmarket-output-set-lm-pollpot [lm_current pool]
-  ;; OUTPUT landmarket metrics of seller: 
-  ask lm_current
-  [
+    ;; Update landmarket metrics of remaining potential buyers
     set lm_poolpot_wealth ifelse-value (any? pool) [mean [h_wealth] of pool][-999]
     set lm_poolpot_immigrant ifelse-value (any? pool) [count pool with [h_immigrant? = TRUE] / count pool][-999]
-  ]
-end
-
-to landmarket-output-set-lm-buyer-prebuy [lm_current buyer.who]
-  ;; OUTPUT landmarket metrics of seller: 
-  ask lm_current
-  [
+    
+    ;; If there are buyers remaining, select the buyer with the highest financial yield:
+    let buyer.who landmarket-determine-buyer-who pool
+    
+    ;; landmarket metrics of final buyer: 
     set lm_buyer_wealth ifelse-value (buyer.who != -999) [[h_wealth] of hh buyer.who][-999]
     set lm_buyer_immigrant ifelse-value (buyer.who != -999) [ifelse-value ([h_immigrant?] of hh buyer.who = TRUE) [1][0]][-999]
-  ]
-end
-
-to landmarket-output-set-lm-buyer-postbuy [lm_current buyer.who]
-  ;; OUTPUT landmarket metrics of seller: 
-  ask lm_current
-  [
+    
+     ;; Process landmarket transaction (update agent variables, kill remaining pool agents, ...)
+    set buyer.who landmarket-select-buyer lm_seller_fields pool buyer.who
+    
+    ;; Set final landmarket metrics of final buyer after transaction:
     set lm_buyer_who buyer.who
     set lm_buyer_area ifelse-value (buyer.who != -999) [[h_area] of hh buyer.who][-999]
     set lm_buyer_lut0_ineff ifelse-value(buyer.who != -999) [item 0 [h_inefficiencies] of hh buyer.who][-999]
     set lm_buyer_lut1_ineff ifelse-value(buyer.who != -999) [item 1 [h_inefficiencies] of hh buyer.who][-999]
+    
+    ;; If land was sold, this lm can be removed
+    if (buyer.who != -999) [die]
   ]
+  
 end
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to landmarket-remove-old-lms
   ask lms [die]
@@ -122,7 +117,7 @@ end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-to-report landmarket-create-buyers-pool [fields]
+to-report landmarket-create-buyers-pool
   
   ;; Now we try to find a new owner for these fields:
   ;; First we initialize a pool of candidates (size =n)
@@ -134,7 +129,7 @@ to-report landmarket-create-buyers-pool [fields]
   let pool_neighbrs min-n-of pool_n other hhs [distance myself]
   let pool_total (no-turtles)
    
-  hatch pool_n
+  hatch-hhs pool_n
   [
     set pool_total (turtle-set pool_total self)
     
@@ -147,13 +142,20 @@ to-report landmarket-create-buyers-pool [fields]
       set h_wealth landmarket-immigrant-wealth
       set h_age draw-hh-age 
       set h_immigrant? TRUE
+      set h_management draw-household-management
+      set h_land-use-change draw-land-use-change-list
       set h_id who
       set h_homebase patch-here
       set h_exincome external_income
       
       ;; Initialize ownership
-      set h_patches fields
-      ask h_patches [set p_owner [h_id] of myself]
+      set h_patches [lm_seller_fields] of myself
+      ask h_patches 
+      [
+        set p_owner [h_id] of myself
+        set p_management item p_landuse [h_management] of myself
+      ]
+      
       set h_field_id_list remove-duplicates [p_id] of h_patches  
       set h_capitalstock sum [p_capitalstock] of h_patches 
       set h_area count h_patches
@@ -169,12 +171,18 @@ to-report landmarket-create-buyers-pool [fields]
       set h_inefficiencies [h_inefficiencies] of neighbr-temp
       set h_exincome [h_exincome] of neighbr-temp
       set h_immigrant? [h_id] of neighbr-temp
+      set h_management [h_management] of neighbr-temp
+      set h_land-use-change [h_land-use-change] of neighbr-temp
       set h_id who
       set h_homebase patch-here
       
       ;; Initialize ownership
-      set h_patches fields ;(patch-set fields [h_patches] of neighbr-temp) ;fields   ;(patch-set [h_patches] of neighbr-temp bankrupt-fields)  ;; DECIDE IF NEIGHBOR HOUSEHOLD SHOULD CALCULATE WITH ALL HIS FIELDS OR ONLY THE NEW ONES
-      ask h_patches [set p_owner [h_id] of myself]
+      set h_patches [lm_seller_fields] of myself ;(patch-set fields [h_patches] of neighbr-temp) ;fields   ;(patch-set [h_patches] of neighbr-temp bankrupt-fields)  ;; DECIDE IF NEIGHBOR HOUSEHOLD SHOULD CALCULATE WITH ALL HIS FIELDS OR ONLY THE NEW ONES
+      ask h_patches 
+      [
+        set p_owner [h_id] of myself
+        set p_management item p_landuse [h_management] of myself
+      ]
       set h_field_id_list remove-duplicates [p_id] of h_patches  
       set h_capitalstock sum [p_capitalstock] of h_patches 
       set h_area count h_patches  
@@ -263,6 +271,7 @@ to-report landmarket-calc-financial-yield [fields pool price-for-land]
       
       ;; Only remain in the pool if land yield is higher than savings yield:
       ifelse (financial-yield-land < financial-yield-sav) [die][set h_landmarket (list price-for-land financial-yield-land)]
+      
     ]
     [
       ;; This household has to take up debts. That means, we have to add rent_rate_captial_borrow to the land_price:
@@ -317,6 +326,10 @@ to-report landmarket-select-buyer [fields pool buyer.who]
     [
       ;; First we kill all other households from the pool:
       ask other pool [die]
+      set shape "house2"
+      set color hh-color
+      set size 2
+      set hidden? false
       ;print (word "Bankrupt fields redistributed to immigrant?/parent-ID " h_immigrant? "; exp netcashflow " h_netcashflow_exp)
   
       ;; Pay the land price:
@@ -362,13 +375,7 @@ to-report landmarket-select-buyer [fields pool buyer.who]
   ]
   [
    ;; What happens if there is no buyer?
-    ;; For now, color the patches red:
-    ask fields 
-    [
-      set p_landuse "na"
-      set p_owner "na"
-      set pcolor 85
-    ]
+    ;; nothing -> land will be offered next tick again!
   ]
   
   report buyer.who
@@ -418,47 +425,3 @@ To-report perform-lu-and-production-decision-buy-land
 End  
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-to landmarkets-from-previous-steps
-;  
-;  ;; here we try to sell land from previous steps. 
-;
-;  ;print "----------------------------"
-;  ;; In this procedure a set of field ids can be bought by other agents
-;  ;; These agents can be either from the local neighborhood or immigrants which enter the model
-;  let lm_seller self
-;
-;  ;; First we create an lm turtle which stores data about this market transactions:
-;  let lm_current landmarket-output-create-lm
-;  ;;>>>> OUTPUT landmarket metrics: Set seller stats of lm turtle:
-;  landmarket-output-set-lm-seller lm_current lm_seller
-;  
-;  ;; Determine the land price
-;  let price-for-land landmarket-estimate-land-price fields
-;  ;print (word "Landmarket open: Fields: " fields " Price: " price-for-land)
-;  
-;  ;; Set up the pool of potential buyers
-;  let pool landmarket-create-buyers-pool fields
-;  
-;  ;>>>> OUTPUT landmarket metrics: Set pool stats of lm turtle:
-;  landmarket-output-set-lm-pollall lm_current pool
-;  
-;  ;; Calculate financial yield for potential buyers:
-;  set pool landmarket-calc-financial-yield fields pool price-for-land
-;  
-;  ;;>>>> OUTPUT landmarket metrics of remaining potential buyers
-;  landmarket-output-set-lm-pollpot lm_current pool
-;
-;  ;; If there are buyers remaining, select the buyer with the highest financial yield:
-;  let buyer.who landmarket-determine-buyer-who pool
-;  
-;   ;; OUTPUT landmarket metrics of seller: 
-;  landmarket-output-set-lm-buyer-prebuy lm_current buyer.who
-;
-;  ;; Process landmarket transaction (update agent variables, kill remaining pool agents, ...)
-;  set buyer.who landmarket-select-buyer fields pool buyer.who
-;  
-;  landmarket-output-set-lm-buyer-postbuy lm_current buyer.who
- 
-end

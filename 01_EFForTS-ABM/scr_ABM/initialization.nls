@@ -197,10 +197,13 @@ end
 to init-household-management
   ask hhs
   [
-    set h_management n-values length LUT-ids [? -> one-of item ? LUT-ids-manage]
+    set h_management draw-household-management
     ask h_patches [set p_management item p_landuse [h_management] of myself]
   ]
   
+end
+to-report draw-household-management
+  report n-values length LUT-ids [? -> one-of item ? LUT-ids-manage]
 end
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 to init-log-land-use-change-list
@@ -217,18 +220,21 @@ to init-log-land-use-change-list
   ;; On tick 44 he changed one field from landuse 1 to landuse 0 (item 1 item 0)
   ;; On tick 20 he replanted a field of landuse 1 (item 1 item 1)
   
+  ask hhs
+  [
+    set h_land-use-change draw-land-use-change-list
+  ]
+  
+end
+
+to-report draw-land-use-change-list
   let subliste []
   repeat length LUT-ids [set subliste lput (list) subliste]
   let liste []
   repeat length LUT-ids [set liste lput subliste liste]
   
-  ask hhs
-  [
-    set h_land-use-change liste
-  ]
-  
+  report(liste)
 end
-
 
 ;###################################################################################
 ; INITIALIZE HOUSEHOLDS (WEALTH, INEFFICIENCIES, NETWORKS)
