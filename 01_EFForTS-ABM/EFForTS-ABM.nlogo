@@ -134,6 +134,7 @@ lms-own
   ; Landmarket output:
   lm_seller_who
   lm_seller_area
+  lm_seller_hpatches
   lm_seller_wealth
   lm_seller_lut0_ineff
   lm_seller_lut1_ineff
@@ -259,7 +260,7 @@ End
 
 To go
 
-  landmarket-remove-old-lms
+  ;landmarket-remove-old-lms
 
   ;; Check if screenshot output should be created
   store-screenshot
@@ -906,7 +907,7 @@ CHOOSER
 price_scenario
 price_scenario
 "constant_prices" "variable_prices" "correlated_prices_1" "random_walk" "historical_trends" "production-related"
-1
+0
 
 INPUTBOX
 665
@@ -1480,7 +1481,7 @@ INPUTBOX
 590
 335
 LUT-0-folder
-oilpalm_labor_high
+oilpalm
 1
 0
 String
@@ -1491,7 +1492,7 @@ INPUTBOX
 590
 395
 LUT-1-folder
-rubber_env
+rubber
 1
 0
 String
@@ -2413,7 +2414,7 @@ buyer_pool_n
 buyer_pool_n
 1
 50
-10.0
+20.0
 1
 1
 NIL
@@ -2848,7 +2849,7 @@ SWITCH
 918
 allow-fallow?
 allow-fallow?
-0
+1
 1
 -1000
 
@@ -2923,7 +2924,7 @@ INPUTBOX
 1797
 980
 immigrant-xp-bonus
-[0 0]
+[1 1]
 1
 0
 String
@@ -2937,7 +2938,7 @@ immigrant-wealth-factor
 immigrant-wealth-factor
 1
 100
-5.0
+15.0
 1
 1
 NIL
@@ -3028,7 +3029,7 @@ SWITCH
 63
 invest_plantdiv?
 invest_plantdiv?
-0
+1
 1
 -1000
 
@@ -3107,7 +3108,7 @@ CHOOSER
 trade-off-x
 trade-off-x
 "carbon" "consumption" "plantdiv"
-2
+1
 
 CHOOSER
 2660

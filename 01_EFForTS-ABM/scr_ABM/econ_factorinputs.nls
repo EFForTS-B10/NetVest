@@ -29,6 +29,7 @@ To-report determine-factor-inputs-for-one-option [option-matrix wealth]
   matrix:set-row factor-inputs 0 h_field_id_list ;set first row of factor-inputs      
   
   let marginal-gains-fields calculate-marginal-gains-one-option option-matrix ;list of marginal gains for all fields, all marginal gains are >=0
+  ;print(word "maringal gains: " marginal-gains-fields)
   
   ;start distributing the (remaining) wealth in the order of decreasing marginal gains   
   let counter 0
@@ -70,6 +71,8 @@ To-report determine-factor-inputs-for-one-option [option-matrix wealth]
     [
       set wealth wealth - optimal-flexible-costs
         
+      ;print (word "labor: " optimal-labor-cell " /  tinput: " optimal-tinput-cell)
+      
       matrix:set factor-inputs 1 position-of-max-marginal-gain optimal-labor-cell ;store factor for this field input in a matrix  
       matrix:set factor-inputs 2 position-of-max-marginal-gain optimal-tinput-cell
 
@@ -81,6 +84,7 @@ To-report determine-factor-inputs-for-one-option [option-matrix wealth]
          
       set wealth 0
          
+      
       matrix:set factor-inputs 1 position-of-max-marginal-gain item 0 reduced-factor-inputs
       matrix:set factor-inputs 2 position-of-max-marginal-gain item 1 reduced-factor-inputs 
     ]      
@@ -89,7 +93,7 @@ To-report determine-factor-inputs-for-one-option [option-matrix wealth]
     set counter counter + 1   
   ]
   
- ;print (word "fact end: " factor-inputs)
+; print (word "fact end: " matrix:pretty-print-text factor-inputs)
    
   report factor-inputs   
   
@@ -145,7 +149,7 @@ To-report calculated-reduced-factor-inputs-cell [hwealth option-matrix patch-id]
      
     ]
   ]
-  
+ 
   report (list reduced-labor-input reduced-tinput)
 End  
 
@@ -181,6 +185,13 @@ To-report calculate-marginal-gains-one-option [option-matrix]
       let cost-one-unit-production (opt-labor-cost + opt-tinput-cost) / max-production ;labor and tiput costs for one unit of production  
       let output-price ifelse-value (member? landuse LUT-ids) [item landuse prices][0]
       set marginal-gain output-price - cost-one-unit-production
+      if (marginal-gain < 0) [set marginal-gain 0]  ;; QUICKFIX!!!
+      ;;
+      ;; COMMENT JS 2020:
+      ;; I added this negative cap for marginal gain -> need to check with Jann!!
+      ;; In the previous version (Claudia/Elisabeth) marginal gain could lead to negative values -> This then led to negative production values and negative cashflow!
+      
+      
       ;print (word "unitcost: " cost-one-unit-production " outprice: " output-price  "prices:" prices)
     ]
     [ 
@@ -191,7 +202,6 @@ To-report calculate-marginal-gains-one-option [option-matrix]
     set marginal-gains-fields lput marginal-gain marginal-gains-fields
     set field field + 1 
   ]
-  
   
   report marginal-gains-fields
 End  

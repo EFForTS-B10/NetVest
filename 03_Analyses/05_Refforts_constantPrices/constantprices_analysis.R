@@ -6,16 +6,16 @@ library(nlrx)
 library(tidyverse)
 
 ## Load simulation data
-nl <- readRDS(file = file.path("03_Analyses/05_Refforts_constantPrices/sims_constantprices_ff_heterogenous.rds"))
-
-## Calculate landscape metrics:
-nl_sp <- nlrx::nl_to_raster(nl_spatial)
-#nl_sp <- nlrx::nl_to_raster(nl)
-metrics <- c("lsm_l_ed", "lsm_l_shdi", "lsm_l_lsi", "lsm_l_lpi")
-results <- cbind(nl_sp,
-                 landscapemetrics::calculate_lsm(nl_sp$spatial.raster, what=metrics) %>% 
-                   dplyr::select(layer, metric, value) %>% 
-                   tidyr::pivot_wider(names_from=metric, values_from = value))
+nl <- readRDS(file = file.path("03_Analyses/05_Refforts_constantPrices/constantprices_ff_ineff.rds"))
+results <- nl@simdesign@simoutput
+# ## Calculate landscape metrics:
+# nl_sp <- nlrx::nl_to_raster(nl_spatial)
+# #nl_sp <- nlrx::nl_to_raster(nl)
+# metrics <- c("lsm_l_ed", "lsm_l_shdi", "lsm_l_lsi", "lsm_l_lpi")
+# results <- cbind(nl_sp,
+#                  landscapemetrics::calculate_lsm(nl_sp$spatial.raster, what=metrics) %>% 
+#                    dplyr::select(layer, metric, value) %>% 
+#                    tidyr::pivot_wider(names_from=metric, values_from = value))
   
 
 

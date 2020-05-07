@@ -38,7 +38,7 @@ To-report calculate_leontief_production_cell [landuse pp-management age labor ti
    if (frac_capital.optimalcapital <= frac_labor.optimallabor) and (frac_capital.optimalcapital <= frac_tinput.optimaltinput) [set production optimal_production * frac_capital.optimalcapital]
    if (frac_tinput.optimaltinput <= frac_labor.optimallabor) and (frac_tinput.optimaltinput <= frac_capital.optimalcapital) [set production optimal_production * frac_tinput.optimaltinput]
  ]
-
+  
  report production 
 End
 

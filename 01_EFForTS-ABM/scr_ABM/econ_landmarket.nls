@@ -2,7 +2,8 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to landmarket [fields]
-      
+
+  ;print "----------------------------"
   ;; In this procedure a set of field ids can be bought by other agents
   ;; These agents can be either from the local neighborhood or immigrants which enter the model
   let lm_seller self
@@ -257,6 +258,9 @@ to-report landmarket-calc-financial-yield [fields pool price-for-land]
       
       let financial-yield-land (exp_netcashflow - price-for-land) / price-for-land
       let financial-yield-sav financial-yield-savings price-for-land
+      
+    ;  print (word "no debts - Land: " financial-yield-land " / savings: " financial-yield-sav)
+      
       ;; Only remain in the pool if land yield is higher than savings yield:
       ifelse (financial-yield-land < financial-yield-sav) [die][set h_landmarket (list price-for-land financial-yield-land)]
     ]
@@ -277,6 +281,8 @@ to-report landmarket-calc-financial-yield [fields pool price-for-land]
       ;; We can compare it to savings for all remaining welath without taking up debts:
       let financial-yield-land (exp_netcashflow - total-price-for-land) / total-price-for-land
       let financial-yield-sav financial-yield-savings (h_wealth - min-wealth)
+      
+    ;  print (word "debts - Land: " financial-yield-land " / savings: " financial-yield-sav)
       
       ;; Only remain in the pool if land yield is positive and higher than savings yield:
       ifelse (financial-yield-land < financial-yield-sav or financial-yield-land <= 0) [die][set h_landmarket (list total-price-for-land financial-yield-land)]
@@ -359,8 +365,9 @@ to-report landmarket-select-buyer [fields pool buyer.who]
     ;; For now, color the patches red:
     ask fields 
     [
+      set p_landuse "na"
       set p_owner "na"
-      set pcolor red
+      set pcolor 85
     ]
   ]
   
@@ -411,3 +418,47 @@ To-report perform-lu-and-production-decision-buy-land
 End  
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+to landmarkets-from-previous-steps
+;  
+;  ;; here we try to sell land from previous steps. 
+;
+;  ;print "----------------------------"
+;  ;; In this procedure a set of field ids can be bought by other agents
+;  ;; These agents can be either from the local neighborhood or immigrants which enter the model
+;  let lm_seller self
+;
+;  ;; First we create an lm turtle which stores data about this market transactions:
+;  let lm_current landmarket-output-create-lm
+;  ;;>>>> OUTPUT landmarket metrics: Set seller stats of lm turtle:
+;  landmarket-output-set-lm-seller lm_current lm_seller
+;  
+;  ;; Determine the land price
+;  let price-for-land landmarket-estimate-land-price fields
+;  ;print (word "Landmarket open: Fields: " fields " Price: " price-for-land)
+;  
+;  ;; Set up the pool of potential buyers
+;  let pool landmarket-create-buyers-pool fields
+;  
+;  ;>>>> OUTPUT landmarket metrics: Set pool stats of lm turtle:
+;  landmarket-output-set-lm-pollall lm_current pool
+;  
+;  ;; Calculate financial yield for potential buyers:
+;  set pool landmarket-calc-financial-yield fields pool price-for-land
+;  
+;  ;;>>>> OUTPUT landmarket metrics of remaining potential buyers
+;  landmarket-output-set-lm-pollpot lm_current pool
+;
+;  ;; If there are buyers remaining, select the buyer with the highest financial yield:
+;  let buyer.who landmarket-determine-buyer-who pool
+;  
+;   ;; OUTPUT landmarket metrics of seller: 
+;  landmarket-output-set-lm-buyer-prebuy lm_current buyer.who
+;
+;  ;; Process landmarket transaction (update agent variables, kill remaining pool agents, ...)
+;  set buyer.who landmarket-select-buyer fields pool buyer.who
+;  
+;  landmarket-output-set-lm-buyer-postbuy lm_current buyer.who
+ 
+end
