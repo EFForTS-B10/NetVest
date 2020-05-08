@@ -53,6 +53,15 @@ to-report lut1.fraction
   report item 1 LUT-fractions
 end
 
+;; Landmarket
+to-report abandoned.land
+  report ifelse-value (any? lms) [(sum [count lm_seller_fields] of lms) / (count patches with [p_landuse != -100])][0]  
+end
+
+
+
+
+
 ;; Household properties
 to-report hh.count
   report count hhs

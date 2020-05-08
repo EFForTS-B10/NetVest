@@ -75,6 +75,11 @@ to landmarket-auction
     set lm_poolpot_wealth ifelse-value (any? pool) [mean [h_wealth] of pool][-999]
     set lm_poolpot_immigrant ifelse-value (any? pool) [count pool with [h_immigrant? = TRUE] / count pool][-999]
     
+    ;;;;;;;;;
+    ;ask pool [print (word "immi? " h_immigrant? "/ yield: " h_landmarket)]
+    ;;;;;;;;;
+    
+    
     ;; If there are buyers remaining, select the buyer with the highest financial yield:
     let buyer.who landmarket-determine-buyer-who pool
     
@@ -147,6 +152,7 @@ to-report landmarket-create-buyers-pool
       set h_id who
       set h_homebase patch-here
       set h_exincome external_income
+      set h_connected_hhs (no-turtles)
       
       ;; Initialize ownership
       set h_patches [lm_seller_fields] of myself
@@ -415,6 +421,8 @@ To-report perform-lu-and-production-decision-buy-land
         set expected-net-cashflows lput accumulated-expected-cashflow-this-option expected-net-cashflows ; store the accumulated discounted cash flow for later comparison between options
         set option option + 1
       ]
+      
+      ;print  expected-net-cashflows
       set exp_netcashflow max expected-net-cashflows
     ] ;ifelse affordable-options = [] ;no option is affordable
    

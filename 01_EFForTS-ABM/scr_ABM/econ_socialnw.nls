@@ -7,7 +7,7 @@ to learning-spillover
   let improve-factor spillover-share
   
   ;; Only households with at least one link can learn
-  ask hhs
+  ask hhs 
   [
     ;; Store the current inefficencies in a temp variable:
     set h_inefficiencies_temp h_inefficiencies

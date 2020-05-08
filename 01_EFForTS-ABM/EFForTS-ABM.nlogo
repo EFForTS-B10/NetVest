@@ -821,7 +821,7 @@ INPUTBOX
 155
 245
 rnd-seed
-1234.0
+12345.0
 1
 0
 Number
@@ -844,7 +844,7 @@ SWITCH
 418
 show-roads?
 show-roads?
-0
+1
 1
 -1000
 
@@ -915,7 +915,7 @@ INPUTBOX
 730
 335
 LUT-0-price
-22.0
+138.0
 1
 0
 Number
@@ -926,7 +926,7 @@ INPUTBOX
 730
 395
 LUT-1-price
-376.0
+1000.0
 1
 0
 Number
@@ -947,7 +947,7 @@ INPUTBOX
 485
 350
 min-wealth
-30.0
+3000.0
 1
 0
 Number
@@ -958,7 +958,7 @@ INPUTBOX
 410
 410
 time-horizon
-10.0
+20.0
 1
 0
 Number
@@ -1077,7 +1077,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-1
+0
 1
 -1000
 
@@ -1089,7 +1089,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-3
+4
 
 TEXTBOX
 165
@@ -2369,7 +2369,7 @@ hh-nw-param1
 hh-nw-param1
 0
 100
-10.0
+20.0
 1
 1
 NIL
@@ -2429,7 +2429,7 @@ immigrant_probability
 immigrant_probability
 0
 1
-0.5
+0.25
 0.01
 1
 NIL
@@ -2924,7 +2924,7 @@ INPUTBOX
 475
 635
 immigrant-xp-bonus
-[1 1]
+[0 0]
 1
 0
 String
