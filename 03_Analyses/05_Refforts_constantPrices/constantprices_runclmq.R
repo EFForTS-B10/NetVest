@@ -43,8 +43,8 @@ rb.min <- round(min(prices$rubber, na.rm = TRUE))
 rb.max <- round(max(prices$rubber, na.rm = TRUE))
 
 # Set general information
-n.random.seeds <- 1 # 3
-price.interval.steps <- 2 # 50
+n.random.seeds <- 3 # 3
+price.interval.steps <- 50 # 50
 op.int <- (op.max - op.min) / (price.interval.steps - 1)
 op <- seq(op.min, op.max, by=op.int)
 rb.int <- (rb.max - rb.min) / (price.interval.steps - 1)
@@ -195,7 +195,7 @@ results <- results.sim %>% left_join(results.lsm.test, by = c("siminputrow", "ra
 
 ## Attach output:
 setsim(nl, "simoutput") <- results
-saveRDS(nl, file = file.path("03_Analyses/constantprices_ff_ineff_outlier.rds"))
+saveRDS(nl, file = file.path("03_Analyses/constantprices_ff_ineff.rds"))
 
 
 ########  ATTENTION!! THIS DELETS THE RAW FILES:
