@@ -5,7 +5,8 @@ EFForTS-ABM model repository
 # EFForTS-LGraf
 
 The current version of the Landscape Generator EFForTS-LGraf is nested within this repository.
-It is integrated as a git submodule referring to [nldoc/EFForTS-LGraf](https://github.com/nldoc/EFForTS-LGraf).
+It is integrated as a git submodule referring to [nldoc/EFForTS-LGraf](https://github.com/efforts-b10/EFForTS-LGraf).
+The manual for EFForTS-LGraf can be accessed via [https://nldoc.github.io/EFForTS-LGraf.bookdown/](https://efforts-b10.github.io/EFForTS-LGraf.bookdown/).
 
 ## Update procedure
 If changes are made within the EFForTS-LGraf repository we need to update the model in this repository as well.
