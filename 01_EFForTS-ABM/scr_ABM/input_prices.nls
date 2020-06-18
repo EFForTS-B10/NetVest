@@ -47,6 +47,7 @@ to-report create-prices [lut nticks]
   if (price_scenario = "random_walk") [set price-rows create-prices-rw lut nticks]
   if (price_scenario = "historical_trends") [set price-rows create-prices-hist lut]
   if (price_scenario = "production-related") [set price-rows create-prices-prod]
+  if (price_scenario = "price_shock") [set price-rows create-prices-constant-shock lut nticks]
 
   report price-rows
 
@@ -59,6 +60,35 @@ to-report create-prices-constant [lut nticks]
   ;; Create rows with constant price values for length sim-time + 2:
   let price-row n-values nticks [runresult (word "LUT-" lut "-price")]
   ;let rubber-row n-values (sim-time + 2) [rubber-price]
+  
+  report price-row
+  
+end
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to-report create-prices-constant-shock [lut nticks]
+  
+  let price-row []
+  
+  ;; Add price for tick -1:
+  set price-row lput runresult (word "LUT-" lut "-price") price-row
+  
+  ;; Store these starting prices as local variables:
+  let init-price item 0 price-row
+  
+  ;; Loop through the sim-time horizon and create prices based on the previous ones and store them in the final lists:
+  let t 0
+  repeat (nticks - 1)
+  [
+    let price-new ifelse-value (t <= runresult (word "LUT-" lut "-shock-t")) [init-price][init-price + init-price * runresult (word "LUT-" lut "-shock-p")]
+    ;; Check if prices are negative:
+    if price-new < 0 [set price-new 0]
+    ;; Store the new price in the list
+    set price-row lput price-new price-row
+    set t (t + 1)
+  
+  ]
   
   report price-row
   

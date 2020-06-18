@@ -22,6 +22,8 @@ to landmarket-init ;[fields]
     set lm_land_price landmarket-estimate-land-price lm_seller_fields
   ]
 
+  ;; Count number of fresh created lms:
+  set lm_new lm_new + 1
 
   
   ;; Determine the land price
@@ -32,7 +34,7 @@ to landmarket-init ;[fields]
  ; let pool landmarket-create-buyers-pool fields
   
   ;>>>> OUTPUT landmarket metrics: Set pool stats of lm turtle:
-;  landmarket-output-set-lm-pollall lm_current pool
+  ;landmarket-output-set-lm-pollall lm_current pool
   
   ;; Calculate financial yield for potential buyers:
 ;  set pool landmarket-calc-financial-yield fields pool price-for-land
@@ -58,6 +60,9 @@ to landmarket-auction
   ;print "----------------------------"
   ;; In this procedure a set of field ids can be bought by other agents
   ;; These agents can be either from the local neighborhood or immigrants which enter the model
+  
+  ;; Reset landmarket globals:
+  landmarket-globals-reset
   
   ask lms
   [
@@ -97,16 +102,49 @@ to landmarket-auction
     set lm_buyer_lut1_ineff ifelse-value(buyer.who != -999) [item 1 [h_inefficiencies] of hh buyer.who][-999]
     
     ;; If land was sold, this lm can be removed
-    if (buyer.who != -999) [die]
+    ;; But before we do this, we want to store the properties as globals:
+    if (buyer.who != -999) [landmarket-auction-successful]
   ]
   
 end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-to landmarket-remove-old-lms
-  ask lms [die]
+to landmarket-globals-reset
+  
+  set lm_new 0
+  set lm_seller_wealth_log []      ; wealth of all agents who sold land on a landmarket auction
+  set lm_seller_area_log []        ; area of all agents who sold land on a landmarket auction
+  set lm_seller_lut0_ineff_log []  ; lut0 inefficiency of all agents who sold land on a landmarket auction
+  set lm_seller_lut1_ineff_log []  ; lut1 inefficiency of all agents who sold land on a landmarket auction
+  set lm_buyer_wealth_log []      ; wealth of all agents who bought land on a landmarket auction
+  set lm_buyer_area_log []        ; area of all agents who bought land on a landmarket auction
+  set lm_buyer_lut0_ineff_log []  ; lut0 inefficiency of all agents who bought land on a landmarket auction
+  set lm_buyer_lut1_ineff_log []  ; lut1 inefficiency of all agents who bought land on a landmarket auction
+  
 end
+
+to landmarket-auction-successful
+  
+  ;; Update global landmarket variables:
+  set lm_seller_wealth_log lput lm_seller_wealth lm_seller_wealth_log      ; wealth of all agents who sold land on a landmarket auction
+  set lm_seller_area_log lput lm_seller_area lm_seller_area_log        ; area of all agents who sold land on a landmarket auction
+  set lm_seller_lut0_ineff_log lput lm_seller_lut0_ineff lm_seller_lut0_ineff_log  ; lut0 inefficiency of all agents who sold land on a landmarket auction
+  set lm_seller_lut1_ineff_log lput lm_seller_lut1_ineff lm_seller_lut1_ineff_log  ; lut1 inefficiency of all agents who sold land on a landmarket auction
+  set lm_buyer_wealth_log lput lm_buyer_wealth lm_buyer_wealth_log      ; wealth of all agents who bought land on a landmarket auction
+  set lm_buyer_area_log lput lm_buyer_area lm_buyer_area_log        ; area of all agents who bought land on a landmarket auction
+  set lm_buyer_lut0_ineff_log lput lm_buyer_lut0_ineff lm_buyer_lut0_ineff_log  ; lut0 inefficiency of all agents who bought land on a landmarket auction
+  set lm_buyer_lut1_ineff_log lput lm_buyer_lut1_ineff lm_buyer_lut1_ineff_log  ; lut1 inefficiency of all agents who bought land on a landmarket auction
+ 
+  ;; Remove landmarket
+  die
+  
+end
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;to landmarket-remove-old-lms
+;  ask lms [die]
+;end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

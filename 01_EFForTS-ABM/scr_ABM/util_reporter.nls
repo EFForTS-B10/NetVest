@@ -57,8 +57,30 @@ end
 to-report abandoned.land
   report ifelse-value (any? lms) [(sum [count lm_seller_fields] of lms) / (count patches with [p_landuse != -100])][0]  
 end
-
-
+to-report lm.seller.wealth
+  report ifelse-value (length lm_seller_wealth_log > 0) [precision mean lm_seller_wealth_log 2][0]
+end
+to-report lm.buyer.wealth
+  report ifelse-value (length lm_buyer_wealth_log > 0) [precision mean lm_buyer_wealth_log 2][0]
+end
+to-report lm.seller.area
+  report ifelse-value (length lm_seller_area_log > 0) [precision mean lm_seller_area_log 2][0]
+end
+to-report lm.buyer.area
+  report ifelse-value (length lm_buyer_area_log > 0) [precision mean lm_buyer_area_log 2][0]
+end
+to-report lm.seller.lut0.ineff
+  report ifelse-value (length lm_seller_lut0_ineff_log > 0) [precision mean lm_seller_lut0_ineff_log 2][0]
+end
+to-report lm.buyer.lut0.ineff
+  report ifelse-value (length lm_buyer_lut0_ineff_log > 0) [precision mean lm_buyer_lut0_ineff_log 2][0]
+end
+to-report lm.seller.lut1.ineff
+  report ifelse-value (length lm_seller_lut1_ineff_log > 0) [precision mean lm_seller_lut1_ineff_log 2][0]
+end
+to-report lm.buyer.lut1.ineff
+  report ifelse-value (length lm_buyer_lut1_ineff_log > 0) [precision mean lm_buyer_lut1_ineff_log 2][0]
+end
 
 
 

@@ -22,6 +22,8 @@ To set_global_constants
   set bird_richness [0 0 0 0 0]
   set trade-off-plot-xy []
   
+  landmarket-globals-reset
+  
 End  
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
