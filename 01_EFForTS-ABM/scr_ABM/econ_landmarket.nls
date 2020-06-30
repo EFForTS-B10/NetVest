@@ -70,8 +70,8 @@ to landmarket-auction
     let pool landmarket-create-buyers-pool
 
     ;; Store pool data in lm turtle:
-    set lm_poolall_wealth mean [h_wealth] of pool
-    set lm_poolall_immigrant count pool with [h_immigrant? = TRUE] / count pool
+    set lm_poolall_wealth ifelse-value (any? pool) [mean [h_wealth] of pool][-999]
+    set lm_poolall_immigrant ifelse-value (any? pool) [count pool with [h_immigrant? = TRUE] / count pool][-999]
     
     ;; Calculate financial yield for potential buyers and report only a pool of potential buyers
     set pool landmarket-calc-financial-yield lm_seller_fields pool lm_land_price

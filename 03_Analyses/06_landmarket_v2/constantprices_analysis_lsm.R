@@ -6,7 +6,7 @@ library(nlrx)
 library(tidyverse)
 
 ## Load simulation data
-nl <- readRDS(file = file.path("03_Analyses/05_Refforts_constantPrices/constantprices_ff_ineff.rds"))
+nl <- readRDS(file = file.path("03_Analyses/06_landmarket_v2/constantprices_ff_newmetrics.rds"))
 results <- nl@simdesign@simoutput
 
 ### Without carbon:

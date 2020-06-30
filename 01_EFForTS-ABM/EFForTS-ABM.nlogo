@@ -3275,7 +3275,7 @@ INPUTBOX
 2860
 230
 LUT-0-shock-p
-0.5
+-0.5
 1
 0
 Number
@@ -3290,6 +3290,16 @@ LUT-1-shock-p
 1
 0
 Number
+
+CHOOSER
+2710
+310
+2852
+355
+price_shock_scenario
+price_shock_scenario
+"lut0_shock" "lut0_boom" "lut1_shock" "lut1_boom"
+0
 
 @#$#@#$#@
 ## Abstract of corresponding publication

@@ -69,6 +69,12 @@ end
 
 to-report create-prices-constant-shock [lut nticks]
   
+  ;; Adjust scenario parameters:
+  set LUT-0-shock-p ifelse-value (price_shock_scenario = "lut0_shock") [-0.5][ifelse-value (price_shock_scenario = "lut0_boom") [0.5][0]]
+  set LUT-1-shock-p ifelse-value (price_shock_scenario = "lut1_shock") [-0.5][ifelse-value (price_shock_scenario = "lut1_boom") [0.5][0]]
+  
+  
+  
   let price-row []
   
   ;; Add price for tick -1:
@@ -81,7 +87,7 @@ to-report create-prices-constant-shock [lut nticks]
   let t 0
   repeat (nticks - 1)
   [
-    let price-new ifelse-value (t <= runresult (word "LUT-" lut "-shock-t")) [init-price][init-price + init-price * runresult (word "LUT-" lut "-shock-p")]
+    let price-new ifelse-value (t < runresult (word "LUT-" lut "-shock-t")) [init-price][init-price + init-price * runresult (word "LUT-" lut "-shock-p")]
     ;; Check if prices are negative:
     if price-new < 0 [set price-new 0]
     ;; Store the new price in the list
