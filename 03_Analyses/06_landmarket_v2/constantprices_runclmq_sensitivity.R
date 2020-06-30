@@ -89,7 +89,7 @@ nl <- set.nl.variable(nl = nl,
 
 nl <- set.nl.variable(nl = nl, 
                       varname = "price_shock_scenario", 
-                      values = c("\"lut0_shock\"", "\"lut0_boom\"", "\"lut1_shock\"", "\"lut1_boom\""))     
+                      values = c("\"default\"", "\"lut0_shock\"", "\"lut0_boom\"", "\"lut1_shock\"", "\"lut1_boom\""))     
 
 
 nl <- set.nl.constant(nl, "which-map", "\"landmarkets1\"")
@@ -207,7 +207,7 @@ results <- results.sim %>% left_join(results.lsm.test, by = c("siminputrow", "ra
 
 ## Attach output:
 setsim(nl, "simoutput") <- results
-saveRDS(nl, file = file.path("03_Analyses/constantprices_ff_ineff.rds"))
+saveRDS(nl, file = file.path("03_Analyses/constantprices_ff_sensitivity.rds"))
 
 
 ########  ATTENTION!! THIS DELETS THE RAW FILES:

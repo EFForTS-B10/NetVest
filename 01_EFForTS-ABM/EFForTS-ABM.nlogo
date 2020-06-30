@@ -3298,7 +3298,7 @@ CHOOSER
 355
 price_shock_scenario
 price_shock_scenario
-"lut0_shock" "lut0_boom" "lut1_shock" "lut1_boom"
+"lut0_shock" "lut0_boom" "lut1_shock" "lut1_boom" "default"
 0
 
 @#$#@#$#@
