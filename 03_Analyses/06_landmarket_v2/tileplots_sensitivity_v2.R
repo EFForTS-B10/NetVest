@@ -24,15 +24,15 @@ var.names <- c("rubber_area",
                "immigrant_nr", 
                "household_size", 
                "abandoned", 
+               "lm_seller_wealth_k",
+               "lm_buyer_wealth_k",
+               "lm_ratio",
                "capitalstock", 
                "consumption_k", 
                "carbon_k", 
                "biodiversity", 
                "area_mn", 
-               "ed",
-               "lm_new",
-               "lm_seller_wealth_k",
-               "lm_buyer_wealth_k")
+               "ed")
 
 # processing the data
 sim_tile_default <- results %>% 
@@ -54,9 +54,9 @@ sim_tile_default <- results %>%
                    lpi = mean(lpi, na.rm = TRUE),
                    lsi = mean(lsi, na.rm = TRUE),
                    shdi = mean(shdi, na.rm = TRUE),
-                   lm_new = mean(lm_new, na.rm = TRUE),
                    lm_seller_wealth_k = mean(lm.seller.wealth, na.rm = TRUE) / 1000,
-                   lm_buyer_wealth_k = mean(lm.buyer.wealth, na.rm = TRUE) / 1000) %>% 
+                   lm_buyer_wealth_k = mean(lm.buyer.wealth, na.rm = TRUE) / 1000,
+                   lm_ratio = (lm_seller_wealth_k / lm_buyer_wealth_k) * 100) %>% 
   dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, price_shock_scenario, var.names) %>% 
   dplyr::ungroup() %>% 
   dplyr::mutate_at(var.names, ~cut(., classes)) %>% 
@@ -78,8 +78,8 @@ plots_tile_default <- purrr::map(var.names, function(x) {
 })
 
 # Painting and saving plots:
-cowplot::plot_grid(plotlist=plots_tile_default, ncol = 3)
-ggsave("03_Analyses/06_landmarket_v2/tileplot_rawvars_default.png", units = "cm", width=30, height=30, dpi=300)
+cowplot::plot_grid(plotlist=plots_tile_default, ncol = 3, align="hv", labels="auto")
+ggsave("03_Analyses/06_landmarket_v2/tileplot_rawvars_default.png", units = "cm", width=30, height=32, dpi=300)
 
 
 ########################################################################
@@ -133,15 +133,15 @@ var.names <- c("rubber_area",
                "immigrant_nr", 
                "household_size", 
                "abandoned", 
+               "lm_seller_wealth_k",
+               "lm_buyer_wealth_k",
+               "lm_ratio",
                "capitalstock", 
                "consumption_k", 
                "carbon_k", 
                "biodiversity", 
                "area_mn", 
-               "ed",
-               "lm_new",
-               "lm_seller_wealth_k",
-               "lm_buyer_wealth_k")
+               "ed")
 
 # process data
 sim_tile_sens <- results %>% 
@@ -162,9 +162,9 @@ sim_tile_sens <- results %>%
                    lpi = mean(lpi, na.rm = TRUE),
                    lsi = mean(lsi, na.rm = TRUE),
                    shdi = mean(shdi, na.rm = TRUE),
-                   lm_new = mean(lm_new, na.rm = TRUE),
                    lm_seller_wealth_k = mean(lm.seller.wealth, na.rm = TRUE) / 1000,
-                   lm_buyer_wealth_k = mean(lm.buyer.wealth, na.rm = TRUE) / 1000) %>% 
+                   lm_buyer_wealth_k = mean(lm.buyer.wealth, na.rm = TRUE) / 1000,
+                   lm_ratio = (lm_seller_wealth_k / lm_buyer_wealth_k) * 100) %>% 
   dplyr::ungroup() %>% 
   dplyr::select(`LUT-0-price`, `LUT-1-price`, price_shock_scenario, var.names)
 
@@ -269,7 +269,7 @@ plots_tile_sens <- purrr::map(unique(sim_synergy_sens$name), function(x) {
     guides(fill=guide_colorbar(title="mean score")) +
     theme_tufte(base_size = 11)
   
-  ggsave(paste0("03_Analyses/06_landmarket_v2/tileplot_snyergy_sens_", x, ".png"), plot=p.x, units = "cm", width=10, height=8, dpi=300)
+  ggsave(paste0("03_Analyses/06_landmarket_v2/tileplot_synergy_sens_old_", x, ".png"), plot=p.x, units = "cm", width=10, height=8, dpi=300)
   
   return(p.x)
 })
@@ -279,11 +279,39 @@ plots_tile_sens <- purrr::map(unique(sim_synergy_sens$name), function(x) {
 
 
 
+############################################################################################################
+############################################################################################################
+############################################################################################################
+plots_tile_sens <- purrr::map(unique(sim_synergy_sens$name), function(x) {
+  
 
-
-
-
-
+  results_grouped.x <- sim_synergy_sens %>% 
+    dplyr::filter(name == x) %>% 
+    dplyr::mutate(shape_sensitivity = dplyr::case_when(index_sensitivity > 0 ~ "⭦",
+                                                       index_sensitivity < 0 ~ "⭨",
+                                                       index_sensitivity == 0 ~ "•"))
+  
+  
+  colors <- c("#3D4B85", "#C92CB0", "white")
+  
+  p.x <- ggplot(results_grouped.x, aes(x=`LUT-0-price`, y=`LUT-1-price`)) +
+    facet_grid(scenario_crop~scenario_price) +
+    geom_tile(aes(fill=factor(value.y)), alpha=0.5) +
+    geom_text(aes(size=abs(index_sensitivity), label=shape_sensitivity, color=shape_sensitivity)) +
+    xlab("palm oil price [$/ton]") +
+    ylab("rubber price [$/ton]") +
+    scale_fill_viridis_d() +
+    scale_color_manual(values=colors) +
+    scale_size_continuous(range=c(4,8)) +
+  #  scale_color_gradient2(midpoint=0, low="blue", mid="white", high="red") +
+    guides(fill=guide_legend(title="mean score"),
+           color="none", size="none") +
+    theme_tufte(base_size = 11)
+  
+  ggsave(paste0("03_Analyses/06_landmarket_v2/tileplot_synergy_sens_", x, ".png"), plot=p.x, units = "cm", width=18, height=16, dpi=300)
+  
+  return(p.x)
+})
 
 
 
