@@ -1,38 +1,40 @@
 
-
-
+########################################################################
+## Load packages:
 library(ggthemes)
 library(nlrx)
 library(tidyverse)
-
-###########################################
-######################################################
-## TEMPORARY FIX: CAN BE REMOVED FOR NEXT ITERATION
-#nl <- readRDS(file = file.path("03_Analyses/06_landmarket_v2/constantprices_ff_newmetrics.rds"))
-#results_tt <- nl@simdesign@simoutput
-#results_tt$price_shock_scenario <- "default"
-
-## Load simulation data
-#nl <- readRDS(file = file.path("03_Analyses/06_landmarket_v2/constantprices_ff_sensitivity.rds"))
-#results <- nl@simdesign@simoutput
-
-## Combine with h0 results:
-#results <- results %>% bind_rows(results_tt)
-#########################################################
-#########################################################
-#########################################################
-
-
-## correct version:
+########################################################################
 ## Load simulation data
 nl <- readRDS(file = file.path("03_Analyses/06_landmarket_v2/constantprices_ff_sensitivity.rds"))
 results <- nl@simdesign@simoutput
 
 
-### Without carbon:
 
+########################################################################
+## ANALYSIS PART 1.1: Default scenario, raw variables
+########################################################################
+
+# number of classes for raw value tileplots:
 classes <- 8
-var.names <- c("rubber_area", "oilpalm_area", "household_nr", "immigrant_nr", "household_size", "abandoned", "capitalstock", "consumption_k", "carbon_k", "biodiversity", "area_mn", "ed")
+# variables to consider in tileplot:
+var.names <- c("rubber_area", 
+               "oilpalm_area", 
+               "household_nr", 
+               "immigrant_nr", 
+               "household_size", 
+               "abandoned", 
+               "capitalstock", 
+               "consumption_k", 
+               "carbon_k", 
+               "biodiversity", 
+               "area_mn", 
+               "ed",
+               "lm_new",
+               "lm_seller_wealth_k",
+               "lm_buyer_wealth_k")
+
+# processing the data
 sim_tile_default <- results %>% 
   dplyr::filter(`[step]` >= 25) %>% 
   dplyr::filter(price_shock_scenario == "default") %>% 
@@ -51,13 +53,16 @@ sim_tile_default <- results %>%
                    ed = mean(ed, na.rm = TRUE),
                    lpi = mean(lpi, na.rm = TRUE),
                    lsi = mean(lsi, na.rm = TRUE),
-                   shdi = mean(shdi, na.rm = TRUE)) %>% 
+                   shdi = mean(shdi, na.rm = TRUE),
+                   lm_new = mean(lm_new, na.rm = TRUE),
+                   lm_seller_wealth_k = mean(lm.seller.wealth, na.rm = TRUE) / 1000,
+                   lm_buyer_wealth_k = mean(lm.buyer.wealth, na.rm = TRUE) / 1000) %>% 
   dplyr::select(siminputrow, `LUT-0-price`, `LUT-1-price`, price_shock_scenario, var.names) %>% 
   dplyr::ungroup() %>% 
   dplyr::mutate_at(var.names, ~cut(., classes)) %>% 
   tidyr::pivot_longer(cols=var.names)
-# dplyr::mutate_at(var.names, ~dplyr::ntile(., classes))
 
+# Creating the plots
 plots_tile_default <- purrr::map(var.names, function(x) {
   results_grouped.x <- sim_tile_default %>% dplyr::filter(name == x)
   
@@ -72,13 +77,20 @@ plots_tile_default <- purrr::map(var.names, function(x) {
   return(p.x)
 })
 
+# Painting and saving plots:
 cowplot::plot_grid(plotlist=plots_tile_default, ncol = 3)
 ggsave("03_Analyses/06_landmarket_v2/tileplot_rawvars_default.png", units = "cm", width=30, height=30, dpi=300)
 
 
-### Find best synergy:
+########################################################################
+## ANALYSIS PART 1.2: Default scenario, trade-offs and synergies
+########################################################################
+
+# number of classes for raw value tileplots:
 classes <- 4
+# variables to consider in tradeoff-plot
 var.names <- c("consumption_k", "carbon_k", "biodiversity")
+# process data:
 sim_synergy_default <- results %>% 
   dplyr::filter(`[step]` >= 25) %>% 
   dplyr::filter(price_shock_scenario == "default") %>% 
@@ -95,7 +107,7 @@ sim_synergy_default <- results %>%
   dplyr::select(`LUT-0-price`, `LUT-1-price`, consumption_carbon, consumption_biodiversity, consumption_carbon_biodiversity) %>% 
   tidyr::pivot_longer(cols=c("consumption_carbon", "consumption_biodiversity", "consumption_carbon_biodiversity"))
 
-
+# paint and save plot
 ggplot(sim_synergy_default, aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=factor(value))) +
   facet_wrap(~name) +
   geom_tile() +
@@ -107,12 +119,31 @@ ggplot(sim_synergy_default, aes(x=`LUT-0-price`, y=`LUT-1-price`, fill=factor(va
 ggsave("03_Analyses/06_landmarket_v2/tileplot_synergy_default.png", units = "cm", width=28, height=10, dpi=300)
 
 
-########################################################################
-########################################################################
-## Calculate sensitivity for the other scenarios:
 
+########################################################################
+## ANALYSIS PART 2: Sensitivity of price change scenarios
+########################################################################
+
+# number of classes for raw value tileplots:
 classes <- 8
-var.names <- c("rubber_area", "oilpalm_area", "household_nr", "immigrant_nr", "household_size", "abandoned", "capitalstock", "consumption_k", "carbon_k", "biodiversity", "area_mn", "ed")
+# variables to consider:
+var.names <- c("rubber_area", 
+               "oilpalm_area", 
+               "household_nr", 
+               "immigrant_nr", 
+               "household_size", 
+               "abandoned", 
+               "capitalstock", 
+               "consumption_k", 
+               "carbon_k", 
+               "biodiversity", 
+               "area_mn", 
+               "ed",
+               "lm_new",
+               "lm_seller_wealth_k",
+               "lm_buyer_wealth_k")
+
+# process data
 sim_tile_sens <- results %>% 
   dplyr::filter(`[step]` >= 25) %>% 
   group_by(siminputrow, `LUT-0-price`, `LUT-1-price`, price_shock_scenario) %>% 
@@ -130,17 +161,18 @@ sim_tile_sens <- results %>%
                    ed = mean(ed, na.rm = TRUE),
                    lpi = mean(lpi, na.rm = TRUE),
                    lsi = mean(lsi, na.rm = TRUE),
-                   shdi = mean(shdi, na.rm = TRUE)) %>% 
+                   shdi = mean(shdi, na.rm = TRUE),
+                   lm_new = mean(lm_new, na.rm = TRUE),
+                   lm_seller_wealth_k = mean(lm.seller.wealth, na.rm = TRUE) / 1000,
+                   lm_buyer_wealth_k = mean(lm.buyer.wealth, na.rm = TRUE) / 1000) %>% 
   dplyr::ungroup() %>% 
   dplyr::select(`LUT-0-price`, `LUT-1-price`, price_shock_scenario, var.names)
-  
 
-## split up:
+## split up into default and non-default dataset:
 sim_tile_sens_def <- sim_tile_sens %>% dplyr::filter(price_shock_scenario == "default")
 sim_tile_sens_sens <- sim_tile_sens %>% dplyr::filter(price_shock_scenario != "default")
 ## put back together:
 sim_tile_sens <- sim_tile_sens_sens %>% dplyr::full_join(sim_tile_sens_def, by=c("LUT-0-price", "LUT-1-price"))
-
 
 ## Calculate sensitivity:
 metrics_sens <- purrr::map_dfc(var.names, function(x){
@@ -165,13 +197,12 @@ sim_tile_sens_plot <- sim_tile_sens %>%
                                           price_shock_scenario.x == "lut1_boom" ~ "rubber",
                                           price_shock_scenario.x == "lut1_shock" ~ "rubber")) %>% 
   dplyr::mutate(scenario_price = case_when(price_shock_scenario.x == "lut0_boom" ~ "boom",
-                                          price_shock_scenario.x == "lut0_shock" ~ "shock",
-                                          price_shock_scenario.x == "lut1_boom" ~ "boom",
-                                          price_shock_scenario.x == "lut1_shock" ~ "shock"))
-  
+                                           price_shock_scenario.x == "lut0_shock" ~ "shock",
+                                           price_shock_scenario.x == "lut1_boom" ~ "boom",
+                                           price_shock_scenario.x == "lut1_shock" ~ "shock"))
 
-## Plot first scenario:
 
+## Plot 
 plots_tile_sens <- purrr::map(var.names, function(x) {
   results_grouped.x <- sim_tile_sens_plot %>% dplyr::filter(name == x)
   
@@ -189,10 +220,6 @@ plots_tile_sens <- purrr::map(var.names, function(x) {
   
   return(p.x)
 })
-
-
-######################################
-### Changes in synergy:
 
 ### Find best synergy:
 classes <- 4

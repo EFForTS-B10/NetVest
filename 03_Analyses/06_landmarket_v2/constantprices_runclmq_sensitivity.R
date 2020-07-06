@@ -146,7 +146,7 @@ results <- clustermq::Q(fun = simfun,
                                         log_file = "prices.log", # define logfile name
                                         queue = "medium",  # define HPC queue
                                         service = "normal", # define HPC service
-                                        walltime = "16:00:00", # define walltime
+                                        walltime = "20:00:00", # define walltime
                                         mem_cpu = "4000")) # define memory per cpu   
 
 #####################################

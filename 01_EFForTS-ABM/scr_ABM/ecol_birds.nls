@@ -3,7 +3,9 @@
 ; ╠╩╗│├┬┘ ││  ├┬┘││  ├─┤│││├┤ └─┐└─┐  └─┐│ │├┴┐││││ │ ││├┤ │  
 ; ╚═╝┴┴└─└┴┘  ┴└─┴└─┘┴ ┴┘└┘└─┘└─┘└─┘  └─┘└─┘└─┘┴ ┴└─┘─┴┘└─┘┴─┘
 ;###################################################################################
-
+;
+; This model was developed and implemented by Mats Mahnken as a Master thesis
+;
 
 ; weighted distribution sampling
 To-report random-weighted [values weights] 
