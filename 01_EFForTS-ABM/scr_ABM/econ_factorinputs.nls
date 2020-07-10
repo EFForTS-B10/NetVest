@@ -45,7 +45,7 @@ To-report determine-factor-inputs-for-one-option [option-matrix wealth]
     ; However, I realized that at least for oil palm the marginal gain can still be negative within the first productive years, as yields are relatively low and input costs are high.
     ; Of course farmers will still invest labor and inputs into these plantations, as it is not possible otherwise to have a functioning plantation otherwise...in reality the inputs 
     ; in one year also influence the productivity in later years. Therefore, I decided to allow the input of factors, although the marginal gain is negative.
-     
+    ;if (max-marginal-gain < 0) [print max-marginal-gain]
     ;ifelse max-marginal-gain <= 0 
     ;[
     ;  matrix:set factor-inputs 1 position-of-max-marginal-gain 0 ;no gain -> no labor and not input
@@ -93,7 +93,7 @@ To-report determine-factor-inputs-for-one-option [option-matrix wealth]
     set counter counter + 1   
   ]
   
-; print (word "fact end: " matrix:pretty-print-text factor-inputs)
+ ;print (word "fact end: " matrix:pretty-print-text factor-inputs)
    
   report factor-inputs   
   
@@ -185,7 +185,8 @@ To-report calculate-marginal-gains-one-option [option-matrix]
       let cost-one-unit-production (opt-labor-cost + opt-tinput-cost) / max-production ;labor and tiput costs for one unit of production  
       let output-price ifelse-value (member? landuse LUT-ids) [item landuse prices][0]
       set marginal-gain output-price - cost-one-unit-production
-      if (marginal-gain < 0) [set marginal-gain 0]  ;; QUICKFIX!!!
+      
+      ;if (marginal-gain < 0) [set marginal-gain 0]  ;; QUICKFIX!!!
       ;;
       ;; COMMENT JS 2020:
       ;; I added this negative cap for marginal gain -> need to check with Jann!!
