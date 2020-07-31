@@ -8,9 +8,8 @@ library(tidyverse)
 library(grid)
 ########################################################################
 ## Load simulation data
-nl <- readRDS(file = file.path("03_Analyses/06_landmarket_v2/constantprices_ff_sensitivity.rds"))
+nl <- readRDS(file = file.path(getwd(), "03_Analyses/07_landmarket_v3/constantprices_ff_sensitivity.rds"))
 results <- nl@simdesign@simoutput
-
 
 colors <- c("white", #green
             "black", #pink
@@ -80,7 +79,8 @@ res_agg <- results %>%
 
 
 
-tt <- res_agg# %>% 
+tt <- res_agg %>% 
+  dplyr::filter(price_shock_scenario != "default")
   #dplyr::filter(price_shock_scenario %in% c("default", "lut0_boom"))
 
 
@@ -92,6 +92,7 @@ ggplot(tt, aes(x=`LUT-1-price`, y=rubber_area, group = `LUT-0-price`, color=`LUT
   theme_tufte(base_size = 12)
 
 ggplot(tt, aes(x=`LUT-1-price`, y=biodiversity, group = `LUT-0-price`, color=`LUT-0-price`)) +
+  facet_grid(scenario_crop~scenario_price) +
   geom_line() +
   scale_color_viridis_c() +
   theme_tufte(base_size = 12)

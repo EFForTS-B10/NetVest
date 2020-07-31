@@ -7,7 +7,7 @@ library(tidyverse)
 library(grid)
 ########################################################################
 ## Load simulation data
-nl <- readRDS(file = file.path("03_Analyses/06_landmarket_v2/constantprices_ff_sensitivity.rds"))
+nl <- readRDS(file = file.path(getwd(), "03_Analyses/07_landmarket_v3/constantprices_ff_sensitivity.rds"))
 results <- nl@simdesign@simoutput
 
 
