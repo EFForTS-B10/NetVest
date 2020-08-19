@@ -3301,6 +3301,23 @@ price_shock_scenario
 "lut0_shock" "lut0_boom" "lut1_shock" "lut1_boom" "default"
 0
 
+BUTTON
+775
+90
+838
+123
+NIL
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 @#$#@#$#@
 ## Abstract of corresponding publication
 
@@ -3723,7 +3740,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
