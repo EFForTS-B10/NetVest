@@ -3275,7 +3275,7 @@ INPUTBOX
 2860
 230
 LUT-0-shock-p
--0.5
+0.0
 1
 0
 Number
@@ -3286,7 +3286,7 @@ INPUTBOX
 2860
 290
 LUT-1-shock-p
-0.0
+255.0
 1
 0
 Number
@@ -3299,7 +3299,7 @@ CHOOSER
 price_shock_scenario
 price_shock_scenario
 "lut0_shock" "lut0_boom" "lut1_shock" "lut1_boom" "default"
-0
+3
 
 BUTTON
 775
@@ -3740,7 +3740,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.1.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
