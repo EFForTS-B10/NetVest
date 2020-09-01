@@ -189,9 +189,9 @@ ggsave(paste0("03_Analyses/07_landmarket_v3/smoothplot.png"), units = "cm", widt
 purrr::map(unique(res_agg_long$name), function(x){
   res_agg_long %>% 
     dplyr::filter(name==x) %>% 
-    ggplot(., aes(x=value, y=)) +
-    facet_wrap(~price_shock_scenario, ncol=1) +
-    geom_density(alpha=0.5, size=1, color=NA) +
+    ggplot(., aes(x=value, y=price_shock_scenario)) +
+    #facet_wrap(~, ncol=1) +
+    #geom_density(alpha=0.5, size=1, color=NA) +
     geom_density_ridges() +
     guides(fill="none") +
     ggtitle(paste0(x)) +

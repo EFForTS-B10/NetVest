@@ -1,0 +1,167 @@
+---
+title: "Management module parameterisation"
+author:
+- Jan Salecker^[University of Goettingen, Department of Ecosystem Modelling, jsaleck@gwdg.de]
+- Julia Henzler^[University of Goettingen, Department of Ecosystem Modelling, julia.henzler@uni-goettingen.de]
+date: "8/5/2020"
+output:
+  pdf_document: default
+  html_document: default
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# EFForTS-ABM Management submodule parameterisation
+
+## Introduction
+
+The main goal of this project is to implement a new management functionality into EFForTS-ABM.
+Currently, all oil palm or rubber plantations are managed in the same way, meaning they use the same parameters to estimate yields, carbon accumulation or costs.
+
+However, there are alternative management approaches that we might want to investigate in more detail in EFForTS-ABM.
+The most prominent ones are the *EFForTS-BEE* biodiversity enrichment experiment (B11) and the *EFForTS-OPMX* oil palm management experiment.
+
+Regarding rubber, in earlier versions we had jungle rubber as a separate "land-use". However, it might fit way better to add jungle rubber as an alternative management of the land-use rubber.
+
+The main functionality is already implemented into EFForTS-ABM, but we still need to parameterize the different management approaches and we might need to refine some functionality.
+
+In this document, we first summarize how the management module currently works. 
+We then give a summary on all parameters that are already in the model and might be affected by management.
+Finally, we also collect parameters that are not yet in the model, but might be added in the future and might be affected by management.
+
+
+## The management module
+
+#### Management vs. land use
+
+By introducing management into EFForTS-ABM, we need to make a distinction between land-use and management.
+The land use is defined as the main crop that is cultivated on the household field patch. The management decides how that crop is cultivated. That means, a field with the land use rubber might be cultivated either as conventional monoculture or as jungle rubber. Still, the land use would be rubber in both cases. For oil palm plantations we could imagine two different households, one household applying conventional monoculture plantation management, and another household with biodiversity enrichment plantations.
+
+#### Defining land uses and management types
+
+Land uses and management types are technically spoken, sets of parameters.
+These parameters are defined in the parameter subfolder of EFForTS-ABM. 
+Each folder defines a land use, e.g. **oilpalm**.
+Within each folder there is a file defining the main parameters that are related to the land use, irrespective of management (*main.txt*).
+Then, there are one or more management parameter files defining different management approaches.
+On the model interface, the user can define which folders are used as land-uses. The model automatically registers the management subfiles and thus knows, which management options are available. The user can easily inspect these options by pressing the **lut parameters** button.
+
+
+#### Management and decision-making
+
+When the model is initialized, each household is randomly assigned to one of the available management types for each land use. 
+That means, if a household is initialized with conventional management for oil palm and jungle rubber management for rubber, it will always use the corresponding parameter files. Currently, there is no option to change the management type during a model run. It is important to note that the management is not part of the decision-making routine. This only considers decision between land-uses and will always use the corresponding preferred management types of the respective household.
+
+The main reason for this is that incorporating management into the decision matrix would blow up the potential possibilities exponentially. We also think that changes of management might not be purely economically driven. Instead we are more interested in a scenario based analysis in the sense of - what happens if smallholders with environmental-friendly management convince neighbors within their social network to do the same?
+
+The foundation to run such scenarios is there but two things are missing:
+
+- a more sophisticated initialization option (in addition to random assignment of management types)
+    - for example we might want to set management types for complete villages
+    - maybe we also want to have some clustering option
+- procedures that allow for smallholders to adopt certain management types over the course of the simulation
+    - we could use the learning procedures (social networks)
+
+
+## Parameterisation of EFForTS-ABM
+
+This section first gives examples for the two parameter files that are used for parameterisation.
+Afterwards, management related variables are discussed in detail.
+
+#### Main.txt
+
+Here is an example for the *main.txt* parameter file (non-management-related) for the land-use oilpalm:
+
+```{r comment='', echo=FALSE, warning=FALSE}
+cat(readLines('../../01_EFForTS-ABM/par_ABM/oilpalm/main.txt'), sep = '\n')
+```
+
+It conatins the following information:
+
+- The landuse name
+- The two parameters for the inefficiency distribution
+- the three parameters defining the depriciation rate function
+- the maximum age of the landuse (in years)
+- the anonymous reporter function name for the yield function (the ananonymous function itself is implemented in NetLogo)
+- the anonymous reporter function name for the carbon function (the ananonymous function itself is implemented in NetLogo)
+- a prices vector for the historical prices scenario
+
+#### Management0.txt
+
+Here is an example for the *management0.txt* file (management-related) for the land-use oilpalm:
+
+```{r comment='', echo=FALSE, warning=FALSE}
+cat(readLines('../../01_EFForTS-ABM/par_ABM/oilpalm/management0.txt'), sep = '\n')
+```
+
+It contains the following information:
+
+- The landuse name (must be the same as in main.txt)
+- The management name
+- the anonymous reporter function name for the labor function (the ananonymous function itself is implemented in NetLogo)
+- the anonymous reporter function name for the technical inputs function (the ananonymous function itself is implemented in NetLogo)
+- the anonymous reporter function name for the investment cost function (the ananonymous function itself is implemented in NetLogo)
+- the price for one unit of technical inputs
+- the price for one unit of labor (wages)
+- a factor for increasing/decreasing yields (might be replaced if we decide to use management specific yield functions)
+- a factor for increasing/decreasing external income (might be replaced by a function)
+
+
+## Parameterisation of the management submodel
+
+We have all parameters for the conventional management of rubber and oilpalm. These are the parameters that we used before already.
+As stated in the introducion, we would like to start with incorporating *EFForTS-BEE* and *EFForTS-OPMX* for the land use oilpalm and jungle rubber as management for the land use rubber.
+To do that, we need at least the following data for each management type (enrichment, reduced fertilizer & manual weeding, jungle rubber agroforestry):
+
+#### Economic data
+
+- costs as a function over plantation time, if not available, estimation of cost difference in relation to conventional management
+    - labor
+    - technical inputs
+    - investment costs
+- Price for one unit of technical inputs 
+    - is there any difference in comparison to conventional management?
+- Price for one unit of labor
+    - is there any difference in comparison to conventional management?
+- Yields
+    - How are yields affected by the management type
+    - at least an estimation of a factor would be cool
+    - yield curves over plantation age would be even better but we do not have the data
+- External income
+    - Probably also an estimation how external income would be affected by the management type (for example, selling fruits from EFForTS-BEE plantations)
+    - Will it increase or decrease?
+    - Function over time would be cool
+    
+#### Ecological data
+
+Currently, ecological indicators are not part of the parameter file because we did not really use them before.
+Potential candidates are estimators for our biodiversity models. However, because they are not final yet it is difficult to come up with a list. Still, things that are relevant for us are:
+
+- Climatic conditions within the experiments
+    - Humidity
+    - Air temperature
+    - Soil temperature
+- Structural variables (derived from laser scans), are those available for OPMX?
+    - Stand structural complexity (ssc)
+    - Effective number of layers (enl)
+- Carbon accumulation as a function over plantation age
+    - Any differences in comparison to conventional?
+
+
+# ToDO:
+
+- refine initialization of management types (currently only random)
+- add functions to allow for dynamic management during simulations (currently static)
+- add external income into decision-making calculation
+- should yield belong to the land-use specific parameters or the management related parameters?
+- should carbon belong to the land-use specific parameters or the management related parameters?
+- should we replace external income by a function?
+    - this would allow to have low external income in the beginning of a EFForTS-BEE plantation and higher income towards the end
+
+
+# References 
+<!-- The following line ensures the references appear here for the MS Word or HTML output files, rather than right at the end of the document (this will not work for PDF files):  -->
+<div id="refs"></div>
