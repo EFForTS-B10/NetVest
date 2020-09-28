@@ -27,7 +27,7 @@ To-report calculate_leontief_production_cell [landuse pp-management age labor ti
  let optimal_labor (optimal-labor landuse pp-management age)
  let optimal_capital (optimal-capitalstock landuse pp-management age)
  let optimal_technical_input (optimal-tinput landuse pp-management age)
-
+  
  if optimal_production > 0
  [
    let frac_labor.optimallabor (labor / optimal_labor)

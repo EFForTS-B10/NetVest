@@ -918,7 +918,7 @@ CHOOSER
 price_scenario
 price_scenario
 "constant_prices" "variable_prices" "correlated_prices_1" "random_walk" "historical_trends" "production-related" "price_shock"
-6
+0
 
 INPUTBOX
 660
@@ -958,7 +958,7 @@ INPUTBOX
 485
 350
 min-wealth
-3000.0
+30.0
 1
 0
 Number
@@ -969,7 +969,7 @@ INPUTBOX
 410
 410
 time-horizon
-20.0
+10.0
 1
 0
 Number
@@ -1118,7 +1118,7 @@ INPUTBOX
 230
 675
 land_price
-750.0
+1750.0
 1
 0
 Number

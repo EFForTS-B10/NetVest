@@ -36,16 +36,29 @@ prices <- tibble(year=1:52,
 plot(prices$year, prices$oilpalm, pch=16, cex=2)
 plot(prices$year, prices$rubber, pch=16, cex=2)
 
-# derive minimum and maximum for our scenarios
-# we will use the upper and lower quartile
+## Derive upper and lower quantile: These will be used as price range for our full facotrial design:
 op.min <- round(quantile(prices$oilpalm)[2])
 op.max <- round(quantile(prices$oilpalm)[4])
 rb.min <- round(quantile(prices$rubber)[2])
 rb.max <- round(quantile(prices$rubber)[4])
 
-# derive standard deviation of price dynamics:
-op.sd <- round(sd(prices$oilpalm))
-rb.sd <- round(sd(prices$rubber))
+# Then, we derive the absolute minimum and maximum - These willl be used as extreme cases for our boom and shock scenarios
+op.min.total <- round(min(prices$oilpalm))
+rb.min.total <- round(min(prices$rubber))
+op.max.total <- round(max(prices$oilpalm))
+rb.max.total <- round(max(prices$rubber))
+
+## Overview plot:
+bind_rows(tibble(crop = "oilpalm", range.min = op.min, range.max = op.max, shock = op.min.total, boom = op.max.total),
+          tibble(crop = "rubber", range.min = rb.min, range.max = rb.max, shock = rb.min.total, boom = rb.max.total)) %>% 
+  ggplot(.) +
+  geom_linerange(aes(x=crop, ymin=range.min, ymax=range.max, color=crop), size=1) +
+  geom_point(aes(x=crop, y=shock, color=crop)) +
+  geom_point(aes(x=crop, y=boom, color=crop)) +
+  ylab("price per ton [$]") +
+  ggthemes::theme_tufte(base_size = 12) +
+  guides(color="none") +
+  ggsci::scale_color_jama()
 
 # Set general information
 n.random.seeds <- 3 # 3
