@@ -96,8 +96,8 @@ res_agg <- res_agg %>%
 res_agg_yield <- res_agg %>% 
   dplyr::filter(rubber_price == max(rubber_price) | rubber_price == min(rubber_price)) %>% 
   dplyr::filter(oilpalm_price == max(oilpalm_price) | oilpalm_price == min(oilpalm_price)) %>% 
-  dplyr::mutate(prices = case_when(rubber_price == min(rubber_price) & oilpalm_price == min(oilpalm_price) ~ "lowest",
-                                   rubber_price == max(rubber_price) & oilpalm_price == max(oilpalm_price) ~ "highest",
+  dplyr::mutate(prices = case_when(rubber_price == min(rubber_price) & oilpalm_price == min(oilpalm_price) ~ "low",
+                                   rubber_price == max(rubber_price) & oilpalm_price == max(oilpalm_price) ~ "high",
                                    rubber_price == min(rubber_price) & oilpalm_price == max(oilpalm_price) ~ "oilpalm-boom",
                                    rubber_price == max(rubber_price) & oilpalm_price == min(oilpalm_price) ~ "rubber-boom"))
 
@@ -125,10 +125,10 @@ pf_landscape <- function(lut, homebase, roads)
 
 
 
-pf_lines <- function(data, yvar) 
+pf_lines <- function(data, yvar, ylabel) 
 {
-  price_cols <- c("highest" = "#32BD20", 
-                  "lowest" = "#F8781D",
+  price_cols <- c("high" = "#32BD20", 
+                  "low" = "#F8781D",
                   "oilpalm-boom" = "#EA32EE",
                   "rubber-boom" = "#2E9CCA")
   
@@ -138,17 +138,18 @@ pf_lines <- function(data, yvar)
   p <- ggplot(data, aes(x=wages, y=yvar, color=prices, group=prices)) +
     geom_point(size=2) +
     geom_line(size=1) +
-    labs(y=yvar) +
+    labs(y=ylabel, x="wage cost factor") +
+    scale_x_continuous(breaks = seq(1, 2, 0.2)) +
     scale_color_manual(values = price_cols) +
-    ggthemes::theme_tufte()
+    ggthemes::theme_tufte(base_size = 12)
   
   return(p)
 }
 
 pf_hull <- function(data, xvar, yvar)
 {
-  price_cols <- c("highest" = "#32BD20", 
-                  "lowest" = "#F8781D",
+  price_cols <- c("high" = "#32BD20", 
+                  "low" = "#F8781D",
                   "oilpalm-boom" = "#EA32EE",
                   "rubber-boom" = "#2E9CCA")
   
@@ -184,7 +185,7 @@ util.ggsave(plot=p_landscape, filename="initial_landscape", path="03_Analyses/09
 
 ####################################################
 ### Plot 1: Oilpalm area:
-p_op_area <- pf_lines(res_agg_yield, "oilpalm_area")
+p_op_area <- pf_lines(res_agg_yield, "oilpalm_area", "oilpalm area \n [fraction of agricultural area]")
 util.ggsave(plot=p_op_area, filename="lines_oilpalm_area", path="03_Analyses/09_landmarket_v5_wages", units = "cm", width=10, height=5, dpi=300)
 
 ## > Interpretation
@@ -197,8 +198,8 @@ util.ggsave(plot=p_op_area, filename="lines_oilpalm_area", path="03_Analyses/09_
 
 ####################################################
 ### Plot 2: Yields (efficiency)
-p_op_yield <- pf_lines(res_agg_yield, "oilpalm_yield")
-p_rb_yield <- pf_lines(res_agg_yield, "rubber_yield")
+p_op_yield <- pf_lines(res_agg_yield, "oilpalm_yield", "mean oilpalm yield \n [tons FFB/ha]")
+p_rb_yield <- pf_lines(res_agg_yield, "rubber_yield", "mean rubber yield \n [tons/ha]")
 pall <- cowplot::plot_grid(plotlist=list(p_op_yield,p_rb_yield), ncol=1)
 util.ggsave(plot=pall, filename="lines_yields", path="03_Analyses/09_landmarket_v5_wages", units = "cm", width=10, height=10, dpi=300)
 
@@ -211,10 +212,10 @@ util.ggsave(plot=pall, filename="lines_yields", path="03_Analyses/09_landmarket_
 
 ####################################################
 ### Plot 3: HOusehold size / consolidation
-p_hh_nr <- pf_lines(res_agg_yield, "household_nr")
-p_hh_size <- pf_lines(res_agg_yield, "household_size")
-p_immi_nr <- pf_lines(res_agg_yield, "immigrant_nr")
-p_abandoned <- pf_lines(res_agg_yield, "abandoned")
+p_hh_nr <- pf_lines(res_agg_yield, "household_nr", "households \n [total number]")
+p_hh_size <- pf_lines(res_agg_yield, "household_size", "mean household area \n [cells]")
+p_immi_nr <- pf_lines(res_agg_yield, "immigrant_nr", "immigrant households \n [total number]")
+p_abandoned <- pf_lines(res_agg_yield, "abandoned", "abandoned land \n [fraction of agricultural area]")
 pall <- cowplot::plot_grid(plotlist=list(p_hh_nr,p_hh_size,p_immi_nr,p_abandoned), ncol=1)
 util.ggsave(plot=pall, filename="lines_household_size", path="03_Analyses/09_landmarket_v5_wages", units = "cm", width=10, height=20, dpi=300)
 
@@ -227,7 +228,7 @@ util.ggsave(plot=pall, filename="lines_household_size", path="03_Analyses/09_lan
 
 ####################################################
 ### Plot 4: Landscape metrics
-p_ed <- pf_lines(res_agg_yield, "ed")
+p_ed <- pf_lines(res_agg_yield, "ed", "edge density \n [m/ha]")
 util.ggsave(plot=p_ed, filename="lines_landscape", path="03_Analyses/09_landmarket_v5_wages", units = "cm", width=10, height=5, dpi=300)
 
 ## > Interpretation
@@ -239,9 +240,9 @@ util.ggsave(plot=p_ed, filename="lines_landscape", path="03_Analyses/09_landmark
 
 ####################################################
 ### Plot 5: Ecosystem functions
-p_ef_con <- pf_lines(res_agg_yield, "consumption_k")
-p_ef_car <- pf_lines(res_agg_yield, "carbon_k")
-p_ef_bio <- pf_lines(res_agg_yield, "biodiversity")
+p_ef_con <- pf_lines(res_agg_yield, "consumption_k", "mean household consumption \n [$*10³]")
+p_ef_car <- pf_lines(res_agg_yield, "carbon_k", "carbon storage \n [t*10³/ha]")
+p_ef_bio <- pf_lines(res_agg_yield, "biodiversity", "biodiversity index \n [relative change to initial biodiversity]")
 pall <- cowplot::plot_grid(plotlist=list(p_ef_con,p_ef_car,p_ef_bio), ncol=1)
 util.ggsave(plot=pall, filename="lines_ef", path="03_Analyses/09_landmarket_v5_wages", units = "cm", width=10, height=15, dpi=300)
 
@@ -305,7 +306,7 @@ res_agg_yield %>%
   geom_hline(yintercept = 3, lty=2) +
   guides(fill=guide_legend(title="")) +
   xlab("wage cost factor") +
-  ylab("percent rank") +
+  ylab("normalized rank") +
   ggthemes::theme_tufte(base_size=12) +
   theme(legend.position = "top",
         legend.direction = "horizontal")
@@ -405,8 +406,8 @@ util.ggsave(filename="src_striped", path="03_Analyses/09_landmarket_v5_wages", u
 
 
 
-res_lm_fit$paramA <- factor(res_lm_fit$paramA, levels=c("rubber_price", "oilpalm_price", "wages"))
-res_lm_fit$paramB <- factor(res_lm_fit$paramB, levels=c("rubber_price", "oilpalm_price", "wages"))
+res_lm_fit$paramA <- factor(res_lm_fit$paramA, levels=c("rubber_price", "oilpalm_price", "wages"), labels=c("(a) rubber price", "(b) palm oil price", "(c) wage cost factor"))
+res_lm_fit$paramB <- factor(res_lm_fit$paramB, levels=c("rubber_price", "oilpalm_price", "wages"), labels=c("(A) rubber price", "(B) palm oil price", "(C) wage cost factor"))
 
 ggplot(res_lm_fit, aes(x=output, y=Estimate, fill=category)) +
   facet_grid(paramA~paramB) +
@@ -414,6 +415,7 @@ ggplot(res_lm_fit, aes(x=output, y=Estimate, fill=category)) +
   geom_bar(stat="identity") +
   geom_hline(yintercept = 0, lty=2) +
   ggsci::scale_fill_jco() +
+  labs(y="standardized regression coefficient") +
   guides(fill="none") +
   ggthemes::theme_tufte(base_size = 12) +
   theme(panel.border = element_rect(fill=NA))

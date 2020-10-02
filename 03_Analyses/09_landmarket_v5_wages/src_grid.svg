@@ -179,7 +179,7 @@
     <rect x='84.07' y='5.98' width='101.73' height='17.99' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpODQuMDd8MTg1LjgwfDIzLjk3fDUuOTg=)'><text x='110.42' y='18.15' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='49.04px' lengthAdjust='spacingAndGlyphs'>rubber_price</text></g>
+<g clip-path='url(#cpODQuMDd8MTg1LjgwfDIzLjk3fDUuOTg=)'><text x='103.75' y='18.15' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='62.37px' lengthAdjust='spacingAndGlyphs'>(A) rubber price</text></g>
 <defs>
   <clipPath id='cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA='>
     <rect x='0.00' y='0.00' width='425.20' height='425.20' />
@@ -190,7 +190,7 @@
     <rect x='191.78' y='5.98' width='101.73' height='17.99' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMTkxLjc4fDI5My41MnwyMy45N3w1Ljk4)'><text x='215.99' y='18.15' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='53.32px' lengthAdjust='spacingAndGlyphs'>oilpalm_price</text></g>
+<g clip-path='url(#cpMTkxLjc4fDI5My41MnwyMy45N3w1Ljk4)'><text x='208.39' y='18.15' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='68.51px' lengthAdjust='spacingAndGlyphs'>(B) palm oil price</text></g>
 <defs>
   <clipPath id='cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA='>
     <rect x='0.00' y='0.00' width='425.20' height='425.20' />
@@ -201,7 +201,7 @@
     <rect x='299.49' y='5.98' width='101.73' height='17.99' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMjk5LjQ5fDQwMS4yM3wyMy45N3w1Ljk4)'><text x='338.36' y='18.15' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='23.99px' lengthAdjust='spacingAndGlyphs'>wages</text></g>
+<g clip-path='url(#cpMjk5LjQ5fDQwMS4yM3wyMy45N3w1Ljk4)'><text x='311.31' y='18.15' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='78.10px' lengthAdjust='spacingAndGlyphs'>(C) wage cost factor</text></g>
 <defs>
   <clipPath id='cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA='>
     <rect x='0.00' y='0.00' width='425.20' height='425.20' />
@@ -212,7 +212,7 @@
     <rect x='401.23' y='23.97' width='17.99' height='118.65' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNDAxLjIzfDQxOS4yMnwxNDIuNjJ8MjMuOTc=)'><text transform='translate(407.05,58.78) rotate(90)' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='49.04px' lengthAdjust='spacingAndGlyphs'>rubber_price</text></g>
+<g clip-path='url(#cpNDAxLjIzfDQxOS4yMnwxNDIuNjJ8MjMuOTc=)'><text transform='translate(407.05,53.45) rotate(90)' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='59.70px' lengthAdjust='spacingAndGlyphs'>(a) rubber price</text></g>
 <defs>
   <clipPath id='cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA='>
     <rect x='0.00' y='0.00' width='425.20' height='425.20' />
@@ -223,7 +223,7 @@
     <rect x='401.23' y='148.60' width='17.99' height='118.65' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNDAxLjIzfDQxOS4yMnwyNjcuMjZ8MTQ4LjYw)'><text transform='translate(407.05,181.27) rotate(90)' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='53.32px' lengthAdjust='spacingAndGlyphs'>oilpalm_price</text></g>
+<g clip-path='url(#cpNDAxLjIzfDQxOS4yMnwyNjcuMjZ8MTQ4LjYw)'><text transform='translate(407.05,174.47) rotate(90)' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='66.91px' lengthAdjust='spacingAndGlyphs'>(b) palm oil price</text></g>
 <defs>
   <clipPath id='cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA='>
     <rect x='0.00' y='0.00' width='425.20' height='425.20' />
@@ -234,7 +234,7 @@
     <rect x='401.23' y='273.23' width='17.99' height='118.65' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNDAxLjIzfDQxOS4yMnwzOTEuODl8MjczLjIz)'><text transform='translate(407.05,320.56) rotate(90)' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='23.99px' lengthAdjust='spacingAndGlyphs'>wages</text></g>
+<g clip-path='url(#cpNDAxLjIzfDQxOS4yMnwzOTEuODl8MjczLjIz)'><text transform='translate(407.05,294.58) rotate(90)' style='font-size: 9.60px; fill: #1A1A1A; font-family: Times New Roman;' textLength='75.96px' lengthAdjust='spacingAndGlyphs'>(c) wage cost factor</text></g>
 <defs>
   <clipPath id='cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA='>
     <rect x='0.00' y='0.00' width='425.20' height='425.20' />
@@ -312,6 +312,6 @@
 <polyline points='81.08,306.77 84.07,306.77 ' style='stroke-width: 1.16; stroke: #333333; stroke-linecap: butt;' clip-path='url(#cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA=)' />
 <polyline points='81.08,293.87 84.07,293.87 ' style='stroke-width: 1.16; stroke: #333333; stroke-linecap: butt;' clip-path='url(#cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA=)' />
 <polyline points='81.08,280.97 84.07,280.97 ' style='stroke-width: 1.16; stroke: #333333; stroke-linecap: butt;' clip-path='url(#cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA=)' />
-<g clip-path='url(#cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA=)'><text x='221.65' y='416.63' style='font-size: 12.00px; font-family: Times New Roman;' textLength='41.99px' lengthAdjust='spacingAndGlyphs'>Estimate</text></g>
+<g clip-path='url(#cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA=)'><text x='159.02' y='416.63' style='font-size: 12.00px; font-family: Times New Roman;' textLength='167.26px' lengthAdjust='spacingAndGlyphs'>standardized regression coefficient</text></g>
 <g clip-path='url(#cpMC4wMHw0MjUuMjB8NDI1LjIwfDAuMDA=)'><text transform='translate(13.92,223.26) rotate(-90)' style='font-size: 12.00px; font-family: Times New Roman;' textLength='30.67px' lengthAdjust='spacingAndGlyphs'>output</text></g>
 </svg>
