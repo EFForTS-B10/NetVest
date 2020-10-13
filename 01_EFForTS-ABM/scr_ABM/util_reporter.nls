@@ -113,6 +113,12 @@ end
 to-report hh.consumption.sum
   report mean_hh_consumption
 end
+to-report hh.lut0.ineff.mean
+  report mean map [x -> item 0 x][h_inefficiencies] of hhs
+end
+to-report hh.lut1.ineff.mean
+  report mean map [x -> item 1 x][h_inefficiencies] of hhs
+end
 
 
 ;; BIODIVERSITY
