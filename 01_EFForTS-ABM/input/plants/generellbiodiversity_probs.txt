@@ -1,0 +1,2 @@
+"name" "prob_forest" "prob_oilpalm" "prob_rubber"
+"1" "generellbiodiversity" "1" "0" "0"
