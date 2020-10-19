@@ -1,0 +1,131 @@
+;Initialization of Biodiversity Submodule: producing output for Invest
+;1.Adjust landuse values from ABM to LULC IDs for invest
+;2.Habitat-Relation
+;3.Sensitivity of LULC-types to threat
+;4.Threat's importance and impact over space
+to init-invest-biodiv
+  ;;Adjust landuse for invest
+  adjust-lulc-invest
+  ;;Habitat-relation with 3 options for research objective
+  if (generell-biodiv?) [generell-read-data]
+  if (modelorg-biodiv?) [modelorg-read-data]
+  if (allplants-biodiv?)[plants-read-data]
+  ;;Sensitivity of LULC-types to threat
+  sensitivity-table
+  ;;Threat's importance and impact over space
+  threat-table
+end
+
+
+;Processes for calculation
+;1.Generation of maps
+;2.Habitat quality score
+;3.Update landscape-level habitat-quality score
+to update-invest-biodiv
+end
+
+;*************************************************************
+;Adjust landuse-values to LULC IDs for invest                *
+;*************************************************************
+to adjust-lulc-invest
+    
+  ;; TEMPORARY ADJUSTMENT:
+  ;; The functions use while loops to loop trough landuses: also include roads?
+  ask patches 
+  [
+    if (p_landuse = -100) [set p_landuse 4] ;forest
+    if (p_landuse = 1) [set p_landuse 3] ;rubber
+    if (p_landuse = 0) [set p_landuse 2] ;oilplam
+    if (p_road = 1 and p_landuse = 4) [set p_landuse 1] ;village
+  ]
+end
+
+;************************************************************
+;Read habitat-relation-data                                 *
+;************************************************************
+to generell-read-data
+  print "Read habitat-relation data..."
+
+  ;; Reset global prob list:
+  set habitat_all_probs []
+  
+  ;;; Read file:
+  let filename "input/plants/generellbiodiversity_probs.txt"
+  file-open filename
+  ;repeat 10 [print file-read]
+  
+  
+  ;;Skip header:
+  repeat 4 [let drop file-read]
+  ;print file-read
+  ;show file-read
+  while [not file-at-end?]
+  [
+    ;;Read data for generell biodiversity and probabilities that LULC is habitat and store them in lists (maybe later shrubland)
+    let rownr file-read
+    let objective file-read
+    set f_prob file-read
+    ;let sh_prob file-read
+    let o_prob file-read
+    let r_prob file-read
+    ;let group file-read
+;print rownr
+    ;; Create temporary list:  ["p_landuse 0 prob" "p_landuse 1 prob" "..." "p_landuse 4 prob" "objective" ("species-group (general/corespecies))"]
+    ;; other= 0, op=1, rm=2, jr=3, fo=4
+    let habitat_probs (list f_prob o_prob r_prob objective) ;sh_prob
+    print habitat_probs
+    set habitat_all_probs lput habitat_probs habitat_all_probs
+    print habitat_all_probs
+  ]
+  
+  file-close
+end
+
+to modelorg-read-data
+end
+
+to plants-read-data
+end
+
+;************************************************************
+;Create Sensitivity-table                                   *
+;************************************************************
+to sensitivity-table
+  print "Read sensitivity data..."
+  ;;reset global sensitivity list
+  set sensitivity_table []
+  ;;read in data for sensitivity (follow up)--> now: set sensitivity value equal for all LULCS (1/6)
+  let filename "input/plants/biodiversityresponse.txt"
+  file-open filename
+  ;;Skip header:
+  repeat 9 [let drop file-read]
+  ;print file-read
+  while [not file-at-end?]
+  [
+    ;;Read data for biodiversity response of LULCS and store them in lists
+    let rownr file-read
+    let LULC file-read
+    let NAME file-read
+    let L_Techino file-read
+    let L_Techinr file-read
+    let L_Labino file-read
+    let L_Labinr file-read
+    let oilpalm file-read
+    let rubber file-read
+    let forest file-read
+    set HABITAT 0  
+    if f_prob > 0 [set HABITAT 1]
+  ;create temporary list (Threats are named automatically?): ["LULC" "NAME" "Habitat" "L_Techino" "L_Techinr" "L_Labino" "L_Labinr" "oilpalm" "rubber" "forest"]
+  let sensitivity (list LULC NAME HABITAT L_Techino L_Techinr L_Labino L_Labinr oilpalm rubber forest)
+  print sensitivity
+  set sensitivity_table lput sensitivity sensitivity_table 
+  print sensitivity_table
+    ;store with header
+  ]
+end
+
+;************************************************************
+;Create threat-table                                        *
+;************************************************************
+to threat-table
+end

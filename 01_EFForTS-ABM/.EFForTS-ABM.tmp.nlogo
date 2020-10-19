@@ -3270,10 +3270,10 @@ NIL
 1
 
 SWITCH
-2735
-105
-2877
-138
+2755
+200
+2897
+233
 generell-biodiv?
 generell-biodiv?
 1
@@ -3281,10 +3281,10 @@ generell-biodiv?
 -1000
 
 SWITCH
-2735
-150
-2882
-183
+2815
+280
+2962
+313
 modelorg-biodiv?
 modelorg-biodiv?
 1
@@ -3292,25 +3292,15 @@ modelorg-biodiv?
 -1000
 
 SWITCH
-2735
-195
-2877
-228
+2750
+345
+2892
+378
 allplants-biodiv?
 allplants-biodiv?
 1
 1
 -1000
-
-TEXTBOX
-2740
-80
-2890
-98
-Research Objective
-11
-0.0
-1
 
 @#$#@#$#@
 ## Abstract of corresponding publication
