@@ -79,11 +79,13 @@ globals
   sar_t0
   sar_ratio
   trade-off-plot-xy
+
   ;invest:habitat-quality
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
   HABITAT                  ;habitat-relation
+  filename_probs
 ]
 
 ; Define patch properties:
@@ -258,6 +260,7 @@ To setup-with-external-maps
 
   ; Initialize plant biodiv invest module
   if (invest_plantdiv?) [init_invest_plantdiv]
+  if (invest-habitatquality?) [init-invest-biodiv]
 
   ; Paint world:
   paint-landuse
@@ -291,13 +294,13 @@ To go
   ; Update agricultaral area (if households have been frozen)
   calculate-area-under-agriculture
 
-  ; update capital stocks before land-use change decision
+  ;update capital stocks before land-use change decision
   update-capital-stocks-cell
 
-  ; Main Decision procedure - Forecast land use options and implement option with highest netcashflow
+  ;Main Decision procedure - Forecast land use options and implement option with highest netcashflow
   perform-lu-and-production-decision
 
-  ; Update the mean consumption of households
+  ;Update the mean consumption of households
   aggregate-household-consumption
 
 
@@ -305,6 +308,7 @@ To go
   calculate_patch_carbon
   calculate_LUT_carbon
   if (invest_plantdiv?) [update_invest-Plantdiv]
+  if (invest-habitatquality?) [update-invest-biodiv]
 
   ; Load new prices for next timestep
   update_prices
@@ -339,6 +343,18 @@ To go
   if (ticks = sim-time) [print "Simulation finished!" stop]
 
 End
+
+to go-invest
+  if (invest-habitatquality?) [update-invest-biodiv]
+
+  ;; Increase time step
+  set simulation_year (simulation_year + 1)
+  tick
+
+  ;; Check stop condition:
+  if (ticks = sim-time) [print "Simulation finished!" stop]
+end
+
 
 to go-profiler
 
@@ -762,7 +778,7 @@ SWITCH
 468
 landmarket?
 landmarket?
-0
+1
 1
 -1000
 
@@ -860,7 +876,7 @@ SWITCH
 418
 show-roads?
 show-roads?
-0
+1
 1
 -1000
 
@@ -893,7 +909,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-21
+1
 
 CHOOSER
 5
@@ -1050,7 +1066,7 @@ SWITCH
 428
 consumption-on?
 consumption-on?
-0
+1
 1
 -1000
 
@@ -1060,7 +1076,7 @@ INPUTBOX
 305
 490
 consumption_base
-1000.0
+0.0
 1
 0
 Number
@@ -1082,7 +1098,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-0
+1
 1
 -1000
 
@@ -1093,7 +1109,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-0
+1
 1
 -1000
 
@@ -1105,7 +1121,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-4
+0
 
 TEXTBOX
 165
@@ -2310,7 +2326,7 @@ consumption_frac_cash
 consumption_frac_cash
 0
 1
-0.1
+0.0
 0.01
 1
 NIL
@@ -2325,7 +2341,7 @@ consumption_frac_wealth
 consumption_frac_wealth
 0
 1
-0.05
+0.0
 0.01
 1
 NIL
@@ -2475,7 +2491,7 @@ rent_rate_capital_lend
 rent_rate_capital_lend
 0
 1
-0.1
+0.08
 0.01
 1
 NIL
@@ -3276,7 +3292,7 @@ SWITCH
 138
 generell-biodiv?
 generell-biodiv?
-1
+0
 1
 -1000
 
@@ -3310,6 +3326,34 @@ TEXTBOX
 Research Objective
 11
 0.0
+1
+
+SWITCH
+2730
+30
+2902
+63
+invest-habitatquality?
+invest-habitatquality?
+0
+1
+-1000
+
+BUTTON
+755
+35
+837
+68
+NIL
+go-invest
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
