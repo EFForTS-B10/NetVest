@@ -3,10 +3,6 @@
 ##
 ##  In this analysis we expeirment with different wages levels (see script)
 ##
-##  However, this was performed with the old landmarket map
-##  If this analysis yields interesting plots/results, we havve to repeat it with the current map and settings (see landmarket _v3/_v4)
-##
-##
 
 library(tidyverse)
 library(nlrx)
@@ -15,7 +11,7 @@ library(Refforts)
 main.dir <- "03_Analyses/10_landmarket_wages_v6/"
 
 ## Load preliminary results:
-nl <- readRDS(file.path(main.dir, "sims_wages_distinct_policy.rds"))
+nl <- readRDS(file.path(main.dir, "data/sims_wages_distinct_v10_replicates.rds"))
 #timeplot <- doplot.abm.timeseries(nl, metrics=nl@experiment@metrics)
 #timeplot
 
@@ -54,13 +50,12 @@ var.names <- c("rubber_area",
 res_agg <- results %>% 
   dplyr::filter(`[step]` >= 30) %>% 
   dplyr::rowwise() %>% 
-  dplyr::mutate(wages_op = as.numeric(stringr::str_split(`LUT-0-folder`, pattern="_")[[1]][[3]])) %>% 
-  dplyr::mutate(wages_rb = as.numeric(stringr::str_split(`LUT-1-folder`, pattern="_")[[1]][[3]]))
+  dplyr::mutate(wages = as.numeric(stringr::str_split(`LUT-0-folder`, pattern="_")[[1]][[3]]))
 
 res_agg <- res_agg %>% 
   dplyr::rename(rubber_price = `LUT-1-price`,
                 oilpalm_price = `LUT-0-price`) %>% 
-  group_by(siminputrow, rubber_price, oilpalm_price, wages_op, wages_rb) %>% 
+  group_by(siminputrow, rubber_price, oilpalm_price, wages) %>% 
   dplyr::summarise(rubber_area = mean(lut1.fraction),
                    oilpalm_area = mean(lut0.fraction),
                    rubber_yield = mean(lut1.yield.mean),
@@ -85,7 +80,7 @@ res_agg <- res_agg %>%
                    lm_area_diff = mean(lm.buyer.area - lm.seller.area),
                    lm_ratio = (lm_seller_wealth_k / lm_buyer_wealth_k) * 100) %>% 
   dplyr::ungroup() %>% 
-  dplyr::select(rubber_price, oilpalm_price, wages_op, wages_rb, var.names) %>% 
+  dplyr::select(rubber_price, oilpalm_price, wages, var.names) %>% 
   dplyr::mutate(landscape_type = case_when(rubber_area >= 0.75 ~ "rubber_dominated",
                                            oilpalm_area >= 0.75 ~ "oilpalm_dominated",
                                            rubber_area < 0.75 & oilpalm_area < 0.75 ~ "mix")) %>% 
@@ -104,6 +99,9 @@ res_agg_yield <- res_agg %>%
                                    rubber_price == min(rubber_price) & oilpalm_price == max(oilpalm_price) ~ "oilpalm-boom",
                                    rubber_price == max(rubber_price) & oilpalm_price == min(oilpalm_price) ~ "rubber-boom"))
 
+####################################################
+## PLOTTING:
+####################################################
 
 ####################################################
 ### PLOTTING FUNCTIONS:
@@ -172,10 +170,6 @@ pf_hull <- function(data, xvar, yvar)
 }
 
 
-
-
-
-
 ####################################################
 #### plot0: initial landscape
 library(raster)
@@ -184,13 +178,13 @@ homebase <- sf::st_centroid(sf::st_as_sf(stars::read_stars("01_EFForTS-ABM/input
 roads <- sf::st_simplify(sf::read_sf("01_EFForTS-ABM/input/maps/landmarkets2/roads_polyline_layer.shp"))
 
 p_landscape <- pf_landscape(lut, homebase, roads)
-util.ggsave(plot=p_landscape, filename="initial_landscape", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=10, dpi=300)
+util.ggsave(plot=p_landscape, filename="initial_landscape", path=file.path(main.dir, "figures"), units = "cm", width=10, height=10, dpi=300)
 
 
 ####################################################
 ### Plot 1: Oilpalm area:
 p_op_area <- pf_lines(res_agg_yield, "oilpalm_area", "oilpalm area \n [fraction of agricultural area]")
-util.ggsave(plot=p_op_area, filename="lines_oilpalm_area", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=5, dpi=300)
+util.ggsave(plot=p_op_area, filename="lines_oilpalm_area", path=file.path(main.dir, "figures"), units = "cm", width=10, height=5, dpi=300)
 
 ## > Interpretation
 ## 
@@ -205,7 +199,7 @@ util.ggsave(plot=p_op_area, filename="lines_oilpalm_area", path="03_Analyses/10_
 p_op_yield <- pf_lines(res_agg_yield, "oilpalm_yield", "mean oilpalm yield \n [tons FFB/ha]")
 p_rb_yield <- pf_lines(res_agg_yield, "rubber_yield", "mean rubber yield \n [tons/ha]")
 pall <- cowplot::plot_grid(plotlist=list(p_op_yield,p_rb_yield), ncol=1)
-util.ggsave(plot=pall, filename="lines_yields", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=10, dpi=300)
+util.ggsave(plot=pall, filename="lines_yields", path=file.path(main.dir, "figures"), units = "cm", width=10, height=10, dpi=300)
 
 ## > Interpretation
 ##
@@ -221,7 +215,7 @@ p_hh_size <- pf_lines(res_agg_yield, "household_size", "mean household area \n [
 p_immi_nr <- pf_lines(res_agg_yield, "immigrant_nr", "immigrant households \n [total number]")
 p_abandoned <- pf_lines(res_agg_yield, "abandoned", "abandoned land \n [fraction of agricultural area]")
 pall <- cowplot::plot_grid(plotlist=list(p_hh_nr,p_hh_size,p_immi_nr,p_abandoned), ncol=1)
-util.ggsave(plot=pall, filename="lines_household_size", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=20, dpi=300)
+util.ggsave(plot=pall, filename="lines_household_size", path=file.path(main.dir, "figures"), units = "cm", width=10, height=20, dpi=300)
 
 ##> Interpretation
 ##
@@ -233,7 +227,7 @@ util.ggsave(plot=pall, filename="lines_household_size", path="03_Analyses/10_lan
 ####################################################
 ### Plot 4: Landscape metrics
 p_ed <- pf_lines(res_agg_yield, "ed", "edge density \n [m/ha]")
-util.ggsave(plot=p_ed, filename="lines_landscape", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=5, dpi=300)
+util.ggsave(plot=p_ed, filename="lines_landscape", path=file.path(main.dir, "figures"), units = "cm", width=10, height=5, dpi=300)
 
 ## > Interpretation
 ##
@@ -248,7 +242,7 @@ p_ef_con <- pf_lines(res_agg_yield, "consumption_k", "mean household consumption
 p_ef_car <- pf_lines(res_agg_yield, "carbon_k", "carbon storage \n [t*10³/ha]")
 p_ef_bio <- pf_lines(res_agg_yield, "biodiversity", "biodiversity index \n [relative change to initial biodiversity]")
 pall <- cowplot::plot_grid(plotlist=list(p_ef_con,p_ef_car,p_ef_bio), ncol=1)
-util.ggsave(plot=pall, filename="lines_ef", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=15, dpi=300)
+util.ggsave(plot=pall, filename="lines_ef", path=file.path(main.dir, "figures"), units = "cm", width=10, height=15, dpi=300)
 
 
 ####################################################
@@ -266,7 +260,7 @@ pall <- cowplot::plot_grid(plotlist=list(p_op_area + guides(color="none"),
                            ncol=2,
                            labels = "AUTO") 
 
-util.ggsave(plot=pall, filename="lines_panel", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=20, height=25, dpi=300)
+util.ggsave(plot=pall, filename="lines_panel", path=file.path(main.dir, "figures"), units = "cm", width=20, height=25, dpi=300)
 
 
 ####################################################
@@ -288,7 +282,7 @@ p3 <- pf_hull(res_agg_yield, "carbon_k", "consumption_k") +
   geom_hline(yintercept=mean(res_agg_yield$consumption_k), lty=2)
 
 cowplot::plot_grid(plotlist=list(p1,p2,p3), ncol=1)
-util.ggsave(filename="hull_ef", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=10, height=15, dpi=300)
+util.ggsave(filename="hull_ef", path=file.path(main.dir, "figures"), units = "cm", width=10, height=15, dpi=300)
 
 
 ### PLOT 7: Tradeoffs as ranks:
@@ -315,7 +309,7 @@ res_agg_yield %>%
   theme(legend.position = "top",
         legend.direction = "horizontal")
 
-util.ggsave(filename="bar_ef", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=12, height=10, dpi=300)
+util.ggsave(filename="bar_ef", path=file.path(main.dir, "figures"), units = "cm", width=12, height=10, dpi=300)
 
 
 
@@ -348,7 +342,7 @@ res_lm <- results %>%
                 lm_seller_wealth = lm.seller.wealth,
                 lm_buyer_wealth = lm.buyer.wealth) %>% 
   dplyr::mutate(carbon_k = (lut0.carbon + lut1.carbon) / 1000)
-
+                
 lm.output.vars <- c("oilpalm_area", "ed", "household_nr", "household_size", "oilpalm_yield", "rubber_yield", "consumption", "carbon_k", "biodiversity")
 
 res_lm_fit <- purrr::map_dfr(lm.output.vars, function(x){
@@ -362,7 +356,7 @@ res_lm_fit <- purrr::map_dfr(lm.output.vars, function(x){
   res_lmx$rubber_price <- scale(res_lmx$rubber_price)
   res_lmx$oilpalm_price <- scale(res_lmx$oilpalm_price)
   res_lmx$wages <- scale(res_lmx$wages)
-  
+    
   res_lmx_fit <- summary(lm(value ~ rubber_price * oilpalm_price * wages, data=res_lmx))
   
   res_lmx_fit_coeff <- as_tibble(res_lmx_fit$coefficients) %>% 
@@ -380,13 +374,13 @@ res_lm_fit <- purrr::map_dfr(lm.output.vars, function(x){
   tidyr::separate(parameter, into=c("paramA", "paramB"), sep=":") %>% 
   dplyr::mutate(paramB = ifelse(is.na(paramB), paramA, paramB)) %>% 
   dplyr::mutate(category = case_when(output %in% lm.output.vars[1:2] ~ "landscape",
-                                     output %in% lm.output.vars[3:4] ~ "households",
-                                     output %in% lm.output.vars[5:6] ~ "yields",
-                                     output %in% lm.output.vars[7:9] ~ "ef"))
-
+                                output %in% lm.output.vars[3:4] ~ "households",
+                                output %in% lm.output.vars[5:6] ~ "yields",
+                                output %in% lm.output.vars[7:9] ~ "ef"))
+  
 res_lm_fit$output <- factor(res_lm_fit$output, levels=lm.output.vars)
 res_lm_fit$category <- factor(res_lm_fit$category, levels=c("landscape", "households", "yields", "ef"))
-
+                                 
 
 cols <- c("oilpalm_price" = "#C74B4E",
           "rubber_price" = "#EBBD28",
@@ -406,7 +400,7 @@ ggplot(res_lm_fit) +
   theme(strip.placement = "outside",
         panel.border = element_rect(fill=NA))
 
-util.ggsave(filename="src_striped", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=15, height=15, dpi=300)
+util.ggsave(filename="src_striped", path=file.path(main.dir, "figures"), units = "cm", width=15, height=15, dpi=300)
 
 
 
@@ -424,4 +418,4 @@ ggplot(res_lm_fit, aes(x=output, y=Estimate, fill=category)) +
   ggthemes::theme_tufte(base_size = 12) +
   theme(panel.border = element_rect(fill=NA))
 
-util.ggsave(filename="src_grid", path="03_Analyses/10_landmarket_wages_v6", units = "cm", width=15, height=15, dpi=300)
+util.ggsave(filename="src_grid", path=file.path(main.dir, "figures"), units = "cm", width=15, height=15, dpi=300)
