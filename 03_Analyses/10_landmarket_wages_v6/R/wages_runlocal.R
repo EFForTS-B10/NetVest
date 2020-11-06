@@ -27,7 +27,7 @@ rb.min <- round(quantile(prices$rubber)[2])
 rb.max <- round(quantile(prices$rubber)[4])
 
 # Set general information
-n.random.seeds <- 5 # 3
+n.random.seeds <- 5 
 price.interval.steps <- 5 # 50
 op.int <- (op.max - op.min) / (price.interval.steps - 1)
 op <- seq(op.min, op.max, by=op.int)

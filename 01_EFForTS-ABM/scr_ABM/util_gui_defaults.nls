@@ -85,7 +85,7 @@ to set-efforts-lgraf-defaults
   set gr-height 100
   set gr-cell-length-meter 50
   set gr-road.algorithm "real.shapefile"
-  set gr-road-map-id 3
+  set gr-road-map-id "jambi1"
   set gr-total-road-length 1099
   set gr-min-dist-roads 5
   set gr-perlin-octaves 10

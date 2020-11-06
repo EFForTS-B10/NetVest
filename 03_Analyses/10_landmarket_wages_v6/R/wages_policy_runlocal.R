@@ -27,7 +27,7 @@ rb.min <- round(quantile(prices$rubber)[2])
 rb.max <- round(quantile(prices$rubber)[4])
 
 # Set general information
-n.random.seeds <- 1 # 3
+n.random.seeds <- 5
 price.interval.steps <- 5 # 50
 op.int <- (op.max - op.min) / (price.interval.steps - 1)
 op <- seq(op.min, op.max, by=op.int)
@@ -111,12 +111,19 @@ nl <- set.nl.constant(nl, "heterogeneous-hhs?", "true")
 nl <- set.nl.constant(nl, "learning-spillover?", "true")
 nl <- set.nl.constant(nl, "setup-hh-network", "\"hh-nw-distance\"")
 nl <- set.nl.constant(nl, "invest_plantdiv?", "true")
+
+nl <- set.nl.constant(nl, "invest-habitatquality?", "false")
+nl <- set.nl.constant(nl, "generell-biodiv?", "false")
+nl <- set.nl.constant(nl, "modelorg-biodiv?", "false")
+nl <- set.nl.constant(nl, "allplants-biodiv?", "false")
+
 nl <- set.nl.constant(nl, "hh-nw-param1", 20)
 nl <- set.nl.constant(nl, "min-wealth", 30)
 nl <- set.nl.constant(nl, "time-horizon", 20)
 nl <- set.nl.constant(nl, "buyer_pool_n", 20)
 nl <- set.nl.constant(nl, "immigrant_probability", 0.25)
 nl <- set.nl.constant(nl, "immigrant-wealth-factor", 10)
+
 
 # Then add a full factorial design:
 nl@simdesign <- simdesign_distinct(nl, nseeds=n.random.seeds)

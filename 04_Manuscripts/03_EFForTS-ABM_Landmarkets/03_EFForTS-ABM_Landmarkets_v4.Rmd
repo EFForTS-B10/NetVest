@@ -136,9 +136,11 @@ Increasing rubber price has a positive effect on all three main output functions
 
 However, our analysis also revealed some important interactions between prices and wages. For rubber prices, high wages reverse the positive trend on our three main functions (consumption, biodiversity and carbon, Fig. \@ref(fig:src)C.a). For oil palm prices, the directions of effects is almost the same (except edge density) but the negative trade-off effects on biodiversity and carbon are less pronounced (Fig. \@ref(fig:src)C.b).
 
-From this we can conclude: Increased oil palm farming has negative effects on carbon and biodiversity but positive impact on economic welfare, leading to an ecological-economic trade-off. Yet, the negative environmental effects of increased oil palm farming can be mitigated by increasing wages. To improve biodiversity, rubber should still be present in the system, but not combined with high wages. Thus, we suggest to give subsidies to rubber farmers in order to compensate for the higher wages that are needed for efficient oil palm farming.
+From this we can conclude: Increased oil palm farming has negative effects on carbon and biodiversity but positive impact on economic welfare, leading to an ecological-economic trade-off. Yet, the negative environmental effects of increased oil palm farming can be mitigated by increasing wages. To improve biodiversity, rubber should still be present in the system, but not combined with high wages. Thus, we suggest to give subsidies to rubber farmers in order to compensate for the higher wages that are needed for efficient oil palm farming. In order to test this suggestion, we compared outcomes of scenarios under doubled wages for both crops to scenarios where only rubber farming wages were discounted by 50%. Indeed, it shows that under high prices or high rubber prices, carbon and consumption increase without negative effects on biodiversity. Still, under price scenarios where rubber is less profitable, we see a reversed effect with negative effects 
 
-
+```{r policy, out.width = "100%", fig.cap = "Effect of rubber farming subsidies on main output functions. Effect percentages were calculated by comparing outcomes of scenarios with doubled wages for both crops to scenarios where rubber farming wages were discounted by 50%."}
+knitr::include_graphics(file.path(knitr::opts_chunk$get("fig.path"), "policy_subsidies.png"))
+```
 
 
 ## Outlook

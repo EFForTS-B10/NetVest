@@ -843,7 +843,7 @@ SWITCH
 183
 reproducable?
 reproducable?
-0
+1
 1
 -1000
 
@@ -853,7 +853,7 @@ INPUTBOX
 155
 245
 rnd-seed
-12345.0
+1234.0
 1
 0
 Number
@@ -876,7 +876,7 @@ SWITCH
 418
 show-roads?
 show-roads?
-1
+0
 1
 -1000
 
@@ -887,7 +887,7 @@ SWITCH
 383
 show-homebases?
 show-homebases?
-1
+0
 1
 -1000
 
@@ -909,7 +909,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-1
+21
 
 CHOOSER
 5
@@ -947,7 +947,7 @@ INPUTBOX
 730
 335
 LUT-0-price
-138.0
+90.0
 1
 0
 Number
@@ -958,7 +958,7 @@ INPUTBOX
 730
 395
 LUT-1-price
-1000.0
+1100.0
 1
 0
 Number
@@ -1066,7 +1066,7 @@ SWITCH
 428
 consumption-on?
 consumption-on?
-1
+0
 1
 -1000
 
@@ -1076,7 +1076,7 @@ INPUTBOX
 305
 490
 consumption_base
-0.0
+1000.0
 1
 0
 Number
@@ -1098,7 +1098,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-1
+0
 1
 -1000
 
@@ -1109,7 +1109,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-1
+0
 1
 -1000
 
@@ -1121,7 +1121,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-0
+4
 
 TEXTBOX
 165
@@ -1139,7 +1139,7 @@ INPUTBOX
 230
 675
 land_price
-1750.0
+750.0
 1
 0
 Number
@@ -1188,7 +1188,7 @@ SWITCH
 873
 gr-reproducable?
 gr-reproducable?
-0
+1
 1
 -1000
 
@@ -1262,7 +1262,7 @@ INPUTBOX
 250
 945
 gr-total-road-length
-800.0
+1099.0
 1
 0
 Number
@@ -1645,7 +1645,7 @@ INPUTBOX
 730
 455
 LUT-2-price
-1100.0
+0.0
 1
 0
 Number
@@ -1678,7 +1678,7 @@ INPUTBOX
 895
 335
 LUT-0-price-sd
-30.0
+10.0
 1
 0
 Number
@@ -1689,7 +1689,7 @@ INPUTBOX
 895
 395
 LUT-1-price-sd
-255.0
+100.0
 1
 0
 Number
@@ -1935,7 +1935,7 @@ CHOOSER
 gr-setup-model
 gr-setup-model
 "number-of-households" "number-of-villages" "agricultural-area"
-2
+0
 
 SLIDER
 255
@@ -1976,7 +1976,7 @@ gr-proportion-agricultural-area
 gr-proportion-agricultural-area
 0
 1
-0.35
+0.3
 0.01
 1
 NIL
@@ -2326,7 +2326,7 @@ consumption_frac_cash
 consumption_frac_cash
 0
 1
-0.0
+0.1
 0.01
 1
 NIL
@@ -2341,7 +2341,7 @@ consumption_frac_wealth
 consumption_frac_wealth
 0
 1
-0.0
+0.05
 0.01
 1
 NIL
@@ -2401,7 +2401,7 @@ hh-nw-param1
 hh-nw-param1
 0
 100
-20.0
+10.0
 1
 1
 NIL
@@ -3061,7 +3061,7 @@ SWITCH
 108
 invest_plantdiv?
 invest_plantdiv?
-1
+0
 1
 -1000
 
@@ -3292,7 +3292,7 @@ SWITCH
 138
 generell-biodiv?
 generell-biodiv?
-0
+1
 1
 -1000
 
@@ -3335,7 +3335,7 @@ SWITCH
 63
 invest-habitatquality?
 invest-habitatquality?
-0
+1
 1
 -1000
 
@@ -3778,7 +3778,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.1.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

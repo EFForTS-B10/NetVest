@@ -127,9 +127,9 @@ p_policy <- ggplot(res_plot, aes(x=prices, y=value, fill=name)) +
   scale_fill_manual(values=rank_cols) +
   guides(fill=guide_legend(title="function")) +
   xlab("price scenario") +
-  ylab("effect of subsidies (reducing wages by 50%)") +
+  ylab("effect of subsidies (-50% on rubber wages)") +
   ggthemes::theme_tufte(base_size=12)
 
-util.ggsave(plot=p_policy, filename="policy_subsidies", path=file.path(main.dir, "figures"), units = "cm", width=14, height=10, dpi=300)  
+util.ggsave(plot=p_policy, filename="policy_subsidies", path=file.path(main.dir, "figures"), units = "cm", width=14, height=9, dpi=300)  
 
 
