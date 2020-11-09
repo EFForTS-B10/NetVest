@@ -1,0 +1,184 @@
+extensions [ py gis]
+
+to setup-invest ; setup the connection to python and import a few libraries
+  py:setup "/home/ecomod/anaconda3/envs/forge/bin/python"     ;py:python
+  py:run "import sys"
+  py:run "import os"
+  py:run "import natcap.invest"
+  py:run "from natcap.invest import habitat_quality"
+  py:run "from osgeo import gdal, osr"
+  reset-ticks
+end
+
+
+
+to get-sys-info ; Here we use the `sys` package in python to output some system info
+  output-print (word "Python directory: " (py:runresult "sys.prefix"))
+  output-print (word "Platform: " (py:runresult "sys.platform"))
+  (py:run
+    "print(os.getcwd())"
+  )
+  
+  let home-dir py:runresult "os.environ['HOME']"
+  output-print (word "Current home directory is: " home-dir)
+  
+  output-print ""
+end
+
+to translate-to-lulc-invest
+    
+  ;; TEMPORARY ADJUSTMENT:
+  ;; The functions use while loops to loop trough landuses: also include roads?
+  ; we create a new variable because p_landuse ist still needed for the simulation
+  ask patches 
+  [
+    if (p_landuse = -100) [set p_lulc 4] ;forest
+    if (p_landuse = 1) [set p_lulc 3] ;rubber
+    if (p_landuse = 0) [set p_lulc 2] ;oilplam
+    if (p_road = 1 and p_landuse = 4) [set p_lulc 1] ;village
+  ]
+end
+
+
+
+to write-maps
+ ; here we want create a different patch variable from landuse and call   adjust-lulc-invest  to populate it
+  write-lulc-map
+  
+  
+  write-dummy-sensitivity
+  write-dummy-threats
+
+  
+  write-threat-map "rubber"
+  write-threat-map "oil_palm"
+end
+
+to write-lulc-map
+  ; Write landuse map
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      gis:set-raster-value new-raster xcount ycount-raster [p_lulc] of patch xcount ycount
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
+
+  let filename (word "output/lulc_test.asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
+
+to write-threat-map [threat-name]
+  ; Write threat maps
+  let threat-value 0
+  print["writing threat map"]
+  show threat-name
+  ifelse threat-name = "rubber"
+    [set threat-value 3
+      print ["creating rubber threat map"]]
+  [if threat-name = "oil_palm"
+      [set threat-value 2
+    print ["creating oil palm threat map"]]
+  ]
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      ;show [p_landuse] of patch xcount ycount = threat-value
+      if ([p_lulc] of patch xcount ycount = threat-value) [print threat-name]
+      ifelse ([p_lulc] of patch xcount ycount = threat-value)
+          [gis:set-raster-value new-raster xcount ycount-raster 1]
+          [gis:set-raster-value new-raster xcount ycount-raster 0]
+;
+
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
+
+  let filename (word "output/" (word (threat-name)) "_c.asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
+
+
+to write-dummy-sensitivity
+  (py:run
+    "csv_path = 'output/sensitivity_table.csv'"
+    "with open(csv_path, 'w') as open_table:"
+    "  open_table.write('LULC,NAME,HABITAT,L_oil_palm,L_rubber\\n')"
+    "  open_table.write('1,village,0,0,0\\n')"
+    "  open_table.write('2,oil_palm,0,0,0\\n')"
+    "  open_table.write('3,rubber,0,0,0\\n')"
+    "  open_table.write('4,forest,1,0.5,0.5\\n')"
+  )
+end
+
+
+
+to write-dummy-threats
+  (py:run
+    "csv_path = 'output/threats_samp.csv'"
+    "with open(csv_path, 'w') as open_table:"
+    "  open_table.write("
+    " 'THREAT,MAX_DIST,WEIGHT,DECAY\\n'"
+  ")"
+    "  open_table.write('oil_palm,1.0,0.5,exponential\\n')"
+    "  open_table.write('rubber,1.0,1.0,exponential\\n')"
+  )
+end
+
+
+to convert-maps
+  foreach ["rubber_c" "oil_palm_c" "lulc_test"]
+  [
+    [x] ->
+    convert_to_tif x
+  ]
+end
+
+
+to convert_to_tif [filename]
+  py:set "filename" filename
+  
+  (py:run
+    "drv = gdal.GetDriverByName('GTiff')"
+    "ds_in = gdal.Open(f'output/{filename}.asc')"
+    "ds_out = drv.CreateCopy(f'output/{filename}.tif', ds_in)"
+    "srs = osr.SpatialReference()"
+    "srs.ImportFromEPSG(4326)"
+    "ds_out.SetProjection(srs.ExportToWkt())"
+  )
+end
+
+to run-invest
+  (py:run
+    "print('setting up parameters')"
+    "working_directory = 'output'"
+    "args = {"
+    "'half_saturation_constant': '0.5',"
+    "'results_suffix': 'test',"
+    "'workspace_dir': working_directory,"
+    "'lulc_cur_path': os.path.join(working_directory, 'lulc_test.tif'),"
+    "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
+    "'threat_raster_folder': working_directory,"
+    "'threats_table_path': os.path.join(working_directory, 'threats_samp.csv'),"
+    "}"
+    "habitat_quality.execute(args)"
+  )
+end

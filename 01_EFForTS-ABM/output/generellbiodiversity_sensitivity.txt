@@ -1,1 +1,0 @@
-LULC,NAME,HABITAT,L_Techino,L_Techinr,L_Labino,L_Labinr,L_oil,L_rub,L_for

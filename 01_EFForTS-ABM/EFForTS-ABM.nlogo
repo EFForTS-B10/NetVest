@@ -17,6 +17,7 @@ __includes [
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
   "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_birds.nls" "scr_ABM/ecol_invest_plantdiv.nls" "scr_ABM/ecol_invest_plantdiv_SAR.nls" "scr_ABM/ecol_invest_biodiv.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
+  "scr_ABM/invest.nls"
 ]
 
 ; Extensions used in this NetLogo model:
@@ -120,6 +121,9 @@ patches-own
   p_MBVx
   p_MBV
   p_RMBV
+
+  ; variable for generation of lulc map
+  p_lulc
 ]
 
 luts-own
@@ -844,7 +848,7 @@ SWITCH
 183
 reproducable?
 reproducable?
-0
+1
 1
 -1000
 
@@ -854,7 +858,7 @@ INPUTBOX
 155
 245
 rnd-seed
-12345.0
+1234.0
 1
 0
 Number
@@ -877,7 +881,7 @@ SWITCH
 418
 show-roads?
 show-roads?
-1
+0
 1
 -1000
 
@@ -888,7 +892,7 @@ SWITCH
 383
 show-homebases?
 show-homebases?
-1
+0
 1
 -1000
 
@@ -910,7 +914,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-1
+16
 
 CHOOSER
 5
@@ -948,7 +952,7 @@ INPUTBOX
 730
 335
 LUT-0-price
-138.0
+90.0
 1
 0
 Number
@@ -959,7 +963,7 @@ INPUTBOX
 730
 395
 LUT-1-price
-1000.0
+1100.0
 1
 0
 Number
@@ -1067,7 +1071,7 @@ SWITCH
 428
 consumption-on?
 consumption-on?
-1
+0
 1
 -1000
 
@@ -1077,7 +1081,7 @@ INPUTBOX
 305
 490
 consumption_base
-0.0
+1000.0
 1
 0
 Number
@@ -1122,7 +1126,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-0
+2
 
 TEXTBOX
 165
@@ -1140,7 +1144,7 @@ INPUTBOX
 230
 675
 land_price
-1750.0
+750.0
 1
 0
 Number
@@ -1189,7 +1193,7 @@ SWITCH
 873
 gr-reproducable?
 gr-reproducable?
-0
+1
 1
 -1000
 
@@ -1263,7 +1267,7 @@ INPUTBOX
 250
 945
 gr-total-road-length
-800.0
+1099.0
 1
 0
 Number
@@ -1646,7 +1650,7 @@ INPUTBOX
 730
 455
 LUT-2-price
-1100.0
+0.0
 1
 0
 Number
@@ -1679,7 +1683,7 @@ INPUTBOX
 895
 335
 LUT-0-price-sd
-30.0
+10.0
 1
 0
 Number
@@ -1690,7 +1694,7 @@ INPUTBOX
 895
 395
 LUT-1-price-sd
-255.0
+100.0
 1
 0
 Number
@@ -1936,7 +1940,7 @@ CHOOSER
 gr-setup-model
 gr-setup-model
 "number-of-households" "number-of-villages" "agricultural-area"
-2
+0
 
 SLIDER
 255
@@ -1977,7 +1981,7 @@ gr-proportion-agricultural-area
 gr-proportion-agricultural-area
 0
 1
-0.35
+0.3
 0.01
 1
 NIL
@@ -2327,7 +2331,7 @@ consumption_frac_cash
 consumption_frac_cash
 0
 1
-0.0
+0.1
 0.01
 1
 NIL
@@ -2342,7 +2346,7 @@ consumption_frac_wealth
 consumption_frac_wealth
 0
 1
-0.0
+0.05
 0.01
 1
 NIL
@@ -2402,7 +2406,7 @@ hh-nw-param1
 hh-nw-param1
 0
 100
-20.0
+10.0
 1
 1
 NIL
@@ -3062,7 +3066,7 @@ SWITCH
 108
 invest_plantdiv?
 invest_plantdiv?
-1
+0
 1
 -1000
 
@@ -3270,10 +3274,10 @@ Preliminary fallow option.\nOnly works with specific land-use folders
 1
 
 BUTTON
-775
-90
-838
-123
+640
+80
+703
+113
 NIL
 go
 NIL
@@ -3293,7 +3297,7 @@ SWITCH
 138
 generell-biodiv?
 generell-biodiv?
-0
+1
 1
 -1000
 
@@ -3341,12 +3345,97 @@ invest-habitatquality?
 -1000
 
 BUTTON
-755
-35
-837
-68
+750
+10
+832
+43
 NIL
 go-invest
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2755
+240
+2872
+273
+NIL
+setup-invest\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2775
+375
+2877
+408
+NIL
+run-invest
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2765
+310
+2872
+343
+NIL
+write-maps
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2765
+340
+2892
+373
+NIL
+convert-maps
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2740
+275
+2932
+308
+NIL
+translate-to-lulc-invest
 NIL
 1
 T

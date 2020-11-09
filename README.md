@@ -11,5 +11,5 @@ The manual for EFForTS-LGraf can be accessed via [https://nldoc.github.io/EFForT
 ## Update procedure
 If changes are made within the EFForTS-LGraf repository we need to update the model in this repository as well.
 To do this, delete the subfolder"EFForTS-LGraf" in the local working copy.
-Then perform `git submodule --init` in the current R session terminal to load the current version from the master branch.
+Then perform `git submodule update --init` in the current R session terminal to load the current version from the master branch.
 
