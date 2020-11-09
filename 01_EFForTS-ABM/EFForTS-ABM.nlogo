@@ -17,6 +17,7 @@ __includes [
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
   "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_birds.nls" "scr_ABM/ecol_invest_plantdiv.nls" "scr_ABM/ecol_invest_plantdiv_SAR.nls" "scr_ABM/ecol_invest_biodiv.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
+  "scr_ABM/invest.nls"
 ]
 
 ; Extensions used in this NetLogo model:
@@ -119,6 +120,9 @@ patches-own
   p_MBVx
   p_MBV
   p_RMBV
+
+  ; variable for generation of lulc map
+  p_lulc
 ]
 
 luts-own
@@ -909,7 +913,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-21
+16
 
 CHOOSER
 5
@@ -1098,7 +1102,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-0
+1
 1
 -1000
 
@@ -1109,7 +1113,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-0
+1
 1
 -1000
 
@@ -1121,7 +1125,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-4
+2
 
 TEXTBOX
 165
@@ -3269,10 +3273,10 @@ Preliminary fallow option.\nOnly works with specific land-use folders
 1
 
 BUTTON
-775
-90
-838
-123
+640
+80
+703
+113
 NIL
 go
 NIL
@@ -3335,17 +3339,102 @@ SWITCH
 63
 invest-habitatquality?
 invest-habitatquality?
-1
+0
 1
 -1000
 
 BUTTON
-755
-35
-837
-68
+750
+10
+832
+43
 NIL
 go-invest
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2755
+240
+2872
+273
+NIL
+setup-invest\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2775
+375
+2877
+408
+NIL
+run-invest
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2765
+310
+2872
+343
+NIL
+write-maps
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2765
+340
+2892
+373
+NIL
+convert-maps
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2740
+275
+2932
+308
+NIL
+translate-to-lulc-invest
 NIL
 1
 T
@@ -3778,7 +3867,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
