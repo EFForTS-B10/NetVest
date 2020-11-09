@@ -84,7 +84,7 @@ globals
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
-  HABITAT                  ;habitat-relation
+  ;HABITAT                  ;habitat-relation
   filename_probs
 ]
 
@@ -92,6 +92,7 @@ globals
 patches-own
 [
   p_landuse                ; patch land-use value as input from land-use map
+  p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
   p_landuse_previous
   p_management             ; current management id
   p_road                   ; 0 if patch is not road, 1, if patch is road

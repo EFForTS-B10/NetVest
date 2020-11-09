@@ -1,23 +1,21 @@
 ;##################################################################################################
 ;Attempt 1: 
-;Initialization: Adjust landuse values
+;Initialization: Adjust landuse values (for map generation)
 ;                Read habitat-relation data relating to research objective
+;                Sensitivity-table for research objective -> store in output folder
 ;                Threats-table
 ;
 ;Processes:      Generation of LULC-map
-;(per time step) Generation of threat-maps
-;                loop
-;                (
-;                Sensitivity-table for speciesx/objectivex
+;(per time step) Generation of threat-maps             
 ;                invoke invest and transfer output
-;                read-in habitat-maps for speciesx
-;                )
-;  
-;Outcome:        for every species/objective own habitat-score for every time step
+;                read-in habitat-maps for research objective and store them in 2-dimensional list: time step, habitat-qualities for every grid cells
+;                Aggregate habitat-quality scores:
+;                a) parcel-level contribution to biodiversity (MBV and RMBV)
+;                b) for every species and over all species --> landscape-level biodiversity score
 ;
-;Backround: Invest needs one sensitivity-table for one run, therefore every species needs own sensitivity-table, otherwise we would mix habitat-relations
-;
-; Attempt 2: create sensitivity-tables at initialization and say invest to do as much runs as sensitivity-tables and use every sensitivity-table once (Nils)
+;Reference:      https://books.google.de/books?id=s-AVDAAAQBAJ&pg=PA234&lpg=PA234&dq=calculate+%22marginal+biodiversity+value%22&source=bl&ots=VizoibzWxq&sig=6yADRPd9HcTj4wknOP2UsUDD6N0&hl=de&sa=X&ved=0ahUKEwibv9OY2IDVAhVGvxQKHXXXD4QQ6AEIMTAC#v=onepage&q=calculate%20%22marginal%20biodiversity%20value%22&f=false
+;                Natural Capital - Theory and practice of mapping Ecosystem Services,  Heather Tallis, Taylor H. Ricketts, Gretchen C. Daily, 
+;                Documentation: http://releases.naturalcapitalproject.org/invest-userguide/latest/habitat_quality.html#data-needs
 ;###################################################################################################
 
 
@@ -26,7 +24,7 @@
 ;2.Habitat-Relation
 ;3.Sensitivity-table without habitat-relation
 ;4.Threat's importance and impact over space
-to init-invest-biodiv
+to init-invest-biodiv 
   ;;Adjust landuse for invest
   adjust-lulc-invest
   ;;Habitat-relation with 3 options for research objective
@@ -50,16 +48,16 @@ end
 ;*************************************************************
 ;Adjust landuse-values to LULC IDs for invest                *
 ;*************************************************************
-to adjust-lulc-invest
+to adjust-lulc-invest ;; not overwrite, new patch-variable  p_landuse turtles own variable
     
   ;; TEMPORARY ADJUSTMENT:
   ;; The functions use while loops to loop trough landuses: also include roads?
   ask patches 
   [
-    if (p_landuse = -100) [set p_landuse 4] ;forest
-    if (p_landuse = 1) [set p_landuse 3] ;rubber
-    if (p_landuse = 0) [set p_landuse 2] ;oilplam
-    if (p_road = 1 and p_landuse = 4) [set p_landuse 1] ;village
+    if (p_landuse = -100) [set p_landuse_invest 4] ;forest
+    if (p_landuse = 1) [set p_landuse_invest 3] ;rubber
+    if (p_landuse = 0) [set p_landuse_invest 2] ;oilplam
+    if (p_road = 1 and p_landuse = 4) [set p_landuse_invest 1] ;village
   ]
 end
 
@@ -81,7 +79,7 @@ to read-habitat-data
   file-open filename_probs
   
   ;;Skip header:
-  repeat 4 [let drop file-read]
+  repeat 5 [let drop file-read]
   ;print file-read
   ;show file-read
   while [not file-at-end?]
@@ -93,11 +91,12 @@ to read-habitat-data
     ;let sh_prob file-read
     let o_prob file-read
     let r_prob file-read
+    let v_prob file-read
     ;let group file-read
 ;print rownr
     ;; Create temporary list:  ["p_landuse 0 prob" "p_landuse 1 prob" "..." "p_landuse 4 prob" "objective" ("species-group (general/corespecies))"]
     ;; other= 0, op=1, rm=2, jr=3, fo=4
-    let habitat_probs (list f_prob o_prob r_prob objective) ;sh_prob
+    let habitat_probs (list v_prob o_prob r_prob f_prob objective) ;sh_prob
     print habitat_probs
     set habitat_all_probs lput habitat_probs habitat_all_probs
     print habitat_all_probs
@@ -107,46 +106,106 @@ to read-habitat-data
   file-close
 end
 
+
+To-report habitat-relation
+  ;; Summing up all items v_prob, o_prob, r_prob and f_prob over all sublists of the habitat_all_prob lists
+  foreach habitat_all_probs 
+    [?1 ->
+      let hr-v 0
+      let hr-o 0
+      let hr-r 0
+      let hr-f 0
+      if sum(item 0 ?1 > 0)
+      [
+       set hr-v 1 
+      ]
+  ]
+      ;a b] -> let q a + b]
+  ;; If reportet items bigger 1, set habitat-relation 1, otherwise 0
+  ;if q > 1 [ set q 1]
+    ;report capital-stock-cell
+end
+
+;foreach plantdiv_all_probs
+;  [ ? ->
+;    
+;    let ws_temp ws_default
+;    
+;    ;; Check if forest only species:
+;    if ((item 4 ? > 0) and (sum (sublist ? 1 4) = 0))
+;    [
+;      set ws_temp ws_default * ws_bonus
+;    ]
+;  
+;    set ws_list lput ws_temp ws_list
+;  ]
+
 ;************************************************************
 ;Create Sensitivity-table                                   *
 ;************************************************************
 to sensitivity-table
   print "Read sensitivity data..."
-  ;;reset global sensitivity list
-  set sensitivity_table []
-  ;;read in data for sensitivity (follow up)--> now: set sensitivity value equal for all LULCS (1/6)
-  let filename "input/plants/biodiversityresponse.txt"
-  file-open filename
-  ;;Skip header:
-  repeat 9 [let drop file-read]
-  ;print file-read
-  ;show f_prob
-  while [not file-at-end?]
-  [
-    ;;Read data for biodiversity response of LULCS and store them in lists
-    let rownr file-read
-    let LULC file-read
-    let NAME file-read
-    let hab 0
-    let L_Techino file-read
-    let L_Techinr file-read
-    let L_Labino file-read
-    let L_Labinr file-read
-    let oilpalm file-read
-    let rubber file-read
-    let forest file-read 
-    ;; insert habitat-relation from habitat-relation data
-    ;if (item 0 habitat_all_probs != 0) [set HABITAT [item 0] ] ; item 0: forest
-    ;if (f_prob = 1) [set HABITAT 1] ; manage value
-  ;;create temporary list (Threats are named automatically?): ["LULC" "NAME" "Habitat" "L_Techino" "L_Techinr" "L_Labino" "L_Labinr" "oilpalm" "rubber" "forest"]
-  let sensitivity (list LULC NAME Hab L_Techino L_Techinr L_Labino L_Labinr oilpalm rubber forest)
-  print sensitivity
-  set sensitivity_table lput sensitivity sensitivity_table 
-  print sensitivity_table
-    ;store with header
-  ]
-  file-close
-  print sensitivity_table
+  ;;loop through habitat_all_probs
+  ;let objective 0
+  ;; create habitat-relation-list from habitat_all_probs
+  ;(map + items habitat_all_probs)
+  
+    ;(foreach habitat_all_probs [ [ a b  ] -> let a + b ])
+ ;   (map [ [ x y ] -> x mod round y ] xs ys)
+
+  ;map [ element -> element > 0] habitat_all_probs
+  ;(foreach habitat_all_probs
+ ; [
+   ;; [?1] -> let habitat-relation-v 1
+    ;[?2 > 0] let habitat-relation-o 1
+    ;[?3 > 0] let habitat-relation-r 1
+    ;[?4 > 0] let habitat-relation-f 1  
+ ; ])
+  ;let i length habitat_all_probs
+;  let habitat-relation 0 ;length item 0 habitat_all_probs
+;  print habitat-relation
+;    ;; filter first item of every list item (number of objectives). If one item is >0 set habitat-relation 1
+;  ;;reset global sensitivity list
+;  set sensitivity_table []
+;  ;;read in data for sensitivity (follow up)--> now: set sensitivity value equal for all LULCS (1/6)
+;  let filename "input/plants/biodiversityresponse.txt"
+;  file-open filename
+;  ;;Skip header:
+;  repeat 9 [let drop file-read]
+;  ;print file-read
+;  ;show f_prob
+;    while [not file-at-end?] 
+;  [
+;    ;;Read data for biodiversity response of LULCS and store them in lists
+;    let rownr file-read
+;    let LULC file-read
+;    let NAME file-read
+;    let HABITAT ifelse-value (item objective item habitat-relation habitat_all_probs > 0) [1] [0]
+;    ;ifelse item objective item habitat-relation habitat_all_probs > 0
+;      ;[let HABITAT 1][let HABITAT 0] 
+;    let L_Techino file-read
+;    let L_Techinr file-read
+;    let L_Labino file-read
+;    let L_Labinr file-read
+;    let oilpalm file-read
+;    let rubber file-read
+;    let forest file-read 
+;    ;; insert habitat-relation from habitat-relation data
+;    ;if (item 0 habitat_all_probs != 0) [set HABITAT [item 0] ] ; item 0: forest
+;    ;if (f_prob = 1) [set HABITAT 1] ; manage value
+;  ;;create temporary list (Threats are named automatically?): ["LULC" "NAME" "Habitat" "L_Techino" "L_Techinr" "L_Labino" "L_Labinr" "oilpalm" "rubber" "forest"]
+;  let sensitivity (list LULC NAME HABITAT L_Techino L_Techinr L_Labino L_Labinr oilpalm rubber forest)
+;  print sensitivity
+;  set sensitivity_table lput sensitivity sensitivity_table 
+;  print sensitivity_table
+;    ;store with header
+;  if habitat-relation <= 3
+;      [set habitat-relation habitat-relation + 1]
+;  file-close
+;  print sensitivity_table ;storing
+;  ]
+;    set objective objective + 1
+;  ]
 end
 
 
