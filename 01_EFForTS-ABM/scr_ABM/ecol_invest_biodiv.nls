@@ -54,6 +54,7 @@ to adjust-lulc-invest
     
   ;; TEMPORARY ADJUSTMENT:
   ;; The functions use while loops to loop trough landuses: also include roads?
+  ; we create a new variable because p_landuse ist still needed for the simulation
   ask patches 
   [
     if (p_landuse = -100) [set p_landuse 4] ;forest
