@@ -112,6 +112,12 @@ nl <- set.nl.constant(nl, "heterogeneous-hhs?", "true")
 nl <- set.nl.constant(nl, "learning-spillover?", "true")
 nl <- set.nl.constant(nl, "setup-hh-network", "\"hh-nw-distance\"")
 nl <- set.nl.constant(nl, "invest_plantdiv?", "true")
+
+nl <- set.nl.constant(nl, "invest-habitatquality?", "false")
+nl <- set.nl.constant(nl, "generell-biodiv?", "false")
+nl <- set.nl.constant(nl, "modelorg-biodiv?", "false")
+nl <- set.nl.constant(nl, "allplants-biodiv?", "false")
+
 nl <- set.nl.constant(nl, "hh-nw-param1", 20)
 nl <- set.nl.constant(nl, "min-wealth", 30)
 nl <- set.nl.constant(nl, "time-horizon", 20)
