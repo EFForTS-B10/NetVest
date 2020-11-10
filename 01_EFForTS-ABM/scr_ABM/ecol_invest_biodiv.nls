@@ -22,8 +22,9 @@
 ;Initialization of Biodiversity Submodule: producing output for Invest
 ;1.Adjust landuse values from ABM to LULC IDs for invest
 ;2.Habitat-Relation
-;3.Sensitivity-table without habitat-relation
-;4.Threat's importance and impact over space
+;3.Creating sensitivity-table: Senstitivity of LULC types to threats and habitat-relation of LULCs 
+;4.Creating threats-table: Threat's importance and impact over space
+
 to init-invest-biodiv 
   ;;Adjust landuse for invest
   adjust-lulc-invest
@@ -38,11 +39,12 @@ end
 
 ;Processes for calculation
 ;1.Generation of maps
-;2.Sensitivity of LULC-types to threat
-;3.Habitat quality score
-;4.Update landscape-level habitat-quality score
+;2.Habitat quality score
+;3.Update landscape-level habitat-quality score
 to update-invest-biodiv
-  sensitivity-habitat
+  lulc-map
+  habitat-quality-score ; store in list
+  biodiversity-score
 end
 
 ;*************************************************************
@@ -52,7 +54,7 @@ to adjust-lulc-invest ;; not overwrite, new patch-variable  p_landuse turtles ow
     
   ;; TEMPORARY ADJUSTMENT:
   ;; The functions use while loops to loop trough landuses: also include roads?
-  ; we create a new variable because p_landuse ist still needed for the simulation
+  ; we create a new variable because p_landuse ist still needed for the economic submodel
   ask patches 
   [
     if (p_landuse = -100) [set p_landuse_invest 4] ;forest
@@ -73,10 +75,11 @@ to read-habitat-data
   
   
   ;; Read file depending on research objective
-  ;set filename_probs ""
-  if (generell-biodiv?) [set filename_probs "input/plants/generellbiodiversity_probs.txt"]
-  if (modelorg-biodiv?) []
-  if (allplants-biodiv?)[]
+  (ifelse research-objective = "generell-biodiv?"  [set filename_probs "input/plants/generellbiodiversity_probs.txt"]
+          research-objective = "modelorg-biodiv?"  [print "Warning: Biodiversity of modelorganism not yet implemented"]
+          research-objective = "allplants-biodiv?" [print "Warning: Biodiversity of all plants not yet implemented"])
+  ifelse filename_probs = 0 [stop]
+  [
   file-open filename_probs
   
   ;;Skip header:
@@ -105,22 +108,30 @@ to read-habitat-data
   ]
   ;print habitat_all_probs
   file-close
+  ]
 end
 
 
 To-report habitat-relation
   ;; Summing up all items v_prob, o_prob, r_prob and f_prob over all sublists of the habitat_all_prob lists
+  print "Habitat-relation..."
   foreach habitat_all_probs 
-    [?1 ->
+    [? ->
       let hr-v 0
       let hr-o 0
       let hr-r 0
       let hr-f 0
-      if sum(item 0 ?1 > 0)
-      [
-       set hr-v 1 
-      ]
+      (ifelse sum (item 0 ?) > 0 [set hr-v 1]
+             sum (item 1 ?) > 0 [set hr-o 1]
+             sum (item 2 ?) > 0 [set hr-r 1]
+             sum (item 3 ?) > 0 [set hr-f 1])
+      print hr-v
+      print hr-o
+      print hr-r
+      print hr-f
   ]
+  let habitat-relation (list hr-v hr-o hr-r hr-f)
+  set
       ;a b] -> let q a + b]
   ;; If reportet items bigger 1, set habitat-relation 1, otherwise 0
   ;if q > 1 [ set q 1]
@@ -146,6 +157,7 @@ end
 ;************************************************************
 to sensitivity-table
   print "Read sensitivity data..."
+  
   ;;loop through habitat_all_probs
   ;let objective 0
   ;; create habitat-relation-list from habitat_all_probs
@@ -214,6 +226,18 @@ end
 ;Create threat-table                                        *
 ;************************************************************
 to threat-table
+end
+
+;############################################################
+;PROCESSES
+;############################################################
+to lulc-map
+end
+  
+to habitat-quality-score ; store in list
+end
+  
+to biodiversity-score
 end
 
 ;********************************************************************
