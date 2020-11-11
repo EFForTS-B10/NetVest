@@ -129,9 +129,13 @@ To-report habitat-relation
       print hr-o
       print hr-r
       print hr-f
+      ;;create temporary list with habitat-relations of LULCs, hr = 0: no habitat, hr = 1: habitat
+      let habitat_relation (list hr-v hr-o hr-r hr-f)
+      set lulc_habitat_relation lput habitat_relation lulc_habitat_relation 
+      print lulc_habitat_relation
   ]
-  let habitat-relation (list hr-v hr-o hr-r hr-f)
-  set
+  report lulc_habitat_relation
+  
       ;a b] -> let q a + b]
   ;; If reportet items bigger 1, set habitat-relation 1, otherwise 0
   ;if q > 1 [ set q 1]
@@ -157,7 +161,7 @@ end
 ;************************************************************
 to sensitivity-table
   print "Read sensitivity data..."
-  
+  print lulc_habitat_relation
   ;;loop through habitat_all_probs
   ;let objective 0
   ;; create habitat-relation-list from habitat_all_probs
