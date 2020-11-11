@@ -3297,7 +3297,7 @@ SWITCH
 138
 generell-biodiv?
 generell-biodiv?
-1
+0
 1
 -1000
 
