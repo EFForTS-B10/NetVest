@@ -85,7 +85,7 @@ globals
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
-  ;HABITAT                  ;habitat-relation
+  lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs
 ]
 
@@ -3291,49 +3291,6 @@ NIL
 1
 
 SWITCH
-2735
-105
-2877
-138
-generell-biodiv?
-generell-biodiv?
-0
-1
--1000
-
-SWITCH
-2735
-150
-2882
-183
-modelorg-biodiv?
-modelorg-biodiv?
-1
-1
--1000
-
-SWITCH
-2735
-195
-2877
-228
-allplants-biodiv?
-allplants-biodiv?
-1
-1
--1000
-
-TEXTBOX
-2740
-80
-2890
-98
-Research Objective
-11
-0.0
-1
-
-SWITCH
 2730
 30
 2902
@@ -3445,6 +3402,16 @@ NIL
 NIL
 NIL
 1
+
+CHOOSER
+2730
+90
+2872
+135
+research-objective
+research-objective
+"generell-biodiv?" "modelorg-biodiv?" "allplants-biodiv?"
+0
 
 @#$#@#$#@
 ## Abstract of corresponding publication
