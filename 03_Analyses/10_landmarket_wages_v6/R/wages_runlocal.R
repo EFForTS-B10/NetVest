@@ -28,7 +28,7 @@ rb.max <- round(quantile(prices$rubber)[4])
 
 # Set general information
 n.random.seeds <- 5 
-price.interval.steps <- 5 # 50
+price.interval.steps <- 2 # 50
 op.int <- (op.max - op.min) / (price.interval.steps - 1)
 op <- seq(op.min, op.max, by=op.int)
 rb.int <- (rb.max - rb.min) / (price.interval.steps - 1)
@@ -63,7 +63,7 @@ p.oilpalm.distinct <- rep(p.oilpalm, each=length(expand.grid(rb,op)$Var1))
 # local:
 netlogopath <- file.path("C:/Program Files/NetLogo 6.1.0")
 modelpath <- "01_EFForTS-ABM/EFForTS-ABM.nlogo"
-outpath <- "03_Analyses/"
+outpath <- "03_Analyses/10_landmarket_wages_v6/data/"
 
 nl <- nl(nlversion = "6.1.0",
          nlpath = netlogopath,
@@ -132,7 +132,7 @@ print(nl)
 ## Run simulations:
 library(future)
 plan(multisession)
-results <- run_nl_all(nl, split=10)
+results <- run_nl_all(nl, split=2)
 
 ## Add landscapemetrics:
 ascdir <- file.path(dirname(nl@modelpath), "output")
@@ -143,6 +143,12 @@ results.lsm <- purrr::map_dfr(list.files(ascdir, pattern = "asc", full.names = T
   x.siminputrow <- as.numeric(x.split[[length(x.split) - 1]][[1]])
   x.seed <- as.numeric(x.split[[length(x.split) - 2]][[1]])
   x.raster <- raster(x)
+  
+  ## temporary fix:
+  ## netlogo asc files use NaN as default nodata value in the asc file header
+  ## this leads to problems when reading the raster because it sets ´zeros to NA
+  ## here we set NAs back to zertos manually:
+  x.raster <- reclassify(x.raster, cbind(NA, 0))
   
   ## Calculate landscape metrics:
   metrics <- c("lsm_l_ed", "lsm_l_shdi", "lsm_l_lsi", "lsm_l_lpi", "lsm_l_area_mn")
