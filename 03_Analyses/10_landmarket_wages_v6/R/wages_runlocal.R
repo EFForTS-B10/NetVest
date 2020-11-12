@@ -86,7 +86,8 @@ nl@experiment <- experiment(expname="invest",
                                       "lm.seller.area", "lm.buyer.area",
                                       "lm.seller.lut0.ineff", "lm.buyer.lut0.ineff",
                                       "lm.seller.lut1.ineff", "lm.buyer.lut1.ineff",
-                                      "hh.lut0.ineff.mean", "hh.lut1.ineff.mean"),
+                                      "hh.lut0.ineff.mean", "hh.lut1.ineff.mean",
+                                      "deforestation.pressure"),
                             constants = get.abm.defaults())
 
 
