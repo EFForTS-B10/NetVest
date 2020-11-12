@@ -1,3 +1,0 @@
-THREAT,MAX_DIST,WEIGHT,DECAY
-oil_palm,1.0,0.5,exponential
-rubber,1.0,1.0,exponential
