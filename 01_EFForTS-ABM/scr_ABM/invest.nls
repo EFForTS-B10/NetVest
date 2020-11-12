@@ -32,10 +32,10 @@ to translate-to-lulc-invest
   ; we create a new variable because p_landuse ist still needed for the simulation
   ask patches 
   [
-    if (p_landuse = -100) [set p_lulc 4] ;forest
-    if (p_landuse = 1) [set p_lulc 3] ;rubber
-    if (p_landuse = 0) [set p_lulc 2] ;oilplam
-    if (p_road = 1 and p_landuse = 4) [set p_lulc 1] ;village
+    if (p_landuse = -100) [set p_landuse_invest 4] ;forest
+    if (p_landuse = 1) [set p_landuse_invest 3] ;rubber
+    if (p_landuse = 0) [set p_landuse_invest 2] ;oilplam
+    if (p_road = 1 and p_landuse = 4) [set p_landuse_invest 1] ;village
   ]
 end
 
@@ -64,7 +64,7 @@ to write-lulc-map
   [
     while[xcount <= max-pxcor]
     [
-      gis:set-raster-value new-raster xcount ycount-raster [p_lulc] of patch xcount ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_landuse_invest] of patch xcount ycount
       set xcount xcount + 1
     ]
     set xcount 0
@@ -98,8 +98,8 @@ to write-threat-map [threat-name]
     while[xcount <= max-pxcor]
     [
       ;show [p_landuse] of patch xcount ycount = threat-value
-      if ([p_lulc] of patch xcount ycount = threat-value) [print threat-name]
-      ifelse ([p_lulc] of patch xcount ycount = threat-value)
+      if ([p_landuse_invest] of patch xcount ycount = threat-value) [print threat-name]
+      ifelse ([p_landuse_invest] of patch xcount ycount = threat-value)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
 ;
@@ -155,14 +155,16 @@ end
 
 to convert_to_tif [filename]
   py:set "filename" filename
-  
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
     "ds_in = gdal.Open(f'output/{filename}.asc')"
     "ds_out = drv.CreateCopy(f'output/{filename}.tif', ds_in)"
     "srs = osr.SpatialReference()"
-    "srs.ImportFromEPSG(4326)"
+    "srs.ImportFromEPSG(32748)"
     "ds_out.SetProjection(srs.ExportToWkt())"
+    "ds_out.GetRasterBand(1).SetNoDataValue(-9999)"
+    "ds_in = None"
+    "ds_out = None"
   )
 end
 
