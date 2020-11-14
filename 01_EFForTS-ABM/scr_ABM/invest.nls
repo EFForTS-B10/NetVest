@@ -43,7 +43,7 @@ end
 
 to write-maps
  ; here we want create a different patch variable from landuse and call   adjust-lulc-invest  to populate it
-  write-lulc-map
+  write-lulc-map-simple
   
   
   write-dummy-sensitivity
@@ -54,7 +54,18 @@ to write-maps
   write-threat-map "oil_palm"
 end
 
-to write-lulc-map
+
+
+
+to write-lulc-map-simple
+  let new-raster gis:patch-dataset p_landuse_invest
+  let filename (word "output/lulc.asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
+
+
+to write-lulc-map-complicated
   ; Write landuse map
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
   let xcount 0
@@ -72,7 +83,7 @@ to write-lulc-map
     set ycount-raster ycount-raster + 1
   ]
 
-  let filename (word "output/lulc_test.asc")
+  let filename (word "output/lulc.asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
 end
@@ -98,7 +109,7 @@ to write-threat-map [threat-name]
     while[xcount <= max-pxcor]
     [
       ;show [p_landuse] of patch xcount ycount = threat-value
-      if ([p_landuse_invest] of patch xcount ycount = threat-value) [print threat-name]
+      ;if ([p_landuse_invest] of patch xcount ycount = threat-value) [print threat-name]
       ifelse ([p_landuse_invest] of patch xcount ycount = threat-value)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
@@ -145,7 +156,7 @@ end
 
 
 to convert-maps
-  foreach ["rubber_c" "oil_palm_c" "lulc_test"]
+  foreach ["rubber_c" "oil_palm_c" "lulc"]
   [
     [x] ->
     convert_to_tif x
@@ -168,15 +179,6 @@ to convert_to_tif [filename]
   )
 end
 
-to convert_to_tif_simple [filename]
-  py:set "filename" filename
-  (py:run
-    in_name = f'{filename}.asc'
-    out_name = f'{filename}.tif'
-    gdal.Translate(out_name, in_name,format='AAIGrid')
-convert_from_tif_simple(filename)
-
-
 to convert-habitat-quality-to-asc
   (py:run
     "filename = 'output/output/quality_c_test'"
@@ -194,7 +196,7 @@ to run-invest
     "'half_saturation_constant': '0.5',"
     "'results_suffix': 'test',"
     "'workspace_dir': working_directory,"
-    "'lulc_cur_path': os.path.join(working_directory, 'lulc_test.tif'),"
+    "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
     "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
     "'threat_raster_folder': working_directory,"
     "'threats_table_path': os.path.join(working_directory, 'threats_samp.csv'),"
