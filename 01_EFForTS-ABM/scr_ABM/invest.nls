@@ -168,6 +168,24 @@ to convert_to_tif [filename]
   )
 end
 
+to convert_to_tif_simple [filename]
+  py:set "filename" filename
+  (py:run
+    in_name = f'{filename}.asc'
+    out_name = f'{filename}.tif'
+    gdal.Translate(out_name, in_name,format='AAIGrid')
+convert_from_tif_simple(filename)
+
+
+to convert-habitat-quality-to-asc
+  (py:run
+    "filename = 'output/output/quality_c_test'"
+    "in_name = f'{filename}.tif'"
+    "out_name = f'{filename}.asc'"
+    "gdal.Translate(out_name, in_name,format='AAIGrid')"
+  )
+end
+
 to run-invest
   (py:run
     "print('setting up parameters')"
@@ -183,4 +201,10 @@ to run-invest
     "}"
     "habitat_quality.execute(args)"
   )
+end
+
+
+to save-habitat-quality-to-patch
+  let qualitydata gis:load-dataset "output/output/quality_c_test.asc"
+  gis:apply-raster qualitydata p_habitat_quality
 end

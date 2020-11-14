@@ -122,8 +122,8 @@ patches-own
   p_MBV
   p_RMBV
 
-  ; variable for generation of lulc map
-  p_lulc
+  ; variable for storing habitat quality
+  p_habitat_quality
 ]
 
 luts-own
@@ -3413,6 +3413,40 @@ research-objective
 "generell-biodiv?" "modelorg-biodiv?" "allplants-biodiv?"
 0
 
+BUTTON
+2715
+460
+2952
+493
+NIL
+save-habitat-quality-to-patch
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2725
+410
+2967
+443
+NIL
+convert-habitat-quality-to-asc
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 @#$#@#$#@
 ## Abstract of corresponding publication
 
@@ -3835,7 +3869,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
