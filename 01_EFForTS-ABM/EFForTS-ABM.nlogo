@@ -344,6 +344,11 @@ To go
   ; If moutput maps should be written, do it now
   if (write-maps?) [write-map-files]
 
+  ; run invest
+  show ticks
+  if (ticks = 5) [setup-invest]
+  if (ticks mod 5 = 0) [prepare-and-run-invest]
+
   ;; Check stop condition:
   if (ticks = sim-time) [print "Simulation finished!" stop]
 
@@ -914,7 +919,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-16
+3
 
 CHOOSER
 5

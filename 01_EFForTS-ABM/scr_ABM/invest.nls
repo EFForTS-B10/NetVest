@@ -1,13 +1,13 @@
 extensions [ py gis]
 
 to setup-invest ; setup the connection to python and import a few libraries
+  print["setting up invest"]
   py:setup "/home/ecomod/anaconda3/envs/forge/bin/python"     ;py:python
   py:run "import sys"
   py:run "import os"
   py:run "import natcap.invest"
   py:run "from natcap.invest import habitat_quality"
   py:run "from osgeo import gdal, osr"
-  reset-ticks
 end
 
 
@@ -25,10 +25,19 @@ to get-sys-info ; Here we use the `sys` package in python to output some system 
   output-print ""
 end
 
+
+to prepare-and-run-invest
+  translate-to-lulc-invest
+  write-maps
+  convert-maps
+  run-invest
+  convert-habitat-quality-to-asc
+  save-habitat-quality-to-patch
+end
+
+
 to translate-to-lulc-invest
-    
-  ;; TEMPORARY ADJUSTMENT:
-  ;; The functions use while loops to loop trough landuses: also include roads?
+  print["translating map"]
   ; we create a new variable because p_landuse ist still needed for the simulation
   ask patches 
   [
@@ -42,6 +51,7 @@ end
 
 
 to write-maps
+  print["writing maps to disk"]
  ; here we want create a different patch variable from landuse and call   adjust-lulc-invest  to populate it
   write-lulc-map-simple
   
@@ -179,14 +189,7 @@ to convert_to_tif [filename]
   )
 end
 
-to convert-habitat-quality-to-asc
-  (py:run
-    "filename = 'output/output/quality_c_test'"
-    "in_name = f'{filename}.tif'"
-    "out_name = f'{filename}.asc'"
-    "gdal.Translate(out_name, in_name,format='AAIGrid')"
-  )
-end
+
 
 to run-invest
   (py:run
@@ -205,8 +208,19 @@ to run-invest
   )
 end
 
+to convert-habitat-quality-to-asc
+  print["converting invest results to asc"]
+  (py:run
+    "filename = 'output/output/quality_c_test'"
+    "in_name = f'{filename}.tif'"
+    "out_name = f'{filename}.asc'"
+    "gdal.Translate(out_name, in_name,format='AAIGrid')"
+  )
+end
+
 
 to save-habitat-quality-to-patch
+  print["saving habitat quality patch variable"]
   let qualitydata gis:load-dataset "output/output/quality_c_test.asc"
   gis:apply-raster qualitydata p_habitat_quality
 end
