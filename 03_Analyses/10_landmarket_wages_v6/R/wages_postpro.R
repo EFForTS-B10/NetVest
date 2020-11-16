@@ -11,7 +11,7 @@ library(Refforts)
 main.dir <- "03_Analyses/10_landmarket_wages_v6/"
 
 ## Load preliminary results:
-nl <- readRDS(file.path(main.dir, "data/sims_wages_distinct_v10_replicates.rds"))
+nl <- readRDS(file.path(main.dir, "data/sims_wages_final_v1.rds"))
 #timeplot <- doplot.abm.timeseries(nl, metrics=nl@experiment@metrics)
 #timeplot
 
@@ -43,7 +43,8 @@ var.names <- c("rubber_area",
                "lm_oilpalm_ineff_diff",
                "lm_rubber_ineff_diff",
                "lm_area_diff",
-               "lm_ratio")
+               "lm_ratio",
+               "deforestation_pressure")
 
 
 # process data
@@ -78,7 +79,8 @@ res_agg <- res_agg %>%
                    lm_oilpalm_ineff_diff = mean(lm.buyer.lut0.ineff - lm.seller.lut0.ineff),
                    lm_rubber_ineff_diff = mean(lm.buyer.lut1.ineff - lm.seller.lut1.ineff),
                    lm_area_diff = mean(lm.buyer.area - lm.seller.area),
-                   lm_ratio = (lm_seller_wealth_k / lm_buyer_wealth_k) * 100) %>% 
+                   lm_ratio = (lm_seller_wealth_k / lm_buyer_wealth_k) * 100,
+                   deforestation_pressure = mean(deforestation.pressure)) %>% 
   dplyr::ungroup() %>% 
   dplyr::select(rubber_price, oilpalm_price, wages, var.names) %>% 
   dplyr::mutate(landscape_type = case_when(rubber_area >= 0.75 ~ "rubber_dominated",
@@ -244,47 +246,35 @@ p_ef_bio <- pf_lines(res_agg_yield, "biodiversity", "biodiversity index \n [rela
 pall <- cowplot::plot_grid(plotlist=list(p_ef_con,p_ef_car,p_ef_bio), ncol=1)
 util.ggsave(plot=pall, filename="lines_ef", path=file.path(main.dir, "figures"), units = "cm", width=10, height=15, dpi=300)
 
+####################################################
+### Plot 6: Deforestation pressure
+p_dp <- pf_lines(res_agg_yield, "deforestation_pressure", "deforestation pressure \n [mean field cells]")
+util.ggsave(plot=p_dp, filename="lines_deforestation", path=file.path(main.dir, "figures"), units = "cm", width=10, height=5, dpi=300)
+
+
+
+
 
 ####################################################
 ### Plot: all lineplots together on one page:
 
-pall <- cowplot::plot_grid(plotlist=list(p_op_area + guides(color="none"), 
+pall <- cowplot::plot_grid(plotlist=list(p_abandoned + theme(legend.position = c(0.4,0.6),
+                                                             legend.background = element_rect(color=NA, fill="grey80")),
+                                         p_op_area + guides(color="none"), 
                                          p_ed + guides(color="none"), 
                                          p_hh_nr + guides(color="none"),
-                                         p_hh_size + guides(color="none"),
                                          p_immi_nr + guides(color="none"),
-                                         p_abandoned + theme(legend.position = c(0.3,0.6),
-                                                             legend.background = element_rect(fill=NA)),
+                                         p_hh_size + guides(color="none"),
                                          p_op_yield + guides(color="none"), 
-                                         p_rb_yield + guides(color="none")), 
-                           ncol=2,
+                                         p_rb_yield + guides(color="none"),
+                                         p_dp + guides(color="none")), 
+                           ncol=3,
                            labels = "AUTO") 
 
-util.ggsave(plot=pall, filename="lines_panel", path=file.path(main.dir, "figures"), units = "cm", width=20, height=25, dpi=300)
+util.ggsave(plot=pall, filename="lines_panel", path=file.path(main.dir, "figures"), units = "cm", width=20, height=20, dpi=300)
 
 
 ####################################################
-### Plot 6: Trade offs as hull plots in dependence of op area
-
-############################
-## Plotting functions:
-
-p1 <- pf_hull(res_agg_yield, "biodiversity", "carbon_k") + 
-  geom_vline(xintercept=mean(res_agg_yield$biodiversity), lty=2) +
-  geom_hline(yintercept=mean(res_agg_yield$carbon_k), lty=2)
-
-p2 <- pf_hull(res_agg_yield, "biodiversity", "consumption_k") + 
-  geom_vline(xintercept=mean(res_agg_yield$biodiversity), lty=2) +
-  geom_hline(yintercept=mean(res_agg_yield$consumption_k), lty=2)
-
-p3 <- pf_hull(res_agg_yield, "carbon_k", "consumption_k") + 
-  geom_vline(xintercept=mean(res_agg_yield$carbon_k), lty=2) +
-  geom_hline(yintercept=mean(res_agg_yield$consumption_k), lty=2)
-
-cowplot::plot_grid(plotlist=list(p1,p2,p3), ncol=1)
-util.ggsave(filename="hull_ef", path=file.path(main.dir, "figures"), units = "cm", width=10, height=15, dpi=300)
-
-
 ### PLOT 7: Tradeoffs as ranks:
 rank_cols <- c("biodiversity" = "#28995F",
                "carbon" = "#244764",
@@ -320,8 +310,6 @@ util.ggsave(filename="bar_ef", path=file.path(main.dir, "figures"), units = "cm"
 ##### STANDARDIZED REGRESSION COEFFICIENTS:
 #############################################################################################
 
-library(ggpattern)
-
 res_lm <- results %>% 
   dplyr::filter(`[step]` >= 30) %>% 
   dplyr::rowwise() %>% 
@@ -339,11 +327,12 @@ res_lm <- results %>%
                 capitalstock = p.capitalstock.mean,
                 consumption = hh.consumption.mean,
                 biodiversity =p.sar,
+                deforestation_pressure = deforestation.pressure,
                 lm_seller_wealth = lm.seller.wealth,
                 lm_buyer_wealth = lm.buyer.wealth) %>% 
   dplyr::mutate(carbon_k = (lut0.carbon + lut1.carbon) / 1000)
                 
-lm.output.vars <- c("oilpalm_area", "ed", "household_nr", "household_size", "oilpalm_yield", "rubber_yield", "consumption", "carbon_k", "biodiversity")
+lm.output.vars <- c("oilpalm_area", "ed", "deforestation_pressure", "household_nr", "household_size", "oilpalm_yield", "rubber_yield", "consumption", "carbon_k", "biodiversity")
 
 res_lm_fit <- purrr::map_dfr(lm.output.vars, function(x){
   
@@ -373,10 +362,10 @@ res_lm_fit <- purrr::map_dfr(lm.output.vars, function(x){
   dplyr::mutate(type = ifelse(grepl(":", parameter), "interaction", "direct")) %>% 
   tidyr::separate(parameter, into=c("paramA", "paramB"), sep=":") %>% 
   dplyr::mutate(paramB = ifelse(is.na(paramB), paramA, paramB)) %>% 
-  dplyr::mutate(category = case_when(output %in% lm.output.vars[1:2] ~ "landscape",
-                                output %in% lm.output.vars[3:4] ~ "households",
-                                output %in% lm.output.vars[5:6] ~ "yields",
-                                output %in% lm.output.vars[7:9] ~ "ef"))
+  dplyr::mutate(category = case_when(output %in% lm.output.vars[1:3] ~ "landscape",
+                                output %in% lm.output.vars[4:5] ~ "households",
+                                output %in% lm.output.vars[6:7] ~ "yields",
+                                output %in% lm.output.vars[8:10] ~ "ef"))
   
 res_lm_fit$output <- factor(res_lm_fit$output, levels=lm.output.vars)
 res_lm_fit$category <- factor(res_lm_fit$category, levels=c("landscape", "households", "yields", "ef"))
@@ -385,23 +374,6 @@ res_lm_fit$category <- factor(res_lm_fit$category, levels=c("landscape", "househ
 cols <- c("oilpalm_price" = "#C74B4E",
           "rubber_price" = "#EBBD28",
           "wages" = "#2476C0")
-
-
-ggplot(res_lm_fit) +
-  coord_flip() +
-  facet_grid(category~type, scales="free", switch = "y") +
-  geom_col_pattern(aes(x=output, y=Estimate, fill=paramA, pattern_fill=paramB, pattern_color=paramA), color="black", pattern_density=0.5, pattern_key_scale_factor = 0.5, position="dodge") +
-  guides(pattern_fill=guide_legend(title="Parameter"), fill=guide_legend(title="Parameter"), pattern_color="none") +
-  geom_hline(yintercept = 0, lty=2) +
-  scale_fill_manual(values=cols) +
-  scale_pattern_fill_manual(values=cols) +
-  scale_pattern_color_manual(values=cols) +
-  ggthemes::theme_tufte(base_size=12) +
-  theme(strip.placement = "outside",
-        panel.border = element_rect(fill=NA))
-
-util.ggsave(filename="src_striped", path=file.path(main.dir, "figures"), units = "cm", width=15, height=15, dpi=300)
-
 
 
 res_lm_fit$paramA <- factor(res_lm_fit$paramA, levels=c("rubber_price", "oilpalm_price", "wages"), labels=c("(a) rubber price", "(b) palm oil price", "(c) wage cost factor"))
