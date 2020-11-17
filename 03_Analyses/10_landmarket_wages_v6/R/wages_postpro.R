@@ -248,7 +248,7 @@ util.ggsave(plot=pall, filename="lines_ef", path=file.path(main.dir, "figures"),
 
 ####################################################
 ### Plot 6: Deforestation pressure
-p_dp <- pf_lines(res_agg_yield, "deforestation_pressure", "deforestation pressure \n [mean field cells]")
+p_dp <- pf_lines(res_agg_yield, "deforestation_pressure", "deforestation pressure \n [cells]")
 util.ggsave(plot=p_dp, filename="lines_deforestation", path=file.path(main.dir, "figures"), units = "cm", width=10, height=5, dpi=300)
 
 
@@ -258,13 +258,13 @@ util.ggsave(plot=p_dp, filename="lines_deforestation", path=file.path(main.dir, 
 ####################################################
 ### Plot: all lineplots together on one page:
 
-pall <- cowplot::plot_grid(plotlist=list(p_abandoned + theme(legend.position = c(0.4,0.6),
-                                                             legend.background = element_rect(color=NA, fill="grey80")),
-                                         p_op_area + guides(color="none"), 
+pall <- cowplot::plot_grid(plotlist=list(p_op_area + guides(color="none"), 
                                          p_ed + guides(color="none"), 
                                          p_hh_nr + guides(color="none"),
-                                         p_immi_nr + guides(color="none"),
                                          p_hh_size + guides(color="none"),
+                                         p_immi_nr + guides(color="none"),
+                                         p_abandoned + theme(legend.position = c(0.4,0.6),
+                                                             legend.background = element_rect(color=NA, fill="grey90")),
                                          p_op_yield + guides(color="none"), 
                                          p_rb_yield + guides(color="none"),
                                          p_dp + guides(color="none")), 
