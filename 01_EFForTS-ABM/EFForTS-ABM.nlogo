@@ -345,10 +345,11 @@ To go
   if (write-maps?) [write-map-files]
 
   ; run invest
-  show ticks
-  if (ticks = 5) [setup-invest]
-  if (ticks mod 5 = 0) [prepare-and-run-invest]
 
+  if (invest-habitatquality?)[
+    if (ticks = 5) [setup-invest]
+    if (ticks mod 5 = 0) [prepare-and-run-invest]
+  ]
   ;; Check stop condition:
   if (ticks = sim-time) [print "Simulation finished!" stop]
 
@@ -1108,7 +1109,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-1
+0
 1
 -1000
 
