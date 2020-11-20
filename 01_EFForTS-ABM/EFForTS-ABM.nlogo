@@ -87,6 +87,7 @@ globals
   sensitivity_table        ;table with sensitivity of LULCs to threats
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs
+  invest-habitatquality ;switch to turn the whole thing on
 ]
 
 ; Define patch properties:
