@@ -46,7 +46,9 @@ nl@experiment <- experiment(expname="invest",
 ## For example, in order to change the default map (hundred-farmers3) to the landmarkets1 map you can do:
 ## nl <- set.nl.constant(nl, "which-map", "\"landmarkets1\"")
 ## Or, if you want to disable the plantdiv model:
-## nl <- set.nl.constant(nl, "invest_plantdiv?", "false")
+##nl <- set.nl.constant(nl, "invest_plantdiv?", "true")
+
+nl <- set.nl.constant(nl, "invest-habitatquality?", "true")
 
 
 ## Add simple simdesign
