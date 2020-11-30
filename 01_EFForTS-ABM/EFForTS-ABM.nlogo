@@ -85,8 +85,8 @@ globals
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
-  lulc_habitat_relation         ;list of habitat-relation for sensitivity table
-  filename_probs
+  lulc_habitat_relation    ;list of habitat-relation for sensitivity table
+  filename_probs           ;filename of probability data
 ]
 
 ; Define patch properties:
@@ -3835,7 +3835,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
