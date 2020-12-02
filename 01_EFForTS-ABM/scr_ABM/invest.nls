@@ -5,7 +5,7 @@ to setup-invest ; setup the connection to python and import a few libraries
   print["setting up invest"]
   ;py:python
   ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"     ;anaconda environment
-  py:setup "/home/cloud/pythonenvironment" ;pip environment
+  py:setup "/home/cloud/pythonenvironment/bin/python" ;pip environment
   py:run "import sys"
   py:run "import os"
   py:run "import natcap.invest"
