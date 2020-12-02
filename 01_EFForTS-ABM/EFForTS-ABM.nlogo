@@ -85,8 +85,14 @@ globals
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
+<<<<<<< HEAD
   lulc_habitat_relation    ;list of habitat-relation for sensitivity table
   filename_probs           ;filename of probability data
+=======
+  lulc_habitat_relation         ;list of habitat-relation for sensitivity table
+  filename_probs
+  invest-habitatquality ;switch to turn the whole thing on
+>>>>>>> e8116c4a8de0c8b7ab1c9b0fed100139d3e5fa33
 ]
 
 ; Define patch properties:
@@ -122,8 +128,8 @@ patches-own
   p_MBV
   p_RMBV
 
-  ; variable for generation of lulc map
-  p_lulc
+  ; variable for storing habitat quality
+  p_habitat_quality
 ]
 
 luts-own
@@ -344,6 +350,12 @@ To go
   ; If moutput maps should be written, do it now
   if (write-maps?) [write-map-files]
 
+  ; run invest
+
+  if (invest-habitatquality?)[
+    if (ticks = 5) [setup-invest]
+    if (ticks mod 5 = 0) [prepare-and-run-invest]
+  ]
   ;; Check stop condition:
   if (ticks = sim-time) [print "Simulation finished!" stop]
 
@@ -914,7 +926,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-16
+3
 
 CHOOSER
 5
@@ -1103,7 +1115,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-1
+0
 1
 -1000
 
@@ -3412,6 +3424,40 @@ research-objective
 research-objective
 "generell-biodiv?" "modelorg-biodiv?" "allplants-biodiv?"
 0
+
+BUTTON
+2715
+460
+2952
+493
+NIL
+save-habitat-quality-to-patch
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2725
+410
+2967
+443
+NIL
+convert-habitat-quality-to-asc
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## Abstract of corresponding publication

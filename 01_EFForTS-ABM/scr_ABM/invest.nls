@@ -1,13 +1,14 @@
 extensions [ py gis]
 
 to setup-invest ; setup the connection to python and import a few libraries
-  py:setup "/home/ecomod/anaconda3/envs/forge/bin/python"     ;py:python
+  ;notice that home folder has to be set manually. Is there a way around that?
+  print["setting up invest"]
+  py:setup "/home/cloud/anaconda3/envs/forge/bin/python"     ;py:python
   py:run "import sys"
   py:run "import os"
   py:run "import natcap.invest"
   py:run "from natcap.invest import habitat_quality"
   py:run "from osgeo import gdal, osr"
-  reset-ticks
 end
 
 
@@ -25,25 +26,35 @@ to get-sys-info ; Here we use the `sys` package in python to output some system 
   output-print ""
 end
 
+
+to prepare-and-run-invest
+  translate-to-lulc-invest
+  write-maps
+  convert-maps
+  run-invest
+  convert-habitat-quality-to-asc
+  save-habitat-quality-to-patch
+end
+
+
 to translate-to-lulc-invest
-    
-  ;; TEMPORARY ADJUSTMENT:
-  ;; The functions use while loops to loop trough landuses: also include roads?
+  print["translating map"]
   ; we create a new variable because p_landuse ist still needed for the simulation
   ask patches 
   [
-    if (p_landuse = -100) [set p_lulc 4] ;forest
-    if (p_landuse = 1) [set p_lulc 3] ;rubber
-    if (p_landuse = 0) [set p_lulc 2] ;oilplam
-    if (p_road = 1 and p_landuse = 4) [set p_lulc 1] ;village
+    if (p_landuse = -100) [set p_landuse_invest 4] ;forest
+    if (p_landuse = 1) [set p_landuse_invest 3] ;rubber
+    if (p_landuse = 0) [set p_landuse_invest 2] ;oilplam
+    if (p_road = 1 and p_landuse = 4) [set p_landuse_invest 1] ;village
   ]
 end
 
 
 
 to write-maps
+  print["writing maps to disk"]
  ; here we want create a different patch variable from landuse and call   adjust-lulc-invest  to populate it
-  write-lulc-map
+  write-lulc-map-simple
   
   
   write-dummy-sensitivity
@@ -54,7 +65,18 @@ to write-maps
   write-threat-map "oil_palm"
 end
 
-to write-lulc-map
+
+
+
+to write-lulc-map-simple
+  let new-raster gis:patch-dataset p_landuse_invest
+  let filename (word "output/lulc.asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
+
+
+to write-lulc-map-complicated
   ; Write landuse map
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
   let xcount 0
@@ -64,7 +86,7 @@ to write-lulc-map
   [
     while[xcount <= max-pxcor]
     [
-      gis:set-raster-value new-raster xcount ycount-raster [p_lulc] of patch xcount ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_landuse_invest] of patch xcount ycount
       set xcount xcount + 1
     ]
     set xcount 0
@@ -72,7 +94,7 @@ to write-lulc-map
     set ycount-raster ycount-raster + 1
   ]
 
-  let filename (word "output/lulc_test.asc")
+  let filename (word "output/lulc.asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
 end
@@ -98,8 +120,8 @@ to write-threat-map [threat-name]
     while[xcount <= max-pxcor]
     [
       ;show [p_landuse] of patch xcount ycount = threat-value
-      if ([p_lulc] of patch xcount ycount = threat-value) [print threat-name]
-      ifelse ([p_lulc] of patch xcount ycount = threat-value)
+      ;if ([p_landuse_invest] of patch xcount ycount = threat-value) [print threat-name]
+      ifelse ([p_landuse_invest] of patch xcount ycount = threat-value)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
 ;
@@ -145,7 +167,7 @@ end
 
 
 to convert-maps
-  foreach ["rubber_c" "oil_palm_c" "lulc_test"]
+  foreach ["rubber_c" "oil_palm_c" "lulc"]
   [
     [x] ->
     convert_to_tif x
@@ -155,16 +177,20 @@ end
 
 to convert_to_tif [filename]
   py:set "filename" filename
-  
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
     "ds_in = gdal.Open(f'output/{filename}.asc')"
     "ds_out = drv.CreateCopy(f'output/{filename}.tif', ds_in)"
     "srs = osr.SpatialReference()"
-    "srs.ImportFromEPSG(4326)"
+    "srs.ImportFromEPSG(32748)"
     "ds_out.SetProjection(srs.ExportToWkt())"
+    "ds_out.GetRasterBand(1).SetNoDataValue(-9999)"
+    "ds_in = None"
+    "ds_out = None"
   )
 end
+
+
 
 to run-invest
   (py:run
@@ -174,11 +200,28 @@ to run-invest
     "'half_saturation_constant': '0.5',"
     "'results_suffix': 'test',"
     "'workspace_dir': working_directory,"
-    "'lulc_cur_path': os.path.join(working_directory, 'lulc_test.tif'),"
+    "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
     "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
     "'threat_raster_folder': working_directory,"
     "'threats_table_path': os.path.join(working_directory, 'threats_samp.csv'),"
     "}"
     "habitat_quality.execute(args)"
   )
+end
+
+to convert-habitat-quality-to-asc
+  print["converting invest results to asc"]
+  (py:run
+    "filename = 'output/output/quality_c_test'"
+    "in_name = f'{filename}.tif'"
+    "out_name = f'{filename}.asc'"
+    "gdal.Translate(out_name, in_name,format='AAIGrid')"
+  )
+end
+
+
+to save-habitat-quality-to-patch
+  print["saving habitat quality patch variable"]
+  let qualitydata gis:load-dataset "output/output/quality_c_test.asc"
+  gis:apply-raster qualitydata p_habitat_quality
 end

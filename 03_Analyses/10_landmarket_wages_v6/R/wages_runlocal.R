@@ -86,7 +86,8 @@ nl@experiment <- experiment(expname="invest",
                                       "lm.seller.area", "lm.buyer.area",
                                       "lm.seller.lut0.ineff", "lm.buyer.lut0.ineff",
                                       "lm.seller.lut1.ineff", "lm.buyer.lut1.ineff",
-                                      "hh.lut0.ineff.mean", "hh.lut1.ineff.mean"),
+                                      "hh.lut0.ineff.mean", "hh.lut1.ineff.mean",
+                                      "deforestation.pressure"),
                             constants = get.abm.defaults())
 
 
@@ -114,9 +115,7 @@ nl <- set.nl.constant(nl, "setup-hh-network", "\"hh-nw-distance\"")
 nl <- set.nl.constant(nl, "invest_plantdiv?", "true")
 
 nl <- set.nl.constant(nl, "invest-habitatquality?", "false")
-nl <- set.nl.constant(nl, "generell-biodiv?", "false")
-nl <- set.nl.constant(nl, "modelorg-biodiv?", "false")
-nl <- set.nl.constant(nl, "allplants-biodiv?", "false")
+nl <- set.nl.constant(nl, "research-objective", "\"generell-biodiv?\"")
 
 nl <- set.nl.constant(nl, "hh-nw-param1", 20)
 nl <- set.nl.constant(nl, "min-wealth", 30)

@@ -17,11 +17,14 @@ library(testthat)
 set.seed(457348)
 
 ## Define nl object
-netlogopath <- file.path("C:/Program Files/NetLogo 6.1.0")
-modelpath <- "01_EFForTS-ABM/EFForTS-ABM.nlogo"
-outpath <- "03_Analyses/"
+netlogopath <- file.path("/home/cloud/NetLogo\ 6.1.1/")
+#netlogopath <- file.path("C:/Program Files/NetLogo 6.1.0")
+modelpath <- "/home/cloud/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo"
+#modelpath <- "01_EFForTS-ABM/EFForTS-ABM.nlogo"
 
-nl <- nl(nlversion = "6.1.0",
+outpath <- "/home/cloud/EFForTS-ABM/03_Analyses/"
+
+nl <- nl(nlversion = "6.1.1",
          nlpath = netlogopath,
          modelpath = modelpath,
          jvmmem = 1024)
@@ -43,7 +46,9 @@ nl@experiment <- experiment(expname="invest",
 ## For example, in order to change the default map (hundred-farmers3) to the landmarkets1 map you can do:
 ## nl <- set.nl.constant(nl, "which-map", "\"landmarkets1\"")
 ## Or, if you want to disable the plantdiv model:
-## nl <- set.nl.constant(nl, "invest_plantdiv?", "false")
+##nl <- set.nl.constant(nl, "invest_plantdiv?", "true")
+
+nl <- set.nl.constant(nl, "invest-habitatquality?", "true")
 
 
 ## Add simple simdesign
