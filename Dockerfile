@@ -20,12 +20,12 @@ COPY . /InVEST/environment.txt
 COPY . /EFForTS-ABM/01_EFForTS-ABM/tests/nlrx_simple.R
 
 
-python3 -m venv pythonenvironment
-source pythonenvironment/bin/activate
+RUN python3 -m venv pythonenvironment
+RUN source pythonenvironment/bin/activate
 
 
 #install 'wheel' before?
-pip install -r environment.txt
+RUN pip install -r environment.txt
 
 
 ##install netlogo
