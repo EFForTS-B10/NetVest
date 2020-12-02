@@ -86,8 +86,8 @@ globals
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
 <<<<<<< HEAD
-  lulc_habitat_relation    ;list of habitat-relation for sensitivity table
-  filename_probs           ;filename of probability data
+  ;lulc_habitat_relation    ;list of habitat-relation for sensitivity table
+  ;filename_probs           ;filename of probability data
 =======
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs
@@ -3078,7 +3078,7 @@ SWITCH
 108
 invest_plantdiv?
 invest_plantdiv?
-0
+1
 1
 -1000
 
