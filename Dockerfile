@@ -31,3 +31,12 @@ RUN pip install -r environment.txt
 ##install netlogo
 #wget http://ccl.northwestern.edu/netlogo/6.1.1/NetLogo-6.1.1-64.tgz
 #tar -xzf NetLogo-6.1.1-64.tgz
+
+#install R packages
+RUN apt-get install -y libssh-dev
+RUN apt-get install libnlopt-dev
+RUN apt-get install libudunits2-dev
+
+RUN install2.r --error \
+    nloptr
+    
