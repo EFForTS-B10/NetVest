@@ -3,29 +3,29 @@ FROM rocker/geospatial:4.0.0-ubuntu18.04
 RUN apt-get update -y
 RUN apt-get install -y libspatialindex-dev
 
-RUN apt install python3-venv python3-pip
+RUN apt install -y python3-venv python3-pip
 
-RUN add-apt-repository ppa:ubuntugis/ppa
-RUN apt-get update
-RUN apt-get install gdal-bin
-RUN apt-get install libgdal-dev
+RUN add-apt-repository -y ppa:ubuntugis/ppa
+RUN apt-get -y update
+RUN apt-get -y install gdal-bin
+RUN apt-get -y install libgdal-dev
 RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
 RUN export C_INCLUDE_PATH=/usr/include/gdal
 
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 
-RUN pip install GDAL==2.4.2
+RUN pip3 install GDAL==2.4.2
+RUN mkdir setupfiles
+COPY environment.txt /setupfiles/environment.txt 
+#COPY /EFForTS-ABM/01_EFForTS-ABM/tests/nlrx_simple.R /setupfiles/nlrx_simple.R
 
-COPY . /InVEST/environment.txt
-COPY . /EFForTS-ABM/01_EFForTS-ABM/tests/nlrx_simple.R
 
-
-RUN python3 -m venv pythonenvironment
-RUN source pythonenvironment/bin/activate
+#RUN python3 -m venv pythonenvironment
+#RUN source pythonenvironment/bin/activate
 
 
 #install 'wheel' before?
-RUN pip install -r environment.txt
+RUN pip install -r /setupfiles/environment.txt
 
 
 ##install netlogo
