@@ -3,9 +3,9 @@ extensions [ py gis]
 to setup-invest ; setup the connection to python and import a few libraries
   ;notice that home folder has to be set manually. Is there a way around that?
   print["setting up invest"]
-  ;py:python
   ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"     ;anaconda environment
-  py:setup "/home/cloud/pythonenvironment/bin/python" ;pip environment
+  ;py:setup "/home/cloud/pythonenvironment/bin/python" ;pip environment
+  py:setup py:python3 ;in the docker-container we dont need a virtual environment
   py:run "import sys"
   py:run "import os"
   py:run "import natcap.invest"
