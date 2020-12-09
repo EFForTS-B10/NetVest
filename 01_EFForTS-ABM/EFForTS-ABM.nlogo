@@ -85,9 +85,14 @@ globals
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
+<<<<<<< HEAD
+  ;lulc_habitat_relation    ;list of habitat-relation for sensitivity table
+  ;filename_probs           ;filename of probability data
+=======
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs
   invest-habitatquality ;switch to turn the whole thing on
+>>>>>>> e8116c4a8de0c8b7ab1c9b0fed100139d3e5fa33
 ]
 
 ; Define patch properties:
@@ -3073,7 +3078,7 @@ SWITCH
 108
 invest_plantdiv?
 invest_plantdiv?
-0
+1
 1
 -1000
 
