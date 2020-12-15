@@ -1,5 +1,9 @@
 FROM rocker/geospatial:4.0.0-ubuntu18.04
 
+WORKDIR .
+
+
+
 RUN apt-get update -y
 RUN apt-get install -y libspatialindex-dev
 
@@ -16,7 +20,8 @@ RUN pip3 install --upgrade pip
 
 RUN pip3 install GDAL==2.4.2
 RUN mkdir setupfiles
-COPY environment.txt /setupfiles/environment.txt 
+COPY . .
+#COPY environment.txt /setupfiles/environment.txt 
 #COPY /EFForTS-ABM/01_EFForTS-ABM/tests/nlrx_simple.R /setupfiles/nlrx_simple.R
 
 
@@ -25,7 +30,7 @@ COPY environment.txt /setupfiles/environment.txt
 
 
 #install 'wheel' before?
-RUN pip install -r /setupfiles/environment.txt
+RUN pip install -r environment.txt
 
 
 ##install netlogo
@@ -34,9 +39,13 @@ RUN pip install -r /setupfiles/environment.txt
 
 #install R packages
 RUN apt-get install -y libssh-dev
-RUN apt-get install libnlopt-dev
-RUN apt-get install libudunits2-dev
+RUN apt-get install -y libnlopt-dev
+RUN apt-get install -y libudunits2-dev
 
 RUN install2.r --error \
-    nloptr
-    
+    nloptr \
+    devtools \
+    ssh \
+    nlrx
+
+RUN Rscript -e "devtools::install_github(\"nldoc/Refforts\", upgrade = \"always\")"     

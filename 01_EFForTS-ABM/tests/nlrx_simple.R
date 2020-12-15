@@ -17,12 +17,14 @@ library(testthat)
 set.seed(457348)
 
 ## Define nl object
-netlogopath <- file.path("/home/cloud/NetLogo\ 6.1.1/")
+netlogopath <- file.path("../../../netlogofolder")
 #netlogopath <- file.path("C:/Program Files/NetLogo 6.1.0")
-modelpath <- "/home/cloud/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo"
+#modelpath <- file.path("../EFForTS-ABM.nlogo")
+modelpath <- "../EFForTS-ABM.nlogo"
+
 #modelpath <- "01_EFForTS-ABM/EFForTS-ABM.nlogo"
 
-outpath <- "/home/cloud/EFForTS-ABM/03_Analyses/"
+outpath <- file.path("../../03_Analyses/")
 
 nl <- nl(nlversion = "6.1.1",
          nlpath = netlogopath,
