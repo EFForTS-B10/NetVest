@@ -2,7 +2,6 @@ to set-gui-parameters-to-default
   
   set-efforts-abm-defaults
   set-efforts-lgraf-defaults
-  set-invest-defaults
   
 end
 
@@ -137,11 +136,5 @@ to set-efforts-lgraf-defaults
   set gr-LUT-4-specialize 0
   set gr-default.maps "landuse-type"
   set gr-write-household-ids "only-first-households"
-  
-end
-
-to set-invest-defaults
-  
-  set invest-habitatquality TRUE
   
 end

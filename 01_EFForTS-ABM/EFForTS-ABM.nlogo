@@ -15,13 +15,12 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_birds.nls" "scr_ABM/ecol_invest_plantdiv.nls" "scr_ABM/ecol_invest_plantdiv_SAR.nls" "scr_ABM/ecol_invest_biodiv.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_manual.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
-  "scr_ABM/invest.nls"
 ]
 
 ; Extensions used in this NetLogo model:
-extensions [gis matrix nw ls profiler csv]
+extensions [gis matrix nw ls profiler csv py]
 
 breed[luts a-lut]
 breed[lms lm]
@@ -71,28 +70,23 @@ globals
   lm_buyer_lut0_ineff_log  ; lut0 inefficiency of all agents who bought land on a landmarket auction
   lm_buyer_lut1_ineff_log  ; lut1 inefficiency of all agents who bought land on a landmarket auction
 
-  ; Testing biodiv models:
+  ; biodiv_birds_mahken_module:
   bird_richness
+
+  ; biodiv_plants_SAR module:
   plantdiv_all_probs
   ws_list
   sar
   sar_t
   sar_t0
   sar_ratio
-  trade-off-plot-xy
 
   ;invest:habitat-quality
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
-<<<<<<< HEAD
-  ;lulc_habitat_relation    ;list of habitat-relation for sensitivity table
-  ;filename_probs           ;filename of probability data
-=======
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs
-  invest-habitatquality ;switch to turn the whole thing on
->>>>>>> e8116c4a8de0c8b7ab1c9b0fed100139d3e5fa33
 ]
 
 ; Define patch properties:
@@ -117,19 +111,17 @@ patches-own
   p_invest                 ; investment costs of this cell
   p_actual_production      ; actual production of this cell
   p_optimal_production     ; optimal production of this cell
+
+  ;; Variables used by biodiv_birds_mahnken module:
   p_beetlesRichness
   p_antsRichness
   p_canopy
   p_luDiversity
   p_bird_richness
 
-  ;; Testing invest plant model:
-  p_MBVx
-  p_MBV
-  p_RMBV
+  ;; Variables used by biodiv_plants_invest modules:
+  p_habitat_quality    ; variable for storing habitat quality
 
-  ; variable for storing habitat quality
-  p_habitat_quality
 ]
 
 luts-own
@@ -269,9 +261,8 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize plant biodiv invest module
-  if (invest_plantdiv?) [init_invest_plantdiv]
-  if (invest-habitatquality?) [init-invest-biodiv]
+  ; Initialize biodiveristy modules
+  init_biodiversity
 
   ; Paint world:
   paint-landuse
@@ -314,12 +305,9 @@ To go
   ;Update the mean consumption of households
   aggregate-household-consumption
 
-
   ; Update carbon levels in patches
   calculate_patch_carbon
   calculate_LUT_carbon
-  if (invest_plantdiv?) [update_invest-Plantdiv]
-  if (invest-habitatquality?) [update-invest-biodiv]
 
   ; Load new prices for next timestep
   update_prices
@@ -327,8 +315,8 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-  ; If activated, calculate bird richness:
-  if (calc_bird_richness?) [calculate_patch_bird_richness]
+  ; Run biodiversity module
+  run_biodiversity
 
   ; If show-output? is turned on, update plots and world output
   ifelse (show-output?)
@@ -350,19 +338,14 @@ To go
   ; If moutput maps should be written, do it now
   if (write-maps?) [write-map-files]
 
-  ; run invest
-
-  if (invest-habitatquality?)[
-    if (ticks = 5) [setup-invest]
-    if (ticks mod 5 = 0) [prepare-and-run-invest]
-  ]
   ;; Check stop condition:
   if (ticks = sim-time) [print "Simulation finished!" stop]
 
 End
 
-to go-invest
-  if (invest-habitatquality?) [update-invest-biodiv]
+to go-biodiversity
+
+  run_biodiversity
 
   ;; Increase time step
   set simulation_year (simulation_year + 1)
@@ -672,10 +655,10 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 SWITCH
-550
-35
-680
-68
+505
+70
+635
+103
 SHOW-OUTPUT?
 SHOW-OUTPUT?
 0
@@ -1552,7 +1535,7 @@ INPUTBOX
 585
 455
 LUT-2-folder
-0
+NA
 1
 0
 String
@@ -1563,7 +1546,7 @@ INPUTBOX
 585
 575
 LUT-4-folder
-0
+NA
 1
 0
 String
@@ -1574,7 +1557,7 @@ INPUTBOX
 585
 515
 LUT-3-folder
-0
+NA
 1
 0
 String
@@ -1859,9 +1842,9 @@ Colors
 1
 
 SWITCH
-420
+505
 35
-550
+635
 68
 go-once-profiler?
 go-once-profiler?
@@ -2892,10 +2875,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [h_age] of hhs"
 
 SWITCH
-2915
-95
-3037
-128
+2475
+85
+2597
+118
 allow-fallow?
 allow-fallow?
 1
@@ -3027,28 +3010,11 @@ LUT-1-price-mu
 Number
 
 BUTTON
-2480
-550
-2640
-583
-NIL
-calculate_patch_bird_richness
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-585
-2640
-618
-NIL
+1965
+1055
+2125
+1088
+show bird richness
 visualize-bird-richness
 NIL
 1
@@ -3060,114 +3026,16 @@ NIL
 NIL
 1
 
-SWITCH
-2480
-515
-2640
-548
-calc_bird_richness?
-calc_bird_richness?
-1
-1
--1000
-
-SWITCH
-2480
-75
-2622
-108
-invest_plantdiv?
-invest_plantdiv?
-1
-1
--1000
-
-PLOT
-2480
-155
-2680
-305
-invest_plantdiv
-NIL
-NIL
-0.0
-10.0
-0.98
-1.02
-true
-false
-"" ""
-PENS
-"ratio" 1.0 0 -13345367 true "" "plot sar_ratio"
-"zero" 1.0 0 -7500403 true "" "plot 1"
-
 MONITOR
-2480
-110
-2680
-155
-NIL
+2310
+1015
+2385
+1060
 sar_ratio
+precision sar_ratio 4
 17
 1
 11
-
-PLOT
-2480
-305
-2680
-455
-invest_plantdiv_sar_species
-NIL
-NIL
-0.0
-2.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 0.1 1 -16777216 true "" "histogram sar"
-
-PLOT
-2475
-670
-2770
-880
-Trade-offs
-NIL
-NIL
-0.0
-0.01
-0.0
-0.01
-true
-false
-"" ""
-PENS
-"line" 1.0 0 -7500403 true "" ""
-"point" 2.0 2 -1 true "" ""
-
-CHOOSER
-2645
-880
-2770
-925
-trade-off-x
-trade-off-x
-"carbon" "consumption" "plantdiv"
-1
-
-CHOOSER
-2475
-880
-2600
-925
-trade-off-y
-trade-off-y
-"carbon" "consumption" "plantdiv"
-0
 
 INPUTBOX
 5
@@ -3181,10 +3049,10 @@ social-conversion-prob
 Number
 
 INPUTBOX
-420
-70
-500
-130
+640
+45
+785
+105
 idrunnum
 NIL
 1
@@ -3213,31 +3081,21 @@ TEXTBOX
 1
 
 TEXTBOX
-2485
-50
-2685
-68
+2170
+970
+2370
+988
 Preliminary inVEST biodiversity module:
 11
 0.0
 1
 
 TEXTBOX
-2485
-465
-2635
-506
+1965
+960
+2115
+1001
 Preliminary bird species richness biodiversity model (Mats Mahnken):
-11
-0.0
-1
-
-TEXTBOX
-2480
-640
-2630
-658
-Preliminary TRADE-OFF plot
 11
 0.0
 1
@@ -3276,50 +3134,22 @@ LUT-4-price-mu
 Number
 
 TEXTBOX
-2920
-50
-3070
-91
+2480
+40
+2630
+81
 Preliminary fallow option.\nOnly works with specific land-use folders
 11
 0.0
 1
 
 BUTTON
-640
-80
-703
-113
+420
+35
+505
+68
 NIL
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SWITCH
-2730
-30
-2902
-63
-invest-habitatquality?
-invest-habitatquality?
-1
-1
--1000
-
-BUTTON
-750
-10
-832
-43
-NIL
-go-invest
+go-biodiversity
 NIL
 1
 T
@@ -3333,10 +3163,10 @@ NIL
 BUTTON
 2755
 240
-2872
+2987
 273
 NIL
-setup-invest\n
+biodiv_plants_invest_python_init\n
 NIL
 1
 T
@@ -3416,10 +3246,10 @@ NIL
 1
 
 CHOOSER
-2730
-90
-2872
-135
+2190
+1070
+2332
+1115
 research-objective
 research-objective
 "generell-biodiv?" "modelorg-biodiv?" "allplants-biodiv?"
@@ -3458,6 +3288,47 @@ NIL
 NIL
 NIL
 1
+
+CHOOSER
+2170
+1015
+2308
+1060
+biodiv_plants
+biodiv_plants
+"none" "SAR" "invest_manual" "invest_python"
+1
+
+CHOOSER
+1965
+1010
+2103
+1055
+biodiv_birds
+biodiv_birds
+"none" "mahnken"
+0
+
+TEXTBOX
+645
+30
+745
+48
+nlrx exchange:
+11
+0.0
+1
+
+INPUTBOX
+1845
+1010
+1955
+1070
+ecol_biodiv_interval
+5.0
+1
+0
+Number
 
 @#$#@#$#@
 ## Abstract of corresponding publication

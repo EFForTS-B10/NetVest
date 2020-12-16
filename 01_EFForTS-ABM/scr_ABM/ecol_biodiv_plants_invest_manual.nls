@@ -25,7 +25,7 @@
 ;3.Creating sensitivity-table: Senstitivity of LULC types to threats and habitat-relation of LULCs 
 ;4.Creating threats-table: Threat's importance and impact over space
 
-to init-invest-biodiv 
+to biodiv_plants_invest_manual_init
   ;;Adjust landuse for invest
   adjust-lulc-invest
   ;;Habitat-relation with 3 options for research objective
@@ -41,7 +41,7 @@ end
 ;1.Generation of maps
 ;2.Habitat quality score
 ;3.Update landscape-level habitat-quality score
-to update-invest-biodiv
+to biodiv_plants_invest_manual_update
   lulc-map
   habitat-quality-score ; store in list
   biodiversity-score

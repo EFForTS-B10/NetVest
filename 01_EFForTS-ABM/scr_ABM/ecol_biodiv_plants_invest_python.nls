@@ -1,6 +1,4 @@
-extensions [ py gis]
-
-to setup-invest ; setup the connection to python and import a few libraries
+to biodiv_plants_invest_python_init ; setup the connection to python and import a few libraries
   ;notice that home folder has to be set manually. Is there a way around that?
   print["setting up invest"]
   ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"     ;anaconda environment
@@ -29,7 +27,7 @@ to get-sys-info ; Here we use the `sys` package in python to output some system 
 end
 
 
-to prepare-and-run-invest
+to biodiv_plants_invest_python_update
   translate-to-lulc-invest
   write-maps
   convert-maps

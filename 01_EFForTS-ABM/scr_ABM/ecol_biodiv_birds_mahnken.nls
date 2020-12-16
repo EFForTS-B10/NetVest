@@ -24,7 +24,7 @@ To-report random-weighted [values weights]
 End 
 
 
-To calculate_patch_bird_richness
+To biodiv_bird_richness
   
   ;; Step 1: Load files:
   
