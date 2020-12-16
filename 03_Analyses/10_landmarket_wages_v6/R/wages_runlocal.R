@@ -108,19 +108,9 @@ nl <- set.nl.variable(nl = nl,
                       values = p.rubber.distinct)     
 
 nl <- set.nl.constant(nl, "which-map", "\"landmarkets2\"")
-nl <- set.nl.constant(nl, "price_scenario", "\"constant_prices\"")
-nl <- set.nl.constant(nl, "heterogeneous-hhs?", "true")
-nl <- set.nl.constant(nl, "learning-spillover?", "true")
 nl <- set.nl.constant(nl, "setup-hh-network", "\"hh-nw-distance\"")
-nl <- set.nl.constant(nl, "invest_plantdiv?", "true")
-
-nl <- set.nl.constant(nl, "invest-habitatquality?", "false")
-nl <- set.nl.constant(nl, "research-objective", "\"generell-biodiv?\"")
-
 nl <- set.nl.constant(nl, "hh-nw-param1", 20)
-nl <- set.nl.constant(nl, "min-wealth", 30)
 nl <- set.nl.constant(nl, "time-horizon", 20)
-nl <- set.nl.constant(nl, "buyer_pool_n", 20)
 nl <- set.nl.constant(nl, "immigrant_probability", 0.25)
 nl <- set.nl.constant(nl, "immigrant-wealth-factor", 10)
 
