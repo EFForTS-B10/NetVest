@@ -15,11 +15,11 @@ library(testthat)
 set.seed(457348)
 
 ## Define nl object
-netlogopath <- file.path("C:/Program Files/NetLogo 6.1.0")
+netlogopath <- file.path("C:/Program Files/NetLogo 6.1.1")
 modelpath <- "01_EFForTS-ABM/EFForTS-ABM.nlogo"
 outpath <- "03_Analyses/"
 
-nl <- nl(nlversion = "6.1.0",
+nl <- nl(nlversion = "6.1.1",
          nlpath = netlogopath,
          modelpath = modelpath,
          jvmmem = 1024)
@@ -94,8 +94,10 @@ nl@experiment <- experiment(expname="invest",
                                             "hh_age_max" = 80, 
                                             "age_generation" = 40, 
                                             "takeover_prob" = 0.5, 
-                                            "calc_bird_richness?" = "FALSE", 
-                                            "invest_plantdiv?" = "TRUE", 
+                                            "ecol_biodiv_interval" = 1,
+                                            "biodiv_birds" = "\"none\"",
+                                            "biodiv_plants" = "\"SAR\"",
+                                            "biodiv_invest_objective" = "\"generell\"",
                                             "allow-fallow?" = "FALSE", 
                                             "go-once-profiler?" = "FALSE", 
                                             "SHOW-OUTPUT?" = "FALSE", 
@@ -110,9 +112,8 @@ nl@experiment <- experiment(expname="invest",
 ## The Refforts function has a convenient function to do that:
 ## For example, in order to change the default map (hundred-farmers3) to the landmarkets1 map you can do:
 ## nl <- set.nl.constant(nl, "which-map", "\"landmarkets1\"")
-## Or, if you want to disable the plantdiv model:
-## nl <- set.nl.constant(nl, "invest_plantdiv?", "false")
 
+nl <- set.nl.constant(nl, "reproducable?", "true")
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
