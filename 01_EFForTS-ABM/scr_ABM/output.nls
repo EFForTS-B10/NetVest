@@ -26,7 +26,6 @@ to do-plots
   paint-plot-hh-yield
   paint-plot-hh-yield-gap calc-hh-yield-gaps
   paint-plot-hh-area
-  paint-plot-trade-off
 
 end
 
@@ -238,55 +237,6 @@ to paint-plot-hh-yield-gap [hh-yield-gaps]
   
 end
 
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-to paint-plot-trade-off
-  
-  set-current-plot "Trade-offs"
-  set-current-plot-pen "line"
-  
-  let x ifelse-value (trade-off-x = "carbon") 
-    [sum [p_carbon] of patches with [p_landuse != -100] / area_under_agriculture]
-    [ifelse-value (trade-off-x = "consumption")
-      [mean [h_consumption] of hhs]
-      [ifelse-value (trade-off-x = "plantdiv")
-        [sar_ratio]
-        [0]
-    ]
-  ]
-  let y ifelse-value (trade-off-y = "carbon") 
-    [sum [p_carbon] of patches with [p_landuse != -100] / area_under_agriculture]
-    [ifelse-value (trade-off-y = "consumption")
-      [mean [h_consumption] of hhs]
-      [ifelse-value (trade-off-y = "plantdiv")
-        [sar_ratio]
-        [0]
-    ]
-  ]
-  
-  set trade-off-plot-xy lput (list x y) trade-off-plot-xy
-  
-  let xmin min map [? -> first ?] trade-off-plot-xy
-  let ymin min map [? -> last ?] trade-off-plot-xy
-  let xmax max map [? -> first ?] trade-off-plot-xy
-  let ymax max map [? -> last ?] trade-off-plot-xy
-  
-  
-  set-plot-x-range (xmin - (xmin * 0.1)) (xmax + (xmax * 0.1))
-  set-plot-y-range (ymin - (ymin * 0.1)) (ymax + (ymax * 0.1))
-  
-  plotxy x y
-  
-  set-current-plot-pen "point"
-  set-plot-pen-color red
-  plotxy x y
-  if (ticks > 0)
-  [
-    set-plot-pen-color white
-    plotxy item 0 last but-last trade-off-plot-xy item 1 last but-last trade-off-plot-xy
-  ]
-  
-end
 
 ;###################################################################################
 ; WRITE OUTPUT FILES

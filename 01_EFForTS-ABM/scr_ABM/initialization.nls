@@ -20,7 +20,6 @@ To set_global_constants
   set prices but-first matrix:get-row prices-matrix 0
   set carbon []
   set bird_richness [0 0 0 0 0]
-  set trade-off-plot-xy []
   
   landmarket-globals-reset
   

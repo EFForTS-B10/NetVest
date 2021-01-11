@@ -15,13 +15,12 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_birds.nls" "scr_ABM/ecol_invest_plantdiv.nls" "scr_ABM/ecol_invest_plantdiv_SAR.nls" "scr_ABM/ecol_invest_biodiv.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_manual.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
-  "scr_ABM/invest.nls"
 ]
 
 ; Extensions used in this NetLogo model:
-extensions [gis matrix nw ls profiler csv]
+extensions [gis matrix nw ls profiler csv py]
 
 breed[luts a-lut]
 breed[lms lm]
@@ -71,28 +70,23 @@ globals
   lm_buyer_lut0_ineff_log  ; lut0 inefficiency of all agents who bought land on a landmarket auction
   lm_buyer_lut1_ineff_log  ; lut1 inefficiency of all agents who bought land on a landmarket auction
 
-  ; Testing biodiv models:
+  ; biodiv_birds_mahken_module:
   bird_richness
+
+  ; biodiv_plants_SAR module:
   plantdiv_all_probs
   ws_list
   sar
   sar_t
   sar_t0
   sar_ratio
-  trade-off-plot-xy
 
   ;invest:habitat-quality
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
-<<<<<<< HEAD
-  ;lulc_habitat_relation    ;list of habitat-relation for sensitivity table
-  ;filename_probs           ;filename of probability data
-=======
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs
-  invest-habitatquality ;switch to turn the whole thing on
->>>>>>> e8116c4a8de0c8b7ab1c9b0fed100139d3e5fa33
 ]
 
 ; Define patch properties:
@@ -117,19 +111,17 @@ patches-own
   p_invest                 ; investment costs of this cell
   p_actual_production      ; actual production of this cell
   p_optimal_production     ; optimal production of this cell
+
+  ;; Variables used by biodiv_birds_mahnken module:
   p_beetlesRichness
   p_antsRichness
   p_canopy
   p_luDiversity
   p_bird_richness
 
-  ;; Testing invest plant model:
-  p_MBVx
-  p_MBV
-  p_RMBV
+  ;; Variables used by biodiv_plants_invest modules:
+  p_habitat_quality    ; variable for storing habitat quality
 
-  ; variable for storing habitat quality
-  p_habitat_quality
 ]
 
 luts-own
@@ -269,9 +261,8 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize plant biodiv invest module
-  if (invest_plantdiv?) [init_invest_plantdiv]
-  if (invest-habitatquality?) [init-invest-biodiv]
+  ; Initialize biodiveristy modules
+  init_biodiversity
 
   ; Paint world:
   paint-landuse
@@ -314,12 +305,9 @@ To go
   ;Update the mean consumption of households
   aggregate-household-consumption
 
-
   ; Update carbon levels in patches
   calculate_patch_carbon
   calculate_LUT_carbon
-  if (invest_plantdiv?) [update_invest-Plantdiv]
-  if (invest-habitatquality?) [update-invest-biodiv]
 
   ; Load new prices for next timestep
   update_prices
@@ -327,8 +315,8 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-  ; If activated, calculate bird richness:
-  if (calc_bird_richness?) [calculate_patch_bird_richness]
+  ; Run biodiversity module
+  run_biodiversity
 
   ; If show-output? is turned on, update plots and world output
   ifelse (show-output?)
@@ -350,19 +338,14 @@ To go
   ; If moutput maps should be written, do it now
   if (write-maps?) [write-map-files]
 
-  ; run invest
-
-  if (invest-habitatquality?)[
-    if (ticks = 5) [setup-invest]
-    if (ticks mod 5 = 0) [prepare-and-run-invest]
-  ]
   ;; Check stop condition:
   if (ticks = sim-time) [print "Simulation finished!" stop]
 
 End
 
-to go-invest
-  if (invest-habitatquality?) [update-invest-biodiv]
+to go-biodiversity
+
+  run_biodiversity
 
   ;; Increase time step
   set simulation_year (simulation_year + 1)
@@ -672,10 +655,10 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 SWITCH
-550
-35
-680
-68
+505
+70
+635
+103
 SHOW-OUTPUT?
 SHOW-OUTPUT?
 0
@@ -789,9 +772,9 @@ NIL
 1
 
 SWITCH
-335
+325
 435
-475
+465
 468
 landmarket?
 landmarket?
@@ -959,10 +942,10 @@ price_scenario
 0
 
 INPUTBOX
-660
-275
-730
-335
+665
+235
+735
+295
 LUT-0-price
 90.0
 1
@@ -970,10 +953,10 @@ LUT-0-price
 Number
 
 INPUTBOX
-660
-335
-730
-395
+665
+295
+735
+355
 LUT-1-price
 1100.0
 1
@@ -1142,9 +1125,9 @@ setup-hh-network
 
 TEXTBOX
 165
-595
+600
 275
-613
+618
 Household Finances
 12
 0.0
@@ -1152,9 +1135,9 @@ Household Finances
 
 INPUTBOX
 165
-615
+620
 230
-675
+680
 land_price
 750.0
 1
@@ -1179,30 +1162,30 @@ NIL
 1
 
 TEXTBOX
-25
-790
-1410
-808
+15
+890
+1400
+908
 == EFForTS-LGraf Parameters ================================================================================================
 17
 15.0
 1
 
 TEXTBOX
-25
-820
-120
-838
+15
+920
+110
+938
 Model Control
 12
 15.0
 1
 
 SWITCH
-20
-840
-130
-873
+10
+940
+120
+973
 gr-reproducable?
 gr-reproducable?
 1
@@ -1210,10 +1193,10 @@ gr-reproducable?
 -1000
 
 INPUTBOX
-20
-875
-130
-935
+10
+975
+120
+1035
 gr-rnd-seed
 100.0
 1
@@ -1221,10 +1204,10 @@ gr-rnd-seed
 Number
 
 INPUTBOX
-20
-935
-75
-995
+10
+1035
+65
+1095
 gr-width
 100.0
 1
@@ -1232,10 +1215,10 @@ gr-width
 Number
 
 INPUTBOX
-75
-935
-130
-995
+65
+1035
+120
+1095
 gr-height
 100.0
 1
@@ -1243,10 +1226,10 @@ gr-height
 Number
 
 INPUTBOX
-20
-995
-130
-1055
+10
+1095
+120
+1155
 gr-cell-length-meter
 50.0
 1
@@ -1254,30 +1237,30 @@ gr-cell-length-meter
 Number
 
 TEXTBOX
-145
-820
-180
-838
+135
+920
+170
+938
 Road
 12
 15.0
 1
 
 CHOOSER
-135
-840
-250
-885
+125
+940
+240
+985
 gr-road.algorithm
 gr-road.algorithm
 "artificial.graffe" "artificial.perlin" "real.shapefile"
 2
 
 INPUTBOX
-135
-885
-250
-945
+125
+985
+240
+1045
 gr-total-road-length
 1099.0
 1
@@ -1285,30 +1268,30 @@ gr-total-road-length
 Number
 
 TEXTBOX
-420
-820
-485
-838
+410
+920
+475
+938
 Household
 12
 15.0
 1
 
 CHOOSER
-415
-840
-595
-885
+405
+940
+585
+985
 gr-hh-area-distribution
 gr-hh-area-distribution
 "constant" "normal" "log-normal"
 2
 
 INPUTBOX
-415
-885
-505
-945
+405
+985
+495
+1045
 gr-hh-area-mean-ha
 1.0
 1
@@ -1316,10 +1299,10 @@ gr-hh-area-mean-ha
 Number
 
 INPUTBOX
-505
-885
-595
-945
+495
+985
+585
+1045
 gr-hh-area-sd-ha
 0.92
 1
@@ -1327,40 +1310,40 @@ gr-hh-area-sd-ha
 Number
 
 TEXTBOX
-735
-820
-885
-838
+725
+920
+875
+938
 Inaccessible Areas
 12
 15.0
 1
 
 CHOOSER
-730
-840
-870
-885
+720
+940
+860
+985
 gr-inaccessible-area-location
 gr-inaccessible-area-location
 "random" "road-connected"
 0
 
 CHOOSER
-730
-885
-870
-930
+720
+985
+860
+1030
 gr-inaccessible-area-distribution
 gr-inaccessible-area-distribution
 "constant" "uniform" "normal"
 2
 
 INPUTBOX
-730
-965
-870
-1025
+720
+1065
+860
+1125
 gr-inaccessible-area-mean
 0.5
 1
@@ -1368,10 +1351,10 @@ gr-inaccessible-area-mean
 Number
 
 INPUTBOX
-730
-1025
-870
-1085
+720
+1125
+860
+1185
 gr-inaccessible-area-sd
 10.0
 1
@@ -1379,30 +1362,30 @@ gr-inaccessible-area-sd
 Number
 
 TEXTBOX
-880
-820
-1030
-838
+870
+920
+1020
+938
 Fields
 12
 15.0
 1
 
 CHOOSER
-875
-840
-1055
-885
+865
+940
+1045
+985
 gr-field-size-distribution
 gr-field-size-distribution
 "constant" "uniform" "normal" "log-normal"
 3
 
 INPUTBOX
-875
-885
-965
-945
+865
+985
+955
+1045
 gr-field-size-mean-ha
 0.49
 1
@@ -1410,10 +1393,10 @@ gr-field-size-mean-ha
 Number
 
 INPUTBOX
-965
-885
-1055
-945
+955
+985
+1045
+1045
 gr-field-size-sd-ha
 0.77
 1
@@ -1421,10 +1404,10 @@ gr-field-size-sd-ha
 Number
 
 SWITCH
-875
-980
-965
-1013
+865
+1080
+955
+1113
 gr-s1.homebase
 gr-s1.homebase
 0
@@ -1432,10 +1415,10 @@ gr-s1.homebase
 -1000
 
 SWITCH
-965
-980
-1055
-1013
+955
+1080
+1045
+1113
 gr-s2.fields
 gr-s2.fields
 0
@@ -1443,10 +1426,10 @@ gr-s2.fields
 -1000
 
 SWITCH
-875
-1015
-965
-1048
+865
+1115
+955
+1148
 gr-s3.nearby
 gr-s3.nearby
 0
@@ -1454,10 +1437,10 @@ gr-s3.nearby
 -1000
 
 SWITCH
-965
-1015
-1055
-1048
+955
+1115
+1045
+1148
 gr-s4.avoid
 gr-s4.avoid
 0
@@ -1465,70 +1448,70 @@ gr-s4.avoid
 -1000
 
 TEXTBOX
-1065
-820
-1215
-838
+1055
+920
+1205
+938
 Land-uses
 12
 15.0
 1
 
 CHOOSER
-1180
-840
-1290
-885
+1170
+940
+1280
+985
 gr-land-use-types
 gr-land-use-types
 "landscape-level-fraction" "household-level-specialization" "spatial-clustering (not there yet)"
 1
 
 CHOOSER
-1060
-840
-1180
-885
+1050
+940
+1170
+985
 gr-LUT-fill-up
 gr-LUT-fill-up
 "LUT-1-fraction" "LUT-2-fraction" "LUT-3-fraction" "LUT-4-fraction" "LUT-5-fraction"
 0
 
 TEXTBOX
-1295
-815
-1445
-833
+1285
+915
+1435
+933
 Input/Output
 12
 15.0
 1
 
 CHOOSER
-1295
-840
-1405
-885
+1285
+940
+1395
+985
 gr-default.maps
 gr-default.maps
 "forest-non-forest" "landuse" "landuse-type" "field-patches" "household-patches" "forestcluster"
 2
 
 CHOOSER
-1295
-885
-1405
-930
+1285
+985
+1395
+1030
 gr-write-household-ids
 gr-write-household-ids
 "only-first-households" "layered-files"
 0
 
 INPUTBOX
-490
-275
-585
-335
+495
+235
+590
+295
 LUT-0-folder
 oilpalm
 1
@@ -1536,10 +1519,10 @@ oilpalm
 String
 
 INPUTBOX
-490
-335
-585
-395
+495
+295
+590
+355
 LUT-1-folder
 rubber
 1
@@ -1547,43 +1530,43 @@ rubber
 String
 
 INPUTBOX
-490
-395
-585
-455
+495
+355
+590
+415
 LUT-2-folder
-0
+NA
 1
 0
 String
 
 INPUTBOX
-490
-515
-585
-575
+495
+475
+590
+535
 LUT-4-folder
-0
+NA
 1
 0
 String
 
 INPUTBOX
-490
-455
-585
-515
+495
+415
+590
+475
 LUT-3-folder
-0
+NA
 1
 0
 String
 
 INPUTBOX
-585
-335
-660
-395
+590
+295
+665
+355
 LUT-1-color
 44.0
 1
@@ -1591,10 +1574,10 @@ LUT-1-color
 Color
 
 INPUTBOX
-585
-395
-660
-455
+590
+355
+665
+415
 LUT-2-color
 34.0
 1
@@ -1602,10 +1585,10 @@ LUT-2-color
 Color
 
 INPUTBOX
-585
-455
-660
-515
+590
+415
+665
+475
 LUT-3-color
 84.0
 1
@@ -1613,10 +1596,10 @@ LUT-3-color
 Color
 
 INPUTBOX
-585
-515
-660
-575
+590
+475
+665
+535
 LUT-4-color
 134.0
 1
@@ -1624,10 +1607,10 @@ LUT-4-color
 Color
 
 INPUTBOX
-585
-275
-660
-335
+590
+235
+665
+295
 LUT-0-color
 24.0
 1
@@ -1635,10 +1618,10 @@ LUT-0-color
 Color
 
 INPUTBOX
-760
-600
-830
-660
+495
+560
+565
+620
 matrix-color
 52.0
 1
@@ -1646,10 +1629,10 @@ matrix-color
 Color
 
 INPUTBOX
-760
-660
-830
-720
+625
+560
+695
+620
 inacc-color
 5.0
 1
@@ -1657,10 +1640,10 @@ inacc-color
 Color
 
 INPUTBOX
-660
-395
-730
-455
+665
+355
+735
+415
 LUT-2-price
 0.0
 1
@@ -1668,10 +1651,10 @@ LUT-2-price
 Number
 
 INPUTBOX
-660
-455
-730
-515
+665
+415
+735
+475
 LUT-3-price
 0.0
 1
@@ -1679,10 +1662,10 @@ LUT-3-price
 Number
 
 INPUTBOX
-660
-515
-730
-575
+665
+475
+735
+535
 LUT-4-price
 0.0
 1
@@ -1690,10 +1673,10 @@ LUT-4-price
 Number
 
 INPUTBOX
-815
-275
-895
-335
+820
+235
+900
+295
 LUT-0-price-sd
 10.0
 1
@@ -1701,10 +1684,10 @@ LUT-0-price-sd
 Number
 
 INPUTBOX
-815
-335
-895
-395
+820
+295
+900
+355
 LUT-1-price-sd
 100.0
 1
@@ -1712,10 +1695,10 @@ LUT-1-price-sd
 Number
 
 INPUTBOX
-815
-395
-895
-455
+820
+355
+900
+415
 LUT-2-price-sd
 0.0
 1
@@ -1723,10 +1706,10 @@ LUT-2-price-sd
 Number
 
 INPUTBOX
-815
-455
-895
-515
+820
+415
+900
+475
 LUT-3-price-sd
 0.0
 1
@@ -1734,10 +1717,10 @@ LUT-3-price-sd
 Number
 
 INPUTBOX
-815
-515
-895
-575
+820
+475
+900
+535
 LUT-4-price-sd
 0.0
 1
@@ -1755,40 +1738,40 @@ TEXTBOX
 1
 
 TEXTBOX
-520
-255
-555
-273
+525
+215
+560
+233
 Folder
 12
 0.0
 1
 
 TEXTBOX
-605
-255
-645
-273
+610
+215
+650
+233
 Colors
 12
 0.0
 1
 
 TEXTBOX
-690
-255
-725
-273
+695
+215
+730
+233
 Price
 12
 0.0
 1
 
 TEXTBOX
-825
-240
-875
-275
+830
+200
+880
+235
 Price \nvariation
 12
 0.0
@@ -1796,9 +1779,9 @@ Price \nvariation
 
 MONITOR
 495
-185
+165
 595
-230
+210
 NIL
 LUT-ids
 17
@@ -1807,9 +1790,9 @@ LUT-ids
 
 MONITOR
 595
-185
+165
 695
-230
+210
 NIL
 LUT-ids-manage
 17
@@ -1817,9 +1800,9 @@ LUT-ids-manage
 11
 
 TEXTBOX
-340
+330
 415
-490
+480
 433
 Land market
 12
@@ -1827,10 +1810,10 @@ Land market
 1
 
 INPUTBOX
-830
-660
-890
-720
+695
+560
+755
+620
 hh-color
 8.0
 1
@@ -1838,10 +1821,10 @@ hh-color
 Color
 
 INPUTBOX
-830
-600
-890
-660
+565
+560
+625
+620
 road-color
 9.9
 1
@@ -1849,19 +1832,19 @@ road-color
 Color
 
 TEXTBOX
-765
-580
-915
-598
+500
+540
+650
+558
 Colors
 12
 0.0
 1
 
 SWITCH
-420
+505
 35
-550
+635
 68
 go-once-profiler?
 go-once-profiler?
@@ -1870,10 +1853,10 @@ go-once-profiler?
 -1000
 
 SLIDER
-135
-1005
-250
-1038
+125
+1105
+240
+1138
 gr-min-dist-roads
 gr-min-dist-roads
 1
@@ -1885,10 +1868,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-135
-1035
-250
-1068
+125
+1135
+240
+1168
 gr-perlin-octaves
 gr-perlin-octaves
 1
@@ -1900,10 +1883,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-135
-1065
-250
-1098
+125
+1165
+240
+1198
 gr-perlin-persistence
 gr-perlin-persistence
 0
@@ -1915,10 +1898,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-135
-1095
-250
-1128
+240
+1135
+355
+1168
 gr-cone-angle
 gr-cone-angle
 0
@@ -1930,10 +1913,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-135
-1125
-250
-1158
+240
+1165
+355
+1198
 gr-dist-weight
 gr-dist-weight
 0
@@ -1945,20 +1928,20 @@ NIL
 HORIZONTAL
 
 CHOOSER
-255
-840
-410
-885
+245
+940
+400
+985
 gr-setup-model
 gr-setup-model
 "number-of-households" "number-of-villages" "agricultural-area"
 0
 
 SLIDER
-255
-885
-410
-918
+245
+985
+400
+1018
 gr-number-of-households
 gr-number-of-households
 1
@@ -1970,10 +1953,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-255
-915
-410
-948
+245
+1015
+400
+1048
 gr-number-of-villages
 gr-number-of-villages
 1
@@ -1985,10 +1968,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-255
-945
-410
-978
+245
+1045
+400
+1078
 gr-proportion-agricultural-area
 gr-proportion-agricultural-area
 0
@@ -2000,20 +1983,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-260
-820
-410
-838
+250
+920
+400
+938
 Setup
 12
 15.0
 1
 
 SLIDER
-255
-975
-410
-1008
+245
+1075
+400
+1108
 gr-households-per-cell
 gr-households-per-cell
 1
@@ -2025,20 +2008,20 @@ NIL
 HORIZONTAL
 
 CHOOSER
-415
-945
-595
-990
+405
+1045
+585
+1090
 gr-vlg-area-distribution
 gr-vlg-area-distribution
 "constant" "uniform" "normal" "lognormal"
 1
 
 INPUTBOX
-415
-990
-520
-1050
+405
+1090
+510
+1150
 gr-vlg-area-mean
 68.17
 1
@@ -2046,10 +2029,10 @@ gr-vlg-area-mean
 Number
 
 INPUTBOX
-520
-990
-595
-1050
+510
+1090
+585
+1150
 gr-vlg-area-sd
 56.73
 1
@@ -2057,10 +2040,10 @@ gr-vlg-area-sd
 Number
 
 SLIDER
-600
-840
-725
-873
+590
+940
+715
+973
 gr-occ-probability
 gr-occ-probability
 0
@@ -2072,10 +2055,10 @@ NIL
 HORIZONTAL
 
 INPUTBOX
-600
-980
-725
-1040
+590
+1080
+715
+1140
 gr-hh-type-sd
 0.24
 1
@@ -2083,10 +2066,10 @@ gr-hh-type-sd
 Number
 
 INPUTBOX
-600
-920
-725
-980
+590
+1020
+715
+1080
 gr-hh-type-mean
 0.56
 1
@@ -2094,30 +2077,30 @@ gr-hh-type-mean
 Number
 
 CHOOSER
-600
-875
-725
-920
+590
+975
+715
+1020
 gr-hh-distribution
 gr-hh-distribution
 "uniform" "log-normal" "normal"
 1
 
 TEXTBOX
-605
-820
-755
-838
+595
+920
+745
+938
 Household type 2
 12
 15.0
 1
 
 SLIDER
-730
-930
-870
-963
+720
+1030
+860
+1063
 gr-inaccessible-area-fraction
 gr-inaccessible-area-fraction
 0
@@ -2129,10 +2112,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-875
-945
-1055
-978
+865
+1045
+1045
+1078
 gr-change-strategy
 gr-change-strategy
 1
@@ -2144,10 +2127,10 @@ NIL
 HORIZONTAL
 
 SWITCH
-875
-1050
-1055
-1083
+865
+1150
+1045
+1183
 gr-set-field-strategies-by-id?
 gr-set-field-strategies-by-id?
 1
@@ -2155,10 +2138,10 @@ gr-set-field-strategies-by-id?
 -1000
 
 SLIDER
-875
-1085
-1055
-1118
+865
+1185
+1045
+1218
 gr-field-strategies-id
 gr-field-strategies-id
 1
@@ -2170,10 +2153,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1060
-885
-1180
-918
+1050
+985
+1170
+1018
 gr-LUT-0-fraction
 gr-LUT-0-fraction
 0
@@ -2185,10 +2168,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1060
-915
-1180
-948
+1050
+1015
+1170
+1048
 gr-LUT-1-fraction
 gr-LUT-1-fraction
 0
@@ -2200,10 +2183,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1060
-945
-1180
-978
+1050
+1045
+1170
+1078
 gr-LUT-2-fraction
 gr-LUT-2-fraction
 0
@@ -2215,10 +2198,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1060
-975
-1180
-1008
+1050
+1075
+1170
+1108
 gr-LUT-3-fraction
 gr-LUT-3-fraction
 0
@@ -2230,10 +2213,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1060
-1005
-1180
-1038
+1050
+1105
+1170
+1138
 gr-LUT-4-fraction
 gr-LUT-4-fraction
 0
@@ -2245,10 +2228,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1180
-885
-1290
-918
+1170
+985
+1280
+1018
 gr-LUT-0-specialize
 gr-LUT-0-specialize
 0
@@ -2260,10 +2243,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1180
-915
-1290
-948
+1170
+1015
+1280
+1048
 gr-LUT-1-specialize
 gr-LUT-1-specialize
 0
@@ -2275,10 +2258,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1180
-945
-1290
-978
+1170
+1045
+1280
+1078
 gr-LUT-2-specialize
 gr-LUT-2-specialize
 0
@@ -2290,10 +2273,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1180
-975
-1290
-1008
+1170
+1075
+1280
+1108
 gr-LUT-3-specialize
 gr-LUT-3-specialize
 0
@@ -2305,10 +2288,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1180
-1005
-1290
-1038
+1170
+1105
+1280
+1138
 gr-LUT-4-specialize
 gr-LUT-4-specialize
 0
@@ -2455,9 +2438,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-335
+325
 470
-475
+465
 503
 buyer_pool_n
 buyer_pool_n
@@ -2470,9 +2453,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-335
+325
 505
-475
+465
 538
 immigrant_probability
 immigrant_probability
@@ -2485,9 +2468,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-335
+325
 540
-475
+465
 573
 land_price_increase
 land_price_increase
@@ -2501,9 +2484,9 @@ HORIZONTAL
 
 SLIDER
 165
-675
+680
 320
-708
+713
 rent_rate_capital_lend
 rent_rate_capital_lend
 0
@@ -2516,9 +2499,9 @@ HORIZONTAL
 
 SLIDER
 165
-710
+715
 320
-743
+748
 rent_rate_capital_borrow
 rent_rate_capital_borrow
 0
@@ -2531,9 +2514,9 @@ HORIZONTAL
 
 SLIDER
 165
-745
+750
 320
-778
+783
 rent_rate_land
 rent_rate_land
 0
@@ -2546,10 +2529,10 @@ HORIZONTAL
 
 TEXTBOX
 495
-150
-645
-180
-IDs of loaded land-use\nand management files:
+145
+780
+163
+IDs of loaded land-use and management files:
 12
 0.0
 1
@@ -2575,10 +2558,10 @@ TEXTBOX
 1
 
 INPUTBOX
-760
-720
-830
-780
+755
+560
+825
+620
 links-color
 105.0
 1
@@ -2587,9 +2570,9 @@ Color
 
 INPUTBOX
 230
-615
+620
 320
-675
+680
 external_income
 500.0
 1
@@ -2598,9 +2581,9 @@ Number
 
 BUTTON
 695
-185
+165
 775
-230
+210
 lut parameters
 show-lut-parameters
 NIL
@@ -2794,10 +2777,10 @@ TEXTBOX
 1
 
 INPUTBOX
-490
-600
-570
-660
+330
+695
+410
+755
 hh_age_alpha
 14.24
 1
@@ -2805,10 +2788,10 @@ hh_age_alpha
 Number
 
 INPUTBOX
-570
-600
-660
-660
+410
+695
+500
+755
 hh_age_lambda
 0.31
 1
@@ -2816,10 +2799,10 @@ hh_age_lambda
 Number
 
 INPUTBOX
-490
-660
-570
-720
+330
+755
+410
+815
 hh_age_min
 18.0
 1
@@ -2827,10 +2810,10 @@ hh_age_min
 Number
 
 INPUTBOX
-570
-660
-660
-720
+410
+755
+500
+815
 hh_age_max
 80.0
 1
@@ -2838,35 +2821,20 @@ hh_age_max
 Number
 
 TEXTBOX
-500
-580
-650
-598
+335
+675
+485
+693
 Household age
 12
 0.0
 1
 
-SLIDER
-490
-720
-660
-753
-takeover_prob
-takeover_prob
-0
-1
-0.5
-0.01
-1
-NIL
-HORIZONTAL
-
 INPUTBOX
-660
-600
-750
-660
+330
+815
+420
+875
 age_generation
 40.0
 1
@@ -2892,10 +2860,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [h_age] of hhs"
 
 SWITCH
-2915
-95
-3037
-128
+2475
+85
+2597
+118
 allow-fallow?
 allow-fallow?
 1
@@ -2968,9 +2936,9 @@ precision mean [h_area] of hhs 3
 11
 
 INPUTBOX
-335
+325
 575
-475
+465
 635
 immigrant-xp-bonus
 [0 0]
@@ -2979,9 +2947,9 @@ immigrant-xp-bonus
 String
 
 SLIDER
-335
+325
 635
-475
+465
 668
 immigrant-wealth-factor
 immigrant-wealth-factor
@@ -2994,10 +2962,10 @@ NIL
 HORIZONTAL
 
 INPUTBOX
-135
-945
-250
-1005
+125
+1045
+240
+1105
 gr-road-map-id
 jambi1
 1
@@ -3005,10 +2973,10 @@ jambi1
 String
 
 INPUTBOX
-730
-275
-815
-335
+735
+235
+820
+295
 LUT-0-price-mu
 1.9
 1
@@ -3016,10 +2984,10 @@ LUT-0-price-mu
 Number
 
 INPUTBOX
-730
-335
-815
-395
+735
+295
+820
+355
 LUT-1-price-mu
 11.0
 1
@@ -3027,28 +2995,11 @@ LUT-1-price-mu
 Number
 
 BUTTON
-2480
-550
-2640
-583
-NIL
-calculate_patch_bird_richness
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-585
-2640
-618
-NIL
+520
+800
+630
+833
+show bird richness
 visualize-bird-richness
 NIL
 1
@@ -3060,114 +3011,16 @@ NIL
 NIL
 1
 
-SWITCH
-2480
-515
-2640
-548
-calc_bird_richness?
-calc_bird_richness?
-1
-1
--1000
-
-SWITCH
-2480
-75
-2622
-108
-invest_plantdiv?
-invest_plantdiv?
-1
-1
--1000
-
-PLOT
-2480
-155
-2680
-305
-invest_plantdiv
-NIL
-NIL
-0.0
-10.0
-0.98
-1.02
-true
-false
-"" ""
-PENS
-"ratio" 1.0 0 -13345367 true "" "plot sar_ratio"
-"zero" 1.0 0 -7500403 true "" "plot 1"
-
 MONITOR
-2480
-110
-2680
-155
-NIL
+760
+755
+835
+800
 sar_ratio
+precision sar_ratio 4
 17
 1
 11
-
-PLOT
-2480
-305
-2680
-455
-invest_plantdiv_sar_species
-NIL
-NIL
-0.0
-2.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 0.1 1 -16777216 true "" "histogram sar"
-
-PLOT
-2475
-670
-2770
-880
-Trade-offs
-NIL
-NIL
-0.0
-0.01
-0.0
-0.01
-true
-false
-"" ""
-PENS
-"line" 1.0 0 -7500403 true "" ""
-"point" 2.0 2 -1 true "" ""
-
-CHOOSER
-2645
-880
-2770
-925
-trade-off-x
-trade-off-x
-"carbon" "consumption" "plantdiv"
-1
-
-CHOOSER
-2475
-880
-2600
-925
-trade-off-y
-trade-off-y
-"carbon" "consumption" "plantdiv"
-0
 
 INPUTBOX
 5
@@ -3181,10 +3034,10 @@ social-conversion-prob
 Number
 
 INPUTBOX
-420
-70
-500
-130
+640
+45
+785
+105
 idrunnum
 NIL
 1
@@ -3213,40 +3066,30 @@ TEXTBOX
 1
 
 TEXTBOX
-2485
-50
-2685
-68
+650
+725
+850
+743
 Preliminary inVEST biodiversity module:
 11
 0.0
 1
 
 TEXTBOX
-2485
-465
-2635
-506
-Preliminary bird species richness biodiversity model (Mats Mahnken):
-11
-0.0
-1
-
-TEXTBOX
-2480
-640
-2630
-658
-Preliminary TRADE-OFF plot
+520
+725
+655
+750
+Preliminary bird species richness model:
 11
 0.0
 1
 
 INPUTBOX
-730
-395
-815
-455
+735
+355
+820
+415
 LUT-2-price-mu
 0.0
 1
@@ -3254,10 +3097,10 @@ LUT-2-price-mu
 Number
 
 INPUTBOX
-730
-455
-815
-515
+735
+415
+820
+475
 LUT-3-price-mu
 0.0
 1
@@ -3265,10 +3108,10 @@ LUT-3-price-mu
 Number
 
 INPUTBOX
-730
-515
-815
-575
+735
+475
+820
+535
 LUT-4-price-mu
 0.0
 1
@@ -3276,50 +3119,22 @@ LUT-4-price-mu
 Number
 
 TEXTBOX
-2920
-50
-3070
-91
+2480
+40
+2630
+81
 Preliminary fallow option.\nOnly works with specific land-use folders
 11
 0.0
 1
 
 BUTTON
-640
-80
-703
-113
+420
+35
+505
+68
 NIL
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SWITCH
-2730
-30
-2902
-63
-invest-habitatquality?
-invest-habitatquality?
-1
-1
--1000
-
-BUTTON
-750
-10
-832
-43
-NIL
-go-invest
+go-biodiversity
 NIL
 1
 T
@@ -3331,12 +3146,12 @@ NIL
 1
 
 BUTTON
-2755
-240
-2872
-273
+2480
+170
+2655
+203
 NIL
-setup-invest\n
+biodiv_plants_invest_python_init\n
 NIL
 1
 T
@@ -3348,10 +3163,10 @@ NIL
 1
 
 BUTTON
-2775
-375
-2877
-408
+2480
+310
+2605
+343
 NIL
 run-invest
 NIL
@@ -3365,10 +3180,10 @@ NIL
 1
 
 BUTTON
-2765
-310
-2872
-343
+2480
+240
+2605
+273
 NIL
 write-maps
 NIL
@@ -3382,10 +3197,10 @@ NIL
 1
 
 BUTTON
-2765
-340
-2892
-373
+2480
+275
+2605
+308
 NIL
 convert-maps
 NIL
@@ -3399,10 +3214,10 @@ NIL
 1
 
 BUTTON
-2740
-275
-2932
-308
+2480
+205
+2605
+238
 NIL
 translate-to-lulc-invest
 NIL
@@ -3416,20 +3231,20 @@ NIL
 1
 
 CHOOSER
-2730
-90
-2872
-135
-research-objective
-research-objective
-"generell-biodiv?" "modelorg-biodiv?" "allplants-biodiv?"
+650
+800
+802
+845
+biodiv_invest_objective
+biodiv_invest_objective
+"generell" "modelorg" "allplants"
 0
 
 BUTTON
-2715
-460
-2952
-493
+2480
+380
+2655
+413
 NIL
 save-habitat-quality-to-patch
 NIL
@@ -3443,10 +3258,10 @@ NIL
 1
 
 BUTTON
-2725
-410
-2967
-443
+2480
+345
+2655
+378
 NIL
 convert-habitat-quality-to-asc
 NIL
@@ -3457,6 +3272,102 @@ NIL
 NIL
 NIL
 NIL
+1
+
+CHOOSER
+650
+755
+760
+800
+biodiv_plants
+biodiv_plants
+"none" "SAR" "invest_manual" "invest_python"
+1
+
+CHOOSER
+520
+755
+630
+800
+biodiv_birds
+biodiv_birds
+"none" "mahnken"
+0
+
+TEXTBOX
+645
+30
+745
+48
+nlrx exchange:
+11
+0.0
+1
+
+INPUTBOX
+420
+815
+500
+875
+takeover_prob
+0.5
+1
+0
+Number
+
+TEXTBOX
+525
+635
+710
+653
+== Biodiversity ==
+17
+53.0
+1
+
+TEXTBOX
+520
+705
+555
+723
+Birds
+12
+0.0
+1
+
+TEXTBOX
+650
+705
+685
+723
+Plants
+12
+0.0
+1
+
+SLIDER
+520
+665
+707
+698
+ecol_biodiv_interval
+ecol_biodiv_interval
+1
+100
+1.0
+1
+1
+ticks
+HORIZONTAL
+
+TEXTBOX
+2485
+140
+2655
+165
+INVEST Python test Buttons\ncan be removed soon:
+11
+0.0
 1
 
 @#$#@#$#@
