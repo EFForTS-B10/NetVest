@@ -197,7 +197,7 @@ to run-invest
     "print('setting up parameters')"
     "working_directory = 'output'"
     "args = {"
-    "'half_saturation_constant': '0.5',"
+    "'half_saturation_constant': '0.05',"
     "'results_suffix': 'test',"
     "'workspace_dir': working_directory,"
     "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
