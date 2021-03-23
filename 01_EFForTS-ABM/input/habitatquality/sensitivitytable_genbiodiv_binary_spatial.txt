@@ -1,0 +1,7 @@
+LULC 	NAME	HABITAT	L_VILLAGE	L_LC_O	L_LC_R	L_TECHIN_O	L_TECHIN_R	L_LABIN_O	L_LABIN_R
+1	village	0	0	1	1	1	1	1	1
+2	oilpalm	0	1	1	1	1	1	1	1
+3	rubber	0	1	1	1	1	1	1	1
+4	forest	1	1	1	1	1	1	1	1
+
+
