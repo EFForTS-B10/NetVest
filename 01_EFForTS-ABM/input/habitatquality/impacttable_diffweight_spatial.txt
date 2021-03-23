@@ -2,8 +2,8 @@ THREAT	MAX_DIST	WEIGHT	DECAY
 village	1	1	exponential
 lc_o	1	0,7	exponential
 lc_r	1	0,7	exponential
-tecin_o	10	0,4	exponential
-tecin_r	10	0,4	exponential
-labin_o	1	0,1	exponential
-labin_r	1	0,1	exponential
+tinput_o	10	0,4	exponential
+tinput_r	10	0,4	exponential
+labor_o	1	0,1	exponential
+labor_r	1	0,1	exponential
 
