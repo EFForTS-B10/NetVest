@@ -3370,6 +3370,33 @@ INVEST Python test Buttons\ncan be removed soon:
 0.0
 1
 
+CHOOSER
+2485
+425
+2623
+470
+which-machine?
+which-machine?
+"local" "server"
+0
+
+BUTTON
+2510
+500
+2627
+533
+NIL
+write-sensitivity\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 @#$#@#$#@
 ## Abstract of corresponding publication
 
@@ -3792,7 +3819,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
