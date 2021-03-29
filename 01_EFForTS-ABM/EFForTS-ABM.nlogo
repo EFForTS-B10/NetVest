@@ -94,6 +94,8 @@ patches-own
 [
   p_landuse                ; patch land-use value as input from land-use map
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
+  p_impact-value
+  p_impact
   p_landuse_previous
   p_management             ; current management id
   p_road                   ; 0 if patch is not road, 1, if patch is road
@@ -1014,7 +1016,7 @@ CHOOSER
 initial-wealth-distribution
 initial-wealth-distribution
 "constant" "log-normal"
-1
+0
 
 INPUTBOX
 320
@@ -2416,7 +2418,7 @@ hh-nw-param2
 hh-nw-param2
 0
 100
-50.0
+51.0
 1
 1
 NIL
@@ -3387,6 +3389,23 @@ BUTTON
 533
 NIL
 write-sensitivity\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2630
+285
+2747
+318
+NIL
+p_impact-values
 NIL
 1
 T

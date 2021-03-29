@@ -1,12 +1,12 @@
 ; setup the connection to python and import a few libraries
 to biodiv_plants_invest_python_init 
   print["setting up invest"]
-  ; First define on which machine (local or server) you want to run the model
+  ;; First define on which machine (local or server) you want to run the model
   ifelse which-machine? = "local"
-  ; If Simulation runs on your local machine 
+  ;; If Simulation runs on your local machine 
   ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"                                 ;anaconda environment: enter the path to your Python executable
   [py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: 
-  ; If simulation runs on the server via docker-container:
+  ;; If simulation runs on the server via docker-container:
   [py:setup py:python3]                                         
   py:run "import sys"
   py:run "import os"
@@ -16,7 +16,7 @@ to biodiv_plants_invest_python_init
 end
 
 
-; Usage of the `sys` package in python to output some system info
+;; Usage of the `sys` package in python to output some system info
 to get-sys-info 
   output-print (word "Python directory: " (py:runresult "sys.prefix"))
   output-print (word "Platform: " (py:runresult "sys.platform"))
@@ -41,38 +41,39 @@ to biodiv_plants_invest_python_update
   save-habitat-quality-to-patch
 end
 
-;create new variable for lulc-map as p_landuse is still used
+
+;; create new variable for lulc-classification as p_landuse is still used
 to translate-to-lulc-invest
   print["translating map"]
   ask patches 
   [
-    if (p_landuse = -100) [set p_landuse_invest 4] ;forest
+    if (p_landuse = -100 and p_homebase = -1) [set p_landuse_invest 4] ;forest
     if (p_landuse = 1) [set p_landuse_invest 3] ;rubber
     if (p_landuse = 0) [set p_landuse_invest 2] ;oilplam
-    if (p_road = 1 and p_landuse = 4) [set p_landuse_invest 1] ;village
+    if (p_landuse = -100 and p_homebase >= 0) [set p_landuse_invest 1] ;village
   ]
 end
 
-to p_impact-values
-  print ["generating p_impact-values"]
-  let p_impact-value 0
-  ask patches
-  [
-    if (p_landuse_invest = 4) [set p_impact-value 1] ; village
-    if (p_landuse_invest = 3 and p_age = 0 and p_invest > 0 ) [set p_impact-value 2] ; lc_r: land clearing rubber: investment costs occur only during immature phase. How extracting first year of investmentcost as this is the year after land clearing?
-    if (p_landuse_invest = 3 and p_age = 0 and p_invest > 0) [set p_impact-value 3] ; lc_r: land clearing oilpalmt 
-    if (p_landuse_invest = 3 and p_tinput > 0) [set p_impact-value 4] ; tinput_r: technical input rubber
-    if (p_landuse_invest = 2 and p_tinput > 0) [set p_impact-value 5] ; tinput_o: technical input oilpalm
-    if (p_landuse_invest = 3 and p_labor > 0) [set p_impact-value 6] ; labor_r: labor input rubber
-    if (p_landuse_invest = 2 and p_labor > 0) [set p_impact-value 7] ; labor_o: labor input oilpalm
-  ]
-end
+;; create new patch-variable for threat-location on the map
+;to p_impact-values
+;  print ["generating p_impact-values"]
+;  ;let p_impact-value 0
+;  ask patches
+;  [
+;    if (p_landuse_invest = 1) [set p_impact-value 1] ; village
+;    if (p_landuse_invest = 3 and p_age = 0 and p_invest > 0 ) [set p_impact-value 2] ; lc_r: land clearing rubber: investment costs occur only during immature phase. How extracting first year of investmentcost as this is the year after land clearing?
+;    if (p_landuse_invest = 2 and p_age = 0 and p_invest > 0) [set p_impact-value 3] ; lc_o: land clearing oilpalmt 
+;    if (p_landuse_invest = 3 and p_tinput > 0) [set p_impact-value 4] ; tinput_r: technical input rubber
+;    if (p_landuse_invest = 2 and p_tinput > 0) [set p_impact-value 5] ; tinput_o: technical input oilpalm
+;    if (p_landuse_invest = 3 and p_labor > 0) [set p_impact-value 6] ; labor_r: labor input rubber
+;    if (p_landuse_invest = 2 and p_labor > 0) [set p_impact-value 7] ; labor_o: labor input oilpalm
+;  ]
+;end
 
 
-; generation of LULC-raster-map and impact-maps (as much as impacts we have)
+;; generation of LULC-raster-map and impact-maps (as much as impacts we have)
 to write-maps
   print["writing maps to disk"]
- ; here we want create a different patch variable from landuse and call   adjust-lulc-invest  to populate it
   write-lulc-map-simple
   write-impact-map "village"
   write-impact-map "lc_o"
@@ -84,8 +85,7 @@ to write-maps
 end
 
 
-
-; generation of LULC-map
+;; generation of LULC-map
 to write-lulc-map-simple
   let new-raster gis:patch-dataset p_landuse_invest
   let filename (word "output/lulc.asc")
@@ -117,32 +117,35 @@ end
 ;  gis:store-dataset new-raster filename
 ;end
 
-; generation of impact-maps: also simple way possilbe????
+;; generation of impact-maps
 to write-impact-map [impact-name]
-  let p_impact-value 0
+  ask patches
+  [set p_impact-location FALSE]
   print["writing impact map"]
+  ;; iterate throug all possible impacts
   show impact-name
   (ifelse
     impact-name = "village"
-    [set p_impact-value 1
+    [ask patches with [p_landuse_invest = 1] [set p_impact-location TRUE]
+    ;[if ([p_impact-value] of patches = 1) [set [p_impact] of patches = TRUE]
      print ["creating village impact map"]]
     impact-name = "lc_r"
-      [set p_impact-value 2
+      [ask patches with [p_landuse_invest = 3 and p_age = 0 and p_invest > 0] [set p_impact-location TRUE]
        print ["creating land clearing rubber impact map"]]
     impact-name = "lc_o"
-      [set p_impact-value 3
+      [ask patches with [p_landuse_invest = 2 and p_age = 0 and p_invest > 0] [set p_impact-location TRUE]
        print ["creating land clearing oilpalm impact map"]]
     impact-name = "tinput_r"
-      [set p_impact-value 4
+      [ask patches with [p_landuse_invest = 3 and p_tinput > 0] [set p_impact-location TRUE]
        print ["creating technical input rubber impact map"]]
     impact-name = "tinput_o"
-      [set p_impact-value 5
+      [ask patches with [p_landuse_invest = 2 and p_tinput > 0] [set p_impact-location TRUE]
        print ["creating technical input oilpalm impact map"]]
     impact-name = "labor_r"
-      [set p_impact-value 6
+      [ask patches with [p_landuse_invest = 3 and p_labor > 0] [set p_impact-location TRUE]
        print ["creating labor input rubber impact map"]]
     impact-name = "labor_o"
-      [set p_impact-value 7
+      [ask patches with [p_landuse_invest = 2 and p_labor > 0] [set p_impact-location TRUE]
        print ["creating labor input oilpalm impact map"]]
   )
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
@@ -155,7 +158,7 @@ to write-impact-map [impact-name]
     [
       ;show [p_landuse] of patch xcount ycount = threat-value
       ;if ([p_landuse_invest] of patch xcount ycount = threat-value) [print threat-name]
-      ifelse ([p_impact-value] of patch xcount ycount > 0)
+      ifelse ([p_impact-location] of patch xcount ycount = TRUE)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
 ;
@@ -166,19 +169,24 @@ to write-impact-map [impact-name]
     set ycount ycount - 1
     set ycount-raster ycount-raster + 1
   ]
-
+  
+  
+  
   let filename (word "output/" (word (impact-name)) "_c.asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
+  
+  ask patches [set p_impact-location FALSE]
 end
 
 
+;; generation of csv-tables
 to write-tables
   write-sensitivity
   write-impact
 end
 
-; read in sensitivity table (depending on research objective) from input-folder and generate sensitivity-table
+;; read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table
 to write-sensitivity
   print ["read in and write sensitivity-table"]
   let sensitivity_all []
@@ -232,7 +240,7 @@ to write-sensitivity
 end
 
 
-; read in impact-table (depending on research objective) from input-folder and generate impact-table
+;; read in impact-table (depending on research objective) from input-folder and generate impact-table
 to write-impact
   (py:run
     "csv_path = 'output/threats_samp.csv'"
@@ -245,7 +253,7 @@ to write-impact
   )
 end
 
-
+;; conversion of asc-maps to tif-maps for transfering to InVEST
 to convert-maps
   foreach ["lulc" "village_c" "lc_r_c" "lc_o_c" "tinput_r_c" "tinput_o_c" "labor_r_c" "labor_o_c"]
   [
@@ -271,7 +279,7 @@ to convert_to_tif [filename]
 end
 
 
-
+;; invoke model InVEST and transfer output
 to run-invest
   (py:run
     "print('setting up parameters')"
@@ -289,6 +297,8 @@ to run-invest
   )
 end
 
+
+;; convertion of tif-file from InVEST to asc-file for netlogo
 to convert-habitat-quality-to-asc
   print["converting invest results to asc"]
   (py:run
@@ -300,6 +310,7 @@ to convert-habitat-quality-to-asc
 end
 
 
+;; Save habitat quality of every parcel as patch-variable
 to save-habitat-quality-to-patch
   print["saving habitat quality patch variable"]
   let qualitydata gis:load-dataset "output/output/quality_c_test.asc"
