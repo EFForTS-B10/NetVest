@@ -1,5 +1,11 @@
 ; setup the connection to python and import a few libraries
-to biodiv_plants_invest_python_init 
+to biodiv_plants_invest_python_init
+ set-up-invest
+ get-sys-info 
+ write-tables
+end
+
+to set-up-invest
   print["setting up invest"]
   ;; First define on which machine (local or server) you want to run the model
   ifelse which-machine? = "local"
@@ -15,7 +21,6 @@ to biodiv_plants_invest_python_init
   py:run "from osgeo import gdal, osr"
 end
 
-
 ;; Usage of the `sys` package in python to output some system info
 to get-sys-info 
   output-print (word "Python directory: " (py:runresult "sys.prefix"))
@@ -30,11 +35,111 @@ to get-sys-info
   output-print ""
 end
 
+;; generation of csv-tables
+to write-tables
+  write-sensitivity
+  write-impact
+end
+
+;; read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table 
+to write-sensitivity
+  print ["read in and write sensitivity-table"]
+  ;; Reset global sensitivity-list
+  let sensitivity_all []
+  let filename  0
+  ;; Read file depending on research objective
+  (ifelse biodiv_invest_objective = "general"  [set filename "input/habitatquality/sensitivitytable_genbiodiv_binary_spatial.txt"]
+          biodiv_invest_objective = "modelorg_plants"  [print "Warning: Biodiversity of modelorganism not yet implemented"]
+          biodiv_invest_objective = "all_plants" [print "Warning: Biodiversity of all plants not yet implemented"])
+  ;let filename "input/habitatquality/sensitivitytable_genbiodiv_binary_spatial.txt"
+  ifelse filename = 0 [stop]
+  [
+  file-open filename
+  
+  while [not file-at-end?]
+  [
+    ;;Read data for previous defined research objective and correlated habitat-suitability
+    let LULC file-read
+    let NAME file-read
+    let HABITAT file-read  
+    let L_village file-read
+    let L_lc_r file-read
+    let L_lc_o file-read
+    let L_tinput_r file-read
+    let L_tinput_o file-read
+    let L_labor_r file-read
+    let L_labor_o file-read 
+      
+    ;; Generate temporary sensitivity-list    
+    let sensitivity (list LULC NAME HABITAT L_village L_lc_r L_lc_o L_tinput_r L_tinput_o L_labor_r L_labor_o) 
+    print sensitivity
+
+    set sensitivity_all lput sensitivity sensitivity_all
+  ]
+    ;; Store sensitivity_table.csv to output folder
+    csv:to-file "output/sensitivity_table.csv" sensitivity_all 
+    
+  file-close
+  ]
+  
+;; Pyhthon-version of csv-writing  
+;  (py:run
+;    "csv_path = 'output/sensitivity_table.csv'"
+;    "with open(csv_path, 'w') as open_table:"
+;    "  open_table.write('LULC,NAME,HABITAT,L_village,L_lc_r,L_lc_o,L_tinput_r,L_tinput_o,L_labor_r,L_labor_o\\n')"
+;    "  open_table.write('1,village,0,0,0\\n')"
+;    "  open_table.write('2,oil_palm,0,0,0\\n')"
+;    "  open_table.write('3,rubber,0,0,0\\n')"
+;    "  open_table.write('4,forest,1,0.5,0.5\\n')"
+;  )
+end
+
+
+;; read in impact-table (depending on research objective) from input-folder and generate impact-table
+to write-impact
+  print ["read in and write impact-table"]
+  let impact_all []
+  let filename "input/habitatquality/impacttable_equalweight_spatial.txt"
+  ifelse filename = 0 [stop]
+  [
+  file-open filename
+  
+  while [not file-at-end?]
+  [
+    ;;Read data for impact-table
+    let THREAT file-read
+    let MAX_DIST file-read
+    let WEIGHT file-read  
+    let DECAY file-read 
+      
+    ;; Generate temporary impact-list    
+    let impact (list THREAT MAX_DIST WEIGHT DECAY) 
+    print impact
+
+    set impact_all lput impact impact_all
+  ]
+    ;; Store sensitivity_table.csv to output folder
+    csv:to-file "output/impact_table.csv" impact_all 
+    
+  file-close
+  ]
+  
+;; Python-Version of writing impact-table  
+;  (py:run
+;    "csv_path = 'output/threats_samp.csv'"
+;    "with open(csv_path, 'w') as open_table:"
+;    "  open_table.write("
+;    " 'THREAT,MAX_DIST,WEIGHT,DECAY\\n'"
+;  ")"
+;    "  open_table.write('oil_palm,1.0,0.5,exponential\\n')"
+;    "  open_table.write('rubber,1.0,1.0,exponential\\n')"
+;  )
+end
+
 
 to biodiv_plants_invest_python_update
   translate-to-lulc-invest
   write-maps
-  write-tables
   convert-maps
   run-invest
   convert-habitat-quality-to-asc
@@ -161,8 +266,6 @@ to write-impact-map [impact-name]
       ifelse ([p_impact-location] of patch xcount ycount = TRUE)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
-;
-
       set xcount xcount + 1
     ]
     set xcount 0
@@ -171,7 +274,7 @@ to write-impact-map [impact-name]
   ]
   
   
-  
+  ;; store impact-map
   let filename (word "output/" (word (impact-name)) "_c.asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
@@ -180,78 +283,7 @@ to write-impact-map [impact-name]
 end
 
 
-;; generation of csv-tables
-to write-tables
-  write-sensitivity
-  write-impact
-end
 
-;; read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table
-to write-sensitivity
-  print ["read in and write sensitivity-table"]
-  let sensitivity_all []
-  let filename "input/habitatquality/sensitivitytable_genbiodiv_binary_spatial.txt"
-  ifelse filename = 0 [stop]
-  [
-  file-open filename
-  
-  ;;Skip header:
-  ;repeat 10 [let drop file-read] ;txt-table aendern, da netlogo nur zahlen einlesen kann. ausdruecke in ""
-  ;print file-read
-  ;show file-read
-  while [not file-at-end?]
-  [
-    ;;Read data for previous defined research objective and correlated habitat suitability
-    let LULC file-read
-    let NAME file-read
-    let HABITAT file-read  
-    let L_village file-read
-    let L_lc_r file-read
-    let L_lc_o file-read
-    let L_tinput_r file-read
-    let L_tinput_o file-read
-    let L_labor_r file-read
-    let L_labor_o file-read 
-;print rownr
-    ; Generate temporary -sensitivity-list
-    let sensitivity (list LULC NAME HABITAT L_village L_lc_r L_lc_o L_tinput_r L_tinput_o L_labor_r L_labor_o) 
-    print sensitivity
-
- 
-    set sensitivity_all lput sensitivity sensitivity_all
-    ; Store sensitivity_table.csv to output folder  
-    
-    ;print habitat_all_probs
-    ;show f_prob
-  ]
-    csv:to-file "output/sensitivity_table.csv" sensitivity_all 
-  ;print habitat_all_probs
-  file-close
-  ]
-;  (py:run
-;    "csv_path = 'output/sensitivity_table.csv'"
-;    "with open(csv_path, 'w') as open_table:"
-;    "  open_table.write('LULC,NAME,HABITAT,L_village,L_lc_r,L_lc_o,L_tinput_r,L_tinput_o,L_labor_r,L_labor_o\\n')"
-;    "  open_table.write('1,village,0,0,0\\n')"
-;    "  open_table.write('2,oil_palm,0,0,0\\n')"
-;    "  open_table.write('3,rubber,0,0,0\\n')"
-;    "  open_table.write('4,forest,1,0.5,0.5\\n')"
-;  )
-end
-
-
-;; read in impact-table (depending on research objective) from input-folder and generate impact-table
-to write-impact
-  (py:run
-    "csv_path = 'output/threats_samp.csv'"
-    "with open(csv_path, 'w') as open_table:"
-    "  open_table.write("
-    " 'THREAT,MAX_DIST,WEIGHT,DECAY\\n'"
-  ")"
-    "  open_table.write('oil_palm,1.0,0.5,exponential\\n')"
-    "  open_table.write('rubber,1.0,1.0,exponential\\n')"
-  )
-end
 
 ;; conversion of asc-maps to tif-maps for transfering to InVEST
 to convert-maps
@@ -291,7 +323,7 @@ to run-invest
     "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
     "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
     "'threat_raster_folder': working_directory,"
-    "'threats_table_path': os.path.join(working_directory, 'threats_samp.csv'),"
+    "'threats_table_path': os.path.join(working_directory, 'impact_table.csv'),"
     "}"
     "habitat_quality.execute(args)"
   )
