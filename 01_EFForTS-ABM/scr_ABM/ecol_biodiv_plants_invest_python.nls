@@ -342,9 +342,15 @@ to convert-habitat-quality-to-asc
 end
 
 
-;; Save habitat quality of every parcel as patch-variable
+;; save habitat quality of every parcel as patch-variable
 to save-habitat-quality-to-patch
   print["saving habitat quality patch variable"]
   let qualitydata gis:load-dataset "output/output/quality_c_test.asc"
   gis:apply-raster qualitydata p_habitat_quality
+end
+
+to aggregate-habitat-quality
+  print ["aggregating habitat quality scores"]
+  set landscape-hq 0
+  set landscape-hq mean [p_habitat_quality] of patches
 end

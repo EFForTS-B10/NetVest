@@ -82,20 +82,19 @@ globals
   sar_ratio
 
   ;invest:habitat-quality
+  landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
   sensitivity_table        ;table with sensitivity of LULCs to threats
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
-  filename_probs
+  filename_probs           ;can be removed soon
 ]
 
 ; Define patch properties:
 patches-own
 [
   p_landuse                ; patch land-use value as input from land-use map
-  p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
-  p_impact-value
-  p_impact
   p_landuse_previous
   p_management             ; current management id
   p_road                   ; 0 if patch is not road, 1, if patch is road
@@ -122,7 +121,10 @@ patches-own
   p_bird_richness
 
   ;; Variables used by biodiv_plants_invest modules:
-  p_habitat_quality    ; variable for storing habitat quality
+  p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
+ ; p_impact-value
+  p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
+  p_habitat_quality        ; variable for storing habitat quality
 
 ]
 
@@ -263,7 +265,7 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize biodiveristy modules
+  ; Initialize biodiversity modules
   init_biodiversity
 
   ; Paint world:
@@ -2328,7 +2330,7 @@ consumption_frac_cash
 consumption_frac_cash
 0
 1
-0.1
+0.14
 0.01
 1
 NIL
@@ -3239,7 +3241,7 @@ CHOOSER
 845
 biodiv_invest_objective
 biodiv_invest_objective
-"generell" "modelorg" "allplants"
+"general" "modelorg_plants" "all_plants"
 0
 
 BUTTON
@@ -3284,7 +3286,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-1
+0
 
 CHOOSER
 520
@@ -3400,12 +3402,12 @@ NIL
 1
 
 BUTTON
-2630
-285
-2747
-318
+2535
+565
+2632
+598
 NIL
-p_impact-values
+write-impact
 NIL
 1
 T
@@ -3415,6 +3417,17 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+835
+820
+1012
+865
+landscape-level habitat quality
+precision landscape-hq 4
+17
+1
+11
 
 @#$#@#$#@
 ## Abstract of corresponding publication
@@ -4745,6 +4758,449 @@ export-inefficiency-distribution</setup>
     </enumeratedValueSet>
     <enumeratedValueSet variable="spillover-share">
       <value value="0.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="gr-change-strategy">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-0-specialize">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-3-price">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="write-hh-data-to-file?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ecol_biodiv_interval">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-inaccessible-area-fraction">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-s4.avoid">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-proportion-agricultural-area">
+      <value value="0.3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-3-color">
+      <value value="84"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-nw-param1">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-4-folder">
+      <value value="&quot;NA&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-road.algorithm">
+      <value value="&quot;real.shapefile&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-inaccessible-area-mean">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-0-fraction">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-s1.homebase">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="price-fluctuation-percent">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption-on?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-perlin-persistence">
+      <value value="0.8"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-vlg-area-distribution">
+      <value value="&quot;uniform&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heterogeneous-hhs?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="links-color">
+      <value value="105"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rent_rate_capital_lend">
+      <value value="0.08"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-perlin-octaves">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rnd-seed">
+      <value value="1234"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wealth-constant">
+      <value value="10000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-occ-probability">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-s3.nearby">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-vlg-area-sd">
+      <value value="56.73"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-total-road-length">
+      <value value="1099"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rent_rate_land">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-4-specialize">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-3-price-mu">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-hh-distribution">
+      <value value="&quot;log-normal&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-price-mu">
+      <value value="1.9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-wealth-distribution">
+      <value value="&quot;constant&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="go-once-profiler?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wealth-log-mean">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="historical_smoothing">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-3-price-sd">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-3-specialize">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="idrunnum">
+      <value value="&quot;&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="biodiv_plants">
+      <value value="&quot;none&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="discount-rate">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="inacc-color">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-cell-length-meter">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="price_scenario">
+      <value value="&quot;constant_prices&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-homebases?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-inaccessible-area-sd">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="allow-fallow?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="which-map">
+      <value value="&quot;five-farmers2&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="biodiv_invest_objective">
+      <value value="&quot;general&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="reproducable?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="which-machine?">
+      <value value="&quot;local&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="h_debt_years_max_bankrupt">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-2-folder">
+      <value value="&quot;NA&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-price-sd">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-4-price-mu">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age_generation">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-land-use-types">
+      <value value="&quot;household-level-specialization&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-roads?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_lambda">
+      <value value="0.31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-price-mu">
+      <value value="11"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-hh-area-distribution">
+      <value value="&quot;log-normal&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-hh-type-sd">
+      <value value="0.24"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-height">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-3-folder">
+      <value value="&quot;NA&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-wealth">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-write-household-ids">
+      <value value="&quot;only-first-households&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-price-sd">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land_price">
+      <value value="750"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-1-specialize">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-vlg-area-mean">
+      <value value="68.17"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-width">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-dist-weight">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-4-color">
+      <value value="134"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-color">
+      <value value="24"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-number-of-villages">
+      <value value="12"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="biodiv_birds">
+      <value value="&quot;none&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-price">
+      <value value="1100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="matrix-color">
+      <value value="52"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="social-conversion-prob">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-3-fraction">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="immigrant_probability">
+      <value value="0.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-2-price-mu">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-4-price">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="SHOW-OUTPUT?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="road-color">
+      <value value="9.9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-color">
+      <value value="8"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="landmarket?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-2-price-sd">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="time-horizon">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-setup-model">
+      <value value="&quot;number-of-households&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-4-fraction">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spillover-share">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_max">
+      <value value="80"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-households-per-cell">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-road-map-id">
+      <value value="&quot;jambi1&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="init-wealth-correction-factor">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-inaccessible-area-distribution">
+      <value value="&quot;normal&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land-use-change-decision">
+      <value value="&quot;only-one-field-per-year&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-field-size-distribution">
+      <value value="&quot;log-normal&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-cone-angle">
+      <value value="120"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-hh-area-sd-ha">
+      <value value="0.92"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-1-fraction">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-field-size-sd-ha">
+      <value value="0.77"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_min">
+      <value value="18"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="immigrant-xp-bonus">
+      <value value="&quot;[0 0]&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="learning-spillover?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-field-size-mean-ha">
+      <value value="0.49"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-hh-area-mean-ha">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wealth-log-sd">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="external_income">
+      <value value="500"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-rnd-seed">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-number-of-households">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-folder">
+      <value value="&quot;oilpalm&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-nw-param2">
+      <value value="51"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-default.maps">
+      <value value="&quot;landuse-type&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-fill-up">
+      <value value="&quot;LUT-1-fraction&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_base">
+      <value value="1000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-inaccessible-area-location">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-folder">
+      <value value="&quot;rubber&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="export-view?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="immigrant-wealth-factor">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="write-maps?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_alpha">
+      <value value="14.24"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land_price_increase">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-set-field-strategies-by-id?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="setup-hh-network">
+      <value value="&quot;hh-nw-kernel-distance&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-2-fraction">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="buyer_pool_n">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="takeover_prob">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-LUT-2-specialize">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-4-price-sd">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-reproducable?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-hh-type-mean">
+      <value value="0.56"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sim-time">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-color">
+      <value value="44"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rent_rate_capital_borrow">
+      <value value="0.15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_frac_wealth">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-min-dist-roads">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-2-price">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-s2.fields">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-price">
+      <value value="90"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_frac_cash">
+      <value value="0.14"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-2-color">
+      <value value="34"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gr-field-strategies-id">
+      <value value="7"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
