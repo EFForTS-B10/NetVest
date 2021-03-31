@@ -15,7 +15,7 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_manual.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_manual.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls" "scr_ABM/ecol_dummy_invest.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
 ]
 
@@ -3286,7 +3286,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-0
+3
 
 CHOOSER
 520
@@ -3381,7 +3381,7 @@ CHOOSER
 470
 which-machine?
 which-machine?
-"local" "server"
+"local-windows" "local-linux" "server"
 0
 
 BUTTON
@@ -3428,6 +3428,40 @@ precision landscape-hq 4
 17
 1
 11
+
+BUTTON
+2635
+300
+2767
+333
+NIL
+run-dummy-invest
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+2720
+375
+2892
+408
+NIL
+aggregate-habitat-quality
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## Abstract of corresponding publication

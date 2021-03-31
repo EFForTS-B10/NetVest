@@ -1,0 +1,24 @@
+;; Generation of artificial habitat quality map which is stored in output folder
+to run-dummy-invest
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      ;show [p_landuse] of patch xcount ycount = threat-value
+      ;if ([p_landuse_invest] of patch xcount ycount = threat-value) [print threat-name]
+      gis:set-raster-value new-raster xcount ycount-raster [p_landuse_invest] of patch xcount ycount
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
+  let filename ("output/output/quality_c_dummy")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
+;werte

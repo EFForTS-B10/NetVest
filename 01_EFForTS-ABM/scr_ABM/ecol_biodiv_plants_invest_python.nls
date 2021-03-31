@@ -1,19 +1,18 @@
-; setup the connection to python and import a few libraries
+;; First define on which machine (local-windows, local-linux or server) we want to run the model
 to biodiv_plants_invest_python_init
- set-up-invest
- get-sys-info 
- write-tables
+ (ifelse which-machine? = "server" [set-up-invest get-sys-info write-tables]  ;; If simulation runs on the server than via docker-container
+  which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work) 
+  which-machine? = "local-linux"   [set-up-invest get-sys-info write-tables]) ;; If simulation runs on you local Linux-machine, we connect to python executable and load environment
 end
 
+;; Setup the connection to python and import a few libraries
 to set-up-invest
   print["setting up invest"]
-  ;; First define on which machine (local or server) you want to run the model
-  ifelse which-machine? = "local"
-  ;; If Simulation runs on your local machine 
-  ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"                                 ;anaconda environment: enter the path to your Python executable
-  [py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: 
-  ;; If simulation runs on the server via docker-container:
-  [py:setup py:python3]                                         
+  (ifelse which-machine? = "local-linux"
+     [py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: enter path to your python executable 
+     ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"                                 ;anaconda environment: alternative to pip environment   
+    which-machine? = "server"
+     [py:setup py:python3])                                         
   py:run "import sys"
   py:run "import os"
   py:run "import natcap.invest"
@@ -35,23 +34,22 @@ to get-sys-info
   output-print ""
 end
 
-;; generation of csv-tables
+;; Generation of csv-tables
 to write-tables
   write-sensitivity
   write-impact
 end
 
-;; read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table 
+;; Read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table 
 to write-sensitivity
   print ["read in and write sensitivity-table"]
   ;; Reset global sensitivity-list
   let sensitivity_all []
   let filename  0
   ;; Read file depending on research objective
-  (ifelse biodiv_invest_objective = "general"  [set filename "input/habitatquality/sensitivitytable_genbiodiv_binary_spatial.txt"]
+  (ifelse biodiv_invest_objective = "general"          [set filename "input/habitatquality/sensitivitytable_genbiodiv_binary_spatial.txt"]
           biodiv_invest_objective = "modelorg_plants"  [print "Warning: Biodiversity of modelorganism not yet implemented"]
-          biodiv_invest_objective = "all_plants" [print "Warning: Biodiversity of all plants not yet implemented"])
-  ;let filename "input/habitatquality/sensitivitytable_genbiodiv_binary_spatial.txt"
+          biodiv_invest_objective = "all_plants"       [print "Warning: Biodiversity of all plants not yet implemented"])
   ifelse filename = 0 [stop]
   [
   file-open filename
@@ -72,7 +70,7 @@ to write-sensitivity
       
     ;; Generate temporary sensitivity-list    
     let sensitivity (list LULC NAME HABITAT L_village L_lc_r L_lc_o L_tinput_r L_tinput_o L_labor_r L_labor_o) 
-    print sensitivity
+    ;print sensitivity
 
     set sensitivity_all lput sensitivity sensitivity_all
   ]
@@ -95,7 +93,7 @@ to write-sensitivity
 end
 
 
-;; read in impact-table (depending on research objective) from input-folder and generate impact-table
+;; Read in impact-table from input-folder and generate impact-table
 to write-impact
   print ["read in and write impact-table"]
   let impact_all []
@@ -114,11 +112,11 @@ to write-impact
       
     ;; Generate temporary impact-list    
     let impact (list THREAT MAX_DIST WEIGHT DECAY) 
-    print impact
+    ;print impact
 
     set impact_all lput impact impact_all
   ]
-    ;; Store sensitivity_table.csv to output folder
+    ;; Store impact_table.csv to output folder
     csv:to-file "output/impact_table.csv" impact_all 
     
   file-close
@@ -138,16 +136,22 @@ end
 
 
 to biodiv_plants_invest_python_update
-  translate-to-lulc-invest
-  write-maps
-  convert-maps
-  run-invest
-  convert-habitat-quality-to-asc
-  save-habitat-quality-to-patch
+  ifelse which-machine? = "server" and which-machine? = "local-linux"
+  [translate-to-lulc-invest
+   write-maps
+   convert-maps
+   run-invest
+   convert-habitat-quality-to-asc
+   save-habitat-quality-to-patch]
+  
+  [translate-to-lulc-invest
+   write-maps
+   run-dummy-invest
+   save-habitat-quality-to-patch]
 end
 
 
-;; create new variable for lulc-classification as p_landuse is still used
+;; Create new variable for lulc-classification as p_landuse is still used
 to translate-to-lulc-invest
   print["translating map"]
   ask patches 
@@ -176,10 +180,10 @@ end
 ;end
 
 
-;; generation of LULC-raster-map and impact-maps (as much as impacts we have)
+;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
 to write-maps
   print["writing maps to disk"]
-  write-lulc-map-simple
+  write-lulc-map
   write-impact-map "village"
   write-impact-map "lc_o"
   write-impact-map "lc_r"
@@ -190,8 +194,8 @@ to write-maps
 end
 
 
-;; generation of LULC-map
-to write-lulc-map-simple
+;; Generation of LULC-map
+to write-lulc-map
   let new-raster gis:patch-dataset p_landuse_invest
   let filename (word "output/lulc.asc")
   if (file-exists? filename) [file-delete filename]
@@ -222,7 +226,7 @@ end
 ;  gis:store-dataset new-raster filename
 ;end
 
-;; generation of impact-maps
+;; Generation of impact-maps
 to write-impact-map [impact-name]
   ask patches
   [set p_impact-location FALSE]
@@ -273,7 +277,6 @@ to write-impact-map [impact-name]
     set ycount-raster ycount-raster + 1
   ]
   
-  
   ;; store impact-map
   let filename (word "output/" (word (impact-name)) "_c.asc")
   if (file-exists? filename) [file-delete filename]
@@ -283,9 +286,7 @@ to write-impact-map [impact-name]
 end
 
 
-
-
-;; conversion of asc-maps to tif-maps for transfering to InVEST
+;; Conversion of asc-maps to tif-maps for transferation to InVEST
 to convert-maps
   foreach ["lulc" "village_c" "lc_r_c" "lc_o_c" "tinput_r_c" "tinput_o_c" "labor_r_c" "labor_o_c"]
   [
@@ -311,7 +312,7 @@ to convert_to_tif [filename]
 end
 
 
-;; invoke model InVEST and transfer output
+;; Invoke model InVEST and transfer output
 to run-invest
   (py:run
     "print('setting up parameters')"
@@ -330,7 +331,7 @@ to run-invest
 end
 
 
-;; convertion of tif-file from InVEST to asc-file for netlogo
+;; Convertion of tif-file from InVEST to asc-file for netlogo
 to convert-habitat-quality-to-asc
   print["converting invest results to asc"]
   (py:run
@@ -345,7 +346,7 @@ end
 ;; save habitat quality of every parcel as patch-variable
 to save-habitat-quality-to-patch
   print["saving habitat quality patch variable"]
-  let qualitydata gis:load-dataset "output/output/quality_c_test.asc"
+  let qualitydata gis:load-dataset "output/output/quality_c_dummy.asc" ; adjust filename depending on outputfile from invest or dummy-invest
   gis:apply-raster qualitydata p_habitat_quality
 end
 
