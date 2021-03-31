@@ -142,12 +142,14 @@ to biodiv_plants_invest_python_update
    convert-maps
    run-invest
    convert-habitat-quality-to-asc
-   save-habitat-quality-to-patch]
+   save-habitat-quality-to-patch
+   aggregate-habitat-quality]
   
   [translate-to-lulc-invest
    write-maps
    run-dummy-invest
-   save-habitat-quality-to-patch]
+   save-habitat-quality-to-patch
+   aggregate-habitat-quality]
 end
 
 
