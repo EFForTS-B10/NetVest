@@ -1,7 +1,7 @@
 ;; First define on which machine (local-windows, local-linux or server) we want to run the model
 to biodiv_plants_invest_python_init
  (ifelse which-machine? = "server" [set-up-invest get-sys-info write-tables]  ;; If simulation runs on the server than via docker-container
-  which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work) 
+  which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work)
   which-machine? = "local-linux"   [set-up-invest get-sys-info write-tables]) ;; If simulation runs on you local Linux-machine, we connect to python executable and load environment
 end
 
@@ -9,10 +9,13 @@ end
 to set-up-invest
   print["setting up invest"]
   (ifelse which-machine? = "local-linux"
-     [py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: enter path to your python executable 
-     ;py:setup "/home/cloud/anaconda3/envs/forge/bin/python"                                 ;anaconda environment: alternative to pip environment   
+      ;[py:setup py:python3]
+    ;[py:setup "/home/cloud/anaconda3/envs/forge/bin/python"]
+    [py:setup "/home/ecomod/anaconda3/envs/forge/bin/python"]
+     ;[py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: enter path to your python executable
+                                 ;anaconda environment: alternative to pip environment
     which-machine? = "server"
-     [py:setup py:python3])                                         
+     [py:setup py:python3])
   py:run "import sys"
   py:run "import os"
   py:run "import natcap.invest"
@@ -21,16 +24,16 @@ to set-up-invest
 end
 
 ;; Usage of the `sys` package in python to output some system info
-to get-sys-info 
+to get-sys-info
   output-print (word "Python directory: " (py:runresult "sys.prefix"))
   output-print (word "Platform: " (py:runresult "sys.platform"))
   (py:run
     "print(os.getcwd())"
   )
-  
+
   let home-dir py:runresult "os.environ['HOME']"
   output-print (word "Current home directory is: " home-dir)
-  
+
   output-print ""
 end
 
@@ -40,7 +43,7 @@ to write-tables
   write-impact
 end
 
-;; Read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table 
+;; Read in sensitivity-table (depending on research objective) from input-folder and generate sensitivity-table
 to write-sensitivity
   print ["read in and write sensitivity-table"]
   ;; Reset global sensitivity-list
@@ -53,34 +56,34 @@ to write-sensitivity
   ifelse filename = 0 [stop]
   [
   file-open filename
-  
+
   while [not file-at-end?]
   [
     ;;Read data for previous defined research objective and correlated habitat-suitability
     let LULC file-read
     let NAME file-read
-    let HABITAT file-read  
+    let HABITAT file-read
     let L_village file-read
     let L_lc_r file-read
     let L_lc_o file-read
     let L_tinput_r file-read
     let L_tinput_o file-read
     let L_labor_r file-read
-    let L_labor_o file-read 
-      
-    ;; Generate temporary sensitivity-list    
-    let sensitivity (list LULC NAME HABITAT L_village L_lc_r L_lc_o L_tinput_r L_tinput_o L_labor_r L_labor_o) 
+    let L_labor_o file-read
+
+    ;; Generate temporary sensitivity-list
+    let sensitivity (list LULC NAME HABITAT L_village L_lc_r L_lc_o L_tinput_r L_tinput_o L_labor_r L_labor_o)
     ;print sensitivity
 
     set sensitivity_all lput sensitivity sensitivity_all
   ]
     ;; Store sensitivity_table.csv to output folder
-    csv:to-file "output/sensitivity_table.csv" sensitivity_all 
-    
+    csv:to-file "output/sensitivity_table.csv" sensitivity_all
+
   file-close
   ]
-  
-;; Pyhthon-version of csv-writing  
+
+;; Pyhthon-version of csv-writing
 ;  (py:run
 ;    "csv_path = 'output/sensitivity_table.csv'"
 ;    "with open(csv_path, 'w') as open_table:"
@@ -101,28 +104,28 @@ to write-impact
   ifelse filename = 0 [stop]
   [
   file-open filename
-  
+
   while [not file-at-end?]
   [
     ;;Read data for impact-table
     let THREAT file-read
     let MAX_DIST file-read
-    let WEIGHT file-read  
-    let DECAY file-read 
-      
-    ;; Generate temporary impact-list    
-    let impact (list THREAT MAX_DIST WEIGHT DECAY) 
+    let WEIGHT file-read
+    let DECAY file-read
+
+    ;; Generate temporary impact-list
+    let impact (list THREAT MAX_DIST WEIGHT DECAY)
     ;print impact
 
     set impact_all lput impact impact_all
   ]
     ;; Store impact_table.csv to output folder
-    csv:to-file "output/impact_table.csv" impact_all 
-    
+    csv:to-file "output/impact_table.csv" impact_all
+
   file-close
   ]
-  
-;; Python-Version of writing impact-table  
+
+;; Python-Version of writing impact-table
 ;  (py:run
 ;    "csv_path = 'output/threats_samp.csv'"
 ;    "with open(csv_path, 'w') as open_table:"
@@ -144,7 +147,7 @@ to biodiv_plants_invest_python_update
    convert-habitat-quality-to-asc
    save-habitat-quality-to-patch
    aggregate-habitat-quality]
-  
+
   [translate-to-lulc-invest
    write-maps
    run-dummy-invest
@@ -156,7 +159,7 @@ end
 ;; Create new variable for lulc-classification as p_landuse is still used
 to translate-to-lulc-invest
   print["translating map"]
-  ask patches 
+  ask patches
   [
     if (p_landuse = -100 and p_homebase = -1) [set p_landuse_invest 4] ;forest
     if (p_landuse = 1) [set p_landuse_invest 3] ;rubber
@@ -173,7 +176,7 @@ end
 ;  [
 ;    if (p_landuse_invest = 1) [set p_impact-value 1] ; village
 ;    if (p_landuse_invest = 3 and p_age = 0 and p_invest > 0 ) [set p_impact-value 2] ; lc_r: land clearing rubber: investment costs occur only during immature phase. How extracting first year of investmentcost as this is the year after land clearing?
-;    if (p_landuse_invest = 2 and p_age = 0 and p_invest > 0) [set p_impact-value 3] ; lc_o: land clearing oilpalmt 
+;    if (p_landuse_invest = 2 and p_age = 0 and p_invest > 0) [set p_impact-value 3] ; lc_o: land clearing oilpalmt
 ;    if (p_landuse_invest = 3 and p_tinput > 0) [set p_impact-value 4] ; tinput_r: technical input rubber
 ;    if (p_landuse_invest = 2 and p_tinput > 0) [set p_impact-value 5] ; tinput_o: technical input oilpalm
 ;    if (p_landuse_invest = 3 and p_labor > 0) [set p_impact-value 6] ; labor_r: labor input rubber
@@ -278,12 +281,12 @@ to write-impact-map [impact-name]
     set ycount ycount - 1
     set ycount-raster ycount-raster + 1
   ]
-  
+
   ;; store impact-map
   let filename (word "output/" (word (impact-name)) "_c.asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
-  
+
   ask patches [set p_impact-location FALSE]
 end
 
@@ -345,10 +348,20 @@ to convert-habitat-quality-to-asc
 end
 
 
+
 ;; save habitat quality of every parcel as patch-variable
 to save-habitat-quality-to-patch
   print["saving habitat quality patch variable"]
-  let qualitydata gis:load-dataset "output/output/quality_c_dummy.asc" ; adjust filename depending on outputfile from invest or dummy-invest
+  let quality-outputfile-name ""
+    ifelse which-machine? = "local-windows"
+    [
+      set quality-outputfile-name "output/output/quality_c_dummy.asc"
+    ]
+    [
+      set quality-outputfile-name "output/output/quality_c_test.asc"
+    ]
+
+  let qualitydata gis:load-dataset quality-outputfile-name ; adjust filename depending on outputfile from invest or dummy-invest
   gis:apply-raster qualitydata p_habitat_quality
 end
 
