@@ -96,7 +96,8 @@ end
 ;; Read in impact-table from input-folder and generate impact-table
 to write-impact
   print ["read in and write impact-table"]
-  let impact_all []
+  set impact_all []
+  set impact_max 0
   let filename "input/habitatquality/impacttable_equalweight_spatial.txt"
   ifelse filename = 0 [stop]
   [
@@ -115,12 +116,20 @@ to write-impact
     ;print impact
 
     set impact_all lput impact impact_all
+       
+    ;set impact_max impact_max + max [MAX_DIST] of impact
+    ;show impact_max  
   ]
     ;; Store impact_table.csv to output folder
     csv:to-file "output/impact_table.csv" impact_all 
     
   file-close
   ]
+  
+  foreach impact_all
+    if item 1 > impact_max
+      [set impact_max item 2]
+    show impact_max
   
 ;; Python-Version of writing impact-table  
 ;  (py:run

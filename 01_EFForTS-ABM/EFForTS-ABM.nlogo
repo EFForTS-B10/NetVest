@@ -83,6 +83,8 @@ globals
 
   ;invest:habitat-quality
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+  impact_all               ;impact-list
+  impact_max               ;greatest maximum distance of all impacts in impact-table
 
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
@@ -913,7 +915,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-3
+1
 
 CHOOSER
 5

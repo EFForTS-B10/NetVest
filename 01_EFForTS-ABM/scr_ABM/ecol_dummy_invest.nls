@@ -1,5 +1,7 @@
 ;; Generation of artificial habitat quality map which is stored in output folder
 to run-dummy-invest
+  ; Add buffer zone of greates maximum distance of impact to current map: combat inflated habitat quality scores near the edges
+   ;impact_all maximaler wert bei THREAT
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
   let xcount 0
   let ycount max-pycor
