@@ -31,7 +31,7 @@ globals
 [
   LUT-ids
   LUT-ids-manage
-  LUT-fractions  ;; List to store the fractions of each landuse
+  LUT-fractions          ; List to store the fractions of each landuse
 
   ;constants
   simulation_year        ; current year of the simulation
@@ -43,7 +43,7 @@ globals
 
   ;variables
   carbon
-  prices-matrix               ; historical oil palm and rubber selling prices (for several years - currently past 10 years)
+  prices-matrix          ; historical oil palm and rubber selling prices (for several years - currently past 10 years)
   prices
 
   ; Map parameters:
@@ -84,7 +84,7 @@ globals
   ;invest:habitat-quality
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
   impact_all               ;impact-list
-  impact_max               ;greatest maximum distance of all impacts in impact-table
+  dist_max                 ;greatest maximum distance of all impacts in impact-table
 
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
