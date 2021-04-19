@@ -84,7 +84,7 @@ globals
   ;invest:habitat-quality
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
   impact_all               ;impact-list
-  dist_max                 ;greatest maximum distance of all impacts in impact-table
+  impact_max               ;greatest maximum distance of all impacts in impact-table
 
   habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
   f_prob                   ;probability of occurance in forest
