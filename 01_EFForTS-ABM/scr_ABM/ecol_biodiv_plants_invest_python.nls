@@ -1,8 +1,7 @@
 ;; First define on which machine (local-windows, local-linux or server) we want to run the model
 to biodiv_plants_invest_python_init
- (ifelse which-machine? = "server" [set-up-invest get-sys-info write-tables]  ;; If simulation runs on the server than via docker-container
-  which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work)
-  which-machine? = "local-linux"   [set-up-invest get-sys-info write-tables]) ;; If simulation runs on you local Linux-machine, we connect to python executable and load environment
+ ifelse which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work)
+                                         [set-up-invest get-sys-info write-tables]  ;; If simulation runs on your "local-linux"-machine or on the "server" than via docker-container, we connect to python executable and load environment
 end
 
 ;; Setup the connection to python and import a few libraries
