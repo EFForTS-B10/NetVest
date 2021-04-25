@@ -1,0 +1,20 @@
+to test-invest
+    ca ;clear all
+    set-up-invest ;setup python, load invest package
+
+    create-invest-input
+
+    run-invest;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv'
+    convert-habitat-quality-to-asc
+    save-habitat-quality-to-patch
+    aggregate-habitat-quality
+
+end
+
+
+to create-invest-input ; create necessary maps
+    ;read-lut-parameters ;is that necessary?
+      write-sensitivity ;here we need just simple dummies
+      write-impact
+    ; is that all input we need?
+end
