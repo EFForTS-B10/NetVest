@@ -1,19 +1,18 @@
 ;; First define on which machine (local-windows, local-linux or server) we want to run the model
 to biodiv_plants_invest_python_init
- (ifelse which-machine? = "server" [set-up-invest get-sys-info write-tables]  ;; If simulation runs on the server than via docker-container
-  which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work)
-  which-machine? = "local-linux"   [set-up-invest get-sys-info write-tables]) ;; If simulation runs on you local Linux-machine, we connect to python executable and load environment
+ ifelse which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work)
+                                         [set-up-invest get-sys-info write-tables]  ;; If simulation runs on your "local-linux"-machine or on the "server" than via docker-container, we connect to python executable and load environment
 end
 
 ;; Setup the connection to python and import a few libraries
 to set-up-invest
   print["setting up invest"]
   (ifelse which-machine? = "local-linux"
-      ;[py:setup py:python3]
-    ;[py:setup "/home/cloud/anaconda3/envs/forge/bin/python"]
+    ;[py:setup py:python3]
+    ;[py:setup "/home/cloud/anaconda3/envs/forge/bin/python"]                                 ;anaconda environment: alternative to pip environment
     [py:setup "/home/ecomod/anaconda3/envs/forge/bin/python"]
      ;[py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: enter path to your python executable
-                                 ;anaconda environment: alternative to pip environment
+                                 
     which-machine? = "server"
      [py:setup py:python3])
   py:run "import sys"
@@ -73,7 +72,6 @@ to write-sensitivity
 
     ;; Generate temporary sensitivity-list
     let sensitivity (list LULC NAME HABITAT L_village L_lc_r L_lc_o L_tinput_r L_tinput_o L_labor_r L_labor_o)
-    ;print sensitivity
 
     set sensitivity_all lput sensitivity sensitivity_all
   ]
@@ -96,7 +94,7 @@ to write-sensitivity
 end
 
 
-;; Read in impact-table from input-folder and generate impact-table
+;; Read in impact-table from input-folder and generate impact-table and extract greatest maximum distance over all impacts
 to write-impact
   print ["read in and write impact-table"]
   set impact_all []
@@ -116,7 +114,6 @@ to write-impact
 
     ;; Generate temporary impact-list
     let impact (list THREAT MAX_DIST WEIGHT DECAY)
-    ;print impact
 
     set impact_all lput impact impact_all
        
@@ -130,6 +127,7 @@ to write-impact
   ]
   
   ;; Extract greatest distance over all impacts for buffer zone 
+  print ["extract greates distance"]
   let i 1
   while [i < length impact_all]
   [
@@ -142,12 +140,8 @@ to write-impact
   
  
   show impact_max
-;  foreach impact_all
-;    if item 1 impact_all > impact_max
-;      [set impact_max item 1 impact_all]
     
   
-
 ;; Python-Version of writing impact-table
 ;  (py:run
 ;    "csv_path = 'output/threats_samp.csv'"
@@ -224,6 +218,7 @@ end
 
 ;; Generation of LULC-map
 to write-lulc-map
+  print ["write lulc map"]
   let new-raster gis:patch-dataset p_landuse_invest
   let filename (word "output/lulc.asc")
   if (file-exists? filename) [file-delete filename]
@@ -316,6 +311,7 @@ end
 
 ;; Conversion of asc-maps to tif-maps for transferation to InVEST
 to convert-maps
+  print ["convert maps"]
   foreach ["lulc" "village_c" "lc_r_c" "lc_o_c" "tinput_r_c" "tinput_o_c" "labor_r_c" "labor_o_c"]
   [
     [x] ->
@@ -342,6 +338,7 @@ end
 
 ;; Invoke model InVEST and transfer output
 to run-invest
+  print ["invoke model InVEST"]
   (py:run
     "print('setting up parameters')"
     "working_directory = 'output'"
