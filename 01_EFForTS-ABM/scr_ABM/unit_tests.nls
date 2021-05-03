@@ -1,4 +1,5 @@
 to test-invest
+    print["testing invest"]
     ca ;clear all
     set-up-invest ;setup python, load invest package
 

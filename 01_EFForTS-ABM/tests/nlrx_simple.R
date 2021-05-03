@@ -18,8 +18,18 @@ set.seed(457348)
 
 ## Define nl object
 #netlogopath <- file.path("../../../netlogofolder")
-netlogopath <- file.path("netlogofolder")
+#netlogopath <- file.path("netlogofolder")
 #netlogopath <- file.path("C:/Program Files/NetLogo 6.1.0")
+netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
+netlogoversion <- "6.1.1"
+
+
+if (file.exists(netlogopath)){
+  print('exists')
+}else{
+  stop('Please specify the folder that contains Netlogo')
+}
+
 #modelpath <- file.path("../EFForTS-ABM.nlogo")
 #modelpath <- "../EFForTS-ABM.nlogo"
 
@@ -27,7 +37,7 @@ modelpath <- "EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo"
 
 outpath <- file.path("EFForTS-ABM/03_Analyses/")
 
-nl <- nl(nlversion = "6.1.1",
+nl <- nl(nlversion = netlogoversion,
          nlpath = netlogopath,
          modelpath = modelpath,
          jvmmem = 1024)
