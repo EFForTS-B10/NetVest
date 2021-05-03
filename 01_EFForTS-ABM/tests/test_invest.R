@@ -2,7 +2,14 @@ library(Refforts)
 library(testthat)
 library(nlrx)
 
+## Set R random seed
+set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, seed, siminputrow) does
 
+
+#to fix Temporary output file not found
+dir.create(t <- paste(tempdir(), Sys.getpid(), sep='-'), FALSE, TRUE, "0700")
+unixtools::set.tempdir(t)
+message(tempdir())
 
 ######################################
 ## Setup nl object:
@@ -12,15 +19,29 @@ netlogoversion <- "6.1.1"
 
 
 if (file.exists(netlogopath)){
-  print('exists')
+  print('netlogopath exists')
 }else{
   stop('Please specify the folder that contains Netlogo')
 }
 
-modelpath <- file.path("../EFForTS-ABM.nlogo")#/EFForTS-ABM/01_EFForTS-ABM/
-outpath <- file.path("output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+modelpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/EFForTS-ABM/01_EFForTS-ABM/
 
-nl <- nl(nlversion = "6.1.1",
+if (file.exists(modelpath)){
+  print('modelpath exists')
+}else{
+  stop('Please specify the folder that contains the model')
+}
+
+outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+
+if (file.exists(outpath)){
+  print('outpath exists')
+}else{
+  stop('Please specify the folder that contains the outpath')
+}
+
+
+nl <- nl(nlversion = netlogoversion,
          nlpath = netlogopath,
          modelpath = modelpath,
          jvmmem = 1024)
@@ -28,22 +49,24 @@ nl <- nl(nlversion = "6.1.1",
 
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
-                           repetition=1,
+                           repetition=2,
                            tickmetrics="true",
                            idsetup="setup-with-external-maps",
-                           idgo="test-invest",
+                           idgo="go-biodiversity",#test-invest
                            idrunnum = "idrunnum",
-                           idfinal = "write-lut-map",
-                           runtime=1,
+                           idfinal = "write-lut-map",#
+                           runtime=2,
                            metrics=c(get.abm.metrics()),
                            constants = get.abm.defaults())
 
-nl <- set.nl.constant(nl, "biodiv_invest_objective", "general ")
+nl <- set.nl.constant(nl, "biodiv_invest_objective", "general")
 
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
 print(nl)
+
+
 
 ## Run simulations:
 results <- run_nl_all(nl)
@@ -51,7 +74,7 @@ results <- run_nl_all(nl)
 ## Attach output:
 setsim(nl, "simoutput") <- results
 
-
+write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")
 
 ## Result tests:
 
