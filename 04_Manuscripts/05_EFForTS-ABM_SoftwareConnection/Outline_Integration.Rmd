@@ -1,0 +1,131 @@
+---
+title: "Integration of the model InVEST into the model EFForTS-ABM: new tool for dynamic simulation of socio-economic functions and ecological functions (biodiversity) simultaneously "
+author: "Julia Henzler^1^*, Nils Beyer^1^, Sebastian Hanss^1^, Craig Eric Simpkins^2^, Jan Salecker^ 3^, Kerstin Wiegand^1^"
+
+date: "4/19/2021"
+output: word_document
+---
+order have to be discussed
+
+^1^ Ecosystem Modeling, Faculty of Forest Sciences and Forest Ecology University of Goettingen, Goettingen, Germany, ^2^ Craig: please fill in, ^3^ Jan: please fill in
+
+* Julia.henzler@uni-goettingen.de
+
+**Target Journals:**Methods in Ecology and Evolution, PLOS Computational Biology, Ecological Modeling
+
+
+**Keywords:**ecological functions, biodiversity, socio-economic functions, EFForTS-ABM, InVEST, trade-offs, software connection 
+
+
+**Key message:** Demonstration of the integration of the static terrestrial biodiversity model InVEST into the dynamic land-use change model EFForTS-ABM. As a result, synergies and trade-offs between biodiversity and socio-economic functions can be assessed simultaneously and dynamically at multiple temporal and spatial scales.
+
+
+# 1. Introduction
+*	Relationship between ecological and socio-economic functions for conservation issues
+    +	Ecological and socio-economic sphere (biodiversity as key index)
+    +	Trade-offs and Synergies and possible problems when unbalanced
+    +	Open question: Unclear relationship over time and space and the consequence for conservation
+*Rethink the audience and address first paragraph of introduction accordingly.*
+*	Representation of both models separately and their issues 
+    + Models are capable of examining relationships over multiple temporal and spatial scales....
+    + InVEST was developed for changes of ecosystems at different spatial and temporal scales but is a static model (as only 3 different landscapes can be used as input for simulation). Rapid assessment of biodiversity patterns and status : ecological functions + biodiversity via ecological production functions, static model, proven model: examples of applications 
+    +	EFForTS-ABM is a land-use change model where landscape is managed: socio-economic function, dynamic model
+
+*	Benefits of connection of EFForTS-ABM and InVEST:
+    +	EFForTS-ABM can be used as dynamic input for InVEST
+    +	EFForTS-ABM fits requirements to generate input for InVEST 
+    +	Output of InVEST can be processed dynamically within EFForTS-ABM
+
+*	Aim and Hypotheses
+    +	Aim: Tool for simultaneously model socio-economic functions and biodiversity over time and space
+    +	Connection is possible through narrow integrationlayer it can be easily implemented, maintained and comprehended (maybe to Abstract).	
+
+
+# 2. Methods
+*	Models and procedures
+    +	EFForTS-ABM: Economic submodel (mention LGraf as input-maps for ABM):
+  
+  ![Figure x: Processes EFForTS-ABM:Economic Submodel](figures/png/Economic_simple.png)
+  
+  
+  +	InVEST: habitat analysis:
+    
+    ![Figure x: Processes of InVEST:Terrestrial biodiversity](figures/png/InVEST.png)
+*	Connection points and Input-Output-Transfer
+*	EFForTS-ABM: generates input for InVEST (LULC-map, Impact-map, Sensitivity-table, impact-table, conversion (asc->tif)
+*	InVEST Habitat Quality: generates input for EFForTS-ABM (habitat quality map) (tif->asc)
+*	Mapping of output EFForTS-ABM to input InVEST
+*	Mapping of output InVEST to input EFForTS-ABM
+
+![Figure x: Input-Output-Transfer](figures/png/Input-Output-Transfer.png)
+
+*	Functional and non-functional requirements
+    +	Functional requirements: calculation of parcel-level habitat quality by invoking model InVEST
+	  + Test functional requirements with Test Pyramid, built of unit-testing, integration-testing, acceptance-testing (theoretical application example: Parameter setting for InVEST, Parameter setting for EFForTS-ABM)
+*	Non-functional requirements: reproducibility
+
+# 3. Results
+*	Connected Models:
+
+![Figure x: Software-Architecture](figures/png/Software-Architecture.png)
+ 
+*	Implementation of biodiversity submodel as connection point and realization of Input-Output-Transfer: 
+    +	set-up-invest, write-tables, write-maps, convert-maps, run-invest, convert-habitat-quality-to-asc, save-habitat-quality-to-patch, aggregate-habitat-quality 
+*	Functional requirements: results from test pyramid
+*	Non-functional requirements: dockerfile and singularity-container	
+
+# 4. Discussion
+*	Possible points to discuss
+    +	Benefit of connection instead of usage separately (dynamic simulations, feedback between economic functions and biodiversity,….)
+    +	Reference to Acceptance Test
+*	Conclusions
+    +	Easy implementation, easy adjusting to different models
+    +	New tool for assessing socio-economic functions simultaneously with ecological functions and biodiversity over time and space 
+	
+# 5. Acknowledgements
+Funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 192626868 – SFB 990 in the framework of the collaborative German-Indonesian research project CRC 990. Thank reviewers.	
+
+# 6. Supplementary material
+*	Include more detailed Software-Architecture with every in- and output of both models (especially for economic submodel of EFForTS-ABM)
+
+
+# Open questions:
+* Include ODD-protocol for models? I would say no, because the focus is not on the models itself, but more on the connection, its realisation and the benefit.
+
+# References:
+https://graberj.wordpress.com/2013/03/10/die-testpyramide/
+
+https://martinfowler.com/articles/practical-test-pyramid.html#TheTestPyramid
+
+https://files.ifi.uzh.ch/rerg/amadeus/teaching/courses/requirements_engineering_I_ws0607/Kapitel_01_Grundl.pdf
+
+Virtual Environment: Reference?
+
+Unit Testing: Reference?
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

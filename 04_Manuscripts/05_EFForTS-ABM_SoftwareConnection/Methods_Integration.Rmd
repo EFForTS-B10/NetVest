@@ -1,0 +1,82 @@
+---
+title: "Integration of the model InVEST into the model EFForTS-ABM: new tool for dynamic simulation of biodiversity and socio-economic functions simultaneously"
+author: "Julia Henzler^1^*, Nils Beyer^1^, Sebastian Hanss^1^, Craig Eric Simpkins^2^, Jan Salecker^3^, Kerstin Wiegand^1^ (order has to be discussed)"
+date: "4/28/2021"
+bibliography: "IntegrationPaper.bib" 
+output: word_document
+always_allow_html: true
+---
+
+# Methods
+
+**Integration of InVEST into EFForTS-ABM** <!--- (Minor) In the outline you made it seem like both models were being equally integrated, as opposed to one being incorporated into the other -->
+
+For the simultaneous simulation of biodiversity and socio-economic functions we connected two already existing models. <!--- (Minor) This will likely be a repeat of a point discussed in the introduction, just be aware of this when writing the intro-->
+
+The static production function model InVEST-Terrestrial Biodiversity (Version 3.9, Tier 1) was used to simulate biodiversity (Cite InVEST description paper if possible). The function is spatially-explicit and calculates a grid cell-level degradation score for every grid cell which was assigned a habitat value. The calculation is based on a <!--- You use 'an' for words starting with a vowel sound, user sounds like it starts with the consonant 'y' so use 'a' instead --> user-defined land use and land cover (LULC) map, on user-defined impacts to biodiversity and on location and distance of grid cells to impacts (for a full description of the calculation read ...). This degradation score is then standardized to a grid cell-level habitat quality score (Figure 1) <!---Using what approach-->. The habitat quality score is a proxy for biodiversity based on a simple habitat-analysis, enabling rapid assessment of biodiversity patterns. InVEST is a proven <!--- Proven to do what by who--> and widely applied software tool for simulation of biodiversity and ecological functions based on spatially-explicit maps. A detailed user guide was published in @sharp_r_invest_nodate.
+
+<br>
+
+![Figure 1: **InVEST-Terrestrial Biodiversity.** Calculation of grid cell-level degradation score and grid cell-level habitat quality score <!---May be nicer to centre align text-->.](figures/png/InVEST.png)
+
+<br>
+
+EFForTS-ABM (version xyz), a dynamic land-use change model, <!--- Avoiding repetitive style between paragraphs --> was used to simulate the socio-economic component of the analysis. The initial landscapes for EFForTS-ABM are <!--- Is this always the case or do you mean for this particular example. If it is only for this example change the tense of the statement to past tense i.e. were rather than are --> generated with the landscape generator EFForTS-LGraf. Landscapes are comprised of regular grid cells of 100 x 100 cells with a dimension of 50 m x 50 m, summing up a total landscape dimension of 25km^2^. They represent a forested landscape in Sumatra (Indonesia) with roads and villages of smallholder farming household agents and agricultural fields (oilpalm and rubber) owned and farmed by individual households. Every year households make rational land-use decisions with the aim to maximize their economic benefit (Figure 1). Detailed descriptions of EFForTS-LGraf and EFForTS-ABM were published in @salecker_efforts-lgraf_2019 and @dislich_land-use_2018, respectively. EFForTS-ABM is able to investigate how decisions of smallholders affect economic functions (e.g. household consumption) and landscape structure from a local to a landscape scale and vice versa at various points in time. The ABM comprises a spatially-explicit landscape with assignment of land use (management) and land cover (oilpalm, rubber, forest, village) to each grid cell. The impacts to biodiversity (from either land use or land cover) can easliy be derived from EFForTS-ABM. Therefore, EFForTS-ABM fits requirements for dynamically generate the input for InVEST and dynamically process the output of InVEST <!--- This sentence needs to be rewording as it is currently challenging to understand -->.
+
+![Figure 1: **EFForTS-ABM.** Yearly land-use and land management decision of households. <!--- Not certain this figure holds much value -->](figures/png/Economic_simple.png)
+
+<br>
+
+The implementation of both models was achieved by an Input-Output-Transfer. We mapped the outputs from EFForTS-ABM as the inputs to InVEST and mapped the outputs from InVEST as the inputs EFForTS-ABM. First, EFForTS-ABM generates the inputs - the LULC-map and one impact-map for each defined impact in Tag Image File format (tif-format) and a corresponding sensitivity-table and impact-table in csv-format. Second, InVEST integrates the generated inputs of EFForTS-ABM and calculates the habitat-degradation-map and habitat-quality-map in tif-format for further processing in EFForTS-ABM (Figure 3). To facilitate the transferring of maps, we included a converter, as EFForTS-ABM is only able to process Action Script Communication format (asc-format) and InVEST is only able to process tif-format.
+
+![Figure 3: **Input-Output-Transfer between EFForTS-ABM and InVEST**. The input of InVEST (LULC-map, Impact-map, Sensitivity-table, Impact-table) are generated by EFForTS-ABM. The input of EFForTS-ABM (Habitat-Degradation-map, Habitat-Quality-map) are generated by InVEST.](figures/png/Input-Output-Transfer.png)
+
+<br>
+
+**Evaluation of integration of InVEST into EFForTS-ABM**
+
+To evaluate the integration between the static production function model InVEST and the dynamic land-use change model EFForTS-ABM, we adopted a widely applied software testing system as our requirement plan [@bashar_requirements_2000]. This plan was divided into functional and non-functional requirements.
+
+The functional requirements included a testing scheme beginning from unit-tests to integration-tests and ending with an acceptance-test [@a_contan_test_2018]. Unit-tests were applied to verify the correct implementation of functions. This was realized by an isolated unit-testing module within EFForTS-ABM. This module comprised each particular function implemented via the connection of EfforTS-ABM and InVEST. We compared the simulated output of each particular function to its expected output. Integration-tests were applied to verify the correct integration between InVEST and EFForTS-ABM. This could be proven by correct Input-Output-Processing. It was realized by an isolated integration-testing module within EFForTS-ABM. For more convenient comparison of results, we chose a simplified parameter setting (see table 1 and table 2) with a binary approach for both habitat-assignment and for the sensitivity of LULC-types to impacts. For the same reasons <!--- What are the reasons, simplicity and … --> two simplified landscapes - forest-landscape and single-field-landscape - were generated. First, to verify the correct calculation of habitat-quality scores, the simulated grid cell-level habitat quality scores for the forest-landscape were compared to the expected output. Second, the simulated grid cell-level habitat-quality scores for the one-field-landscape were compared to the expected output to verify the correct reduction of habitat quality scores by the defined impacts.
+
+<br>
+
+```{r sensitivty table,echo=FALSE}
+#Create dataframe from txt file
+sensitivity <- read.table("tables\\sensitivitytable_integrationtest.txt", header = TRUE)
+sens <- data.frame(sensitivity)
+
+#Create table
+knitr::kable(sens, caption = 'Table 1: **Sensitivity table.** Classification (LULC) and names (NAMES) of LULC-types and their correspoding habitat assignment (HABITAT) and sensitivities to defined impacts (L_oilpalm, L-rubber). ')
+```
+
+<br>
+
+```{r impact table,echo=FALSE}
+#Create dataframe from txt file
+impact <- read.table("tables\\impacttable_integrationtest.txt", header = TRUE)
+imp <- data.frame(impact)
+
+#Create table
+knitr::kable(imp, caption = 'Table 2: **Impact table.** Maximal distance of each impact over space (MAX_DIST in 50 m), its corresponding impact weighting (WEIGHT) and how impacts decay over space (DECAY). ')
+```
+
+<br>
+
+The acceptance-test was applied to verify the dynamic simulation of socio-economic functions and biodiversity simultaneously. This test represents a constant price scenario without learning and without any landmarket. The landscape is parameterized with data from a lowland rainforest transformation system in Sumatra, Indonesia. Parameter setting for InVEST is shown in tables 1 and 2. Parameter setting for EFForTS-ABM is shown in table 3. The household consumption of all households was analyzed for socio-economic-functions. The landscape-level habitat quality score by aggregation of all grid cell-level habitat quality scores, was analyzed for biodiversity <!--- This sentence does not make sense-->. Each test was executed with the R package nlrx (version xyz)[@salecker_nlrx_2019]
+
+<br>
+
+```{r Parameter setting EFForTS-ABM, echo=FALSE}
+#Create dataframe
+para_efforts <- data.frame(Parameters = c("Prices", "Learning", "Inefficiency", "which-map", "land-use-change-decision", "initial-wealth-distribution", "landmarket", "biodiv_plants", "biodiv_plants_objective"),
+                 Value = c("constant prices", "no learning", "no inefficiency", "five-farmers2", "only-one-field-per-year", "constant", "no landmarket", "invest_pyhton", "general")
+                 )
+
+#Create table
+knitr::kable(para_efforts, caption = 'Table 3: **Parameter setting for EFForTS-ABM** (Maybe move to Supplementary Materials. ')
+```
+
+The non-functional requirements include the reproducibility of the integrated EFForTS-ABM-InVEST software tool. Simulations can be executed on a linux-server or on a high-performance-cluster <!--- May want to describe what type of HPC -->. For the execution of the simulations on a server, we designed a repository [<https://github.com/nilsbeyer/rstudio-docker>]. It includes setup instructions and a dockerfile with the correct version of InVEST and its required dependencies along with an R-Studio-Server for execution of simulations. *Also describe in detail the setup etc, which is listed in repository?* For the execution of the simulations on a high-performance-cluster, we designed a singularity container, which duplicates the dockerfile into a singularityfile on the cluster. *Here, we have to wait for further progress. Actually, there is no function within cluster_mq to run a singularity container on the hpc. We opened an issue and wait for response. If there is no convenient way to run singularity on hpc, we have to work with an manual installation of InVEST on the cluster.*
+
+# References
