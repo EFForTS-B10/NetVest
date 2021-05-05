@@ -6,13 +6,14 @@ end
 
 ;; Setup the connection to python and import a few libraries
 to set-up-invest
-  print["setting up invest"]
+  print["setting up pyhton invest"]
+  print (word "which-machine? is set to " which-machine? )
   (ifelse which-machine? = "local-linux"
     ;[py:setup py:python3]
     ;[py:setup "/home/cloud/anaconda3/envs/forge/bin/python"]                                 ;anaconda environment: alternative to pip environment
     [py:setup "/home/ecomod/anaconda3/envs/forge/bin/python"]
      ;[py:setup "C:/Users/JuliaHenzler/AppData/Local/Programs/Python/Python39/python"]        ;pip environment: enter path to your python executable
-                                 
+
     which-machine? = "server"
      [py:setup py:python3])
   py:run "import sys"
@@ -116,17 +117,17 @@ to write-impact
     let impact (list THREAT MAX_DIST WEIGHT DECAY)
 
     set impact_all lput impact impact_all
-       
+
     ;set impact_max impact_max + max [MAX_DIST] of impact
-    ;show impact_max  
+    ;show impact_max
   ]
     ;; Store impact_table.csv to output folder
     csv:to-file "output/impact_table.csv" impact_all
 
   file-close
   ]
-  
-  ;; Extract greatest distance over all impacts for buffer zone 
+
+  ;; Extract greatest distance over all impacts for buffer zone
   print ["extract greates distance"]
   let i 1
   while [i < length impact_all]
@@ -134,14 +135,14 @@ to write-impact
    if item 1 item i impact_all > impact_max
     [
       set impact_max item 1 item i impact_all
-    ] 
+    ]
    set i i + 1
   ]
-  
- 
+
+
   show impact_max
-    
-  
+
+
 ;; Python-Version of writing impact-table
 ;  (py:run
 ;    "csv_path = 'output/threats_samp.csv'"
@@ -160,15 +161,15 @@ to biodiv_plants_invest_python_update
   [translate-to-lulc-invest
    write-maps
    convert-maps
-   run-invest
-   convert-habitat-quality-to-asc
-   save-habitat-quality-to-patch
+   run-invest "output" "spatial"
+   convert-habitat-quality-to-asc "output" "spatial"
+   save-habitat-quality-to-patch "output" "spatial"
    aggregate-habitat-quality]
 
   [translate-to-lulc-invest
    write-maps
    run-dummy-invest
-   save-habitat-quality-to-patch
+   save-habitat-quality-to-patch "output" "dummy"
    aggregate-habitat-quality]
 end
 
@@ -312,7 +313,7 @@ end
 ;; Conversion of asc-maps to tif-maps for transferation to InVEST
 to convert-maps
   print ["convert maps"]
-  foreach ["lulc" "village_c" "lc_r_c" "lc_o_c" "tinput_r_c" "tinput_o_c" "labor_r_c" "labor_o_c"]
+  foreach ["output/lulc" "output/village_c" "output/lc_r_c" "output/lc_o_c" "output/tinput_r_c" "output/tinput_o_c" "output/labor_r_c" "output/labor_o_c"]
   [
     [x] ->
     convert_to_tif x
@@ -320,12 +321,12 @@ to convert-maps
 end
 
 
-to convert_to_tif [filename]
-  py:set "filename" filename
+to convert_to_tif [filepath]
+  py:set "filepath" filepath
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
-    "ds_in = gdal.Open(f'output/{filename}.asc')"
-    "ds_out = drv.CreateCopy(f'output/{filename}.tif', ds_in)"
+    "ds_in = gdal.Open(f'{filepath}.asc')"
+    "ds_out = drv.CreateCopy(f'{filepath}.tif', ds_in)"
     "srs = osr.SpatialReference()"
     "srs.ImportFromEPSG(32748)"
     "ds_out.SetProjection(srs.ExportToWkt())"
@@ -337,14 +338,17 @@ end
 
 
 ;; Invoke model InVEST and transfer output
-to run-invest
-  print ["invoke model InVEST"]
+to run-invest [working_directory experiment_name]
+  print (word "invoke model InVEST with working directory: " working_directory)
+  print (word "experiment name: " experiment_name)
+  py:set "working_directory" working_directory
+  py:set "experiment_name" experiment_name
   (py:run
     "print('setting up parameters')"
-    "working_directory = 'output'"
+    ;"working_directory = 'output'"
     "args = {"
     "'half_saturation_constant': '0.05',"
-    "'results_suffix': 'spatial',"
+    "'results_suffix': experiment_name,"
     "'workspace_dir': working_directory,"
     "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
     "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
@@ -357,10 +361,11 @@ end
 
 
 ;; Convertion of tif-file from InVEST to asc-file for netlogo
-to convert-habitat-quality-to-asc
-  print["converting invest results to asc"]
+to convert-habitat-quality-to-asc [working_directory experiment_name]
+  print (word "converting invest results to asc for " experiment_name)
+  py:set "working_directory" working_directory
   (py:run
-    "filename = 'output/output/quality_c_test'"
+    "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
     "in_name = f'{filename}.tif'"
     "out_name = f'{filename}.asc'"
     "gdal.Translate(out_name, in_name,format='AAIGrid')"
@@ -370,15 +375,15 @@ end
 
 
 ;; save habitat quality of every parcel as patch-variable
-to save-habitat-quality-to-patch
-  print["saving habitat quality patch variable"]
+to save-habitat-quality-to-patch [working_directory experiment_name]
+  print (word "saving habitat quality patch variable to: " working_directory)
   let quality-outputfile-name ""
     ifelse which-machine? = "local-windows"
     [
       set quality-outputfile-name "output/output/quality_c_dummy.asc"
     ]
     [
-      set quality-outputfile-name "output/output/quality_c_test.asc"
+      set quality-outputfile-name (word working_directory "/output/quality_c_" experiment_name ".asc")
     ]
 
   let qualitydata gis:load-dataset quality-outputfile-name ; adjust filename depending on outputfile from invest or dummy-invest

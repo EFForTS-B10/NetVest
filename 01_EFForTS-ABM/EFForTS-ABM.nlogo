@@ -224,6 +224,7 @@ hhs-own
 
 ; Main Setup procedure:
 To setup-with-external-maps
+   print["setting up"]
   ca
 
   ; control randomness
@@ -916,7 +917,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-1
+0
 
 CHOOSER
 5
@@ -2333,7 +2334,7 @@ consumption_frac_cash
 consumption_frac_cash
 0
 1
-0.14
+0.1
 0.01
 1
 NIL
@@ -2423,7 +2424,7 @@ hh-nw-param2
 hh-nw-param2
 0
 100
-51.0
+50.0
 1
 1
 NIL
@@ -3385,7 +3386,7 @@ CHOOSER
 which-machine?
 which-machine?
 "local-windows" "local-linux" "server"
-0
+1
 
 BUTTON
 2510
@@ -3893,61 +3894,19 @@ NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="js_2016_sc11" repetitions="20" runMetricsEveryStep="true">
+  <experiment name="nils_test1" repetitions="1" runMetricsEveryStep="true">
     <setup>setup-with-external-maps</setup>
-    <go>step</go>
-    <timeLimit steps="50"/>
+    <go>go-biodiversity</go>
+    <timeLimit steps="1"/>
     <metric>count turtles</metric>
-    <metric>pcount_op</metric>
-    <metric>pcount_rm</metric>
-    <metric>pcount_ra</metric>
-    <metric>pcount_fo</metric>
-    <metric>oilpalm_carbon</metric>
-    <metric>rubberagro_carbon</metric>
-    <metric>rubbermono_carbon</metric>
-    <metric>big_plantation_carbon</metric>
-    <metric>forest_carbon</metric>
-    <metric>oilpalm_total_carbon</metric>
-    <metric>rubber_total_carbon</metric>
     <metric>area_under_agriculture</metric>
-    <metric>op_price</metric>
-    <metric>rubber_price</metric>
-    <metric>mean [h_wealth] of turtles</metric>
-    <metric>standard-deviation [h_wealth] of turtles</metric>
-    <metric>mean [h_consumption] of turtles</metric>
-    <metric>standard-deviation [h_consumption] of turtles</metric>
-    <metric>mean [h_fixconsumption] of turtles</metric>
-    <metric>standard-deviation [h_fixconsumption] of turtles</metric>
-    <metric>mean [h_varconsumption] of turtles</metric>
-    <metric>standard-deviation [h_varconsumption] of turtles</metric>
-    <metric>mean [h_netcashflow] of turtles</metric>
-    <metric>standard-deviation [h_netcashflow] of turtles</metric>
     <metric>min_hh_consumption</metric>
     <metric>max_hh_consumption</metric>
-    <metric>yield_op_all_hh_mean</metric>
-    <metric>yield_rm_all_hh_mean</metric>
-    <metric>yield_gap_op_all_hh_mean</metric>
-    <metric>yield_gap_rm_all_hh_mean</metric>
-    <enumeratedValueSet variable="price-fluctuation-%">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="which-map">
       <value value="&quot;hundred-farmers3&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="same-wealth">
-      <value value="10000"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="patch-age">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="land-use-change-decision">
       <value value="&quot;only-one-field-per-year&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="setlanduse">
-      <value value="2"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="op-inefficiency-alpha">
-      <value value="3.168"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="consumption_base">
       <value value="1000"/>
@@ -3955,41 +3914,14 @@ NetLogo 6.1.1
     <enumeratedValueSet variable="learning-spillover?">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="land-use-change?">
-      <value value="true"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="price_scenario">
       <value value="&quot;constant_prices&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="initial-wealth">
-      <value value="&quot;log-normal&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rb-inefficiency-alpha">
-      <value value="3.445"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="heterogenous-hhs?">
-      <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="setup-hh-network">
       <value value="&quot;hh-nw-kernel-distance&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="palm-oil-price">
-      <value value="90"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rubber-price">
-      <value value="1100"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rb-price-mu">
-      <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rb-inefficiency-lambda">
-      <value value="0.093"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="min-wealth">
       <value value="30"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="op-inefficiency-lambda">
-      <value value="0.069"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="consumption_frac_wealth">
       <value value="0.05"/>
@@ -4006,35 +3938,20 @@ NetLogo 6.1.1
     <enumeratedValueSet variable="time-horizon">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="rb-price-sd">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="discount-rate">
       <value value="0.1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="log-normal-sd">
-      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="hh-nw-param1">
       <value value="10"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="op-price-mu">
-      <value value="0"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="export-view?">
       <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="log-normal-mean">
-      <value value="7"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="hh-nw-param2">
       <value value="50"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="write-hh-data-to-file?">
       <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="op-price-sd">
-      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="write-maps?">
       <value value="false"/>
@@ -5238,6 +5155,74 @@ export-inefficiency-distribution</setup>
     </enumeratedValueSet>
     <enumeratedValueSet variable="gr-field-strategies-id">
       <value value="7"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="nils_test2" repetitions="1" runMetricsEveryStep="true">
+    <setup>test-invest</setup>
+    <timeLimit steps="1"/>
+    <metric>count turtles</metric>
+    <metric>area_under_agriculture</metric>
+    <metric>min_hh_consumption</metric>
+    <metric>max_hh_consumption</metric>
+    <enumeratedValueSet variable="which-machine?">
+      <value value="&quot;local-linux&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="which-map">
+      <value value="&quot;one-farmer-one-field&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land-use-change-decision">
+      <value value="&quot;only-one-field-per-year&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_base">
+      <value value="1000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="learning-spillover?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="price_scenario">
+      <value value="&quot;constant_prices&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="setup-hh-network">
+      <value value="&quot;hh-nw-kernel-distance&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-wealth">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_frac_wealth">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="reproducable?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption-on?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_frac_cash">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="time-horizon">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="discount-rate">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-nw-param1">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="export-view?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-nw-param2">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="write-hh-data-to-file?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="write-maps?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spillover-share">
+      <value value="1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
