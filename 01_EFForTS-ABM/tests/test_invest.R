@@ -60,7 +60,7 @@ nl@experiment <- experiment(expname="test",
                            constants = get.abm.defaults())
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "general")
-
+nl <- set.nl.constant(nl, "which-machine?", "local-linux")
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
