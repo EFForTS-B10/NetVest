@@ -14,7 +14,7 @@ message(tempdir())
 ######################################
 ## Setup nl object:
 #netlogopath <- file.path("~/NetLogo 6.1.1")
-netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
+netlogopath <- file.path("/home/julia/netlogofolder")
 netlogoversion <- "6.1.1"
 
 
@@ -24,7 +24,7 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 
-modelpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/EFForTS-ABM/01_EFForTS-ABM/
+modelpath <- file.path("/home/julia/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/EFForTS-ABM/01_EFForTS-ABM/
 
 if (file.exists(modelpath)){
   print('modelpath exists')
@@ -32,7 +32,7 @@ if (file.exists(modelpath)){
   stop('Please specify the folder that contains the model')
 }
 
-outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+outpath <- file.path("/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
 
 if (file.exists(outpath)){
   print('outpath exists')
@@ -59,8 +59,10 @@ nl@experiment <- experiment(expname="test",
                            metrics=c(get.abm.metrics()),
                            constants = get.abm.defaults())
 
-nl <- set.nl.constant(nl, "biodiv_invest_objective", "general")
-nl <- set.nl.constant(nl, "which-machine?", "local-linux")
+
+nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
+nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
+
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
