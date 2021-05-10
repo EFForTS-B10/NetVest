@@ -5225,6 +5225,20 @@ export-inefficiency-distribution</setup>
       <value value="1"/>
     </enumeratedValueSet>
   </experiment>
+  <experiment name="nils_test_reduced" repetitions="1" runMetricsEveryStep="true">
+    <setup>test-invest</setup>
+    <timeLimit steps="1"/>
+    <metric>count turtles</metric>
+    <metric>area_under_agriculture</metric>
+    <metric>min_hh_consumption</metric>
+    <metric>max_hh_consumption</metric>
+    <enumeratedValueSet variable="reproducable?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="which-machine?">
+      <value value="&quot;local-linux&quot;"/>
+    </enumeratedValueSet>
+  </experiment>
 </experiments>
 @#$#@#$#@
 @#$#@#$#@

@@ -7,14 +7,14 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 
 #to fix Temporary output file not found
-dir.create(t <- paste(tempdir(), Sys.getpid(), sep='-'), FALSE, TRUE, "0700")
-unixtools::set.tempdir(t)
-message(tempdir())
+#dir.create(t <- paste(tempdir(), Sys.getpid(), sep='-'), FALSE, TRUE, "0700")
+#unixtools::set.tempdir(t)
+#message(tempdir())
 
 ######################################
 ## Setup nl object:
-#netlogopath <- file.path("~/NetLogo 6.1.1")
-netlogopath <- file.path("/home/julia/netlogofolder")
+netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
+#netlogopath <- file.path("/home/julia/netlogofolder")
 netlogoversion <- "6.1.1"
 
 
@@ -23,16 +23,16 @@ if (file.exists(netlogopath)){
 }else{
   stop('Please specify the folder that contains Netlogo')
 }
-
-modelpath <- file.path("/home/julia/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/EFForTS-ABM/01_EFForTS-ABM/
+#eigentlich solltest du hier nicht /home/julia davor schreiben muessen, da das dein working directory fuer Rstudio ist
+modelpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
 
 if (file.exists(modelpath)){
   print('modelpath exists')
 }else{
   stop('Please specify the folder that contains the model')
 }
-
-outpath <- file.path("/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+#hier genauso
+outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
 
 if (file.exists(outpath)){
   print('outpath exists')
@@ -49,14 +49,14 @@ nl <- nl(nlversion = netlogoversion,
 
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
-                           repetition=2,
+                           repetition=1,
                            tickmetrics="true",
-                           idsetup="setup-with-external-maps",
-                           idgo="go-biodiversity",#test-invest
+                           idsetup="test-invest", #setup-with-external-maps
+                           idgo="do-nothing",#test-invest #go-biodiversity
                            idrunnum = "idrunnum",
-                           idfinal = "write-lut-map",#
-                           runtime=2,
-                           metrics=c(get.abm.metrics()),
+                           idfinal = "do-nothing",#write-lut-map
+                           runtime=1,
+                           #metrics=c(get.abm.metrics()),
                            constants = get.abm.defaults())
 
 

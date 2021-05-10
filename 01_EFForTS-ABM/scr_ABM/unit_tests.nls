@@ -8,7 +8,7 @@ to test-invest
   run-invest "tests/invest_input" "test";expects working_directory, 'sensitivity_table.csv' 'impact_table.csv'
     convert-habitat-quality-to-asc "tests/invest_input" "test"
     save-habitat-quality-to-patch "tests/invest_input" "test"
-    aggregate-habitat-quality
+    ;aggregate-habitat-quality
 end
 
 
@@ -17,4 +17,7 @@ to create-invest-input ; create necessary maps
       write-sensitivity ;here we need just simple dummies
       write-impact
     ; is that all input we need?
+end
+
+to do-nothing ;because nlrx demands to run an additional function
 end
