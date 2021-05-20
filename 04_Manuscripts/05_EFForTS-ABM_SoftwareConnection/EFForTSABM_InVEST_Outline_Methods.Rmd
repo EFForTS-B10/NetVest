@@ -130,6 +130,7 @@ The non-functional requirements include the reproducibility of the integrated EF
 *	Possible points to discuss
     +	Benefit of connection instead of usage separately (dynamic simulations, feedback between economic functions and biodiversity,….)
     +	Reference to Acceptance Test
+    + Comparison of ABM and InVEST with table (classification of models) and point to important difference
 *	Conclusions
     +	Easy implementation, easy adjusting to different models
     +	New tool for assessing socio-economic functions simultaneously with ecological functions and biodiversity over time and space 
