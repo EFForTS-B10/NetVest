@@ -1,7 +1,7 @@
 ---
 title: 'Integration of the model InVEST with the model EFForTS-ABM: new tool for dynamic
   simulation of biodiversity and socio-economic functions simultaneously'
-author: Julia Henzler^1^*, Nils Beyer^1^, Sebastian Hanss^1^, Craig Eric Simpkins^2^,
+author: Julia Henzler^1^*, Nils Beyer^1^, Sebastian Hanss^1^, Craig Eric Simpkins^1,2^,
   Jan Salecker^3^, Kerstin Wiegand^1^ (order has to be discussed)
 date: "4/28/2021"
 output:
@@ -12,11 +12,11 @@ output:
 bibliography: IntegrationPaper.bib
 ---
 
-^1^ Ecosystem Modeling, Faculty of Forest Sciences and Forest Ecology University of Goettingen, Goettingen, Germany, ^2^ Craig: please fill in, ^3^ Jan: please fill in
+^1^ Ecosystem Modeling, Faculty of Forest Sciences and Forest Ecology University of Goettingen, Goettingen, Germany; ^2^ University of Auckland, School of Environment, Auckland 1142, New Zealand; ^3^ Jan: please fill in
 
 *Julia.henzler@uni-goettingen.de
 
-**Target Journals:**Methods in Ecology and Evolution, PLOS Computational Biology, Ecological Modeling
+**Target Journals:**Methods in Ecology and Evolution, PLOS Computational Biology, Ecological Modeling, Ecosphere
 
 
 **Keywords:**ecological functions, biodiversity, socio-economic functions, EFForTS-ABM, InVEST, trade-offs, software connection 
@@ -44,18 +44,18 @@ bibliography: IntegrationPaper.bib
     +	Output of InVEST can be processed dynamically within EFForTS-ABM
 
 *	Aim and Hypotheses
-    +	Aim: Tool for simultaneously model socio-economic functions and biodiversity over time and space
-    +	Connection is possible through narrow integrationlayer it can be easily implemented, maintained and comprehended (maybe to Abstract).	
+    +	Aim: Tool for simultaneously modeling socio-economic functions and biodiversity over time and space
+    +	Connection is possible through narrow integration layer it can be easily implemented, maintained and comprehended (maybe to Abstract).	
 
 
 # Methods
 
 **Integration of InVEST with EFForTS-ABM** 
 
-For the simultaneous simulation of biodiversity and socio-economic functions we integrated two already existing models. EFForTS-ABM and InVEST were used complementary. EFForTS-ABM generated the land-use and land-cover maps (LULC-maps) and the parameter setting for the integration into InVEST. Whereas InVEST reintegrated the calculated biodiversity for further processing within EFForTS-ABM. We developed functional and non-functional requirements for correct implementation. 
+Simultaneous simulation of biodiversity and socio-economic functions was done by integrating two pre-existing models. EFForTS-ABM and InVEST were used complementary##COMMENT:Unclear what is meant by this question##. EFForTS-ABM generated the land-use and land-cover maps (LULC-maps) and the parameter setting for the integration into InVEST. Whereas InVEST reintegrated the calculated biodiversity for further processing within EFForTS-ABM. We developed functional and non-functional requirements for correct implementation. 
 *Mention at first in intro or at first in methods?*
 
-The static production function model InVEST-Terrestrial Biodiversity (Version 3.9, Tier 1) was used to simulate biodiversity [@kareiva_natural_2012]. The function is spatially-explicit and calculates a grid cell-level degradation score for every grid cell which was assigned a habitat value. The calculation is based on a user-defined LULC-map, on user-defined impacts to biodiversity and on location and distance of grid cells to impacts (for a full description of the calculation read @sharp_r_invest_nodate). This degradation score is then standardized to a grid cell-level habitat quality score (Figure 1) via a half-saturation function. The habitat quality score is a proxy for biodiversity based on a simple habitat-analysis, enabling rapid assessment of biodiversity patterns. InVEST is a scientifically grounded tool and is verified as a widely applied software tool for simulation of biodiversity and ecological functions based on spatially-explicit maps. A detailed user guide was published in @sharp_r_invest_nodate.
+The static production function model InVEST-Terrestrial Biodiversity (Version 3.9, Tier 1) was used to simulate biodiversity [@kareiva_natural_2012]. The function is spatially-explicit and calculates an individual grid cell-level degradation score, which was assigned a habitat value. The calculation is based on a user-defined LULC-map, on user-defined impacts to biodiversity and on location and distance of grid cells to impacts (for a full description of the calculation read @sharp_r_invest_nodate). This degradation score is then standardized to a grid cell-level habitat quality score (Figure 1) via a half-saturation function. The habitat quality score is a proxy for biodiversity based on a simple habitat-analysis, enabling rapid assessment of biodiversity patterns. InVEST is a scientifically grounded tool and is verified as a widely applied software tool for simulation of biodiversity and ecological functions based on spatially-explicit maps. A detailed user guide was published in @sharp_r_invest_nodate.
 
 <br>
 
@@ -63,7 +63,7 @@ The static production function model InVEST-Terrestrial Biodiversity (Version 3.
 
 <br>
 
-To simulate the socio-economic compoenent of the analysis, the dynamic land-use change model EFForTS-ABM (version xyz) was used. The initial landscapes for EFForTS-ABM are generated with the landscape generator EFForTS-LGraf. Landscapes are comprised of regular grid cells of 100 x 100 cells with a dimension of 50 m x 50 m, summing up a total landscape dimension of 25km^2^. They represent a forested landscape in Sumatra (Indonesia) with roads and villages of smallholder farming household agents and agricultural fields (oilpalm and rubber) owned and farmed by individual households. Every year households make rational land-use decisions with the aim to maximize their economic benefit (Figure 2). Detailed descriptions of EFForTS-LGraf and EFForTS-ABM were published in @salecker_efforts-lgraf_2019 and @dislich_land-use_2018, respectively. EFForTS-ABM is able to investigate how decisions of smallholders affect economic functions (e.g. household consumption) and landscape structure from a local to a landscape scale and vice versa at various points in time. The ABM comprises a spatially-explicit landscape with assignment of land use (management) and land cover (oilpalm, rubber, forest, village) to each grid cell. The impacts to biodiversity (from either land use or land cover) can easily be derived from EFForTS-ABM. The ABM is also suitable to integrate the generated habitat quality maps from InVEST. Therefore, EFForTS-ABM fits requirements for dynamically generate the input for InVEST and dynamically process the output of InVEST.
+To simulate the socio-economic component of the analysis, the dynamic land-use change model EFForTS-ABM (version xyz) was used. The initial landscapes for EFForTS-ABM are generated with the landscape generator EFForTS-LGraf. Landscapes are comprised of regular grid cells of 100 x 100 cells with a dimension of 50 m x 50 m, summing up a total landscape dimension of 25km^2^. They represent a forested landscape in Sumatra (Indonesia) with roads and villages of smallholder farming household agents and agricultural fields (oilpalm and rubber) owned and farmed by individual households. Every year households make rational land-use decisions with the aim to maximize their economic benefit (Figure 2). Detailed descriptions of EFForTS-LGraf and EFForTS-ABM were published in @salecker_efforts-lgraf_2019 and @dislich_land-use_2018, respectively. EFForTS-ABM is able to investigate how decisions of smallholders affect economic functions (e.g. household consumption) and landscape structure from a local to a landscape scale and vice versa at various points in time. The ABM comprises a spatially-explicit landscape with assignment of land use (management) and land cover (oilpalm, rubber, forest, village) to each grid cell. The impacts to biodiversity (from either land use or land cover) can easily be derived from EFForTS-ABM. The ABM is also suitable to integrate the generated habitat quality maps from InVEST. Therefore, EFForTS-ABM fits the requirements to dynamically generate the input and dynamically process the output of InVEST.
 
 ![Figure 2: **EFForTS-ABM.** Yearly land-use and land management decision of households. <!--- Not certain this figure holds much value -->](Figures/png/Economic_simple.png)
 
@@ -105,7 +105,7 @@ knitr::kable(imp, caption = 'Table 2: **Impact table.** Maximal distance of each
 
 <br>
 
-The acceptance-test was applied to verify the dynamic simulation of socio-economic functions and biodiversity simultaneously. This test represents a constant price scenario without learning and without any landmarket. The landscape is parameterized with data from a lowland rainforest transformation system in Sumatra, Indonesia. Parameter setting for InVEST is shown in tables 1 and 2. Parameter setting for EFForTS-ABM is shown in table 3. The household consumption of all households was analyzed as one representative for socio-economic-functions. The landscape-level habitat quality score, which is a aggregation of all grid cell-level habitat quality scores, was analyzed as the representative for biodiversity. Each test was executed with the R package nlrx (version xyz)[@salecker_nlrx_2019].
+The acceptance-test was applied to verify the dynamic simulation of socio-economic functions and biodiversity simultaneously. This test represents a constant price scenario without learning and without any landmarket. The landscape is parameterized with data from a lowland rainforest transformation system in Sumatra, Indonesia. Parameter setting for InVEST is shown in tables 1 and 2. Parameter setting for EFForTS-ABM is shown in table 3. The household consumption of all households was analyzed as one representative for socio-economic-functions. The landscape-level habitat quality score, which is a aggregation of all grid cell-level habitat quality scores, was analyzed as the representative for biodiversity. Each test was executed using the R package nlrx (version xyz)[@salecker_nlrx_2019].
 
 <br>
 
