@@ -60,7 +60,7 @@ nl@experiment <- experiment(expname="test",
 
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
-nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
+nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
 
 
 ## Add simple simdesign
