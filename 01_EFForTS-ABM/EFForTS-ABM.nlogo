@@ -3173,10 +3173,10 @@ NIL
 BUTTON
 2480
 310
-2605
+2662
 343
 NIL
-run-invest
+run-invest \"output\" \"spatial\"
 NIL
 1
 T
@@ -3251,10 +3251,10 @@ biodiv_invest_objective
 BUTTON
 2480
 380
-2655
+2772
 413
 NIL
-save-habitat-quality-to-patch
+save-habitat-quality-to-patch \"output\" \"spatial\"
 NIL
 1
 T
@@ -3268,10 +3268,10 @@ NIL
 BUTTON
 2480
 345
-2655
+2772
 378
 NIL
-convert-habitat-quality-to-asc
+convert-habitat-quality-to-asc \"output\" \"spatial\"
 NIL
 1
 T
@@ -3386,7 +3386,7 @@ CHOOSER
 which-machine?
 which-machine?
 "local-windows" "local-linux" "server"
-1
+0
 
 BUTTON
 2510
@@ -3434,10 +3434,10 @@ precision landscape-hq 4
 11
 
 BUTTON
-2635
-300
-2767
-333
+2630
+265
+2762
+298
 NIL
 run-dummy-invest
 NIL
