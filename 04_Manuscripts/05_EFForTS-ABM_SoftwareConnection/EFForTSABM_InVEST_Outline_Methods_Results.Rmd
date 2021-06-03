@@ -1,32 +1,39 @@
 ---
-title: "Integration of the model InVEST with the model EFForTS-ABM: new tool for dynamic simulation of biodiversity and socio-economic functions simultaneously"
+title: "Integration of the model InVEST with the model EFForTS-ABM: new tool for dynamic simulation of biodiversity and economic functions"
+
 author: 
   - Julia Henzler:
       email: julia.henzler@uni-goettingen.de
       institute: [affil1]
-      correspondance: true
+      correspondence: true
+      contribution: conceptual work, parameter setting, integration and acceptance test, analysis, manuscript writing
   - Nils Beyer:
       email: nils.beyer@posteo.de
       institute: [affil1]
-      correspondance: false
+      correspondence: false
+      contribution: technical assistant, realization of docker file, singularity container, unit tests, conceptual work for executing unit tests
   - Sebastian Hanss:
       email: sebastian.hanss@uni-goettingen.de
       institute: [affil1]
       correspondance: false
+      contribution: conceptual work for docker file and singularity container
   - Craig Eric Simpkins:
       email: craig.simpkins@uni-goettingen.de
       institute: [affil1]
-      correspondance: false
+      correspondence: false
+      contribution: manuscript writing
   - Jan Salecker:
       email: jan.saleck@posteo.de
       institute: [affil1]
-      correspondance: false
+      correspondence: false
+      contribution: conceptual work
   - Kerstin Wiegand:
       email: kerstin.wiegand@uni-goettingen.de
       institute: [affil1]
-      correspondance: false
+      correspondence: false
+      contribution: conceptual work, manuscript writing
 institute:
-  - affil1: University of Goettingen, Department of Ecosystem Modelling
+  - affil1: University of Goettingen, Department of Ecosystem Modelling, Buesgenweg 4, 37077 Goettingen
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
     bookdown::word_document2:
@@ -38,12 +45,7 @@ output:
       - --lua-filter=../templates/pagebreak.lua
 bibliography: IntegrationPaper.bib
 csl: "../templates/journal-of-archaeological-science.csl" # Insert path for the bib-style
-abstract: |
-  Text of abstract
-keywords: |
-  ecological functions, biodiversity, socio-economic functions, EFForTS-ABM, InVEST, trade-offs, software integration
-highlights: |
-  These are the highlights. 
+
 ---
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(
@@ -56,10 +58,51 @@ knitr::opts_chunk$set(
   dpi = 300
 )
 ```
+**Keywords:** biodiversity, ecological functions, economic functions, EFForTS-ABM, InVEST, software integration
 
-**Target Journals:**Methods in Ecology and Evolution, PLOS Computational Biology, Ecological Modeling
+**Running headline:** Integration of InVEST with EFForTS-ABM (34 characters)
+
+**Alternative titles:**
+
+* "Integration of static model with dynamic model"
+
+* "Integration of the model InVEST with the model EFForTS-ABM"
+
+* "Integration of biodiversity model with land-use change model"
+
+* "Dynamic simulation of biodiversity and socio-economic functions simultaneously: Integration of the model InVEST with the model EFForTS-ABM."
+
+* "Integration of the model InVEST with the model EFForTS-ABM: new tool for dynamic simulation of biodiversity and socio-economic functions simultaneously"
+
+* "Integration of InVEST with EFForTS-ABM: new tool for dynamic simulation of biodiversity and economic functions"
+
+* "Integration of InVEST with EFForTS-ABM: dynamic simulation of biodiversity and economic functions"
+
+<br>
+
+**Author contributions:**
+
+JH, NB, SH, JS and KW conceived the ideas and designed methodology, JH and NB analyzed the data, JH, CS and KW led the writing of the manuscript. All authors contributed critically to the drafts and gave final approval for publication.
+
+<br>
+
+**Target Journals:** Methods in Ecology and Evolution, PLOS Computational Biology, Ecological Modeling
+
+<br>
 
 **Key message:** Demonstration of the integration of the static terrestrial biodiversity model InVEST with the dynamic land-use change model EFForTS-ABM. As a result, synergies and trade-offs between biodiversity and socio-economic functions can be assessed simultaneously and dynamically at multiple temporal and spatial scales.
+
+# Abstract
+
+The Abstract must not exceed 350 words and should list the main results and conclusions, using simple, factual, numbered statements:
+
+Point 1: set the context for and purpose of the work;
+
+Point 2: indicate the approach and methods;
+
+Point 3: outline the main results;
+
+Point 4: identify the conclusions and the wider implications.
 
 
 # Introduction
@@ -205,7 +248,7 @@ singularity container (wait for description of results, until we know if it work
 	  + flexible:extend to Tier 2 with incooperation of species-specific data
 	  
 # Acknowledgements
-Funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 192626868 – SFB 990 in the framework of the collaborative German-Indonesian research project CRC 990. Thank reviewers.	
+Funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 192626868 – SFB 990 in the framework of the collaborative German-Indonesian research project CRC 990. We thank Matthias Christian Spangenberg for valuable feedback on a earlier version of the manuscript.	
 
 # Supplementary material
 *	Include more detailed Software-Architecture with every in- and output of both models (especially for economic submodel of EFForTS-ABM)
