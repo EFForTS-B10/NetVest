@@ -13,8 +13,9 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 ######################################
 ## Setup nl object:
-netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
+#netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
 #netlogopath <- file.path("/home/julia/netlogofolder")
+netlogopath <- file.path("NetLogo 6.1.1")
 netlogoversion <- "6.1.1"
 
 
@@ -61,12 +62,12 @@ nl@experiment <- experiment(expname="test",
 
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
-nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
+nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
 
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
-print(nl)
+#print(nl)
 
 
 
@@ -76,7 +77,7 @@ results <- run_nl_all(nl)
 ## Attach output:
 setsim(nl, "simoutput") <- results
 
-write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")
+write_simoutput(nl, outpath = "01_EFForTS-ABM/tests/output")
 
 ## Result tests:
 
