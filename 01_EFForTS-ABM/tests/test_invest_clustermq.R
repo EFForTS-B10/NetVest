@@ -2,7 +2,7 @@
 #unixtools::set.tempdir(t)
 #message(tempdir())
 
-
+list.files('~')
 
 
 library(Refforts)
@@ -13,8 +13,8 @@ library(nlrx)
 ## Set R random seed
 set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, seed, siminputrow) does
 
-
-netlogopath <- file.path("/usr/users/beyer35/NetLogo 6.1.1")
+netlogopath <- file.path("../NetLogo 6.1.1")
+#netlogopath <- file.path("/usr/users/beyer35/NetLogo 6.1.1")
 #netlogopath <- file.path("/home/julia/netlogofolder")
 netlogoversion <- "6.1.1"
 
@@ -65,7 +65,7 @@ nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
-print(nl)
+#print(nl)
 
 
 
