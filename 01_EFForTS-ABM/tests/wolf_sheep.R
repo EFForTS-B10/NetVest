@@ -6,7 +6,7 @@ library(clustermq)
 
 #set paths
 
-netlogopath <- file.path("NetLogo 6.1.1")
+netlogopath <- file.path("nl")
 netlogoversion <- "6.1.1"
 
 
@@ -16,7 +16,7 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 
-modelpath <- file.path("NetLogo 6.1.1/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
+modelpath <- file.path("nl/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
 outpath <- file.path(".")#/EFForTS-ABM/01_EFForTS-ABM/tests/
 
 if (file.exists(modelpath)){
@@ -66,7 +66,7 @@ nl@experiment <- experiment(expname="wolf-sheep",
 
 nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
-
+#results <- run_nl_all(nl)
 
 
 
@@ -78,7 +78,7 @@ njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjob
 siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
 rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
 
-simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
+simfun <- function(nl, siminputrow, rndseed, writeRDS=TRUE)
 {
   library(nlrx)
   res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
@@ -105,4 +105,7 @@ results <- clustermq::Q(fun = simfun,
                                         mem_cpu = "4000"),# define memory per cpu
                         log_worker = TRUE) 
 
-###################################
+setsim(nl, "simoutput") <- results
+
+write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")  
+#i##################################

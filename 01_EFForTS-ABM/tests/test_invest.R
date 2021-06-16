@@ -14,6 +14,7 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 ######################################
 ## Setup nl object:
 #netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
+
 #netlogopath <- file.path("/home/julia/netlogofolder")
 netlogopath <- file.path("/usr/users/henzler1/nl")
 netlogoversion <- "6.1.1"
@@ -25,7 +26,7 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 #eigentlich solltest du hier nicht /home/julia davor schreiben muessen, da das dein working directory fuer Rstudio ist
-modelpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
+modelpath <- file.path("01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
 
 if (file.exists(modelpath)){
   print('modelpath exists')
@@ -33,7 +34,7 @@ if (file.exists(modelpath)){
   stop('Please specify the folder that contains the model')
 }
 #hier genauso
-outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
+outpath <- file.path(".") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
 
 if (file.exists(outpath)){
   print('outpath exists')
@@ -62,7 +63,7 @@ nl@experiment <- experiment(expname="test",
 
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
-nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
+nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
 
 
 ## Add simple simdesign
@@ -75,9 +76,9 @@ print(nl)
 results <- run_nl_all(nl)
 
 ## Attach output:
-setsim(nl, "simoutput") <- results
+#setsim(nl, "simoutput") <- results
 
-write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")
+#write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")
 
 ## Result tests:
 
