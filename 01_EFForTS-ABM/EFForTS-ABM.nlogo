@@ -21,7 +21,9 @@ __includes [
 ]
 
 ; Extensions used in this NetLogo model:
+;print["loading extensions"]
 extensions [gis matrix nw ls profiler csv py]
+;print["finished loading extensions"]
 
 breed[luts a-lut]
 breed[lms lm]
@@ -221,6 +223,10 @@ hhs-own
 ; ╚═╗├┤  │ │ │├─┘
 ; ╚═╝└─┘ ┴ └─┘┴
 ;###################################################################################
+
+To test-setup
+  print["test setup"]
+End
 
 ; Main Setup procedure:
 To setup-with-external-maps
@@ -3386,7 +3392,7 @@ CHOOSER
 which-machine?
 which-machine?
 "local-windows" "local-linux" "server"
-0
+1
 
 BUTTON
 2510
@@ -5232,9 +5238,6 @@ export-inefficiency-distribution</setup>
     <metric>area_under_agriculture</metric>
     <metric>min_hh_consumption</metric>
     <metric>max_hh_consumption</metric>
-    <enumeratedValueSet variable="reproducable?">
-      <value value="false"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="which-machine?">
       <value value="&quot;local-linux&quot;"/>
     </enumeratedValueSet>

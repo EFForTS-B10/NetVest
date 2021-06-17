@@ -7,7 +7,6 @@ library(clustermq)
 #set paths
 
 netlogopath <- file.path("nl")
-
 netlogoversion <- "6.1.1"
 
 
@@ -72,7 +71,7 @@ nl@experiment <- experiment(expname="wolf-sheep",
 
 nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
-
+#results <- run_nl_all(nl)
 
 
 
@@ -86,7 +85,7 @@ njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjob
 siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
 rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
 
-simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
+simfun <- function(nl, siminputrow, rndseed, writeRDS=TRUE)
 {
   library(nlrx)
   res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
@@ -113,4 +112,13 @@ results <- clustermq::Q(fun = simfun,
                                         mem_cpu = "4000"),# define memory per cpu
                         log_worker = TRUE) 
 
-###################################
+message("show results")
+print(results)
+
+setsim(nl, "simoutput") <- results
+
+message("show simoutput")
+typeof(nl)
+
+write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")  
+#i##################################
