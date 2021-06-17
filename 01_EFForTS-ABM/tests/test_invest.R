@@ -13,11 +13,18 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 ######################################
 ## Setup nl object:
-#netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
-netlogopath <- file.path("/usr/users/beyer35/nl")
-#netlogopath <- file.path("/usr/users/henzler1/nl")
 
+
+netlogopath <- file.path("/usr/users/beyer35/nl")
+
+
+
+#netlogopath <- file.path("/home/ecomod/nl")
+
+#netlogopath <- file.path("/usr/users/beyer35/nl")
+#netlogopath <- file.path("/usr/users/henzler1/nl")
 #netlogopath <- file.path("/home/julia/netlogofolder")
+
 netlogoversion <- "6.1.1"
 
 
@@ -54,7 +61,7 @@ nl@experiment <- experiment(expname="test",
                            outpath=outpath,
                            repetition=1,
                            tickmetrics="true",
-                           idsetup="test-invest", #setup-with-external-maps
+                           idsetup="test-setup", #setup-with-external-maps #test-invest
                            idgo="do-nothing",#test-invest #go-biodiversity
                            idrunnum = "idrunnum",
                            idfinal = "do-nothing",#write-lut-map
@@ -64,22 +71,25 @@ nl@experiment <- experiment(expname="test",
 
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
-nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
+#nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
+nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
 
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
-print(nl)
+#print(nl)
 
 
 
 ## Run simulations:
+message('starting netlogo simulation')
 results <- run_nl_all(nl)
-
+message('finished netlogo simulation')
 ## Attach output:
 #setsim(nl, "simoutput") <- results
 
-#write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")
+write_simoutput(nl, outpath = "01_EFForTS-ABM/tests/output")
+
 
 ## Result tests:
 
