@@ -13,8 +13,8 @@ library(nlrx)
 ## Set R random seed
 set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, seed, siminputrow) does
 
-netlogopath <- file.path("/usr/users/henzler1/nl")
-#netlogopath <- file.path("/usr/users/beyer35/NetLogo 6.1.1")
+#netlogopath <- file.path("/usr/users/henzler1/nl")
+netlogopath <- file.path("/usr/users/beyer35/nl")
 #netlogopath <- file.path("/home/julia/netlogofolder")
 netlogoversion <- "6.1.1"
 
