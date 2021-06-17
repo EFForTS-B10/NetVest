@@ -2,7 +2,7 @@
 #unixtools::set.tempdir(t)
 #message(tempdir())
 
-
+list.files('~')
 
 
 library(Refforts)
@@ -13,8 +13,8 @@ library(nlrx)
 ## Set R random seed
 set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, seed, siminputrow) does
 
-
-netlogopath <- file.path("/usr/users/beyer35/NetLogo 6.1.1")
+netlogopath <- file.path("/usr/users/henzler1/nl")
+#netlogopath <- file.path("/usr/users/beyer35/NetLogo 6.1.1")
 #netlogopath <- file.path("/home/julia/netlogofolder")
 netlogoversion <- "6.1.1"
 
@@ -65,7 +65,7 @@ nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
-print(nl)
+#print(nl)
 
 
 
@@ -100,8 +100,8 @@ results <- clustermq::Q(fun = simfun,
                         export = list(),
                         seed = 42,
                         n_jobs = njobs,
-                        template = list(job_name = "invest_test", # define jobname
-                                        log_file = "invest_test.log", # define logfile name
+                        template = list(job_name = "cluster_invest_test", # define jobname
+                                        log_file = "cluster_invest_test.log", # define logfile name
                                         queue = "medium",  # define HPC queue
                                         service = "normal", # define HPC service
                                         walltime = "1:00:00", # define walltime
