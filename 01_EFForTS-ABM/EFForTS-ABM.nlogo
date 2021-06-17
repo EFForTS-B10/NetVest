@@ -22,7 +22,7 @@ __includes [
 
 ; Extensions used in this NetLogo model:
 ;print["loading extensions"]
-extensions [gis matrix nw ls profiler csv py]
+;extensions [gis matrix nw ls profiler csv py]
 ;print["finished loading extensions"]
 
 breed[luts a-lut]
