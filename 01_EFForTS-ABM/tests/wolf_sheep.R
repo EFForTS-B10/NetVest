@@ -105,7 +105,13 @@ results <- clustermq::Q(fun = simfun,
                                         mem_cpu = "4000"),# define memory per cpu
                         log_worker = TRUE) 
 
+message("show results")
+print(results)
+
 setsim(nl, "simoutput") <- results
+
+message("show simoutput")
+typeof(nl)
 
 write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")  
 #i##################################
