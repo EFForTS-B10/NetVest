@@ -5,7 +5,7 @@ globals
   dummy_variable ;because nlrx requires it
 ]
 to setup ; Here we setup the connection to python and import a few libraries
-  py:setup py:python
+  py:setup py:python3
   py:run "import math"
   py:run "import sys"
   py:run "import os"
