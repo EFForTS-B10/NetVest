@@ -15,11 +15,11 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 ## Setup nl object:
 
 
-netlogopath <- file.path("/usr/users/beyer35/nl")
+#netlogopath <- file.path("/usr/users/beyer35/nl")
 
 
 
-#netlogopath <- file.path("/home/ecomod/nl")
+netlogopath <- file.path("/home/ecomod/nl")
 
 #netlogopath <- file.path("/usr/users/beyer35/nl")
 #netlogopath <- file.path("/usr/users/henzler1/nl")
@@ -61,7 +61,7 @@ nl@experiment <- experiment(expname="test",
                            outpath=outpath,
                            repetition=1,
                            tickmetrics="true",
-                           idsetup="test-setup", #setup-with-external-maps #test-invest
+                           idsetup="do-nothing", #setup-with-external-maps #test-invest #test-setup
                            idgo="do-nothing",#test-invest #go-biodiversity
                            idrunnum = "idrunnum",
                            idfinal = "do-nothing",#write-lut-map
