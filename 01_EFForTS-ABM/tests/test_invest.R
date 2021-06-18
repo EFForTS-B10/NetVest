@@ -19,9 +19,9 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 
 
-netlogopath <- file.path("/home/ecomod/nl")
+#netlogopath <- file.path("/home/ecomod/nl")
 
-#netlogopath <- file.path("/usr/users/beyer35/nl")
+netlogopath <- file.path("/usr/users/beyer35/nl")
 #netlogopath <- file.path("/usr/users/henzler1/nl")
 #netlogopath <- file.path("/home/julia/netlogofolder")
 
