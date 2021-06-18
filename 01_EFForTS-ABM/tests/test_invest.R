@@ -34,8 +34,8 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 #eigentlich solltest du hier nicht /home/julia davor schreiben muessen, da das dein working directory fuer Rstudio ist
-modelpath <- file.path("01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
-modelpath <- file.path("01_EFForTS-ABM//tests/test_models/Python Basic Example.nlogo")
+#modelpath <- file.path("01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
+modelpath <- file.path("01_EFForTS-ABM/tests/test_models/Python Basic Example.nlogo")
 if (file.exists(modelpath)){
   print('modelpath exists')
 }else{
