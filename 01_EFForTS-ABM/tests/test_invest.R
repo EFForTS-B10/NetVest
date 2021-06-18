@@ -35,7 +35,7 @@ if (file.exists(netlogopath)){
 }
 #eigentlich solltest du hier nicht /home/julia davor schreiben muessen, da das dein working directory fuer Rstudio ist
 modelpath <- file.path("01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
-
+modelpath <- file.path("01_EFForTS-ABM//tests/test_models/Python Basic Example.nlogo")
 if (file.exists(modelpath)){
   print('modelpath exists')
 }else{
@@ -57,22 +57,26 @@ nl <- nl(nlversion = netlogoversion,
          jvmmem = 1024)
 
 
+dummy_list <- list(0)
+names(dummy_list) <- c("dummy_variable")
+         
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
                            repetition=1,
                            tickmetrics="true",
-                           idsetup="do-nothing", #setup-with-external-maps #test-invest #test-setup
-                           idgo="do-nothing",#test-invest #go-biodiversity
-                           idrunnum = "idrunnum",
-                           idfinal = "do-nothing",#write-lut-map
+                           idsetup="setup", #setup-with-external-maps #test-invest #test-setup #do-nothing
+                           idgo="go",#test-invest #go-biodiversity #do-nothing
+                           #idrunnum = "idrunnum",
+                           idfinal = "go",#write-lut-map
                            runtime=1,
                            #metrics=c(get.abm.metrics()),
-                           constants = get.abm.defaults())
+                           constants = dummy_list#get.abm.defaults()
+                           )
 
 
-nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
+#nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
 #nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
-nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
+#nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
 
 
 ## Add simple simdesign
