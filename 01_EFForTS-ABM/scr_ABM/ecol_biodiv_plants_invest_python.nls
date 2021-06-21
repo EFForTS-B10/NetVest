@@ -24,18 +24,18 @@ to set-up-invest
 end
 
 ;; Usage of the `sys` package in python to output some system info
-to get-sys-info
-  output-print (word "Python directory: " (py:runresult "sys.prefix"))
-  output-print (word "Platform: " (py:runresult "sys.platform"))
-  (py:run
-    "print(os.getcwd())"
-  )
-
-  let home-dir py:runresult "os.environ['HOME']"
-  output-print (word "Current home directory is: " home-dir)
-
-  output-print ""
-end
+;to get-sys-info
+;  output-print (word "Python directory: " (py:runresult "sys.prefix"))
+;  output-print (word "Platform: " (py:runresult "sys.platform"))
+;  (py:run
+;    "print(os.getcwd())"
+;  )
+;
+;  let home-dir py:runresult "os.environ['HOME']"
+;  output-print (word "Current home directory is: " home-dir)
+;
+;  output-print ""
+;end
 
 ;; Generation of csv-tables
 to write-tables

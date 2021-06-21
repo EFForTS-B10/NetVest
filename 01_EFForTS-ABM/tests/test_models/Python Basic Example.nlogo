@@ -7,7 +7,7 @@ __includes [
 ;  "../../scr_ABM/econ_capitalstock.nls" "../../scr_ABM/econ_invest.nls" "../../scr_ABM/econ_costs.nls" "../../scr_ABM/econ_consumption.nls" "../../scr_ABM/econ_production.nls" "../../scr_ABM/econ_cashflow.nls" "../../scr_ABM/econ_decision.nls" "../../scr_ABM/econ_optionmatrix.nls" "../../scr_ABM/econ_socialnw.nls" "../../scr_ABM/econ_factorinputs.nls" "../../scr_ABM/econ_landmarket.nls" "../../scr_ABM/econ_age.nls"
 ;  "../../scr_ABM/ecol_carbon.nls" "../../scr_ABM/ecol_biodiv.nls" "../../scr_ABM/ecol_biodiv_birds_mahnken.nls" "../../scr_ABM/ecol_biodiv_plants_SAR.nls" "../../scr_ABM/ecol_biodiv_plants_invest_manual.nls"
   "../../scr_ABM/ecol_biodiv_plants_invest_python.nls"
-  ;"../../scr_ABM/ecol_dummy_invest.nls"
+  "../../scr_ABM/ecol_dummy_invest.nls"
 ;  "../../scr_ABM/util_lut_functions.nls" "../../scr_ABM/util_gui_defaults.nls" "../../scr_ABM/util_testing.nls" "../../scr_ABM/util_paramfiles.nls" "../../scr_ABM/util_reporter.nls"
   "../../scr_ABM/unit_tests.nls"
 ]
@@ -21,6 +21,22 @@ globals
 [
   dummy_variable ;because nlrx requires it
   which-machine?
+  biodiv_invest_objective
+  impact_all
+  impact_max
+]
+patches-own
+[
+  p_landuse
+  p_homebase
+  p_landuse_invest
+  p_impact-location
+  p_labor
+  p_age
+  p_invest
+  p_tinput
+  p_habitat_quality
+  landscape-hq
 ]
 to setup ; Here we setup the connection to python and import a few libraries
   py:setup py:python3
