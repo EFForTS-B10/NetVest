@@ -29,6 +29,7 @@ extensions [gis matrix nw ls profiler csv py]
 ; Define global variables/parameters:
 globals
 [
+  dummy_variable ;because nlrx requires it
   LUT-ids
   LUT-ids-manage
   LUT-fractions          ; List to store the fractions of each landuse
