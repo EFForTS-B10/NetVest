@@ -107,7 +107,6 @@ patches-own
   p_invest
   p_tinput
   p_habitat_quality
-  landscape-hq
 ]
 to setup ; Here we setup the connection to python and import a few libraries
   py:setup py:python3
