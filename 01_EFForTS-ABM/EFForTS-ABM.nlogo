@@ -94,6 +94,8 @@ globals
   sensitivity_table        ;table with sensitivity of LULCs to threats
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs           ;can be removed soon
+  which-machine?            ;just to discern between windows and linux and locate python
+    biodiv_invest_objective ;what was this for again?
 ]
 
 ; Define patch properties:

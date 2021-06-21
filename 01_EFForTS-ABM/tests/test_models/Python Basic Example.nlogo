@@ -17,14 +17,85 @@ __includes [
 extensions [gis matrix nw ls profiler csv py]
 
 
+;globals
+;[
+;  dummy_variable ;because nlrx requires it
+;  which-machine?
+;  biodiv_invest_objective
+;  impact_all
+;  impact_max
+;]
+
+; Define global variables/parameters:
 globals
 [
-  dummy_variable ;because nlrx requires it
-  which-machine?
-  biodiv_invest_objective
-  impact_all
-  impact_max
+  LUT-ids
+  LUT-ids-manage
+  LUT-fractions          ; List to store the fractions of each landuse
+
+  ;constants
+  simulation_year        ; current year of the simulation
+  rand-seed              ; random seed of the simulation. is stored in a text file inthe output folder (random_seed.txt)
+  patch_size             ; size of patches in ha (0.25)
+  landscape_size         ; size of landscape in ha
+  area_under_agriculture ; size of area under agriculture in ha
+  ineff_precision        ; number of digits for household inefficiencies
+
+  ;variables
+  carbon
+  prices-matrix          ; historical oil palm and rubber selling prices (for several years - currently past 10 years)
+  prices
+
+  ; Map parameters:
+  road-file          ; Current road file
+  envelope           ; GIS envelope of the road file
+  x-extent           ; x extent of the map
+  y-extent           ; y extent of the map
+  number-of-cells-x  ; number of cells in x direction
+  number-of-cells-y  ; number of cells in y direction
+
+  ; Household variables:
+  min_hh_consumption         ; minimum level of consumption of all households in one year
+  max_hh_consumption         ; maximum level of consumption of all households in one year
+  mean_hh_consumption        ; mean level of consumption of all households in one year
+
+  ; Landmarket variables:
+  lm_new                    ; number of newly created landmarkets
+  lm_seller_wealth_log      ; wealth of all agents who sold land on a landmarket auction
+  lm_seller_area_log        ; area of all agents who sold land on a landmarket auction
+  lm_seller_lut0_ineff_log  ; lut0 inefficiency of all agents who sold land on a landmarket auction
+  lm_seller_lut1_ineff_log  ; lut1 inefficiency of all agents who sold land on a landmarket auction
+  lm_buyer_wealth_log      ; wealth of all agents who bought land on a landmarket auction
+  lm_buyer_area_log        ; area of all agents who bought land on a landmarket auction
+  lm_buyer_lut0_ineff_log  ; lut0 inefficiency of all agents who bought land on a landmarket auction
+  lm_buyer_lut1_ineff_log  ; lut1 inefficiency of all agents who bought land on a landmarket auction
+
+  ; biodiv_birds_mahken_module:
+  bird_richness
+
+  ; biodiv_plants_SAR module:
+  plantdiv_all_probs
+  ws_list
+  sar
+  sar_t
+  sar_t0
+  sar_ratio
+
+  ;invest:habitat-quality
+  landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+  impact_all               ;impact-list
+  impact_max               ;greatest maximum distance of all impacts in impact-table
+
+  habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
+  f_prob                   ;probability of occurance in forest
+  sensitivity_table        ;table with sensitivity of LULCs to threats
+  lulc_habitat_relation         ;list of habitat-relation for sensitivity table
+  filename_probs           ;can be removed soon
+  which-machine?            ;just to discern between windows and linux and locate python
+    biodiv_invest_objective ;what was this for again?
 ]
+
+
 patches-own
 [
   p_landuse
