@@ -1,4 +1,5 @@
-extensions [ py ]
+extensions [gis matrix nw ls profiler csv py]
+
 
 globals
 [
