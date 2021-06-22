@@ -17,14 +17,6 @@ __includes [
 extensions [gis matrix nw ls profiler csv py]
 
 
-;globals
-;[
-;  dummy_variable ;because nlrx requires it
-;  which-machine?
-;  biodiv_invest_objective
-;  impact_all
-;  impact_max
-;]
 
 ; Define global variables/parameters:
 globals
@@ -97,18 +89,144 @@ globals
 ]
 
 
+;patches-own
+;[
+;  p_landuse
+;  p_homebase
+;  p_landuse_invest
+;  p_impact-location
+;  p_labor
+;  p_age
+;  p_invest
+;  p_tinput
+;  p_habitat_quality
+;]
+
+
+
+; Define patch properties:
 patches-own
 [
-  p_landuse
-  p_homebase
-  p_landuse_invest
-  p_impact-location
-  p_labor
-  p_age
-  p_invest
-  p_tinput
-  p_habitat_quality
+  p_landuse                ; patch land-use value as input from land-use map
+  p_landuse_previous
+  p_management             ; current management id
+  p_road                   ; 0 if patch is not road, 1, if patch is road
+  p_age                    ; age of a patch since last LUC
+  p_fieldsize              ; number of patches belonging to this field
+  p_carbon                 ; carbon storage of patch
+  p_owner                  ; number of the turtle that owns this patch; -1 means no owner
+  p_homebase               ; number of the turtle that has this cell as homebase
+  p_production             ; yield in Mg per patch (for oil palm fresh fruit bunches, for rubber rubber)
+  p_id                     ; patch identity, all cells that belong to the same patch (i.e. connected cells of the same crop, the same age, the same owner) have the same p_id
+  p_labor                  ; labor invested in this cell in one year. output of production and land-use change decision, needed for calculating production
+  p_tinput                 ; technical input invested in this cell in one year. output of production and land-use change decision, needed for calculating production
+  p_capitalstock           ; captial stock of this cell, i.e. value of plantation
+  p_capitalstock_previous  ; capital stock of this cell in the previous timestep
+  p_invest                 ; investment costs of this cell
+  p_actual_production      ; actual production of this cell
+  p_optimal_production     ; optimal production of this cell
+
+  ;; Variables used by biodiv_birds_mahnken module:
+  p_beetlesRichness
+  p_antsRichness
+  p_canopy
+  p_luDiversity
+  p_bird_richness
+
+  ;; Variables used by biodiv_plants_invest modules:
+  p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
+ ; p_impact-value
+  p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
+  p_habitat_quality        ; variable for storing habitat quality
+
 ]
+
+luts-own
+[
+  l_lut_id
+  l_landuse
+  l_inefficiency_alpha
+  l_inefficiency_lambda
+  l_depriciation_rate_young
+  l_depriciation_rate_old
+  l_depriciation_rate_switch
+  l_max_age
+  l_yield_function
+  l_carbon_function
+  l_prices
+  l_mng_ids
+  l_mng_management
+  l_mng_labor_function
+  l_mng_tinput_function
+  l_mng_price_tinput
+  l_mng_invest_function
+  l_mng_wages
+  l_mng_yield_factor
+  l_mng_optimal_capitalstock
+  l_mng_external_income_factor
+]
+
+lms-own
+[
+  lm_ticks
+  ; Landmarket output:
+  lm_seller_who
+  lm_seller_area
+  lm_seller_fields
+  lm_seller_wealth
+  lm_seller_lut0_ineff
+  lm_seller_lut1_ineff
+  lm_land_price
+  lm_poolall_wealth
+  lm_poolall_immigrant
+  lm_poolpot_wealth
+  lm_poolpot_immigrant
+  lm_buyer_who
+  lm_buyer_area
+  lm_buyer_wealth
+  lm_buyer_immigrant
+  lm_buyer_lut0_ineff
+  lm_buyer_lut1_ineff
+]
+
+; Define agent properties:
+hhs-own
+[
+  h_homebase          ; location of the household homebase
+  h_id                ; household identification number
+  h_age               ; household age
+  h_area              ; actual number of patches that belong to the household
+  h_patches           ; agentset of patches beloning to the household
+  h_field_id_list     ; list of field_ids that belong to the household
+  h_wealth_previous   ; wealth of the previeous year
+  h_wealth            ; wealth of the household. This is the maximum sum available for investments in land-use
+  h_debts             ; whenever the household wealth falls below the minimum wealth the household takes up debts wich are accumulated here
+  h_capitalstock      ; capital of the household fixed in plantations (sum of p_capitalstock); resale value of capital stock embodied in household patches
+  h_exincome          ; exogenous income (eg. NGOs, remittances)
+  h_netcashflow       ; net cash flow from all household cells in one year
+  h_netcashflow_exp   ; predicted netcashflow for the best affordable option
+  h_consumption       ; consumption of household (welfare)
+  h_fixconsumption    ; fix part of the household consumption, constant + fraction of household wealth
+  h_varconsumption    ; variable part of consumption, fraction of net cash flow from this year
+  h_cost_investment   ; investment costs of this year
+  h_cost_labor        ; labor costs of  this year
+  h_cost_tinput       ; technical input costs of this year
+  h_cost_capital      ; capital costs of this year
+  h_cost_land         ; land costs (for rent) of this year
+  h_revenue           ; revenue of the hosehold in one year
+  h_production        ; production of each landuse
+  h_debt_years        ; consecutive years where household has debts > 0
+  h_inefficiencies    ; inefficiency factors [0,1]
+  h_inefficiencies_temp ; inefficiency factors [0,1]
+  h_connected_hhs             ; other households that are connected within the social network
+  h_immigrant?
+  h_management       ; List with management ids for each LUT
+  h_landmarket
+  h_land-use-change
+]
+
+
+
 to setup ; Here we setup the connection to python and import a few libraries
   py:setup py:python3
   py:run "import math"

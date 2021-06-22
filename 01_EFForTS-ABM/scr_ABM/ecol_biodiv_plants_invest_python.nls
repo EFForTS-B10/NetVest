@@ -96,6 +96,7 @@ end
 
 
 ;; Read in impact-table from input-folder and generate impact-table and extract greatest maximum distance over all impacts
+;; requires output/impact_table.csv als referenz
 to write-impact
   print ["read in and write impact-table"]
   set impact_all []
