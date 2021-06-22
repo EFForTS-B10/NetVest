@@ -3391,10 +3391,10 @@ CHOOSER
 425
 2623
 470
-which-machine?
-which-machine?
-"local-windows" "local-linux" "server"
-1
+;which-machine?
+;which-machine?
+;"local-windows" "local-linux" "server"
+;1
 
 BUTTON
 2510
