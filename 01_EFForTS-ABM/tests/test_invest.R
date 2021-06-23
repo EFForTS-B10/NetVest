@@ -59,8 +59,8 @@ nl <- nl(nlversion = netlogoversion,
 
 #dummy_list <- list(0)
 #names(dummy_list) <- c("dummy_variable")
-variable_list <- list("server")#"general", 
-names(variable_list) <- c("which-machine?")#"biodiv_invest_objective", 
+variable_list <- list(3478436)#"general", "server"
+names(variable_list) <- c("rnd-seed")#"biodiv_invest_objective", "which-machine?"
          
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
