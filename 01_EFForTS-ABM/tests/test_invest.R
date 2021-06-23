@@ -57,8 +57,8 @@ nl <- nl(nlversion = netlogoversion,
          jvmmem = 1024)
 
 
-dummy_list <- list(0)
-names(dummy_list) <- c("dummy_variable")
+#dummy_list <- list(0)
+#names(dummy_list) <- c("dummy_variable")
          
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
@@ -70,7 +70,7 @@ nl@experiment <- experiment(expname="test",
                            idfinal = "do-nothing",#write-lut-map #go
                            runtime=1,
                            #metrics=c(get.abm.metrics()),
-                           constants = dummy_list#get.abm.defaults()
+                           constants = get.abm.defaults()#dummy_list#
                            )
 
 
