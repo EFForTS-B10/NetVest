@@ -85,8 +85,8 @@ globals
   sensitivity_table        ;table with sensitivity of LULCs to threats
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs           ;can be removed soon
-  which-machine?            ;just to discern between windows and linux and locate python
-    biodiv_invest_objective ;what was this for again?
+  ;which-machine?            ;just to discern between windows and linux and locate python
+    ;biodiv_invest_objective ;what was this for again?
 ]
 
 
@@ -226,7 +226,12 @@ hhs-own
   h_land-use-change
 ]
 
+to test-setup
+  print["test setup"]
+end
 
+to do-nothing ;because nlrx demands to run an additional function
+end
 
 to setup ; Here we setup the connection to python and import a few libraries
   py:setup py:python3
@@ -499,6 +504,26 @@ NIL
 NIL
 NIL
 0
+
+CHOOSER
+650
+800
+802
+845
+biodiv_invest_objective
+biodiv_invest_objective
+"general" "modelorg_plants" "all_plants"
+0
+
+CHOOSER
+2485
+425
+2623
+470
+which-machine?
+which-machine?
+"local-windows" "local-linux" "server"
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -226,9 +226,9 @@ hhs-own
 ; ╚═╝└─┘ ┴ └─┘┴
 ;###################################################################################
 
-To test-setup
+to test-setup
   print["test setup"]
-End
+end
 
 ;; Main Setup procedure:
 ;To setup-with-external-maps
