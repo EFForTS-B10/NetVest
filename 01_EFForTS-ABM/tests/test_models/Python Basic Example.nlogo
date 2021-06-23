@@ -230,8 +230,6 @@ to test-setup
   print["test setup"]
 end
 
-to do-nothing ;because nlrx demands to run an additional function
-end
 
 to setup ; Here we setup the connection to python and import a few libraries
   py:setup py:python3
