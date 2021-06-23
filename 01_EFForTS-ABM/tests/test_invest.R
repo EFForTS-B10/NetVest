@@ -72,7 +72,7 @@ nl@experiment <- experiment(expname="test",
                            idfinal = "do-nothing",#write-lut-map #go
                            runtime=1,
                            #metrics=c(get.abm.metrics()),
-                           constants = dummy_list#variable_list#get.abm.defaults()#
+                           constants = variable_list#get.abm.defaults()#dummy_list#
                            )
 
 
