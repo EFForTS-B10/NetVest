@@ -545,6 +545,16 @@ reproducable?
 1
 -1000
 
+CHOOSER
+5
+445
+155
+490
+which-map
+which-map
+"one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
+0
+
 @#$#@#$#@
 ## WHAT IS IT?
 
