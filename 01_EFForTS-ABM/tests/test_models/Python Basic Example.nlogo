@@ -523,6 +523,28 @@ which-machine?
 "local-windows" "local-linux" "server"
 1
 
+SWITCH
+5
+245
+155
+278
+write-maps?
+write-maps?
+1
+1
+-1000
+
+SWITCH
+5
+150
+155
+183
+reproducable?
+reproducable?
+1
+1
+-1000
+
 @#$#@#$#@
 ## WHAT IS IT?
 
