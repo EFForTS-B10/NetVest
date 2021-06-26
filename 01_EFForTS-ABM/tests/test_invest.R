@@ -59,8 +59,8 @@ nl <- nl(nlversion = netlogoversion,
 
 #dummy_list <- list(0)
 #names(dummy_list) <- c("dummy_variable")
-variable_list <- list("\"server\"")#"\"hundred-farmers3\"")#"general", 3478436
-names(variable_list) <- c("which-machine?")#"which-map")#"rand-seed","dummy_variable", "biodiv_invest_objective")#, 
+variable_list <- list("\"hundred-farmers3\"")#"\"server\"")#"general", 3478436
+names(variable_list) <- c("which-map")#"which-machine?")#"rand-seed","dummy_variable", "biodiv_invest_objective")#, 
          
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
@@ -72,7 +72,7 @@ nl@experiment <- experiment(expname="test",
                            idfinal = "do-nothing",#write-lut-map #go
                            runtime=1,
                            #metrics=c(get.abm.metrics()),
-                           constants = get.abm.defaults()[3]#variable_list##dummy_list#
+                           constants = variable_list#get.abm.defaults()[3]##dummy_list#
                            )
 
 
