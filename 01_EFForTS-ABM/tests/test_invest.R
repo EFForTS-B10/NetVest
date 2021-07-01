@@ -63,8 +63,8 @@ variable_list <- list("\"hundred-farmers3\"")#"\"server\"")#"general", 3478436
 names(variable_list) <- c("which-map")#"which-machine?")#"rand-seed","dummy_variable", "biodiv_invest_objective")#, 
 message("refforts output: ",get.abm.defaults()[3][1])
 message("types: ",str(get.abm.defaults()[3]))
-message("manually typed in variable: ",variable_list[1])
-message("types: ", str(variable_list))
+#message("manually typed in variable: ",variable_list[1])
+#message("types: ", str(variable_list))
          
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
