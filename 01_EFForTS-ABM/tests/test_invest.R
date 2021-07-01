@@ -61,8 +61,10 @@ nl <- nl(nlversion = netlogoversion,
 #names(dummy_list) <- c("dummy_variable")
 variable_list <- list("\"hundred-farmers3\"")#"\"server\"")#"general", 3478436
 names(variable_list) <- c("which-map")#"which-machine?")#"rand-seed","dummy_variable", "biodiv_invest_objective")#, 
-message("refforts output:",get.abm.defaults()[3])
-message("manually typed in variable:",variable_list)
+message("refforts output: ",get.abm.defaults()[3])
+message("type: ",typeof(get.abm.defaults()[3]))
+message("manually typed in variable: ",variable_list)
+message("type: ", variable_list)
          
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
