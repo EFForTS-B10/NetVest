@@ -64,7 +64,7 @@ names(variable_list) <- c("which-map")#"which-machine?")#"rand-seed","dummy_vari
 message("refforts output: ",get.abm.defaults()[3])
 message("type: ",typeof(get.abm.defaults()[3]))
 message("manually typed in variable: ",variable_list)
-message("type: ", variable_list)
+message("type: ", typeof(variable_list))
          
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
