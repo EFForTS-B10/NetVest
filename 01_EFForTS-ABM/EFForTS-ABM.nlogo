@@ -21,7 +21,9 @@ __includes [
 ]
 
 ; Extensions used in this NetLogo model:
+;print["loading extensions"]
 extensions [gis matrix nw ls profiler csv py]
+;print["finished loading extensions"]
 
 breed[luts a-lut]
 breed[lms lm]
@@ -92,6 +94,8 @@ globals
   sensitivity_table        ;table with sensitivity of LULCs to threats
   lulc_habitat_relation         ;list of habitat-relation for sensitivity table
   filename_probs           ;can be removed soon
+  ;which-machine?            ;just to discern between windows and linux and locate python
+    ;biodiv_invest_objective ;what was this for again?
 ]
 
 ; Define patch properties:
@@ -222,65 +226,69 @@ hhs-own
 ; ╚═╝└─┘ ┴ └─┘┴
 ;###################################################################################
 
-; Main Setup procedure:
-To setup-with-external-maps
-   print["setting up"]
-  ca
+to test-setup
+  print["test setup"]
+end
 
-  ; control randomness
-  set-rand-seed
-
-  ; Read land-use parameter from files in "par_ABM" folder
-  read-lut-parameters
-
-  ; Set global constants/parameters
-  set_global_constants
-
-  ; Generate a list with optimal capitalstocks:
-  calculate-optimal-capitalstocks-all-landuses
-
-  ; Import maps
-  import-maps
-
-  ; Init hh management:
-  init-household-management
-
-  ; Initialize fields
-  assign-patch-age
-  init-patch-capital-stock
-  init-investment-costs
-  calculate_patch_carbon
-
-  ; Initialize households
-  init-household-area
-  init-household-wealth
-  init-household-age
-  init-household-inefficiencies
-  init-log-land-use-change-list
-  assign-hh-capital-stock
-
-  ; Calculate outputs and set remaining constants
-  calculate_LUT_fractions
-  set_remaining_constants
-  calculated-field-sizes
-  calculate-area-under-agriculture
-  calculate_LUT_carbon
-
-  ; Initialize social networks
-  setup_social_networks
-
-  ; Initialize biodiversity modules
-  init_biodiversity
-
-  ; Paint world:
-  paint-landuse
-
-  ; Reset the time counter
-  reset-ticks
-
-End
-
-
+;; Main Setup procedure:
+;To setup-with-external-maps
+;   print["setting up"]
+;  ca
+;
+;  ; control randomness
+;  set-rand-seed
+;
+;  ; Read land-use parameter from files in "par_ABM" folder
+;  read-lut-parameters
+;
+;  ; Set global constants/parameters
+;  set_global_constants
+;
+;  ; Generate a list with optimal capitalstocks:
+;  calculate-optimal-capitalstocks-all-landuses
+;
+;  ; Import maps
+;  import-maps
+;
+;  ; Init hh management:
+;  init-household-management
+;
+;  ; Initialize fields
+;  assign-patch-age
+;  init-patch-capital-stock
+;  init-investment-costs
+;  calculate_patch_carbon
+;
+;  ; Initialize households
+;  init-household-area
+;  init-household-wealth
+;  init-household-age
+;  init-household-inefficiencies
+;  init-log-land-use-change-list
+;  assign-hh-capital-stock
+;
+;  ; Calculate outputs and set remaining constants
+;  calculate_LUT_fractions
+;  set_remaining_constants
+;  calculated-field-sizes
+;  calculate-area-under-agriculture
+;  calculate_LUT_carbon
+;
+;  ; Initialize social networks
+;  setup_social_networks
+;
+;  ; Initialize biodiversity modules
+;  init_biodiversity
+;
+;  ; Paint world:
+;  paint-landuse
+;
+;  ; Reset the time counter
+;  reset-ticks
+;
+;End
+;
+;
 
 ;###################################################################################
 ; ╔═╗┌─┐
@@ -3386,7 +3394,7 @@ CHOOSER
 which-machine?
 which-machine?
 "local-windows" "local-linux" "server"
-0
+1
 
 BUTTON
 2510
@@ -5232,9 +5240,6 @@ export-inefficiency-distribution</setup>
     <metric>area_under_agriculture</metric>
     <metric>min_hh_consumption</metric>
     <metric>max_hh_consumption</metric>
-    <enumeratedValueSet variable="reproducable?">
-      <value value="false"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="which-machine?">
       <value value="&quot;local-linux&quot;"/>
     </enumeratedValueSet>
