@@ -13,8 +13,18 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 ######################################
 ## Setup nl object:
-netlogopath <- file.path("/home/ecomod/NetLogo 6.1.1")
+
+
+#netlogopath <- file.path("/usr/users/beyer35/nl")
+
+
+
+netlogopath <- file.path("/home/ecomod/nl")
+
+#netlogopath <- file.path("/usr/users/beyer35/nl")
+#netlogopath <- file.path("/usr/users/henzler1/nl")
 #netlogopath <- file.path("/home/julia/netlogofolder")
+
 netlogoversion <- "6.1.1"
 
 
@@ -24,15 +34,15 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 #eigentlich solltest du hier nicht /home/julia davor schreiben muessen, da das dein working directory fuer Rstudio ist
-modelpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
-
+modelpath <- file.path("01_EFForTS-ABM/EFForTS-ABM.nlogo")#/home/julia/
+#modelpath <- file.path("01_EFForTS-ABM/tests/test_models/Python Basic Example.nlogo")
 if (file.exists(modelpath)){
   print('modelpath exists')
 }else{
   stop('Please specify the folder that contains the model')
 }
 #hier genauso
-outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
+outpath <- file.path(".") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
 
 if (file.exists(outpath)){
   print('outpath exists')
@@ -47,36 +57,49 @@ nl <- nl(nlversion = netlogoversion,
          jvmmem = 1024)
 
 
+#dummy_list <- list(0)
+#names(dummy_list) <- c("dummy_variable")
+variable_list <- list("\"hundred-farmers3\"")#"\"server\"")#"general", 3478436
+names(variable_list) <- c("which-map")#"which-machine?")#"rand-seed","dummy_variable", "biodiv_invest_objective")#, 
+message("refforts output: ",get.abm.defaults()[3][1])
+message("types: ",str(get.abm.defaults()[3]))
+#message("manually typed in variable: ",variable_list[1])
+#message("types: ", str(variable_list))
+         
 nl@experiment <- experiment(expname="test",
                            outpath=outpath,
                            repetition=1,
                            tickmetrics="true",
-                           idsetup="test-invest", #setup-with-external-maps
-                           idgo="do-nothing",#test-invest #go-biodiversity
-                           idrunnum = "idrunnum",
-                           idfinal = "do-nothing",#write-lut-map
+                           idsetup="test-setup", #setup-with-external-maps #test-invest # #do-nothingsetup
+                           idgo="do-nothing",#test-invest #go-biodiversity #go
+                           #idrunnum = "idrunnum",
+                           idfinal = "do-nothing",#write-lut-map #go
                            runtime=1,
                            #metrics=c(get.abm.metrics()),
-                           constants = get.abm.defaults())
+                           constants = get.abm.defaults()#variable_list###dummy_list#
+                           )
 
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
-nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
+#nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
+#nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
 
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
-print(nl)
+#print(nl)
 
 
 
 ## Run simulations:
+message('starting netlogo simulation')
 results <- run_nl_all(nl)
-
+message('finished netlogo simulation')
 ## Attach output:
-setsim(nl, "simoutput") <- results
+#setsim(nl, "simoutput") <- results
 
-write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")
+write_simoutput(nl, outpath = "01_EFForTS-ABM/tests/output")
+
 
 ## Result tests:
 

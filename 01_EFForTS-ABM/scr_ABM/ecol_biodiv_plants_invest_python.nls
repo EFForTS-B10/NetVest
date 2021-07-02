@@ -1,7 +1,7 @@
 ;; First define on which machine (local-windows, local-linux or server) we want to run the model
 to biodiv_plants_invest_python_init
  ifelse which-machine? = "local-windows" [write-tables]                             ;; If Simulation runs on your local Windowsmachine, we connect to a netlogo nls-file for testing which returns artificial values (as python version on windows does not work)
-                                         [set-up-invest get-sys-info write-tables]  ;; If simulation runs on your "local-linux"-machine or on the "server" than via docker-container, we connect to python executable and load environment
+                                         [set-up-invest write-tables]  ;; If simulation runs on your "local-linux"-machine or on the "server" than via docker-container, we connect to python executable and load environment
 end
 
 ;; Setup the connection to python and import a few libraries
@@ -24,18 +24,18 @@ to set-up-invest
 end
 
 ;; Usage of the `sys` package in python to output some system info
-to get-sys-info
-  output-print (word "Python directory: " (py:runresult "sys.prefix"))
-  output-print (word "Platform: " (py:runresult "sys.platform"))
-  (py:run
-    "print(os.getcwd())"
-  )
-
-  let home-dir py:runresult "os.environ['HOME']"
-  output-print (word "Current home directory is: " home-dir)
-
-  output-print ""
-end
+;to get-sys-info
+;  output-print (word "Python directory: " (py:runresult "sys.prefix"))
+;  output-print (word "Platform: " (py:runresult "sys.platform"))
+;  (py:run
+;    "print(os.getcwd())"
+;  )
+;
+;  let home-dir py:runresult "os.environ['HOME']"
+;  output-print (word "Current home directory is: " home-dir)
+;
+;  output-print ""
+;end
 
 ;; Generation of csv-tables
 to write-tables
@@ -96,6 +96,7 @@ end
 
 
 ;; Read in impact-table from input-folder and generate impact-table and extract greatest maximum distance over all impacts
+;; requires output/impact_table.csv als referenz
 to write-impact
   print ["read in and write impact-table"]
   set impact_all []
