@@ -6,7 +6,7 @@ library(clustermq)
 
 #set paths
 
-netlogopath <- file.path("NetLogo 6.1.1")
+netlogopath <- file.path("nl")
 netlogoversion <- "6.1.1"
 
 
@@ -16,8 +16,12 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 
-modelpath <- file.path("NetLogo 6.1.1/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
-outpath <- file.path(".")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+#modelpath <- file.path("/home/ecomod/nl/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
+outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+
+modelpath <- file.path("nl/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
+#outpath <- file.path(".")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+
 
 if (file.exists(modelpath)){
   print('modelpath exists')
@@ -48,8 +52,8 @@ nl@experiment <- experiment(expname="wolf-sheep",
                             idgo="go",
                             idfinal=NA_character_,
                             idrunnum=NA_character_,
-                            runtime=50,
-                            evalticks=seq(40,50),
+                            runtime=10,
+                            evalticks=seq(4,5),
                             metrics=c("count sheep", "count wolves", "count patches with [pcolor = green]"),
                             variables = list('initial-number-sheep' = list(min=50, max=150, qfun="qunif"),
                                              'initial-number-wolves' = list(min=50, max=150, qfun="qunif")),
@@ -66,8 +70,11 @@ nl@experiment <- experiment(expname="wolf-sheep",
 
 nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
+#results <- run_nl_all(nl)
 
 
+
+#setsim(nl, "simoutput") <- run_nl_all(nl)
 
 
 
@@ -105,4 +112,15 @@ results <- clustermq::Q(fun = simfun,
                                         mem_cpu = "4000"),# define memory per cpu
                         log_worker = TRUE) 
 
-###################################
+
+message("show results")
+print(results)
+
+setsim(nl, "simoutput") <- results
+
+message("show simoutput")
+typeof(nl)
+
+write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")  
+#i##################################
+
