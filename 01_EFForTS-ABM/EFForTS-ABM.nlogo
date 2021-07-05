@@ -230,65 +230,65 @@ to test-setup
   print["test setup"]
 end
 
-;; Main Setup procedure:
-;To setup-with-external-maps
-;   print["setting up"]
-;  ca
-;
-;  ; control randomness
-;  set-rand-seed
-;
-;  ; Read land-use parameter from files in "par_ABM" folder
-;  read-lut-parameters
-;
-;  ; Set global constants/parameters
-;  set_global_constants
-;
-;  ; Generate a list with optimal capitalstocks:
-;  calculate-optimal-capitalstocks-all-landuses
-;
-;  ; Import maps
-;  import-maps
-;
-;  ; Init hh management:
-;  init-household-management
-;
-;  ; Initialize fields
-;  assign-patch-age
-;  init-patch-capital-stock
-;  init-investment-costs
-;  calculate_patch_carbon
-;
-;  ; Initialize households
-;  init-household-area
-;  init-household-wealth
-;  init-household-age
-;  init-household-inefficiencies
-;  init-log-land-use-change-list
-;  assign-hh-capital-stock
-;
-;  ; Calculate outputs and set remaining constants
-;  calculate_LUT_fractions
-;  set_remaining_constants
-;  calculated-field-sizes
-;  calculate-area-under-agriculture
-;  calculate_LUT_carbon
-;
-;  ; Initialize social networks
-;  setup_social_networks
-;
-;  ; Initialize biodiversity modules
-;  init_biodiversity
-;
-;  ; Paint world:
-;  paint-landuse
-;
-;  ; Reset the time counter
-;  reset-ticks
-;
-;End
-;
-;
+; Main Setup procedure:
+To setup-with-external-maps
+   print["setting up"]
+  ca
+
+  ; control randomness
+  set-rand-seed
+
+  ; Read land-use parameter from files in "par_ABM" folder
+  read-lut-parameters
+
+  ; Set global constants/parameters
+  set_global_constants
+
+  ; Generate a list with optimal capitalstocks:
+  calculate-optimal-capitalstocks-all-landuses
+
+  ; Import maps
+  import-maps
+
+  ; Init hh management:
+  init-household-management
+
+  ; Initialize fields
+  assign-patch-age
+  init-patch-capital-stock
+  init-investment-costs
+  calculate_patch_carbon
+
+  ; Initialize households
+  init-household-area
+  init-household-wealth
+  init-household-age
+  init-household-inefficiencies
+  init-log-land-use-change-list
+  assign-hh-capital-stock
+
+  ; Calculate outputs and set remaining constants
+  calculate_LUT_fractions
+  set_remaining_constants
+  calculated-field-sizes
+  calculate-area-under-agriculture
+  calculate_LUT_carbon
+
+  ; Initialize social networks
+  setup_social_networks
+
+  ; Initialize biodiversity modules
+  init_biodiversity
+
+  ; Paint world:
+  paint-landuse
+
+  ; Reset the time counter
+  reset-ticks
+
+End
+
+
 
 ;###################################################################################
 ; ╔═╗┌─┐
