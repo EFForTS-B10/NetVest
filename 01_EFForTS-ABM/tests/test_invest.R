@@ -21,7 +21,7 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 #netlogopath <- file.path("/home/ecomod/nl")
 
-#netlogopath <- file.path("/usr/users/beyer35/nl")
+netlogopath <- file.path("/usr/users/beyer35/nl")
 #netlogopath <- file.path("/usr/users/henzler1/nl")
 #netlogopath <- file.path("/home/julia/netlogofolder")
 netlogopath <- file.path("C:/Program Files (x86)/NetLogo 6.1.1")
@@ -71,7 +71,7 @@ nl@experiment <- experiment(expname="test",
                            repetition=1,
                            tickmetrics="true",
                            idsetup="test-setup", #setup-with-external-maps #test-invest # #do-nothingsetup
-                           idgo="do-nothing",#test-invest #go-biodiversity #go
+                           idgo="test-invest", #go-biodiversity #go #"do-nothing",#
                            #idrunnum = "idrunnum",
                            idfinal = "do-nothing",#write-lut-map #go
                            runtime=1,
