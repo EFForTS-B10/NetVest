@@ -3298,7 +3298,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-3
+0
 
 CHOOSER
 520
