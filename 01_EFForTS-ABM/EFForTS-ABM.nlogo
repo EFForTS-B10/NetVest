@@ -240,10 +240,10 @@ To setup-with-external-maps
 
   ; Read land-use parameter from files in "par_ABM" folder
   read-lut-parameters
-;
+
   ; Set global constants/parameters
   set_global_constants
-;
+
   ; Generate a list with optimal capitalstocks:
   calculate-optimal-capitalstocks-all-landuses
 
@@ -2971,7 +2971,7 @@ immigrant-wealth-factor
 immigrant-wealth-factor
 1
 100
-10.0
+13.0
 1
 1
 NIL
@@ -3298,7 +3298,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-3
+0
 
 CHOOSER
 520
