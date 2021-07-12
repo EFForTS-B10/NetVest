@@ -1,0 +1,337 @@
+---
+title: "Integration of the model InVEST with the model EFForTS-ABM: new tool for dynamic simulation of biodiversity and socio-economic functions" 
+
+author: 
+  - Julia Henzler:
+      email: julia.henzler@uni-goettingen.de
+      institute: [affil1]
+      correspondence: true
+      contribution: conceptual work, parameter setting, integration and acceptance test, analysis, manuscript writing
+  - Nils Beyer:
+      email: nils.beyer@posteo.de
+      institute: [affil1]
+      correspondence: false
+      contribution: technical assistant, realization of docker file, singularity container, unit tests, conceptual work for executing unit tests
+  - Sebastian Hanss:
+      email: sebastian.hanss@uni-goettingen.de
+      institute: [affil1]
+      correspondance: false
+      contribution: conceptual work for docker file and singularity container
+  - Craig Eric Simpkins:
+      email: craig.simpkins@uni-goettingen.de
+      institute: [affil1, affil2]
+      correspondance: false
+      contribution: manuscript writing
+  - Jan Salecker:
+      email: jan.saleck@posteo.de
+      institute: [affil1]
+      correspondence: false
+      contribution: conceptual work
+  - Kerstin Wiegand:
+      email: kerstin.wiegand@uni-goettingen.de
+      institute: [affil1]
+      correspondence: false
+      contribution: conceptual work, manuscript writing
+institute:
+  - affil1: University of Goettingen, Department of Ecosystem Modelling, 37077 Goettingen
+  - affil2: University of Auckland, School of Environment
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+    bookdown::word_document2:
+      fig_caption: yes
+      reference_docx: "../templates/word-styles-reference01.docx" # Insert path for the DOCX file
+      pandoc_args:
+      - --lua-filter=../templates/scholarly-metadata.lua
+      - --lua-filter=../templates/author-info-blocks.lua
+      - --lua-filter=../templates/pagebreak.lua
+bibliography: IntegrationPaper.bib
+csl: "../templates/methods-in-ecology-and-evolution.csl" # Insert path for the bib-style
+---
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  comment = "#>",
+  fig.path = "../../03_Analyses/10_landmarket_wages_v6/figures/",
+  dpi = 300
+)
+```
+**Keywords:** biodiversity, ecological functions, economic functions, EFForTS-ABM, InVEST, software integration *S: You only need to include keywords that do not already appear in the title (here: I would suggest to remove biodiversity, InVEST and EffORTS-ABM if title stays as it is now)*
+
+**Running headline:** Integration of InVEST with EFForTS-ABM (34 characters)
+
+**Alternative titles:**
+
+* "(Dynamic) simulation of biodiversity and socio-economic functions (simultaneously): Integration of the model InVEST with the model EFForTS-ABM." *S: Suggest shortening the second part to "Integration/Coupling of simulation models InVEST and EFForTS-ABM"*
+
+* "Integration of the model InVEST with the model EFForTS-ABM: new tool for dynamic simulation of biodiversity and socio-economic functions simultaneously" 
+
+* "(Dynamic) simulation of biodiversity and socio-economic functions (simultaneously): Integration of two spatially-explicit models." 
+
+*S: Further suggestion: "Simultaneous assessment of biodiversity and socio-economic functions across scales: An integrated simulation modelling approach" I added "across scales" as your key message suggests so and found this interesting to add here :)*
+
+
+
+<br>
+
+**Author contributions:**
+
+JH, NB, SH, JS and KW conceived the ideas and designed methodology, JH and NB evaluated the integration and analyzed the data, JH, CS and KW led the writing of the manuscript. All authors contributed critically to the drafts and gave final approval for publication.
+
+<br>
+
+**Target Journals:** Methods in Ecology and Evolution, PLOS Computational Biology, Ecological Modeling
+
+<br>
+
+**Key message:** Demonstration of the integration of the static terrestrial biodiversity model InVEST with the dynamic land-use change model EFForTS-ABM. As a result, synergies and trade-offs between biodiversity and socio-economic functions can be assessed simultaneously and dynamically at multiple temporal and spatial scales.
+
+# Abstract
+
+The Abstract must not exceed 350 words and should list the main results and conclusions, using simple, factual, numbered statements:
+
+Point 1: set the context for and purpose of the work;
+
+Point 2: indicate the approach and methods;
+
+Point 3: outline the main results;
+
+Point 4: identify the conclusions and the wider implications.
+
+    +	Connection is possible through narrow integrationlayer it can be easily implemented, maintained and comprehended (maybe to Abstract).	
+
+# Introduction
+*S: In general, I think the intro is on a right direction, well done so far. However, I believe you can write it even more concise and add more explanations (I think it is a bit too short as it is now, and I think you can at some point well go into mehr detail). See my comments below.*
+
+Traditionally, ecologist**s** investigated ecosystems relatively unaffected by humans. **I would remove this opening as most ecologists deal with some level of human affects in almost all studies, with only very theory driven work having no thought towards this** The main focus was on ecological functions and biodiversity **Again this is not fully correct as a lot of early ecology also species interactions, population dynamics, etc**. In contrast to this, economists investigated mainly economic functions. When human influences on ecosystems increased, interdisciplinary approaches became more important **I would reframe this from an historical factor to a contemporary one, e.g. as human influences on ecosystems continue to increase it is ever more important for interdisciplinary approaches to be adopted** , as the economic sphere modifies the ecological sphere and vice versa. This interdependence in consequence then affected and will affect the well-being of humans [@kareiva_natural_2012] **Again could reframe as something like, this interdependence between spheres influences both sides, ultimately impacting humans.** In the past decades, especially intensification and specialization of land-use has affected ecological systems around the world. The impacts of land-use changes are contradictory: on the one hand, multiple ecological functions and biodiversity, in total do not benefit from land-use change. Two-third of the world's ecosystem services were declining [@millenium_ecosystem_assessment_ecosystems_2005]. Biodiversity, as the key index on the ecological sphere and important for stability and efficiency of ecosystems, is experiencing losses at alarm**ing** rate**s** [@bradley_j_cardinale_biodiversity_2012]. In contrast, socio-economic functions like household consumption, benefit from these changes [@klasen_cash_2013]. 
+As a result, in recent years, there has been an increasing interest in the analysis of trade-offs and synergies *S: trade-offs and synergies between/among what?* **in land-use**, *I am unclear what your point is with the rest of this sentence* since the relationship between biodiversity, ecological functions and socio-economic functions over time and over space is not easily predictable [@dislich_land-use_2018]. Tools are in demand, which provide a profound understanding of relationships and may lead to a new balance between of ecology, economy and society. *This last sentence seems to link more naturally with the end of the previous sentence than that part of the sentence links with the start of the sentence* 
+
+*S: General Feedback to the first section of the intro: I like the general idea of this brief introductional section. However, I think this could be even more comprehensive and concise. What is the main message you want to get along from this section and what do you really need to state to support this message? I would start from the beginning that estimation of ecological and socio-economic functions is of increasing importance and why and then quickly link this to a short review of what has been done in the past to couple both approaches, and then what might be still knowledge gaps (e.g., dynamic assessment, feedback between both approaches, etc.). You can also present some examples to (harder to understand) problems that you state. For instance, you could argue with examples why dynamic assessment might be relevant or why feedback between biodiversity and economy might be important to look at. Also, I think you are a bit to fast jumping into trade-offs and synergies. What are those? Why are they important to look at? Give maybe examples of such relationships? Another idea: You could also state why it is difficult to link both approaches (e.g., different methodologies, different definitions)*
+
+Models are capable of examining relationships between socio-economic functions, ecological functions as well as biodiversity. An ideal model framework for such a tool needs to meet five requirements: (a) Ecological functions, biodiversity and socio-economic functions need to be simulated within one single analysis. Approaches like ecological economics suggest simultaneous simulation to deal with sustainability [@martin_drechsler_ecologicaleconomic_2007]. (b) The simulation of both spheres needs to be spatially-explicit from local to landscape scale as functions and relationships change over space. **You may want to expand on this point as it is not immediately obvious why this is a key requirement** (c) To capture variations of functions over time, the analysis needs to be dynamic. (d) The integrated simulation of both spheres allows the introduction of feedback between the two spheres. **Could shorten this point to simply say there needs to be feedback mechanisms between the spheres in the simulation** (e) To enable a wide range application of the tool it needs to be reproducible **Also enables greater trust in the results**. No published tool fulfills all of these requirements (a)-(e), but notably some attempts have been made. 
+For example @petr_havlik_joint_2005 simultaneously simulates beef production and grassland biodiversity. Impacts on ecological services and biodiversity are considered spatial-explicitly by @stephen_polasky_conserving_2005.  @jh_van_wenum_location-specific_2004 presented a location-specific model for optimization of wildlife management for an expected time horizon. To deal with the dynamic requirement, @l_mouysset_bio_2011 coupled an ecological and economic model for dynamic simulation of bird diversity along with regional and national income on the macro-regional scale. 
+
+*S: Nice, here you state what would be the requirements if such a coupled approach. I would however review these knowledge gaps first to better motivate your work. I think it would be important to have a review of coupled simulations models where you state what they can and what they are not able to achieve (your motivation why you couple EFForTS-ABM and InVEST). Prior to this, I think it would be good to have some more details on simulations models and why they are useful in this context.*
+
+We are the first to create a reproducible tool to simultaneously analyse biodiversity and socio-economic functions at multiple spatial scales. To achieve this, we integrated the models InVEST and EFForTS-ABM. EFForTS-ABM generated the land-use and land-cover maps (LULC-maps), the impact-maps **I don't think many readers will know what an impact map is before it is described** and the parameter settings used as inputs for InVEST. InVEST calculated the habitat quality as proxy for biodiversity which is integrated into EFForTS-ABM for further trade-off and synergy analysis along with socio-economic functions. We tested the correct implementation of both models with functional requirements for correct integration of both models and non-functional requirements for reproducibility.
+
+*S: Don't forget references to the models.*
+
+
+# Methods
+
+*S: Add kind of an introduction part here, that you aim at coupling such and such models to better understand ecological and socio-economic functioning of ecosystems, then it is easier for the reader to follow your methods. You may state why you chose these both particular models (here or in the intro). I was also wondering if you want to keep it general or specific for socio-economic-ecological systems in Indonesia. I am not sure how generalizable the model is. Are there any specifics implemented that are only true for Indonesian rainforests. If you, you should streamline your intro already on rainforests.*
+
+## The Ecological Model InVEST
+
+The static production function model *S: what is a production function model?* InVEST-Terrestrial Biodiversity (Version 3.9, Tier 1) was used *S: or "developed"* to simulate biodiversity *S: Really biodiversity or just plant diversity?"* [@kareiva_natural_2012]. The model is spatially-explicit and calculates a grid cell level degradation score and a grid cell level habitat quality score for every grid cell which was assigned suitable habitat. *S: I think this sentence/explanation is too much/difficult to understand. Could you explain it a bit simpler than that? New for people: "grid cells", "degradation score", "habitat quality". I see that you explain it in the following, good :)* Suitable habitat depends on the research objective (general biodiversity, species-specific needs). *S: Is it really a research objective or a focus of the research?* The degradation score depends on proximity of habitat types to user-defined impacts to biodiversity. The calculation is based on (i) the distribution of land use and land cover (LULC-map) for the area of interest, (ii) the distribution and intensity of user-defined impacts to biodiversity (impact-maps), (iii) the assignment of suitable habitats and their sensitivity to impacts (sensitivity-table), and (iv) the relative impact weighting and how quickly the impact decays over space (impact-table). For a full description of the calculation see [@sharp_r_invest_nodate]. The degradation score is then standardized to a grid cell-level habitat quality score (Figure \@ref(fig:invest)) via a half-saturation function. Resulting in a habitat-degradation map and a habitat-quality map as inputs for EFForTS-ABM *S: If you mention EFForTS-ABM here already, it might be worth first describing this model*. The habitat-quality score is a proxy for biodiversity based on a simple habitat-analysis, enabling rapid assessment of biodiversity patterns. The biodiversity indicator habitat quality is well suited for trade-off and synergy analysis in combination with economic functions. InVEST is scientifically grounded and is widely applied to simulate biodiversity and ecological functions based on spatially-explicit maps *S: Provide some references here*. A detailed user guide was published in @sharp_r_invest_nodate.
+
+*S: Maybe include some examples and reference to them how the model has been used so far. Maybe include the meaning of the acronym "InVEST". Wasnt it developed to estimate ecosystem services? I kind of miss this here in this section. In general, I think this gives a good overview of the model. However, I am still a  bit struggling how the model really works. For people unfamiliar with this model and even simulation models this might be even worse :) I would look into the Overview part of the ODD and try to add these infos here too: I miss: temporal and spatial scales and overview of the processes.*
+
+<br>
+
+```{r invest, out.width = "100%", fig.cap = "**InVEST-Terrestrial Biodiversity.** Calculation of grid cell-level degradation score and grid cell-level habitat quality score"}
+knitr::include_graphics(file.path("figures/png/InVEST.png"))
+```
+*S: Is this figure really adding something to your text? Or couldn't it just added in the text. Where is the figure linked too? *
+<br>
+
+## The socio-economic model EFForTS-ABM
+
+To simulate the socio-economic component, the dynamic and spatially-explicit land-use change model, EFForTS-ABM (version xyz), was used. *S: Starting a sentence with "To", especially in a new section, I've heard seems to be inelegant. Consider swapping clauses. Also add ref to the model.* The initial landscapes for EFForTS-ABM are *JH: initial landscapes are always generated by LGraf :)* generated with the landscape generator EFForTS-LGraf *S: ref to this model.*. It provides agricultural landscapes cultivated by small-scale farms. The landscapes comprise a regular grid of cells, whereby each grid cell is assigned one specific land cover (vegetation-type) and a corresponding land use (management). Moreover, roads and villages that consist of smallholder farming households are generated. Every year households make rational land-use decisions with the aim to maximize their economic benefit (Figure\@ref(fig:abm) ). Detailed descriptions of EFForTS-LGraf and EFForTS-ABM were published in @salecker_efforts-lgraf_2019 and @dislich_land-use_2018, respectively. EFForTS-ABM is able to investigate how the decisions of households affect economic functions (e.g. household consumption) and landscape structure from a local to a landscape scale and vice versa at various points in time. The distribution of land use and land cover and the impacts to biodiversity (from either land use or land cover) can easily be derived from EFForTS-ABM. The ABM is also suitable to integrate the generated habitat-quality maps from InVEST. Therefore, EFForTS-ABM fits the requirements to dynamically generate and process the spatially-explicit inputs and outputs of InVEST.*JH: I chose to describe the initial landscape more general (not specific to lowland rainforest transformation systems) here, in order to later highlight the advantage of our integration, which is the broad application possibility with different initial landscapes. What is your opinion on that?*
+
+*S: Similar to your InVEST description, I think more details to scales and processes (only an overview) is needed to better understand what the general model is about.*
+
+<br>
+
+```{r abm, out.width = "100%", fig.cap = "**EFForTS-ABM.** Yearly land-use and land management decision of households."}
+knitr::include_graphics(file.path("figures/png/Economic_simple.png"))
+```
+*S: Similiar as to figure above: Would consider removing this as it doesn't add anything new or could simply be stated in the text*
+<br>
+
+## The integration of InVEST with EFForTS-ABM
+
+The implementation of both models was achieved by an two-way Input-Output-Transfer *S: What is this?^^*. We mapped the outputs from EFForTS-ABM as the inputs for InVEST and mapped the outputs from InVEST as the inputs for EFForTS-ABM. *S: Ah okay!* First, EFForTS-ABM generates (i) the LULC-map and (ii) one impact-map *S: General comment: I think you use to many hyphens. Please check! :)* for each defined impact, (iii) the corresponding sensitivity-table and (iv) impact-table. The LULC-map and the impact-maps are in Tag Image File format (tif-format) and the sensitivity-table and impact-table are in comma-separated value format (csv-format). Second, InVEST integrates the generated inputs of EFForTS-ABM and calculates the habitat-degradation map and the habitat-quality map in tif-format for further processing in EFForTS-ABM (Figure\@ref(fig:transfer)). Since EFForTS-ABM is only able to process asc-format and InVEST is only able to process tif-format, asc- and tif-formats were converted by Geospatial Data Abtraction Library (Version 3.2.0, @gdal).
+*S: Okay, I miss a bit how the ouputs/input were then used in the respective models. What processes are then affected by the inputs. How did you cope with the different temporal and spatial resolutions (if there are any)? The figure is rather technical. Is it really necessary to add the file types/extensions? What would be know the common output of the model (maybe add to the figure?). Instead of the names of the models, you could also provide a simple flow chart of the models (which you could then also refer in the general descriptions of the models) and where the outputs are generated (highlight in the flowchart) and where these outputs feed into the other model (as inputs).*
+
+<br>
+
+```{r transfer, out.width = "100%", fig.cap = "**Input-Output-Transfer between EFForTS-ABM and InVEST**. The input of InVEST (LULC-map, Impact-map, Sensitivity-table, Impact-table) are generated by EFForTS-ABM. The input of EFForTS-ABM (Habitat-Degradation-map, Habitat-Quality-map) are generated by InVEST. For the transfer a converter is needed."}
+knitr::include_graphics(file.path("figures/png/Input-Output-Transfer.png"))
+```
+
+
+
+<br>
+
+## Evaluation of integration of InVEST with EFForTS-ABM
+
+To evaluate the integration between InVEST and EFForTS-ABM, we adopted a widely applied software testing system as our requirement plan [@bashar_requirements_2000]. This plan was divided into functional and non-functional requirements.
+
+The functional requirements included a testing scheme beginning from unit-tests *S: hyphen needed?* to integration-tests *S: hyphen needed?* and ending with an acceptance-test *S: hyphen needed?*[@a_contan_test_2018]. Unit-tests were applied to verify the correct implementation of processes. *S:This I do not understand. Did you reimplement the models?* This was realized by an isolated unit-testing module within EFForTS-ABM. This module comprised each particular process implemented by the integration of InVEST with EfforTS-ABM. We compared the simulated output of each particular process to its expected output (Table A in Supplementary Materials). Integration-tests were applied to verify the correct integration between InVEST and EFForTS-ABM. This could be verified by comparing the Input-Output-Processing of the integrated models with the Input-Output-Processing of the model InVEST. It was realized by an isolated integration-testing module within EFForTS-ABM for the integrated models and manual input of generated data of EFForTS-ABM to the Windows-Version of InVEST. For more convenient comparison of results, we chose a simplified parameter setting (see table 1 and table 2, TODO: automated referencing for tables) - with binary approaches for all assignment of values (habitat, sensitivity, intensity of impacts, impact weighting) - and two simplified landscapes - forest-landscape and single-field-landscape.
+
+<br>
+*S: I do not fully understand Table 1. Why is there a 1 only for forest? Also the last two columns I do not understand. I would avoid abbreviations and provide more comprehensive column names. Also, now I am wondering if you use the habiat types of Indonesisan systems, that you should at some point state, what your study site is and then add these infos also in the intro that you focus on rainforests and why. Also Table 2 is a bit challenging to understand. I guess you need to explain a bit more what the parameters do in the models.*
+
+```{r sensitivty table,echo=FALSE}
+#Create dataframe from txt file
+sensitivity <- read.table("tables\\sensitivitytable_integrationtest.txt", header = TRUE)
+sens <- data.frame(sensitivity)
+
+#Create table
+pander::pander(sens, caption = 'Table 1: **Sensitivity table.** Classification (LULC) and names (NAMES) of LULC-types and their corresponding habitat assignment (HABITAT) and sensitivities to defined impacts (L_oilpalm, L_rubber). ')
+```
+
+<br>
+
+```{r impact table,echo=FALSE}
+#Create dataframe from txt file
+impact <- read.table("tables\\impacttable_integrationtest.txt", header = TRUE)
+imp <- data.frame(impact)
+
+#Create table
+pander::pander(imp, caption = 'Table 2: **Impact table.** Maximal distance of each impact over space (MAX_DIST in km), its corresponding impact weighting (WEIGHT) and how impacts decay over space (DECAY). ')
+```
+
+<br>
+
+The acceptance-test was applied to verify the dynamic simulation of socio-economic functions and biodiversity simultaneously. The initial landscape was calibrated with data from a lowland rainforest transformation system in Sumatra, Indonesia. This region is a global biodiversity hotspot with proceeding agricultural expansion [@ingo_grass_trade-offs_2020]. Resulting in a landscape comprising of regular grids of 100 x 100 cells, with each cell representing a 50 m x 50 m area creating a total landscape dimension of 25km^2^. These grids represent a forested landscape in Sumatra (Indonesia) with roads and villages of smallholder farming household agents and agricultural fields (oilpalm and rubber) owned and farmed by individual households. The test is calibrated with simplified parameter settings for both models. For the biodiversity component, we chose binary approaches for all assignment of values (habitat, sensitivity, intensity of impacts, impact weighting). For the economic component we look at a constant price scenario for oil palm and rubber, where all farmers are perfectly efficient and therefore must not learn from each other. Fallow land can not be purchased and is simply excluded from analysis.Parameter settings for InVEST and EFForTS-ABM are shown in tables 1 and 2 and table 3 TODO: automated referencing,respectively. The temporal extend of the acceptance-test is 50 years. We simulate 20 replications for the test, to capture model stochasticity. The household consumption of all households was analyzed as one representative for socio-economic functions. The landscape-level habitat-quality score, which is an aggregation of all grid cell-level habitat-quality scores, was analyzed as the representative for biodiversity.
+
+*S: Is this section a repetition of the previous section. I see a strong overlap although I like this section better. Please describe the parameters in Table 3 by including a description column.*
+
+<br>
+
+```{r Parameter setting EFForTS-ABM, echo=FALSE}
+#Create dataframe
+para_efforts <- data.frame(Parameters = c("Prices", "Learning", "Inefficiency", "which-map", "land-use-change-decision", "initial-wealth-distribution", "landmarket", "biodiv_plants", "biodiv_plants_objective"),
+                 Value = c("constant prices", "no learning", "no inefficiency", "five-farmers2", "only-one-field-per-year", "constant", "no landmarket", "invest_pyhton", "general")
+                 )
+
+#Create table
+pander::pander(para_efforts, caption = 'Table 3: **Parameter setting for EFForTS-ABM** (Maybe move to Supplementary Materials) ')
+```
+
+The non-functional requirement include the reproducibility of the integrated InVEST-EFForTS-ABM software tool *S: Maybe give it a new (shorter) name*. We designed a docker image as a standardized unit of the integration to quickly and reliably execute it on a linux-based server. It ensures the correct version of InVEST along with its required dependencies, the correct version of EFForTS-ABM and the correct integration of both models. To conveniently execute the simulations an RStudio Server is started within the docker container. *Describe more detailed the development of the docker image. What are the requirements for development....blabla?* 
+
+For the execution of the simulations on a high-performance-cluster, we designed a singularity container, which duplicates the dockerfile into a singularityfile on the cluster. (or on a high-performance-cluster with uniform software management, shared batch management environment, cross-system monitoring and accounting, and cross-system file systems.) *Here, we have to wait for further progress. Actually, there is no function within cluster_mq to run a singularity container on the hpc. We opened an issue and wait for response. If there is no convenient way to run singularity on hpc, we have to work with an manual installation of InVEST on the cluster. Update (18.06.2021: we work with a manual installation, sadly :(*
+
+Simulations on the linux-server were executed with the R package nlrx (0.4.3, @salecker_nlrx_2019) and submitted to the high-performance-cluster with the R package clustermq (0.8.95.1, @schubert_clustermq_2019). Results were analyzed with R (4.0.3, @R). 
+
+# Results
+
+## Integration of InVEST with EFForTS-ABM
+
+The integration was achieved by extending EFForTS-ABM with the/a biodiversity submodel (Figure\@ref(fig:architecture)). First, InVEST is set up and the input for InVEST (i)-(iv) is generated within EFForTS-ABM: At initialization (1) the InVEST model - Terrestrial Biodiversity is set up and (2) depending on research objective (general biodiversity or species-specific needs) the sensitivity table and impact-table are generated. Every year the ABM (3) generates the LULC-map and the corresponding impact-maps which are (4) stored as tif-files after conversion. Second, the habitat quality is calculated within InVEST. Every year the ABM (5) invokes InVEST and transfers the previous generated output (i)-(iv). Based on the transferred output (7) the model InVEST calculates the Habitat-Degradation map and Habitat-Quality map. Within EFForTS-ABM (8) the maps are converted and (9) the habitat-quality scores of the Habitat-Quality map are stored in the grid cells of the landscape of EFForTS-ABM as an additional landscape property. Finally, the ABM (10) aggregates the grid-cell level habitat-quality scores to (10) a landscape-level habitat-quality score. 
+
+*S: I think this or a similar description should go to the method section "The integration of InVEST with EFForTS-ABM" explaining how the combined model works. I am not familiar with methodological papers. Have you looked at some? For me it feels a bit strange to add this description in the results. I would only show the results of the testing and I would also recommend to  and present some example scenarios/results (in this case add a Scenario section in the methods too, and maybe example research questions to the intro) to show what the model is capable of, what research questions could be addressed with such a model and what outputs are produced.*
+
+*S: I do not fully understand the figure below. However, I think this is very helpful to include such a figure. I think it would be best to discuss this figure in person.*
+
+```{r architecture, out.width = "10%", out.height = "10%", fig.cap = "**Software-Architecture:** Implementation of the biodiversity submodel within EFForTS-ABM and corresponding processes involved in the integration of InVEST with EFForTS-ABM. *keep numbers for processes and also present them in figure?*"}
+knitr::include_graphics(file.path("figures/png/Software-Architecture.png"))
+```
+
+
+## Evaluation of integration of InVEST with EFForTS-ABM
+
+We confirmed all evaluated functional requirements stated in our requirement plan for the correct integration of InVEST with EFForTS-ABM. The implementation of processes was verified, as the expected output of each particular process equaled its simulated output (Table 1 TODO: automated referencing, Supplementary Materials). *S: Do you have any proof to show that you succeeded?* The integration of both models was further verified by the correct calculation of habitat-quality and correct reduction of habitat-quality by impacts through comparison of results from the integrated models with results from InVEST. Both tested landscapes showed the same habitat-quality scores: within the forest-landscape all grid cells showed the highest possible habitat-quality score of 1. For the single-field-landscape, the habitat-quality score of the agricultural field showed the highest reduction of habitat-quality (value x). The neighboring forest grid cells in a radius of 50 m showed less reduction of habitat quality (value x). All other forest grid-cells showed no reduction of habitat-quality (Habitat-quality score = 1), as the greatest distance of all impacts is 50 m. The dynamic and simultaneous simulation of socio-economic functions and biodiversity was achieved. Our results showed the yearly household consumption and yearly biodiversity (landscape-level habitat-quality score) over the simulated time and over the simulated landscape within one single analysis (Figure 5). *The focus of this paragraph is not clear, are you focused on the integration being achieved or on the results produced by the integrated models. JH: The focus is rather on integration being achieved. Is it no more clear?*
+
+*S: Would be interesting to show input/output values of InVEST and EFForTS-ABM run individually (run each model individually) and in combination (run combined model tool) as a kind of validation. I guess validation would not be possible as there is a dynamic feedback between the models which changes the results compared to individual simulations of the models. However, it would be then interesting to show how the coupling affects the outcome compared without coupling. Just some thoughts...*
+
+![Figure 5 (Coming soon): **Dynamic simulation of economic function and biodiversity simultaneously.** Mean household consumption in USD (red) and mean landscape-level habitat quality (green) over time. The dark lines refer to mean values of the 20 model replications and the shaded polygon surrounding each line refers to the respective standard deviations.]   
+
+
+The non-functional requirement reproducibility was achieved by a docker image. First, a linux-based server has to be set up, where the ports 80, 443 and 20 are open *S: this is very very technical. Please confirm with other papers in yopur desired journal if this fits the requirements*. Second, docker and docker-compose have to be installed. Third, the repository containing the integration has to be cloned. Finally, the containers have to be started on the server. This results in a standardized unit of an RStudio Server combined with the integrated InVEST-EFForTS-ABM software tool.
+
+*singularity container (wait for description of results, until we know if it works or not)*
+
+
+
+
+# Discussion
+Trade-offs and synergies of biodiversity and socio-economic functions and their mutual effect must jointly be assessed at the same multiple temporal and spatial scales (*Mention rationale in intro:realistic, less errors,feedback*). The integration of InVEST with EFForTS-ABM fulfills the need for a new tool to simultaneously and dynamically analyze functions from different spheres within one single analysis. This tool has two advantages in comparison to the simulation of biodiversity and socio-economic functions separately and statically: (a) the integration enables joint simulation of biodiversity and socio-economic functions. Resulting in applying only one tool for trade-off and synergy analysis and in straightforward incorporation of feedback between the two spheres; (b) the dynamic simulation enables detection of relationships between functions at the same multiple temporal and spatial scales. The presented acceptance test reflects the simultaneous and dynamic analysis of biodiversity and socio-economic functions within one single model execution. It is sufficient to singularly execute EFForTS-ABM to automatically get results for biodiversity and socio-economic functions. When starting the simulation, within EFForTS-ABM the socio-economic functions are simulated, the needed input for InVEST is generated, InVEST is invoked to simulate biodiversity and results of InVEST are transferred back to EFForTS-ABM at every time step and spatial resolution.  
+New tools for assessing trade-offs and synergies of different spheres must also be reproducible (*Mention rationale in intro*). Reproducibility was accomplished by a docker-container for executing the tool on a linux-server and by a singularity container for executing the tool on a high-performance cluster. The advantages of making the integration reproducible are (a) the guarantee of executing the correct model versions with their correct dependencies; (b) and the assurance to have the integrationlayer already implemented. Thus, the tool can easily be applied.
+
+*S: Some of the discussion could well go into the intro too. I think you still need to make sure what you will present in the results, and then you could think about what to discuss. I like your approach, I am not sure however, if this is enough for a methodological paper (again: new to methodological papers).*
+
+
+Relation to literature (rough draft)
+To dynamically and simultaneously assess trade-offs and synergies between biodiversity and economic functions  tools are needed. Name literature which also deals with that (Mouysset et al, Wu et al, Yee et al). But need for reproducible tool: we can deliver.
+(Chopin et al:, Mouysset et al: integration: simultaneous and dynamic simulation BUT NOT spatially explicit, Wu et al: Integration: effect of land-use change on ecological functions, spatially explicit BUT NOT simutaneously with economic functions, land-use effect on ecological functions BUT NOT spatially explicit,Yee et al: )
+
+The integration of InVEST with EFForTS-ABM is a first step to provide a new tool for the dynamic analysis of functions from different spheres at multiple temporal and spatial scales. Future work might to achieve a broader opportunity of applications by adjusting the narrow integrationlayer to other land-use change models and to extend the analysis by adding further ecological functions available within InVEST.   
+The docker-container can be accessed on github (https://github.com/ecomod-code/rstudio-docker/tree/invest)
+
+
+
+# Acknowledgements
+Funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 192626868 – SFB 990 in the framework of the collaborative German-Indonesian research project CRC 990. We thank Matthias Christian Spangenberg for valuable feedback on a earlier version of the manuscript.	
+
+# Supplementary material
+*	Include more detailed Software-Architecture with every in- and output of both models (especially for economic submodel of EFForTS-ABM)
+
+```{r result unit-tests, echo=FALSE}
+#Create dataframe
+unittest <- data.frame(Processes = c("set-up-invest", "write-tables", "translate-lulc-to-invest", "write-maps", "convert-maps", "run-invest", "convert-habitat-quality-to-asc", "save-habitat-quality-to-patch", "aggregate-habitat-quality"),
+                       Input = c("which-machine? = server", "dummy sensitivity table, dummy impact-table", "p_landuse and p_homebase", "patch-raster of p_landuse_invest and patch-raster of p_landuse_invest 2/3", "lulc.asc, rubber_c.asc, oilpalm_c.asc", "half-saturation-constant, working directory, path to lulc-map and tables, determination of impact_raster_folder", "quality_c_test.tif", "quality_c_test.asc", "sum of p_habitat-quality values" ),
+                 Expected = c("setting up python invest", "sensitivity_table.csv and impact_table.csv in output folder", "forest: p_landuse_invest = 4, rubber: p_landuse_invest = 3, oilpalm: p_landuse_invest = 2, village:p_landuse_invest = 1", "lulc.asc, rubber_c.asc and oilpalm_c.asc in output folder", "lulc.tif, rubber_c.tif and oilpalm_c.tif in output folder", "quality_c_test.tif in output folder", "quality_c_test.asc in output folder", "p_habitat_quality {0,1} for every grid-cell in EFForTS-ABM", "mean of all p_habitat_quality values"),
+Pass = c("yes", "yes", "yes", "yes", "yes", "yes", "yes", "yes", "yes")
+)
+#Create table
+pander::pander(unittest, caption = 'Table A: **Individual tested processes, input values for each tested process, expected output for each tested process and verification of correct implementation**. Sorry, have to find a way in R how to generate nicer tables.')
+```
+
+
+### Open questions:
+* Include ODD-protocol for models? I would say no, because the focus is not on the models itself, but more on the connection, its realization and the benefit. *S: Agree. Refer to original and updated model descriptions though.*
+* Include more complex software architecture with information of LGraf and more information of economic part of EFForTS-ABM in the appendix? *S: Wasnt this done also in the orginal publications of these models?*
+* How to deal with provision of docker-image where also the EFForTS-ABM is delivered. The aim of this tool is that it is reproducible and that others can also use it. But I think the model should nevertheless be accessible for everybody? (Kerstin? Sebastian? Craig?)
+
+# References:
+Text-citations:
+One author: Gabriel (2000) and (Gabriel, 2000)
+Two authors: (Mathes & Severa, 2004) and Mathes and Severa (2004)
+Three or more authors (first occurrence): Waterman et al. (1993) and (Waterman et al., 1993).
+
+If two papers have first-listed authors with the same name in the reference list: To avoid ambiguity, list as many names as needed to differentiate the papers, followed by “et al.” in citations.
+
+Fannon, Chan, Ramirez, Johnson, and Grimsdottir (2019) … and Fannon, Chan, Montego, Daniels, and Miller (2019)… can be cited as (Fannon, Chan, Ramirez, et al., 2019) or Fannon, Chan, Ramirez et al. (2019), and (Fannon, Chan, Montego, et al., 2019) or Fannon, Chan, Montego et al. (2019), respectively.
+
+Reference-List:
+
+    + Book edition
+
+The publisher location is no longer included in the reference.
+
+Bradley-Johnson, S. (1994). Psychoeducational assessment of students who are visually impaired or blind: Infancy through high school (2nd ed.). Pro-ed.
+
+    + Edited book
+
+Hawkley, L. C., Preacher, K. J., & Cacioppo, J. T. (2007). Multilevel modeling of social interactions and mood in lonely and socially connected individuals: The MacArthur social neuroscience studies. In A. D. Ong & M. Van Dulmen (Eds.), Oxford handbook of methods in positive psychology (pp. 559–575). Oxford University Press.
+
+    + Data sets
+
+For any data with a unique identifier the format should be as follows:
+
+Prugh, L. & Golden, C. (2013). Data from: Does moonlight increase predation risk? Meta-analysis reveals divergent responses of nocturnal mammals to lunar cycles. Dryad Digital Repository, http://dx.doi.org/105061/dryad.tm723.
+
+Olden, J. (2015). Integrating landscape connectivity and invasion vulnerability to guide offensive and defensive invasive species management. figshare. https://dx.doi.org/10.6084/m9.figshare.1285847.v2
+
+
+Citations from web pages:
+
+Authors may sometimes wish to cite information available from the internet in similar ways to the citation of published literature. In using this option, authors are asked to ensure that:
+
+    + fully authenticated addresses are included in the reference list, along with titles, years and authors of the sources being cited;
+
+    + the sites or information sources have sufficient longevity and ease of access for others to follow up the citation;
+    the information is of a scientific quality at least equal to that of peer-reviewed information available in learned scientific journals;
+    hard literature sources are used in preference where they are available.
+
+It is likely that official web sites from organisations such as learned societies, government bodies or reputable NGOs will most often satisfy quality criteria.
+
+
+

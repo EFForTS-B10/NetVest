@@ -96,7 +96,6 @@ globals
   filename_probs           ;can be removed soon
   ;which-machine?            ;just to discern between windows and linux and locate python
     ;biodiv_invest_objective ;what was this for again?
-  p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
 ]
 
 ; Define patch properties:
@@ -131,7 +130,7 @@ patches-own
   ;; Variables used by biodiv_plants_invest modules:
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
  ; p_impact-value
-
+  p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
   p_habitat_quality        ; variable for storing habitat quality
 
 ]
@@ -2972,7 +2971,7 @@ immigrant-wealth-factor
 immigrant-wealth-factor
 1
 100
-10.0
+13.0
 1
 1
 NIL
@@ -3299,7 +3298,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-3
+0
 
 CHOOSER
 520

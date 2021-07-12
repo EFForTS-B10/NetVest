@@ -16,7 +16,6 @@ if (file.exists(netlogopath)){
   stop('Please specify the folder that contains Netlogo')
 }
 
-
 #modelpath <- file.path("/home/ecomod/nl/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
 outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
 
@@ -79,13 +78,14 @@ nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
 
 
+
 ## Prepare jobs and execute on the HPC:
 maxjobs.hpc <- 2
 njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjobs.hpc)
 siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
 rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
 
-simfun <- function(nl, siminputrow, rndseed, writeRDS=TRUE)
+simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
 {
   library(nlrx)
   res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
@@ -112,6 +112,7 @@ results <- clustermq::Q(fun = simfun,
                                         mem_cpu = "4000"),# define memory per cpu
                         log_worker = TRUE) 
 
+
 message("show results")
 print(results)
 
@@ -122,3 +123,4 @@ typeof(nl)
 
 write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")  
 #i##################################
+
