@@ -1,12 +1,39 @@
-#dir.create(t <- paste(tempdir(), Sys.getpid(), sep='-'), FALSE, TRUE, "0700")
-#unixtools::set.tempdir(t)
-
 library(nlrx)
 library(clustermq)
 
+
+
+download_NetLogo <- function(dlpath, local = TRUE, version = "6.1.1") {
+  #' download_NetLogo
+  #'
+  #' @param dlpath path where the downloaded files are to be saved
+  #' @param version Netlogo version (default: "6.1.1")
+
+  if (!local) {
+    return("NetLogo is not run locally") 
+  }
+  if (!file.exists(paste0(dlpath, "NetLogo ", version, "/netlogo-headless.sh"))) { #!file.exists(paste0(dlpath, "NetLogo-", version, "-64.tgz"))
+    default <- getOption('timeout')
+    options(timeout=300) # NetLogo downloads tend to be slow...    
+    nlrx::download_netlogo(dlpath, version = version, extract = TRUE)   
+    options(timeout = default)
+  }
+  if (file.exists(paste0(dlpath, "NetLogo ", version, "/netlogo-headless.sh"))) {
+    message("netlogo already exists:")
+    return(paste0(dlpath, "NetLogo ", version, "/netlogo-headless.sh"))
+  }
+}
+
+dlpath <- "nl/"
+
+download_NetLogo(dlpath,local = TRUE, version = "6.1.1")
+
+
+
+
 #set paths
 
-netlogopath <- file.path("nl")
+netlogopath <- file.path("nl/NetLogo 6.1.1")
 netlogoversion <- "6.1.1"
 
 
@@ -17,9 +44,9 @@ if (file.exists(netlogopath)){
 }
 
 #modelpath <- file.path("/home/ecomod/nl/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
-outpath <- file.path("EFForTS-ABM/01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
+outpath <- file.path("01_EFForTS-ABM/tests/output")#/EFForTS-ABM/01_EFForTS-ABM/tests/
 
-modelpath <- file.path("nl/app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
+modelpath <- file.path(netlogopath, "app/models/Sample Models/Biology/Wolf Sheep Predation.nlogo")
 #outpath <- file.path(".")#/EFForTS-ABM/01_EFForTS-ABM/tests/
 
 
@@ -70,7 +97,7 @@ nl@experiment <- experiment(expname="wolf-sheep",
 
 nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
-#results <- run_nl_all(nl)
+results <- run_nl_all(nl)
 
 
 
@@ -78,39 +105,39 @@ nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
 
 
-
-## Prepare jobs and execute on the HPC:
-maxjobs.hpc <- 2
-njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjobs.hpc)
-siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
-rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
-
-simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
-{
-  library(nlrx)
-  res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
-  return(res)
-}
-
-message(tempdir())
-
-
-### RUN:
-results <- clustermq::Q(fun = simfun,
-                        siminputrow = siminputrows,
-                        rndseed = rndseeds,
-                        const = list(nl = nl,
-                                     writeRDS = TRUE),
-                        export = list(),
-                        seed = 42,
-                        n_jobs = njobs,
-                        template = list(job_name = "wolfsheeptest", # define jobname
-                                        log_file = "wolfsheeptest.log", # define logfile name
-                                        queue = "medium",  # define HPC queue
-                                        service = "normal", # define HPC service
-                                        walltime = "16:00:00", # define walltime
-                                        mem_cpu = "4000"),# define memory per cpu
-                        log_worker = TRUE) 
+# 
+# ## Prepare jobs and execute on the HPC:
+# maxjobs.hpc <- 2
+# njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjobs.hpc)
+# siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
+# rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
+# 
+# simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
+# {
+#   library(nlrx)
+#   res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
+#   return(res)
+# }
+# 
+# message(tempdir())
+# 
+# 
+# ### RUN:
+# results <- clustermq::Q(fun = simfun,
+#                         siminputrow = siminputrows,
+#                         rndseed = rndseeds,
+#                         const = list(nl = nl,
+#                                      writeRDS = TRUE),
+#                         export = list(),
+#                         seed = 42,
+#                         n_jobs = njobs,
+#                         template = list(job_name = "wolfsheeptest", # define jobname
+#                                         log_file = "wolfsheeptest.log", # define logfile name
+#                                         queue = "medium",  # define HPC queue
+#                                         service = "normal", # define HPC service
+#                                         walltime = "16:00:00", # define walltime
+#                                         mem_cpu = "4000"),# define memory per cpu
+#                         log_worker = TRUE) 
 
 
 message("show results")
@@ -121,6 +148,6 @@ setsim(nl, "simoutput") <- results
 message("show simoutput")
 typeof(nl)
 
-write_simoutput(nl, outpath = "EFForTS-ABM/01_EFForTS-ABM/tests/output")  
+write_simoutput(nl, outpath = outpath)  
 #i##################################
 
