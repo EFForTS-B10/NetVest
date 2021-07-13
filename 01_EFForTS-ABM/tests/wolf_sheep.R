@@ -97,7 +97,7 @@ nl@experiment <- experiment(expname="wolf-sheep",
 
 nl@simdesign <-  simdesign_simple(nl, nseeds=1)
 
-results <- run_nl_all(nl)
+#results <- run_nl_all(nl)
 
 
 
@@ -105,39 +105,39 @@ results <- run_nl_all(nl)
 
 
 
-# 
-# ## Prepare jobs and execute on the HPC:
-# maxjobs.hpc <- 2
-# njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjobs.hpc)
-# siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
-# rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
-# 
-# simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
-# {
-#   library(nlrx)
-#   res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
-#   return(res)
-# }
-# 
-# message(tempdir())
-# 
-# 
-# ### RUN:
-# results <- clustermq::Q(fun = simfun,
-#                         siminputrow = siminputrows,
-#                         rndseed = rndseeds,
-#                         const = list(nl = nl,
-#                                      writeRDS = TRUE),
-#                         export = list(),
-#                         seed = 42,
-#                         n_jobs = njobs,
-#                         template = list(job_name = "wolfsheeptest", # define jobname
-#                                         log_file = "wolfsheeptest.log", # define logfile name
-#                                         queue = "medium",  # define HPC queue
-#                                         service = "normal", # define HPC service
-#                                         walltime = "16:00:00", # define walltime
-#                                         mem_cpu = "4000"),# define memory per cpu
-#                         log_worker = TRUE) 
+
+## Prepare jobs and execute on the HPC:
+maxjobs.hpc <- 2
+njobs <- min(nrow(nl@simdesign@siminput) * length(nl@simdesign@simseeds), maxjobs.hpc)
+siminputrows <- rep(seq(1:nrow(nl@simdesign@siminput)), length(nl@simdesign@simseeds))
+rndseeds <- rep(nl@simdesign@simseeds, each=nrow(nl@simdesign@siminput))
+
+simfun <- function(nl, siminputrow, rndseed, writeRDS=FALSE)
+{
+  library(nlrx)
+  res <- run_nl_one(nl = nl, siminputrow = siminputrow, seed = rndseed)#, writeRDS = writeRDS
+  return(res)
+}
+
+message(tempdir())
+
+
+### RUN:
+results <- clustermq::Q(fun = simfun,
+                        siminputrow = siminputrows,
+                        rndseed = rndseeds,
+                        const = list(nl = nl,
+                                     writeRDS = TRUE),
+                        export = list(),
+                        seed = 42,
+                        n_jobs = njobs,
+                        template = list(job_name = "wolfsheeptest", # define jobname
+                                        log_file = "wolfsheeptest.log", # define logfile name
+                                        queue = "medium",  # define HPC queue
+                                        service = "normal", # define HPC service
+                                        walltime = "16:00:00", # define walltime
+                                        mem_cpu = "4000"),# define memory per cpu
+                        log_worker = TRUE)
 
 
 message("show results")
