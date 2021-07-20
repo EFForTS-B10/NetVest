@@ -2,6 +2,36 @@ library(Refforts)
 library(testthat)
 library(nlrx)
 
+
+
+
+download_NetLogo <- function(dlpath, local = TRUE, version = "6.1.1") {
+  #' download_NetLogo
+  #'
+  #' @param dlpath path where the downloaded files are to be saved
+  #' @param version Netlogo version (default: "6.1.1")
+
+  if (!local) {
+    return("NetLogo is not run locally") 
+  }
+  if (!file.exists(paste0(dlpath, "NetLogo ", version, "/netlogo-headless.sh"))) { #!file.exists(paste0(dlpath, "NetLogo-", version, "-64.tgz"))
+    default <- getOption('timeout')
+    options(timeout=300) # NetLogo downloads tend to be slow...    
+    nlrx::download_netlogo(dlpath, version = version, extract = TRUE)   
+    options(timeout = default)
+  }
+  if (file.exists(paste0(dlpath, "NetLogo ", version, "/netlogo-headless.sh"))) {
+    message("netlogo already exists:")
+    return(paste0(dlpath, "NetLogo ", version, "/netlogo-headless.sh"))
+  }
+}
+
+dlpath <- "nl/"
+
+download_NetLogo(dlpath,local = TRUE, version = "6.1.1")
+
+
+
 ## Set R random seed
 set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, seed, siminputrow) does
 
@@ -21,10 +51,10 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 
 #netlogopath <- file.path("/home/ecomod/nl")
 
-netlogopath <- file.path("/usr/users/beyer35/nl")
+#netlogopath <- file.path("/usr/users/beyer35/nl")
 #netlogopath <- file.path("/usr/users/henzler1/nl")
-#netlogopath <- file.path("/home/julia/netlogofolder")
-netlogopath <- file.path("C:/Program Files (x86)/NetLogo 6.1.1")
+#netlogopath <- file.path("C:/Program Files (x86)/NetLogo 6.1.1")
+netlogopath <- file.path("nl/NetLogo 6.1.1")
 netlogoversion <- "6.1.1"
 
 
@@ -42,7 +72,7 @@ if (file.exists(modelpath)){
   stop('Please specify the folder that contains the model')
 }
 #hier genauso
-outpath <- file.path(".") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
+outpath <- file.path("01_EFForTS-ABM/tests/output") #/home/julia/EFForTS-ABM/01_EFForTS-ABM/tests/output
 
 if (file.exists(outpath)){
   print('outpath exists')
