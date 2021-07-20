@@ -24,7 +24,7 @@ set.seed(457348) # we dont need a seed, but util_gather_results(nl, outfile, see
 netlogopath <- file.path("/usr/users/beyer35/nl")
 #netlogopath <- file.path("/usr/users/henzler1/nl")
 #netlogopath <- file.path("/home/julia/netlogofolder")
-
+netlogopath <- file.path("C:/Program Files (x86)/NetLogo 6.1.1")
 netlogoversion <- "6.1.1"
 
 
@@ -98,7 +98,7 @@ message('finished netlogo simulation')
 ## Attach output:
 #setsim(nl, "simoutput") <- results
 
-write_simoutput(nl, outpath = "01_EFForTS-ABM/tests/output")
+write_simoutput(nl, outpath = "01_EFForTS-ABM/tests")
 
 
 ## Result tests:
