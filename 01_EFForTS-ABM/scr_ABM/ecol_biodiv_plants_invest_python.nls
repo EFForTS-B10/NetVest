@@ -6,7 +6,7 @@ end
 
 ;; Setup the connection to python and import a few libraries
 to set-up-invest
-  print["setting up pyhton invest"]
+  print["setting up python invest"]
   print (word "which-machine? is set to " which-machine? )
   (ifelse which-machine? = "local-linux"
     ;[py:setup py:python3]
