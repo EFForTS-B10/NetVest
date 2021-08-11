@@ -331,7 +331,7 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-  ; Run biodiversity module
+;   Run biodiversity module
   run_biodiversity
 
   ; If show-output? is turned on, update plots and world output
@@ -3394,7 +3394,7 @@ CHOOSER
 which-machine?
 which-machine?
 "local-windows" "local-linux" "server"
-2
+1
 
 BUTTON
 2510
@@ -5245,9 +5245,6 @@ export-inefficiency-distribution</setup>
     <setup>test-invest</setup>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
-    <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;local-linux&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="reproducable?">
       <value value="false"/>
     </enumeratedValueSet>
@@ -5416,9 +5413,6 @@ export-inefficiency-distribution</setup>
     <enumeratedValueSet variable="biodiv_invest_objective">
       <value value="&quot;general&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;server&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="allow-fallow?">
       <value value="false"/>
     </enumeratedValueSet>
@@ -5443,8 +5437,8 @@ export-inefficiency-distribution</setup>
     <enumeratedValueSet variable="show-roads?">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="p_impact-location">
-      <value value="false"/>
+    <enumeratedValueSet variable="which-machine?">
+      <value value="&quot;server&quot;"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
