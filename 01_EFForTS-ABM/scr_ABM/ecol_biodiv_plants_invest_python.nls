@@ -204,7 +204,7 @@ end
 ;end
 
 
-;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
+; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
 to write-maps
   print["writing maps to disk"]
   write-lulc-map
@@ -310,7 +310,6 @@ to write-impact-map [impact-name]
   ask patches [set p_impact-location FALSE]
 end
 
-
 ;; Conversion of asc-maps to tif-maps for transferation to InVEST
 to convert-maps
   print ["convert maps"]
@@ -323,6 +322,7 @@ end
 
 
 to convert_to_tif [filepath]
+  print (word "converting to tif: " filepath)
   py:set "filepath" filepath
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"

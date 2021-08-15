@@ -5238,7 +5238,7 @@ export-inefficiency-distribution</setup>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
     <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;local-linux&quot;"/>
+      <value value="&quot;server&quot;"/>
     </enumeratedValueSet>
   </experiment>
   <experiment name="nils_test_full_refforts" repetitions="1" runMetricsEveryStep="true">

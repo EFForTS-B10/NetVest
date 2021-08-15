@@ -101,20 +101,20 @@ nl@experiment <- experiment(expname="test",
                            outpath=outpath,
                            repetition=1,
                            tickmetrics="true",
-                           idsetup="test-setup", #setup-with-external-maps #test-invest # #"do-nothing",#
+                           idsetup= "test-invest", #"test-setup", #setup-with-external-maps # #"do-nothing",#
                            idgo="do-nothing",#test-invest", #go-biodiversity #go #"do-nothing",#
                            #idrunnum = "idrunnum",
                            idfinal = "do-nothing",#write-lut-map #go
                            runtime=1,
                            #metrics=c(get.abm.metrics()),
-                           constants = get.abm.defaults()[57]#variable_list###dummy_list#
+                           constants = get.abm.defaults()#[57]#variable_list###dummy_list#
                            )
 
 
 nl <- set.nl.constant(nl, "biodiv_invest_objective", "\"general\"")
 #nl <- set.nl.constant(nl, "which-machine?", "\"server\"")
 nl <- set.nl.constant(nl, "which-machine?", "\"local-linux\"")
-nl <- set.nl.constant(nl, "p_impact-location", FALSE)
+#nl <- set.nl.constant(nl, "p_impact-location", FALSE)
 
 ## Add simple simdesign
 nl@simdesign <- simdesign_simple(nl, nseeds=1)
