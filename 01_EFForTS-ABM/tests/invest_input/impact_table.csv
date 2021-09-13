@@ -1,1 +1,2 @@
-THREAT,MAX_DIST,WEIGHT,DECAY
+THREAT,MAX_DIST,WEIGHT,DECAY,CUR_PATH
+L_village,1,1,exponential,village_c.tif

@@ -331,7 +331,7 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-  ; Run biodiversity module
+;   Run biodiversity module
   run_biodiversity
 
   ; If show-output? is turned on, update plots and world output
@@ -677,7 +677,7 @@ SWITCH
 103
 SHOW-OUTPUT?
 SHOW-OUTPUT?
-0
+1
 1
 -1000
 
@@ -794,7 +794,7 @@ SWITCH
 468
 landmarket?
 landmarket?
-1
+0
 1
 -1000
 
@@ -869,7 +869,7 @@ INPUTBOX
 155
 245
 rnd-seed
-1234.0
+3478436.0
 1
 0
 Number
@@ -925,7 +925,7 @@ CHOOSER
 which-map
 which-map
 "one-farmer-one-field" "one-farmer" "five-farmers" "five-farmers2" "five-farmers3" "ten-farmers" "ten-farmers2" "twenty-farmers" "twenty-farmers2" "thirty-farmers2" "fifty-farmers" "fifty-farmers2" "fifty-farmers4" "fifty-farmers5" "hundred-farmers" "hundred-farmers2" "hundred-farmers3" "twohundred-farmers" "twohundred-farmers-big-plantations" "fourhundred-farmers" "landmarkets1" "landmarkets2" "EFForTS-LGraf"
-0
+16
 
 CHOOSER
 5
@@ -1030,7 +1030,7 @@ CHOOSER
 initial-wealth-distribution
 initial-wealth-distribution
 "constant" "log-normal"
-0
+1
 
 INPUTBOX
 320
@@ -1125,7 +1125,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-1
+0
 1
 -1000
 
@@ -1137,7 +1137,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-2
+3
 
 TEXTBOX
 165
@@ -1694,7 +1694,7 @@ INPUTBOX
 900
 295
 LUT-0-price-sd
-10.0
+1.9
 1
 0
 Number
@@ -1705,7 +1705,7 @@ INPUTBOX
 900
 355
 LUT-1-price-sd
-100.0
+11.0
 1
 0
 Number
@@ -1864,7 +1864,7 @@ SWITCH
 68
 go-once-profiler?
 go-once-profiler?
-0
+1
 1
 -1000
 
@@ -2477,7 +2477,7 @@ immigrant_probability
 immigrant_probability
 0
 1
-0.25
+0.5
 0.01
 1
 NIL
@@ -2507,7 +2507,7 @@ rent_rate_capital_lend
 rent_rate_capital_lend
 0
 1
-0.08
+0.1
 0.01
 1
 NIL
@@ -2971,7 +2971,7 @@ immigrant-wealth-factor
 immigrant-wealth-factor
 1
 100
-13.0
+1.0
 1
 1
 NIL
@@ -3298,7 +3298,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-0
+1
 
 CHOOSER
 520
@@ -5237,11 +5237,208 @@ export-inefficiency-distribution</setup>
     <setup>test-invest</setup>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
-    <metric>area_under_agriculture</metric>
-    <metric>min_hh_consumption</metric>
-    <metric>max_hh_consumption</metric>
     <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;local-linux&quot;"/>
+      <value value="&quot;server&quot;"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="nils_test_full_refforts" repetitions="1" runMetricsEveryStep="true">
+    <setup>test-invest</setup>
+    <timeLimit steps="1"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="reproducable?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rnd-seed">
+      <value value="3478436"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="which-map">
+      <value value="&quot;hundred-farmers3&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land-use-change-decision">
+      <value value="&quot;only-one-field-per-year&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sim-time">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="price_scenario">
+      <value value="&quot;constant_prices&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="price-fluctuation-percent">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="historical_smoothing">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-folder">
+      <value value="&quot;oilpalm&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-price">
+      <value value="90"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-price-mu">
+      <value value="1.9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-0-price-sd">
+      <value value="1.9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-folder">
+      <value value="&quot;rubber&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-price">
+      <value value="1100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-price-mu">
+      <value value="11"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LUT-1-price-sd">
+      <value value="11"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption-on?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_base">
+      <value value="1000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_frac_cash">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="consumption_frac_wealth">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="heterogeneous-hhs?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="learning-spillover?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="setup-hh-network">
+      <value value="&quot;hh-nw-n-nearest-neighbors&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-nw-param1">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh-nw-param2">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="spillover-share">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="h_debt_years_max_bankrupt">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="landmarket?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="buyer_pool_n">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="immigrant_probability">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land_price_increase">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="immigrant-xp-bonus">
+      <value value="&quot;[0 0]&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="immigrant-wealth-factor">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-wealth-distribution">
+      <value value="&quot;log-normal&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="init-wealth-correction-factor">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wealth-log-mean">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wealth-log-sd">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wealth-constant">
+      <value value="10000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="min-wealth">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="time-horizon">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="discount-rate">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="land_price">
+      <value value="750"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="external_income">
+      <value value="500"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rent_rate_capital_lend">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rent_rate_capital_borrow">
+      <value value="0.15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rent_rate_land">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_alpha">
+      <value value="14.24"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_lambda">
+      <value value="0.31"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_min">
+      <value value="18"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="hh_age_max">
+      <value value="80"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="age_generation">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="takeover_prob">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ecol_biodiv_interval">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="biodiv_birds">
+      <value value="&quot;none&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="biodiv_plants">
+      <value value="&quot;SAR&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="biodiv_invest_objective">
+      <value value="&quot;general&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="allow-fallow?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="go-once-profiler?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="SHOW-OUTPUT?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="write-maps?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="write-hh-data-to-file?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="export-view?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-homebases?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-roads?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="which-machine?">
+      <value value="&quot;server&quot;"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
