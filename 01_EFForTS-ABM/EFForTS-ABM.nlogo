@@ -9,7 +9,7 @@
 ;############################################################################################################
 
 
-; Additional code files included in this NetLogo model (accessable via the "Includes" dropdown menu)
+; Additional code files included in this NetLogo model (accessable via the "Included Files" dropdown menu)
 __includes [
   "scr_ABM/input_maps.nls" "scr_ABM/input_prices.nls"
   "scr_ABM/output.nls"
