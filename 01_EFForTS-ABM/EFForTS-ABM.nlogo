@@ -262,7 +262,7 @@ To setup-with-external-maps
   ; Initialize households
   init-household-area
   init-household-wealth
-  init-household-age
+  if (landmarket?)[init-household-age]
   init-household-inefficiencies
   init-log-land-use-change-list
   assign-hh-capital-stock
@@ -306,8 +306,13 @@ To go
 
   ; Check if households have to many consecutive years with debts and freeze them if needed
   sort-out-bankrupt-turtles
-  landmarket-auction
+
+  ; If landmarket is turned on, start the landmarket procedure
+  if (landmarket?)
+  [
   increase-hh-age
+  landmarket-auction
+  ]
 
   ; Update agricultaral area (if households have been frozen)
   calculate-area-under-agriculture
@@ -677,7 +682,7 @@ SWITCH
 103
 SHOW-OUTPUT?
 SHOW-OUTPUT?
-1
+0
 1
 -1000
 
@@ -794,7 +799,7 @@ SWITCH
 468
 landmarket?
 landmarket?
-0
+1
 1
 -1000
 
@@ -869,7 +874,7 @@ INPUTBOX
 155
 245
 rnd-seed
-3478436.0
+100.0
 1
 0
 Number
@@ -1114,7 +1119,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-0
+1
 1
 -1000
 
@@ -1125,7 +1130,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-0
+1
 1
 -1000
 
@@ -1137,7 +1142,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-3
+2
 
 TEXTBOX
 165
@@ -1694,7 +1699,7 @@ INPUTBOX
 900
 295
 LUT-0-price-sd
-1.9
+50.0
 1
 0
 Number
@@ -1705,7 +1710,7 @@ INPUTBOX
 900
 355
 LUT-1-price-sd
-11.0
+500.0
 1
 0
 Number
@@ -2522,7 +2527,7 @@ rent_rate_capital_borrow
 rent_rate_capital_borrow
 0
 1
-0.15
+0.1
 0.01
 1
 NIL
@@ -2994,7 +2999,7 @@ INPUTBOX
 820
 295
 LUT-0-price-mu
-1.9
+0.0
 1
 0
 Number
@@ -3005,7 +3010,7 @@ INPUTBOX
 820
 355
 LUT-1-price-mu
-11.0
+0.0
 1
 0
 Number
@@ -3298,7 +3303,7 @@ CHOOSER
 biodiv_plants
 biodiv_plants
 "none" "SAR" "invest_manual" "invest_python"
-1
+0
 
 CHOOSER
 520
