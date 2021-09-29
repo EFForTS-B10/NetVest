@@ -143,11 +143,11 @@ to-report p.capitalstock.mean
 end
 
 ;; Deforestation pressure
-to-report deforestation.pressure
-  let estimated.price.forest.cell landmarket-estimate-land-price patch-set one-of patches with [p_landuse = -100]
+;to-report deforestation.pressure
+  ;let estimated.price.forest.cell landmarket-estimate-land-price patch-set one-of patches with [p_landuse = -100]
   ;; Calculate how many cells could be bought
-  let hh.n.forest.cells map [x -> x / estimated.price.forest.cell] [h_wealth] of hhs
+  ;let hh.n.forest.cells map [x -> x / estimated.price.forest.cell] [h_wealth] of hhs
   
-  report mean hh.n.forest.cells
-end
+ ; report mean hh.n.forest.cells
+;end
 

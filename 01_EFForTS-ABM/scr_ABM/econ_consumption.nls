@@ -81,11 +81,11 @@ To sort-out-bankrupt-turtles
     ;; Check if a household has too much debts
     if h_debt_years >= h_debt_years_max_bankrupt
     [
-      if (landmarket?)
-      [
+      ;if (landmarket?)
+      ;[
         ;; Offer the fields on the land market:
-        landmarket-init
-      ]
+       ; landmarket-init
+      ;]
     
       die
     ]

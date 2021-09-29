@@ -14,10 +14,11 @@ __includes [
   "scr_ABM/input_maps.nls" "scr_ABM/input_prices.nls"
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
-  "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_manual.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls" "scr_ABM/ecol_dummy_invest.nls"
+  "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls"  "scr_ABM/ecol_dummy_invest.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
   "scr_ABM/unit_tests.nls"
+  ;"scr_ABM/ecol_habitatquality_natcap_invest.nls"
 ]
 
 ; Extensions used in this NetLogo model:
@@ -262,7 +263,7 @@ To setup-with-external-maps
   ; Initialize households
   init-household-area
   init-household-wealth
-  if (landmarket?)[init-household-age]
+  ;if (landmarket?)[init-household-age]
   init-household-inefficiencies
   init-log-land-use-change-list
   assign-hh-capital-stock
@@ -308,11 +309,11 @@ To go
   sort-out-bankrupt-turtles
 
   ; If landmarket is turned on, start the landmarket procedure
-  if (landmarket?)
-  [
-  increase-hh-age
-  landmarket-auction
-  ]
+  ;if (landmarket?)
+  ;[
+  ;increase-hh-age
+  ;landmarket-auction
+  ;]
 
   ; Update agricultaral area (if households have been frozen)
   calculate-area-under-agriculture
@@ -791,17 +792,6 @@ NIL
 NIL
 NIL
 1
-
-SWITCH
-325
-435
-465
-468
-landmarket?
-landmarket?
-1
-1
--1000
 
 MONITOR
 2300
@@ -1820,16 +1810,6 @@ LUT-ids-manage
 1
 11
 
-TEXTBOX
-330
-415
-480
-433
-Land market
-12
-0.0
-1
-
 INPUTBOX
 695
 560
@@ -2459,51 +2439,6 @@ NIL
 HORIZONTAL
 
 SLIDER
-325
-470
-465
-503
-buyer_pool_n
-buyer_pool_n
-1
-50
-20.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-325
-505
-465
-538
-immigrant_probability
-immigrant_probability
-0
-1
-0.5
-0.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-325
-540
-465
-573
-land_price_increase
-land_price_increase
-0
-1
-0.05
-0.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
 165
 680
 320
@@ -2797,71 +2732,6 @@ TEXTBOX
 105.0
 1
 
-INPUTBOX
-330
-695
-410
-755
-hh_age_alpha
-14.24
-1
-0
-Number
-
-INPUTBOX
-410
-695
-500
-755
-hh_age_lambda
-0.31
-1
-0
-Number
-
-INPUTBOX
-330
-755
-410
-815
-hh_age_min
-18.0
-1
-0
-Number
-
-INPUTBOX
-410
-755
-500
-815
-hh_age_max
-80.0
-1
-0
-Number
-
-TEXTBOX
-335
-675
-485
-693
-Household age
-12
-0.0
-1
-
-INPUTBOX
-330
-815
-420
-875
-age_generation
-40.0
-1
-0
-Number
-
 PLOT
 2195
 680
@@ -2955,32 +2825,6 @@ precision mean [h_area] of hhs 3
 17
 1
 11
-
-INPUTBOX
-325
-575
-465
-635
-immigrant-xp-bonus
-[0 0]
-1
-0
-String
-
-SLIDER
-325
-635
-465
-668
-immigrant-wealth-factor
-immigrant-wealth-factor
-1
-100
-1.0
-1
-1
-NIL
-HORIZONTAL
 
 INPUTBOX
 125
@@ -3325,17 +3169,6 @@ nlrx exchange:
 0.0
 1
 
-INPUTBOX
-420
-815
-500
-875
-takeover_prob
-0.5
-1
-0
-Number
-
 TEXTBOX
 525
 635
@@ -3479,6 +3312,27 @@ NIL
 NIL
 NIL
 1
+
+TEXTBOX
+2695
+45
+2845
+71
+Unittest for integration of invest\n
+11
+0.0
+1
+
+INPUTBOX
+2695
+80
+2820
+140
+inv-test
+NIL
+1
+0
+String
 
 @#$#@#$#@
 ## Abstract of corresponding publication

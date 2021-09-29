@@ -21,7 +21,7 @@ To set_global_constants
   set carbon []
   set bird_richness [0 0 0 0 0]
   
-  landmarket-globals-reset
+  ;landmarket-globals-reset
   
 End  
 
@@ -175,23 +175,23 @@ End
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To init-household-age
-  ask hhs
-  [
-    set h_age draw-hh-age
-  ] 
+;To init-household-age
+ ; ask hhs
+  ;[
+   ; set h_age draw-hh-age
+  ;] 
    
-End  
+;End  
 
-To-report draw-hh-age
-  let draw_age 0
+;To-report draw-hh-age
+ ; let draw_age 0
   
-  while [draw_age < hh_age_min or draw_age > hh_age_max]
-    [
-      set draw_age round (random-gamma hh_age_alpha hh_age_lambda)
-    ] 
-  report draw_age
-end
+  ;while [draw_age < hh_age_min or draw_age > hh_age_max]
+   ; [
+    ;  set draw_age round (random-gamma hh_age_alpha hh_age_lambda)
+    ;] 
+  ;report draw_age
+;end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
