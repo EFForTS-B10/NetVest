@@ -15,19 +15,15 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls"  "scr_ABM/ecol_dummy_invest.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_natcap_invest.nls"  "scr_ABM/ecol_dummy_invest.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
-  "scr_ABM/unit_tests.nls"
-  ;"scr_ABM/ecol_habitatquality_natcap_invest.nls"
 ]
 
 ; Extensions used in this NetLogo model:
-;print["loading extensions"]
 extensions [gis matrix nw ls profiler csv py]
-;print["finished loading extensions"]
+
 
 breed[luts a-lut]
-breed[lms lm]
 breed[hhs hh]
 
 ; Define global variables/parameters:
@@ -63,17 +59,6 @@ globals
   max_hh_consumption         ; maximum level of consumption of all households in one year
   mean_hh_consumption        ; mean level of consumption of all households in one year
 
-  ; Landmarket variables:
-  lm_new                    ; number of newly created landmarkets
-  lm_seller_wealth_log      ; wealth of all agents who sold land on a landmarket auction
-  lm_seller_area_log        ; area of all agents who sold land on a landmarket auction
-  lm_seller_lut0_ineff_log  ; lut0 inefficiency of all agents who sold land on a landmarket auction
-  lm_seller_lut1_ineff_log  ; lut1 inefficiency of all agents who sold land on a landmarket auction
-  lm_buyer_wealth_log      ; wealth of all agents who bought land on a landmarket auction
-  lm_buyer_area_log        ; area of all agents who bought land on a landmarket auction
-  lm_buyer_lut0_ineff_log  ; lut0 inefficiency of all agents who bought land on a landmarket auction
-  lm_buyer_lut1_ineff_log  ; lut1 inefficiency of all agents who bought land on a landmarket auction
-
   ; biodiv_birds_mahken_module:
   bird_richness
 
@@ -85,18 +70,9 @@ globals
   sar_t0
   sar_ratio
 
-  ;invest:habitat-quality
+  ;invest:habitat-quality variables
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
-  impact_all               ;impact-list
-  impact_max               ;greatest maximum distance of all impacts in impact-table
 
-  habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
-  f_prob                   ;probability of occurance in forest
-  sensitivity_table        ;table with sensitivity of LULCs to threats
-  lulc_habitat_relation         ;list of habitat-relation for sensitivity table
-  filename_probs           ;can be removed soon
-  ;which-machine?            ;just to discern between windows and linux and locate python
-    ;biodiv_invest_objective ;what was this for again?
 ]
 
 ; Define patch properties:
@@ -128,9 +104,8 @@ patches-own
   p_luDiversity
   p_bird_richness
 
-  ;; Variables used by biodiv_plants_invest modules:
+  ;; Variables used by biodiv_natcap_invest modules:
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
- ; p_impact-value
   p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
   p_habitat_quality        ; variable for storing habitat quality
 
@@ -161,35 +136,11 @@ luts-own
   l_mng_external_income_factor
 ]
 
-lms-own
-[
-  lm_ticks
-  ; Landmarket output:
-  lm_seller_who
-  lm_seller_area
-  lm_seller_fields
-  lm_seller_wealth
-  lm_seller_lut0_ineff
-  lm_seller_lut1_ineff
-  lm_land_price
-  lm_poolall_wealth
-  lm_poolall_immigrant
-  lm_poolpot_wealth
-  lm_poolpot_immigrant
-  lm_buyer_who
-  lm_buyer_area
-  lm_buyer_wealth
-  lm_buyer_immigrant
-  lm_buyer_lut0_ineff
-  lm_buyer_lut1_ineff
-]
-
 ; Define agent properties:
 hhs-own
 [
   h_homebase          ; location of the household homebase
   h_id                ; household identification number
-  h_age               ; household age
   h_area              ; actual number of patches that belong to the household
   h_patches           ; agentset of patches beloning to the household
   h_field_id_list     ; list of field_ids that belong to the household
@@ -214,9 +165,7 @@ hhs-own
   h_inefficiencies    ; inefficiency factors [0,1]
   h_inefficiencies_temp ; inefficiency factors [0,1]
   h_connected_hhs             ; other households that are connected within the social network
-  h_immigrant?
   h_management       ; List with management ids for each LUT
-  h_landmarket
   h_land-use-change
 ]
 
@@ -263,7 +212,6 @@ To setup-with-external-maps
   ; Initialize households
   init-household-area
   init-household-wealth
-  ;if (landmarket?)[init-household-age]
   init-household-inefficiencies
   init-log-land-use-change-list
   assign-hh-capital-stock
@@ -307,13 +255,6 @@ To go
 
   ; Check if households have to many consecutive years with debts and freeze them if needed
   sort-out-bankrupt-turtles
-
-  ; If landmarket is turned on, start the landmarket procedure
-  ;if (landmarket?)
-  ;[
-  ;increase-hh-age
-  ;landmarket-auction
-  ;]
 
   ; Update agricultaral area (if households have been frozen)
   calculate-area-under-agriculture
@@ -800,17 +741,6 @@ MONITOR
 85
 active_hhs
 count hhs
-17
-1
-11
-
-MONITOR
-2375
-40
-2447
-85
-immigrants
-count hhs with [h_immigrant? = TRUE]
 17
 1
 11
@@ -2732,24 +2662,6 @@ TEXTBOX
 105.0
 1
 
-PLOT
-2195
-680
-2450
-900
-household age
-NIL
-NIL
-15.0
-90.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 1 -16777216 true "" "histogram [h_age] of hhs"
-
 SWITCH
 2475
 85
@@ -2860,9 +2772,9 @@ LUT-1-price-mu
 Number
 
 BUTTON
-520
+475
 800
-630
+585
 833
 show bird richness
 visualize-bird-richness
@@ -2877,9 +2789,9 @@ NIL
 1
 
 MONITOR
-760
+705
 755
-835
+780
 800
 sar_ratio
 precision sar_ratio 4
@@ -2909,17 +2821,6 @@ NIL
 0
 String
 
-MONITOR
-2300
-130
-2380
-175
-NIL
-count lms
-17
-1
-11
-
 TEXTBOX
 2475
 10
@@ -2931,9 +2832,9 @@ TEXTBOX
 1
 
 TEXTBOX
-650
+595
 725
-850
+795
 743
 Preliminary inVEST biodiversity module:
 11
@@ -2941,9 +2842,9 @@ Preliminary inVEST biodiversity module:
 1
 
 TEXTBOX
-520
+475
 725
-655
+610
 750
 Preliminary bird species richness model:
 11
@@ -3010,149 +2911,20 @@ NIL
 NIL
 1
 
-BUTTON
-2480
-170
-2655
-203
-NIL
-biodiv_plants_invest_python_init\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-310
-2662
-343
-NIL
-run-invest \"output\" \"spatial\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-240
-2605
-273
-NIL
-write-maps
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-275
-2605
-308
-NIL
-convert-maps
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-205
-2605
-238
-NIL
-translate-to-lulc-invest
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 CHOOSER
-650
-800
-802
-845
-biodiv_invest_objective
-biodiv_invest_objective
-"general" "modelorg_plants" "all_plants"
-0
-
-BUTTON
-2480
-380
-2772
-413
-NIL
-save-habitat-quality-to-patch \"output\" \"spatial\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-345
-2772
-378
-NIL
-convert-habitat-quality-to-asc \"output\" \"spatial\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-CHOOSER
-650
+595
 755
-760
+705
 800
 biodiv_plants
 biodiv_plants
-"none" "SAR" "invest_manual" "invest_python"
+"none" "SAR" "invest_manual"
 0
 
 CHOOSER
-520
+475
 755
-630
+585
 800
 biodiv_birds
 biodiv_birds
@@ -3180,9 +2952,9 @@ TEXTBOX
 1
 
 TEXTBOX
-520
+475
 705
-555
+510
 723
 Birds
 12
@@ -3190,9 +2962,9 @@ Birds
 1
 
 TEXTBOX
-650
+595
 705
-685
+630
 723
 Plants
 12
@@ -3214,122 +2986,65 @@ ecol_biodiv_interval
 ticks
 HORIZONTAL
 
-TEXTBOX
-2485
-140
-2655
-165
-INVEST Python test Buttons\ncan be removed soon:
-11
-0.0
-1
-
-CHOOSER
-2485
-425
-2623
-470
-which-machine?
-which-machine?
-"local-windows" "local-linux" "server"
-1
-
-BUTTON
-2510
-500
-2627
-533
-NIL
-write-sensitivity\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2535
-565
-2632
-598
-NIL
-write-impact
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
-835
-820
-1012
-865
+2485
+340
+2662
+385
 landscape-level habitat quality
 precision landscape-hq 4
 17
 1
 11
 
-BUTTON
-2630
-265
-2762
-298
-NIL
-run-dummy-invest
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2720
-375
-2892
-408
-NIL
-aggregate-habitat-quality
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 TEXTBOX
-2695
-45
-2845
-71
+2485
+430
+2635
+456
 Unittest for integration of invest\n
 11
 0.0
 1
 
 INPUTBOX
-2695
-80
-2820
-140
+2485
+465
+2610
+525
 inv-test
 NIL
+1
+0
+String
+
+CHOOSER
+2485
+225
+2627
+270
+biodiv_natcap_invest
+biodiv_natcap_invest
+"none" "habitatquality"
+1
+
+TEXTBOX
+2485
+190
+2635
+216
+Preliminary Natcap Invest Module\n
+11
+0.0
+1
+
+INPUTBOX
+2485
+275
+2702
+335
+natcap_invest_experiment
+spatial1
 1
 0
 String

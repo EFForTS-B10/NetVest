@@ -76,7 +76,7 @@ to set-efforts-abm-defaults
   set ecol_biodiv_interval 1
   set biodiv_plants "none"
   set biodiv_birds "none"
-  set biodiv_invest_objective "general"
+  set biodiv_natcap_invest "none"
   
 end
 
