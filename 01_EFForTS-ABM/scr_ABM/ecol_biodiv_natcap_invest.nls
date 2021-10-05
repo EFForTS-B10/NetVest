@@ -192,7 +192,7 @@ end
 ;; Conversion of asc-maps to tif-maps for transferation to InVEST
 to natcap_invest_convert_maps_tif [workdir]
   print ["convert maps"]
-  foreach ["/output/lulc" "/output/lc_o_c" "/output/lc_r_c"]
+  foreach ["/output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
   [
     [x] ->
     natcap_invest_convert_to_tif (word workdir x)

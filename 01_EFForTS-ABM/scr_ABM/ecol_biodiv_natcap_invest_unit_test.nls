@@ -1,24 +1,21 @@
 to test-invest
-    print["testing invest"]
-;    set experiment "test1"
-    let experiment inv-test
-	print (experiment)
-    ca ;clear all
-	let workdir word "/home/dockerj/" experiment
-    print ( word "workdir:" workdir)
-	set-up-invest ;setup python, load invest package (defined in ecol_biodiv_plants_invest_python)
-	write-tables  workdir
+   print["testing invest"]
+   let experiment inv-test
+	 print (experiment)
+   ca ;clear all
+	 let workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest" experiment
+   print ( word "workdir:" workdir)
+	 natcap_invest_set_up_invest ;setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
+	 natcap_invest_write_tables  workdir
 
 ; lulc.asc, lc_o_c.asc, lc_r_c.asc considered input for testing
     file-copy-tif workdir "lulc"
-    file-copy-tif workdir "lc_o_c"
-    file-copy-tif workdir "lc_r_c"
-
-;    
+    file-copy-tif workdir "oilpalm_c"
+    file-copy-tif workdir "rubber_c"
 
     let invest_wd word workdir "/output"
-    run-invest invest_wd experiment ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
-    convert-habitat-quality-to-asc workdir experiment
+    natcap_invest_execute_invest invest_wd experiment ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+    natcap_invest_convert_maps_asc workdir experiment
     print ["Success"]
     print ["Success"]
 ;    save-habitat-quality-to-patch "tests/invest_input" "test"
@@ -35,7 +32,7 @@ to file-copy-tif [workdir file]
     py:run "from shutil import copyfile"
     py:run "copyfile(file_in, file_out)"
     print (word "copied to file_out:" file_out)
-    convert_to_tif file_conv
+    natcap_invest_convert_maps_tif file_conv
 end
 
 to do-nothing ;because nlrx demands to run an additional function
