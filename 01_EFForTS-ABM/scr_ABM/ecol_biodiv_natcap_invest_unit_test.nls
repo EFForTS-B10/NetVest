@@ -1,0 +1,42 @@
+to test-invest
+    print["testing invest"]
+;    set experiment "test1"
+    let experiment inv-test
+	print (experiment)
+    ca ;clear all
+	let workdir word "/home/dockerj/" experiment
+    print ( word "workdir:" workdir)
+	set-up-invest ;setup python, load invest package (defined in ecol_biodiv_plants_invest_python)
+	write-tables  workdir
+
+; lulc.asc, lc_o_c.asc, lc_r_c.asc considered input for testing
+    file-copy-tif workdir "lulc"
+    file-copy-tif workdir "lc_o_c"
+    file-copy-tif workdir "lc_r_c"
+
+;    
+
+    let invest_wd word workdir "/output"
+    run-invest invest_wd experiment ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+    convert-habitat-quality-to-asc workdir experiment
+    print ["Success"]
+    print ["Success"]
+;    save-habitat-quality-to-patch "tests/invest_input" "test"
+;    ;aggregate-habitat-quality
+end
+
+to file-copy-tif [workdir file]
+    let file_in   (word  workdir "/input/" file ".asc") 
+    let file_out   (word  workdir "/output/" file ".asc")  
+    let file_conv  (word  workdir "/output/" file)  
+
+    py:set "file_in" file_in
+    py:set "file_out" file_out
+    py:run "from shutil import copyfile"
+    py:run "copyfile(file_in, file_out)"
+    print (word "copied to file_out:" file_out)
+    convert_to_tif file_conv
+end
+
+to do-nothing ;because nlrx demands to run an additional function
+end
