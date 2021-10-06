@@ -3,7 +3,7 @@ to test-invest
    let experiment inv-test
 	 print (experiment)
    ca ;clear all
-	 let workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest" experiment
+	 let workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
    print ( word "workdir:" workdir)
 	 natcap_invest_set_up_invest ;setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
 	 natcap_invest_write_tables  workdir
