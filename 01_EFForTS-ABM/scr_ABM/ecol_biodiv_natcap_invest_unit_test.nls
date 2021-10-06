@@ -8,7 +8,7 @@ to test-invest
 	 natcap_invest_set_up_invest ;setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
 	 natcap_invest_write_tables  workdir
 
-; lulc.asc, lc_o_c.asc, lc_r_c.asc considered input for testing
+; lulc.asc, oilpalm_c.asc, rubber_c.asc considered input for testing
     file-copy-tif workdir "lulc"
     file-copy-tif workdir "oilpalm_c"
     file-copy-tif workdir "rubber_c"
@@ -24,7 +24,9 @@ end
 
 to file-copy-tif [workdir file]
     let file_in   (word  workdir "/input/" file ".asc") 
+    print file_in
     let file_out   (word  workdir "/output/" file ".asc")  
+    print file_out
     let file_conv  (word  workdir "/output/" file)  
 
     py:set "file_in" file_in
