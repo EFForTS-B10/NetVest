@@ -193,7 +193,7 @@ end
 to natcap_invest_convert_maps_tif [workdir]
   print ["convert maps"]
   print (word "workdir: "workdir)
-  foreach ["output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
+  foreach ["/output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
   [
     [x] ->
     natcap_invest_convert_to_tif (word workdir x)
