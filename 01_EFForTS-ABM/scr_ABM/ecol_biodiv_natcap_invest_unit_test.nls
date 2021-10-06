@@ -32,7 +32,7 @@ to file-copy-tif [workdir file]
     py:run "from shutil import copyfile"
     py:run "copyfile(file_in, file_out)"
     print (word "copied to file_out:" file_out)
-    natcap_invest_convert_maps_tif file_conv
+    natcap_invest_convert_maps_tif workdir
 end
 
 to do-nothing ;because nlrx demands to run an additional function
