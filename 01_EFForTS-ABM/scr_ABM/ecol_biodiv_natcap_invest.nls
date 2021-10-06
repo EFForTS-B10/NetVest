@@ -202,6 +202,7 @@ end
 
 to natcap_invest_convert_to_tif [filepath]
   py:set "filepath" filepath
+  print (word "filepath" filepath)
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
     "ds_in = gdal.Open(f'{filepath}.asc')"
