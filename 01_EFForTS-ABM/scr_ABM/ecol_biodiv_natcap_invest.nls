@@ -206,8 +206,8 @@ to natcap_invest_convert_to_tif [workdir]
   print (word "filepath:" workdir)
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
-    "ds_in = gdal.Open(f'{workdir}.asc')"
-    "ds_out = drv.CreateCopy(f'{workdir}.tif', ds_in)"
+    "ds_in = gdal.Open(f'{filepath}.asc')"
+    "ds_out = drv.CreateCopy(f'{filepath}.tif', ds_in)"
     "srs = osr.SpatialReference()"
     "srs.ImportFromEPSG(32748)"
     "ds_out.SetProjection(srs.ExportToWkt())"
