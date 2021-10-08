@@ -229,12 +229,12 @@ to natcap_invest_execute_invest [invest_wd experiment]
  
     "args = {"
     "'half_saturation_constant': '0.05',"
-    "'results_suffix': experiment,"
-    "'workspace_dir': invest_wd,"
-    "'lulc_cur_path': os.path.join(invest_wd, 'lulc.tif'),"
-    "'sensitivity_table_path': os.path.join(invest_wd, 'sensitivity_table.csv'),"
-    "'threat_raster_folder': invest_wd,"
-    "'threats_table_path': os.path.join(invest_wd, 'impact_table.csv'),"
+    "'results_suffix': experiment_name,"
+    "'workspace_dir': working_directory,"
+    "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
+    "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
+    "'threat_raster_folder': working_directory,"
+    "'threats_table_path': os.path.join(working_directory, 'impact_table.csv'),"
     "}"
     "habitat_quality.execute(args)"
   )
@@ -246,7 +246,7 @@ to natcap_invest_convert_maps_asc [workdir experiment]
   print (word "converting invest results to asc for " experiment)
   py:set "working_directory" workdir
   (py:run
-    "filename = f'{workdir}/output/quality_c_{experiment}'"
+    "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
     "in_name = f'{filename}.tif'"
     "out_name = f'{filename}.asc'"
     "gdal.Translate(out_name, in_name,format='AAIGrid')"

@@ -1,25 +1,28 @@
 to test-invest
    print["testing invest"]
+   ;definition of experiment name and working directory
    let experiment inv-test
-	 print (experiment)
+	 print (word "experiment:"experiment)
    ca ;clear all
 	 let workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
    print ( word "workdir:" workdir)
-	 natcap_invest_set_up_invest ;setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
+	 ;setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
+	 natcap_invest_set_up_invest 
+	 ; load sensitivity table and impact table and store as csv-table (defined in ecol_biodiv_natcap_invest.nls)
 	 natcap_invest_write_tables  workdir
-
-; lulc.asc, oilpalm_c.asc, rubber_c.asc considered input for testing, need of some loop?
-    file-copy-tif workdir "lulc"
-    file-copy-tif workdir "oilpalm_c"
-    file-copy-tif workdir "rubber_c"
-
-    natcap_invest_convert_maps_tif workdir ;file_conv?  
-  
-    let invest_wd word workdir "/output"
-    natcap_invest_execute_invest invest_wd experiment ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
-    natcap_invest_convert_maps_asc workdir experiment
-    print ["Success"]
-    print ["Success"]
+   ;lulc.asc, oilpalm_c.asc, rubber_c.asc considered input for testing
+   file-copy-tif workdir "lulc"
+   file-copy-tif workdir "oilpalm_c"
+   file-copy-tif workdir "rubber_c"
+   ; convert asc file from output folder to tif files
+   natcap_invest_convert_maps_tif workdir ;file_conv?  
+   ;execution of Invest with working directory of invest
+   let invest_wd word workdir "/output"
+   print (word "invest_wd:" invest_wd)
+   natcap_invest_execute_invest invest_wd experiment ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+   natcap_invest_convert_maps_asc workdir experiment
+   print ["Success"]
+   print ["Success"]
 ;    save-habitat-quality-to-patch "tests/invest_input" "test"
 ;    ;aggregate-habitat-quality
 end
@@ -36,7 +39,6 @@ to file-copy-tif [workdir file]
     py:run "from shutil import copyfile"
     py:run "copyfile(file_in, file_out)"
     print (word "copied to file_out:" file_out)
-    
 end
 
 to do-nothing ;because nlrx demands to run an additional function
