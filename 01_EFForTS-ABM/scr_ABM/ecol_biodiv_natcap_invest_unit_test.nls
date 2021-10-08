@@ -8,11 +8,13 @@ to test-invest
 	 natcap_invest_set_up_invest ;setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
 	 natcap_invest_write_tables  workdir
 
-; lulc.asc, oilpalm_c.asc, rubber_c.asc considered input for testing
+; lulc.asc, oilpalm_c.asc, rubber_c.asc considered input for testing, need of some loop?
     file-copy-tif workdir "lulc"
     file-copy-tif workdir "oilpalm_c"
     file-copy-tif workdir "rubber_c"
 
+    natcap_invest_convert_maps_tif workdir ;file_conv?  
+  
     let invest_wd word workdir "/output"
     natcap_invest_execute_invest invest_wd experiment ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
     natcap_invest_convert_maps_asc workdir experiment
@@ -34,7 +36,7 @@ to file-copy-tif [workdir file]
     py:run "from shutil import copyfile"
     py:run "copyfile(file_in, file_out)"
     print (word "copied to file_out:" file_out)
-    natcap_invest_convert_maps_tif workdir
+    
 end
 
 to do-nothing ;because nlrx demands to run an additional function
