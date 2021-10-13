@@ -42,13 +42,13 @@ to natcap_invest_write_sensitivity [workdir]
   ifelse filename = 0 [stop]
   [
   file-open filename
-    print ["file open"]
+                                                          ;print ["file open"]
   while [not file-at-end?]
   [
 
     ;;Read data for previous defined research objective and correlated habitat-suitability
     let LULC file-read
-    print LULC
+                                                           ;print LULC
     let NAME file-read
     let HABITAT file-read
     let oilpalm file-read
@@ -220,7 +220,7 @@ end
 
 ;; Invoke model InVEST and transfer output
 to natcap_invest_execute_invest [invest_wd experiment]
- print (word "invoke model InVEST with working directory: " invest_wd)
+  print (word "[invoke model InVEST with working directory: " invest_wd "]")
  print (word "experiment name: " experiment)
   py:set "working_directory" invest_wd
   py:set "experiment_name" experiment
@@ -243,7 +243,7 @@ end
 
 ;; Convertion of tif-file from InVEST to asc-file for netlogo
 to natcap_invest_convert_maps_asc [workdir experiment]
- print (word "converting invest results to asc for " experiment)
+  print (word "[converting invest results to asc for " experiment "]")
   py:set "working_directory" workdir
   (py:run
     "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
