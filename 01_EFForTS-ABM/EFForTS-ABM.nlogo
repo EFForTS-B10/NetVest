@@ -3002,16 +3002,16 @@ TEXTBOX
 430
 2635
 456
-Unittest for integration of invest\n
+Unittest InVEST\n
 11
 0.0
 1
 
 INPUTBOX
 2485
-465
+450
 2610
-525
+510
 inv-test
 NIL
 1
@@ -3026,7 +3026,7 @@ CHOOSER
 biodiv_natcap_invest
 biodiv_natcap_invest
 "none" "habitatquality"
-1
+0
 
 TEXTBOX
 2485
@@ -3143,7 +3143,7 @@ Dislich C, Hettig E, Salecker J, Heinonen J, Lay J, Meyer KM, et al. (2018) Land
 
 Feature changes:
 
-* Consolidation: Fields of bankrupt households are not removed anymore. Instead a pool of interested households is created (partly from already existing households - consolidation, partly from newly initialized households - immigrants). Ownership of these fields is gained by the household with the highest expected netcashflow for these fields
+* Habitat Quality: Can be set with the parameter"bidiv_natcap_invest". The managed landscape of EFForTS-ABM can be transferred at every user defined timestep to InVEST for calculating habitat quality values depending on impacts of land use on habitat. 
 
 * Soical option matrix: Can be set with the parameter land-use-options. Social options matrix is created by using information from within the social network of the agent. First it is checked how many households converted to each landuse-type. If not at least one household converted to a specific landuse-type such conversion is only done under a certain proability (interface)
 

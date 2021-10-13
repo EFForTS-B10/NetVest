@@ -11,7 +11,7 @@ end
 
 ;; Setup the connection to python and import a few libraries
 to natcap_invest_set_up_invest
-  print["setting up python invest"]
+ print["setting up python invest"]
   py:setup py:python3
   py:run "import sys"
   py:run "import os"
@@ -24,15 +24,15 @@ end
 
 ;; Generation of csv-tables
 to natcap_invest_write_tables [workdir]
-  print ["start write-tables"]
+ print ["start write-tables"]
   natcap_invest_write_sensitivity workdir
   natcap_invest_write_impact workdir
 end
 
 ;; Read in sensitivity-table from natcap_invest input-folder and generate sensitivity-table
 to natcap_invest_write_sensitivity [workdir]
-  print ["write sensitivity-table"]
-  print (word "workdir:" workdir)
+ print ["write sensitivity-table"]
+ print (word "workdir:" workdir)
   ;; Reset global sensitivity-list
   let sensitivity_all []
   let filename  0
@@ -72,10 +72,10 @@ end
 
 ;; Read in impact-table from natcap_invest input-folder and generate impact-table
 to natcap_invest_write_impact [workdir]
-  print ["write impact-table"]
+ print ["write impact-table"]
   let impact_all []
   let filename word workdir "/input/impacttable.txt"
-  print (word "impact filename:" filename)
+ print (word "impact filename:" filename)
   ifelse filename = 0 [stop]
   [
   file-open filename
@@ -118,7 +118,7 @@ end
 
 ;; Create new variable for lulc-classification used by natcap InVEST
 to natcap_invest_translate_lulc
-  print["translating LULC-values"]
+ print["translating LULC-values"]
   ask patches
   [
     if (p_landuse = -100 and p_homebase = -1) 	[set p_landuse_invest 4] ;forest
@@ -130,7 +130,7 @@ end
 
 ;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
 to natcap_invest_write_maps [workdir]
-  print["writing maps to output folder"]
+ print["writing maps to output folder"]
   natcap_invest_write_lulc_map workdir
   natcap_invest_write_impact_map workdir "oilpalm"
   natcap_invest_write_impact_map workdir "rubber"
@@ -139,7 +139,7 @@ end
 
 ;; Generation of LULC-map
 to natcap_invest_write_lulc_map [workdir]
-  print ["write lulc map"]
+ print ["write lulc map"]
   let new-raster gis:patch-dataset p_landuse_invest
   let filename (word workdir "/output/lulc.asc")
   print filename
@@ -151,7 +151,7 @@ end
 to natcap_invest_write_impact_map [workdir impact-name]
   ask patches
   [set p_impact-location FALSE]
-  print["writing impact map"]
+ print["writing impact map"]
   ;; iterate throug all possible impacts
   show impact-name
   (ifelse
@@ -191,8 +191,8 @@ end
 
 ;; Conversion of asc-maps to tif-maps for transferation to InVEST
 to natcap_invest_convert_maps_tif [workdir]
-  print ["convert maps"]
-  print (word "workdir: "workdir)
+ print ["convert maps"]
+ print (word "workdir: "workdir)
   foreach ["/output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
   [
     [x] ->
@@ -203,7 +203,7 @@ end
 
 to natcap_invest_convert_to_tif [workdir]
   py:set "filepath" workdir
-  print (word "filepath:" workdir)
+ print (word "filepath:" workdir)
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
     "ds_in = gdal.Open(f'{filepath}.asc')"
@@ -220,12 +220,12 @@ end
 
 ;; Invoke model InVEST and transfer output
 to natcap_invest_execute_invest [invest_wd experiment]
-  print (word "invoke model InVEST with working directory: " invest_wd)
-  print (word "experiment name: " experiment)
+ print (word "invoke model InVEST with working directory: " invest_wd)
+ print (word "experiment name: " experiment)
   py:set "working_directory" invest_wd
   py:set "experiment_name" experiment
   (py:run
-    "print('setting up parameters')"
+ "print('setting up parameters')"
  
     "args = {"
     "'half_saturation_constant': '0.05',"
@@ -243,7 +243,7 @@ end
 
 ;; Convertion of tif-file from InVEST to asc-file for netlogo
 to natcap_invest_convert_maps_asc [workdir experiment]
-  print (word "converting invest results to asc for " experiment)
+ print (word "converting invest results to asc for " experiment)
   py:set "working_directory" workdir
   (py:run
     "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
