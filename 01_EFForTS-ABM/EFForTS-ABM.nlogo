@@ -72,7 +72,7 @@ globals
 
   ;invest:habitat-quality variables
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
-
+  ;k                         ; half-saturation-constant for calculation of habitat quality scores
 ]
 
 ; Define patch properties:
@@ -3017,6 +3017,17 @@ NIL
 1
 0
 String
+
+INPUTBOX
+2485
+450
+2610
+510
+k
+NIL
+1
+0
+NUMBER
 
 CHOOSER
 2485
