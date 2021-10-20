@@ -3049,6 +3049,17 @@ spatial1
 0
 String
 
+INPUTBOX
+2485
+515
+2637
+575
+k
+0.0
+1
+0
+Number
+
 @#$#@#$#@
 ## Abstract of corresponding publication
 

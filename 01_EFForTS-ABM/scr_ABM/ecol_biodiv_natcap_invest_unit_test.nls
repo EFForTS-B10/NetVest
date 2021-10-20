@@ -7,7 +7,7 @@ to test-invest
    ca 
 	 let workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
   print ( word "workdir:" workdir)
-  let k 0.5
+  let half-saturation-constant k
 	 ;; setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
 	 natcap_invest_set_up_invest 
 	 ;; load sensitivity table and impact table and store as csv-table (defined in ecol_biodiv_natcap_invest.nls)
@@ -21,7 +21,7 @@ to test-invest
    ;; execution of Invest with working directory of InVEST
    let invest_wd word workdir "/output"
   print (word "invest_wd:" invest_wd)
-   natcap_invest_execute_invest invest_wd experiment k ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+   natcap_invest_execute_invest invest_wd experiment half-saturation-constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
    natcap_invest_convert_maps_asc workdir experiment
                                                      ;natcap_invest_validation workdir experiment
   print ["Success"]

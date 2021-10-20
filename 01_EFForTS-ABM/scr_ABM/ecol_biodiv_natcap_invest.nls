@@ -106,11 +106,11 @@ to natcap_invest_habitatquality_update
   let workdir "./natcap_invest"  ; could be replaced by global variable
   let invest_wd word workdir "/output"
   let experiment natcap_invest_experiment
-  let k 0.5
+  let half-saturation-constant k
    natcap_invest_translate_lulc
    natcap_invest_write_maps workdir
    natcap_invest_convert_maps_tif workdir
-   natcap_invest_execute_invest invest_wd experiment k
+   natcap_invest_execute_invest invest_wd experiment half-saturation-constant
    natcap_invest_convert_maps_asc workdir experiment
    natcap_invest_save_habitatquality_to_patch workdir experiment
    natcap_invest_aggregate_habitatquality
@@ -220,13 +220,13 @@ end
 
 
 ;; Invoke model InVEST and transfer output
-to natcap_invest_execute_invest [invest_wd experiment k]
+to natcap_invest_execute_invest [invest_wd experiment half-saturation-constant]
  print (word "[invoke model InVEST with working directory: " invest_wd "]")
  print (word "experiment name: " experiment)
  print (word "half saturation constant:" k)
   py:set "working_directory" invest_wd
   py:set "experiment_name" experiment
-  py:set "half_saturation_constant" k
+  py:set "half_saturation_constant" half-saturation-constant
   (py:run
  "print('setting up parameters')"
  
