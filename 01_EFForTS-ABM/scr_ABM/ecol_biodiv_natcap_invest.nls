@@ -15,6 +15,7 @@ to natcap_invest_set_up_invest
   py:setup py:python3
   py:run "import sys"
   py:run "import os"
+  py:run "import logging"
   py:run "import natcap.invest"
   py:run "from natcap.invest import habitat_quality"
   py:run "from osgeo import gdal, osr"
@@ -55,7 +56,7 @@ to natcap_invest_write_sensitivity [workdir]
     let rubber file-read
 
     ;; Generate temporary sensitivity-list
-    let sensitivity (list LULC NAME HABITAT oilpalm rubber )
+    let sensitivity (list LULC NAME HABITAT oilpalm rubber)
     set sensitivity_all lput sensitivity sensitivity_all
 
  
@@ -229,7 +230,10 @@ to natcap_invest_execute_invest [invest_wd experiment half-saturation-constant]
   py:set "half_saturation_constant" half-saturation-constant
   (py:run
  "print('setting up parameters')"
- 
+  "logfile = working_directory + '/invest_log_' + experiment_name + '.log'" 
+  "logging.basicConfig(filename=logfile, level=logging.DEBUG)"
+	"logging.info('Starting habitat_quality.execute')"
+	
     "args = {"
     "'half_saturation_constant': half_saturation_constant,"
     "'results_suffix': experiment_name,"
@@ -250,6 +254,12 @@ to natcap_invest_convert_maps_asc [workdir experiment]
   py:set "working_directory" workdir
   (py:run
     "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
+    "in_name = f'{filename}.tif'"
+    "out_name = f'{filename}.asc'"
+    "gdal.Translate(out_name, in_name,format='AAIGrid')"
+  )
+   (py:run
+    "filename = f'{working_directory}/output/deg_sum_c_{experiment_name}'"
     "in_name = f'{filename}.tif'"
     "out_name = f'{filename}.asc'"
     "gdal.Translate(out_name, in_name,format='AAIGrid')"
