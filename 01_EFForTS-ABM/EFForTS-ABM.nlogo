@@ -72,6 +72,7 @@ globals
 
   ;invest:habitat-quality variables
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+  workdir                  ;working directory for EFForTS-ABM-InVEST Integration
   ;k                         ; half-saturation-constant for calculation of habitat quality scores
 ]
 
