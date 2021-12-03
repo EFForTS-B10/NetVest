@@ -185,7 +185,7 @@ end
 To setup-with-external-maps
    print["setting up"]
   ca
-
+  print ( word "workdir:" workdir)
   ; control randomness
   set-rand-seed
 
