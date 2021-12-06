@@ -104,7 +104,7 @@ end
 
 
 to natcap_invest_habitatquality_update
-  set workdir "./natcap_invest"  ; could be replaced by global variable
+  set workdir "./natcap_invest"  
   let invest_wd word workdir "/output"
   let experiment natcap_invest_experiment
   let half-saturation-constant k
@@ -196,17 +196,22 @@ end
 to natcap_invest_convert_maps_tif
  print ["convert maps"]
  print (word "workdir: "workdir)
-  foreach ["/output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
-  [
+  foreach ["lulc" "oilpalm_c" "rubber_c"]
+[
     [x] ->
+<<<<<<< HEAD
     natcap_invest_convert_to_tif
+=======
+    natcap_invest_convert_to_tif (x)
+>>>>>>> 66f17aa219eeabab34eed49ffb7c798f264b8dfa
   ]
 end
 
 
-to natcap_invest_convert_to_tif
-  py:set "filepath" workdir
- print (word "filepath:" workdir)
+to natcap_invest_convert_to_tif [file]
+let filepath (word workdir "/output/" file)
+  py:set "filepath" filepath
+ print (word "filepath:" filepath)
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
     "ds_in = gdal.Open(f'{filepath}.asc')"
