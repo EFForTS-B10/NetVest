@@ -104,7 +104,7 @@ end
 
 
 to natcap_invest_habitatquality_update
-  set workdir "./natcap_invest"  ; could be replaced by global variable
+  set workdir "./natcap_invest"  
   let invest_wd word workdir "/output"
   let experiment natcap_invest_experiment
   let half-saturation-constant k
@@ -133,9 +133,9 @@ end
 ;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
 to natcap_invest_write_maps
  print["writing maps to output folder"]
-  natcap_invest_write_lulc_map ;workdir
-  natcap_invest_write_impact_map "oilpalm" ;workdir
-  natcap_invest_write_impact_map "rubber" ;workdir
+  natcap_invest_write_lulc_map 
+  natcap_invest_write_impact_map "oilpalm" 
+  natcap_invest_write_impact_map "rubber" 
 end
 
 
@@ -195,17 +195,18 @@ end
 to natcap_invest_convert_maps_tif
  print ["convert maps"]
  print (word "workdir: "workdir)
-  foreach ["/output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
-  [
+  foreach ["lulc" "oilpalm_c" "rubber_c"]
+[
     [x] ->
-    natcap_invest_convert_to_tif ;(word workdir x)
+    natcap_invest_convert_to_tif (x)
   ]
 end
 
 
-to natcap_invest_convert_to_tif
-  py:set "filepath" workdir
- print (word "filepath:" workdir)
+to natcap_invest_convert_to_tif [file]
+let filepath (word workdir "/output/" file)
+  py:set "filepath" filepath
+ print (word "filepath:" filepath)
   (py:run
     "drv = gdal.GetDriverByName('GTiff')"
     "ds_in = gdal.Open(f'{filepath}.asc')"
