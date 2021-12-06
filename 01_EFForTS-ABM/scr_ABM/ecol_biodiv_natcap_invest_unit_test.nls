@@ -5,24 +5,24 @@ to test-invest
 	print (word "experiment:"experiment)
    ;; clear all
    ca 
-	 let workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
+	 set workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
   print ( word "workdir:" workdir)
   let half-saturation-constant k
 	 ;; setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
 	 natcap_invest_set_up_invest 
 	 ;; load sensitivity table and impact table and store as csv-table (defined in ecol_biodiv_natcap_invest.nls)
-	 natcap_invest_write_tables  workdir
+	 natcap_invest_write_tables  ;workdir
    ;; lulc.asc, oilpalm_c.asc and rubber_c.asc considered input for testing
-   natcap_invest_file_copy_tif workdir "lulc"
-   natcap_invest_file_copy_tif workdir "oilpalm_c"
-   natcap_invest_file_copy_tif workdir "rubber_c"
+   natcap_invest_file_copy_tif "lulc" ;workdir
+   natcap_invest_file_copy_tif "oilpalm_c" ;workdir 
+   natcap_invest_file_copy_tif "rubber_c" ;workdir 
    ;; convert asc files from output folder to tif files
-   natcap_invest_convert_maps_tif workdir ;file_conv?  
+   natcap_invest_convert_maps_tif ;workdir ;file_conv?  
    ;; execution of Invest with working directory of InVEST
    let invest_wd word workdir "/output"
   print (word "invest_wd:" invest_wd)
    natcap_invest_execute_invest invest_wd experiment half-saturation-constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
-   natcap_invest_convert_maps_asc workdir experiment
+   natcap_invest_convert_maps_asc experiment ;workdir 
                                                      ;natcap_invest_validation workdir experiment
   print ["Success"]
   print ["Success"]
@@ -30,7 +30,7 @@ to test-invest
                                                       ;aggregate-habitat-quality
 end
 
-to natcap_invest_file_copy_tif [workdir file]
+to natcap_invest_file_copy_tif [file]
   print ["Copying files from input to output folder"]
     let file_in   (word  workdir "/input/" file ".asc") 
     print file_in
