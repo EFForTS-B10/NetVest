@@ -228,7 +228,7 @@ To setup-with-external-maps
   setup_social_networks
 
   ; Initialize biodiversity modules
-  init_biodiversity
+  ;init_biodiversity
 
   ; Paint world:
   paint-landuse
@@ -3060,6 +3060,23 @@ k
 1
 0
 Number
+
+BUTTON
+2525
+665
+2712
+698
+NIL
+natcap_invest_translate_lulc
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## Abstract of corresponding publication
