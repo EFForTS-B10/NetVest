@@ -19,17 +19,17 @@ to test-integration
    natcap_invest_translate_lulc
    ;; Generation of LULC-raster-map and impact-maps (as much as impacts we have, defined in ecol_biodiv_natcap_invest.nls)
    natcap_invest_write_lulc_map 
-  natcap_invest_write_impact_map "oilpalm" 
-  natcap_invest_write_impact_map "rubber"  
+  ;natcap_invest_write_impact_map "oilpalm" 
+  ;natcap_invest_write_impact_map "rubber"  
    ;; convert asc files from output folder to tif files
-   natcap_invest_convert_maps_tif 
+   ;natcap_invest_convert_maps_tif 
    ;; execution of Invest with working directory of InVEST
-   let invest_wd word workdir "/output"
-  print (word "invest_wd:" invest_wd)
-   natcap_invest_execute_invest invest_wd experiment half-saturation-constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
-   natcap_invest_convert_maps_asc experiment ;workdir 
-   natcap_invest_save_habitatquality_to_patch experiment
-   natcap_invest_aggregate_habitatquality 
+   ;let invest_wd word workdir "/output"
+  ;print (word "invest_wd:" invest_wd)
+   ;natcap_invest_execute_invest invest_wd experiment half-saturation-constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+   ;natcap_invest_convert_maps_asc experiment ;workdir 
+   ;natcap_invest_save_habitatquality_to_patch experiment
+   ;natcap_invest_aggregate_habitatquality 
    
   print ["Success"]
   print ["Success"]

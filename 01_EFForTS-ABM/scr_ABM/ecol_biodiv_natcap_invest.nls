@@ -128,7 +128,7 @@ to natcap_invest_translate_lulc
     if (p_landuse = 0) 							[set p_landuse_invest 2] ;oilplam
     if (p_landuse = -100 and p_homebase >= 0) 	[set p_landuse_invest 1] ;village
   ]
-  ask patches [ show p_landuse_invest]
+  ;ask patches [ show p_landuse_invest]
 end
 
 ;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
@@ -199,11 +199,7 @@ to natcap_invest_convert_maps_tif
   foreach ["lulc" "oilpalm_c" "rubber_c"]
 [
     [x] ->
-<<<<<<< HEAD
-    natcap_invest_convert_to_tif
-=======
     natcap_invest_convert_to_tif (x)
->>>>>>> 66f17aa219eeabab34eed49ffb7c798f264b8dfa
   ]
 end
 
