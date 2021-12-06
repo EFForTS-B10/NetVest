@@ -6,7 +6,7 @@ to natcap_invest_habitatquality_init
 
   set workdir "./natcap_invest"
   natcap_invest_set_up_invest 
-  natcap_invest_write_tables ;workdir
+  natcap_invest_write_tables 
 end
 
 ;; Setup the connection to python and import a few libraries
@@ -26,8 +26,8 @@ end
 ;; Generation of csv-tables
 to natcap_invest_write_tables
  print ["start write-tables"]
-  natcap_invest_write_sensitivity ;workdir
-  natcap_invest_write_impact ;workdir
+  natcap_invest_write_sensitivity 
+  natcap_invest_write_impact 
 end
 
 ;; Read in sensitivity-table from natcap_invest input-folder and generate sensitivity-table
@@ -109,11 +109,11 @@ to natcap_invest_habitatquality_update
   let experiment natcap_invest_experiment
   let half-saturation-constant k
    natcap_invest_translate_lulc
-   natcap_invest_write_maps ;workdir
-   natcap_invest_convert_maps_tif ;workdir
+   natcap_invest_write_maps 
+   natcap_invest_convert_maps_tif 
    natcap_invest_execute_invest invest_wd experiment half-saturation-constant
-   natcap_invest_convert_maps_asc experiment ;workdir
-   natcap_invest_save_habitatquality_to_patch experiment ;workdir
+   natcap_invest_convert_maps_asc experiment 
+   natcap_invest_save_habitatquality_to_patch experiment 
    natcap_invest_aggregate_habitatquality
 end
 
@@ -128,14 +128,15 @@ to natcap_invest_translate_lulc
     if (p_landuse = 0) 							[set p_landuse_invest 2] ;oilplam
     if (p_landuse = -100 and p_homebase >= 0) 	[set p_landuse_invest 1] ;village
   ]
+  ask patches [ show p_landuse_invest]
 end
 
 ;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
 to natcap_invest_write_maps
  print["writing maps to output folder"]
-  natcap_invest_write_lulc_map ;workdir
-  natcap_invest_write_impact_map "oilpalm" ;workdir
-  natcap_invest_write_impact_map "rubber" ;workdir
+  natcap_invest_write_lulc_map 
+  natcap_invest_write_impact_map "oilpalm" 
+  natcap_invest_write_impact_map "rubber" 
 end
 
 
@@ -198,7 +199,7 @@ to natcap_invest_convert_maps_tif
   foreach ["/output/lulc" "/output/oilpalm_c" "/output/rubber_c"]
   [
     [x] ->
-    natcap_invest_convert_to_tif ;(word workdir x)
+    natcap_invest_convert_to_tif
   ]
 end
 
