@@ -228,7 +228,7 @@ To setup-with-external-maps
   setup_social_networks
 
   ; Initialize biodiversity modules
-  init_biodiversity
+  ;init_biodiversity
 
   ; Paint world:
   paint-landuse
