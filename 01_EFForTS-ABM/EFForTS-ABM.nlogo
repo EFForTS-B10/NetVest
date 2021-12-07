@@ -183,7 +183,7 @@ end
 
 ; Main Setup procedure:
 To setup-with-external-maps
-   print["setting up"]
+   print["setting up EFForTS-ABM"]
   ca
   print ( word "workdir:" workdir)
   ; control randomness
@@ -3015,7 +3015,7 @@ INPUTBOX
 450
 2610
 510
-inv-test
+inv_test
 NIL
 1
 0
