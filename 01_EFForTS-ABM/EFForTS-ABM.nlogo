@@ -227,8 +227,8 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize biodiversity modules and update it once for setup
-  init_biodiversity
+  ; Initialize biodiversity natcap invest and update it once for setup
+  natcap_invest_habitatquality_init
   natcap_invest_habitatquality_update
 
   ; Paint world:
