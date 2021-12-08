@@ -227,7 +227,7 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize biodiversity natcap invest and update it once for setup
+  ; Initialize biodiversity natcap invest module and update it once for setup
   natcap_invest_habitatquality_init
   natcap_invest_habitatquality_update
 
@@ -281,8 +281,8 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-;   Run biodiversity module
-  run_biodiversity
+  ; Run biodiversity natcap invest module
+  natcap_invest_habitatquality_update
 
   ; If show-output? is turned on, update plots and world output
   ifelse (show-output?)
