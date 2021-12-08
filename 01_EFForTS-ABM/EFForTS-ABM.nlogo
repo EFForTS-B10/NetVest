@@ -229,7 +229,7 @@ To setup-with-external-maps
 
   ; Initialize biodiversity modules and update it once for setup
   init_biodiversity
-  run_biodiversity
+  natcap_invest_habitatquality_update
 
   ; Paint world:
   paint-landuse
