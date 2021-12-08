@@ -3015,7 +3015,7 @@ INPUTBOX
 450
 2610
 510
-inv_test
+inv-test
 NIL
 1
 0
