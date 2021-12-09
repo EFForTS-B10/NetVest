@@ -1,0 +1,7 @@
+[run number],model-version,grass-regrowth-time,sheep-gain-from-food,wolf-gain-from-food,sheep-reproduce,wolf-reproduce,show-energy?,random-seed,[step],count sheep,count wolves,count patches with [pcolor = green],siminputrow
+1,sheep-wolves-grass,30,4,20,4,5,FALSE,-1789768917,0,100,50,1285,1
+1,sheep-wolves-grass,30,4,20,4,5,FALSE,-1789768917,1,94,49,1278,1
+1,sheep-wolves-grass,30,4,20,4,5,FALSE,-1789768917,2,90,51,1279,1
+1,sheep-wolves-grass,30,4,20,4,5,FALSE,-1789768917,3,91,51,1291,1
+1,sheep-wolves-grass,30,4,20,4,5,FALSE,-1789768917,4,91,49,1288,1
+1,sheep-wolves-grass,30,4,20,4,5,FALSE,-1789768917,5,89,46,1284,1
