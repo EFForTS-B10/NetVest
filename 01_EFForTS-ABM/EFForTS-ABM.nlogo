@@ -183,9 +183,9 @@ end
 
 ; Main Setup procedure:
 To setup-with-external-maps
-   print["setting up EFForTS-ABM"]
+  print["setting up EFForTS-ABM and InVEST"]
   ca
-  print ( word "workdir:" workdir)
+
   ; control randomness
   set-rand-seed
 
@@ -3047,7 +3047,7 @@ INPUTBOX
 2702
 335
 natcap_invest_experiment
-spatial1
+NIL
 1
 0
 String
