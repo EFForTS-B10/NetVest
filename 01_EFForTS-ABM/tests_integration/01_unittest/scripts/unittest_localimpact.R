@@ -1,0 +1,222 @@
+#########################################################
+##### Unittest for Natcap Invest Integration: local #####
+#########################################################
+
+# specify experiment and create folder named after experiment with one input folder and one output folder within
+# specify hsc (half-saturation-constant), default: 0.5
+# Input folder has to include sensitivitytable.txt, impacttable.txt, lulc.asc, oilpalm_c.asc and rubber_c.asc 
+# adapt netlogopath, modelpath, outpath and netlogoversion
+
+
+### 1) Unittest execution
+library(nlrx)
+experiment <- "localimpact"
+invtest <- paste("\"",experiment,"\"",sep="")
+hsc <- 0.5
+netlogopath <- file.path("/home/dockerj/nl")
+modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogoversion <- "6.1.1"
+
+nl <- nl(nlversion = netlogoversion,
+         nlpath = netlogopath,
+         modelpath = modelpath,
+         jvmmem = 1024)
+
+nl@experiment <- experiment(expname=experiment,
+                            outpath=outpath,
+                            repetition=1,
+                            tickmetrics="false",
+                            idsetup="test-invest",
+                            idgo="do-nothing",
+                            runtime=1,
+                            #metrics=c("edu-calc-index"),
+                            variables = list(),
+                            constants = list("inv-test"=invtest,
+                                             "k"=hsc))
+
+nl@simdesign <- simdesign_simple(nl=nl,
+                                 nseeds=1)
+
+eval_variables_constants(nl)
+print(nl)
+
+results <- run_nl_one(nl, seed = 1, siminputrow = 1)
+
+
+### 2) Validation of results
+
+## Aim 1: Correct execution of unittest: [Success] [Success]
+##        Correct file in output folder
+fileexist <- function(qualitymap){
+  qualitymap <- qualitymap
+  print ("Checking existence of habitat-quality map in output folder")
+  if (qualitymap == TRUE) {print ("Habitat-quality map exists")}  else {print ("Habitat-quality map is missing")}
+}
+
+fileexist(qualitymap=file.exists((paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep=""))))
+
+## Aim 2: Checking if transformation from asc to tif and from tif to asc is correct: Location of impact on the correct quadrant of landscape
+library(raster)
+validation_transformation <- function(inputmap,outputmap){
+  transformation <- all.equal(inputmap, outputmap)
+  print ("Checking transformation from asc to tif and from tif to asc")
+  if (transformation == TRUE) {print ("Correct transformation")}  else {print ("No correct transformation")}
+}
+
+# asc to tif
+validation_transformation(inputmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
+                          outputmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/oilpalm_c.tif" ,sep="")))
+# tif to asc
+validation_transformation(inputmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".tif" ,sep="")),
+                          outputmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep="")))
+
+
+### Aim 3: Comparison of expected result with result of InVEST
+## Generation of expected result
+
+# Extract dimension of impact location from oilpalm_c.asc
+asc <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+rowColimpact <- rowColFromCell(asc, which(asc[] == 1 ))
+
+# Function for calculation of habitat-quality score
+hqcalculation <- function(ry, wr, sumwr, dxy, drmax, irxy=irxy,bx=bx, Sjr, k, z){
+  ry <- ry
+  wr <- wr
+  sumwr <- sumwr
+  dxy <- dxy 
+  drmax <- drmax
+  irxy <- 1 - (dxy/drmax)
+  bx <- 1
+  Sjr <- Sjr
+  k <- k
+  z <- z
+  Dxj <- (wr/sumwr) * ry * irxy * bx * Sjr 
+  Qxj <- 1* (1-((Dxj^z)/((Dxj^z)+(k^z))))
+  print (paste("Impact existence ry" , ry))
+  print (paste("Impact weighting wr is" , wr))
+  print (paste("Sum of impact weightings is" , sumwr))
+  print (paste("Distance between habitat and impact dxy is" , dxy))
+  print (paste("Greatest maximum distance of impact drmax is" , drmax))
+  print (paste("Impact of impact r in parcel y on parcel x irxy is " , irxy))
+  print (paste("Level of accessibility of parcel x bx is " , bx))
+  print (paste("Sensitivity of habitat type j to impact r Sjr is " , Sjr))
+  print (paste("Scaling parameter k is" , k))
+  print (paste("Scaling parameter z is" , z))
+  print (paste("Degradation score Dxj is " , Dxj))
+  print (paste("!Habitat quality score Qxj is " , Qxj, "!"))
+  return(Qxj)
+}
+
+if (experiment == "forest") {ry <- 0} else {ry <- 1}
+
+Qxj <- hqcalculation(ry <- ry,
+                     wr=read_csv(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/impact_table.csv" ,sep=""))%>%
+                       select(WEIGHT) %>%
+                       .[[1,1]],
+                     sumwr= read_csv(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/impact_table.csv" ,sep=""))%>%
+                       select (WEIGHT) %>%
+                       summarise_all(sum) %>%
+                       .[[1,1]],
+                     dxy= 0 ,
+                     drmax= read_csv(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/impact_table.csv" ,sep=""))%>%
+                       select(MAX_DIST) %>%
+                       .[[1,1]],
+                     irxy=irxy,
+                     bx=bx,
+                     Sjr=read_csv(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/sensitivity_table.csv" ,sep="")) %>%
+                       select(oilpalm)%>%
+                       .[[5,1]],
+                     k=0.5,
+                     z=2.5)
+
+# Generation of map
+expectedmap <- raster(ncol=100, nrow= 100, xmn=212461, xmx=217461, ymn=9753255, ymx=9758255)
+projection(expectedmap) <- "+proj=utm +zone=48 +south +datum=WGS84"
+values(expectedmap) <- 1
+expectedmap[rowColimpact] <- Qxj
+
+# Comparison
+validation_maps <- function(investmap,expectedmap){
+  equalmaps <- all.equal(investmap, expectedmap)
+  print ("Comparison of expected result and result of InVEST")
+  if (equalmaps == TRUE) {print ("Valdiating expected result")}  else {print ("Unexpected result")}
+}
+
+validation_maps(investmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep="")),
+                expectedmap=expectedmap)
+
+
+### 3) Plots
+##Plots for verification of correct transformation
+
+mycol_impact <- c("#fee391","#b2182b")
+
+# Impact: asc-file
+asc_df <- as.data.frame(asc, xy=TRUE)
+
+ggplot(data=asc_df) + 
+  geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
+  landscapetools::theme_nlm_discrete(
+    legend_title = "Impact-Score",
+    axis_text_size = 4,
+    axis_title_size = 6,
+    legend_title_size = 6,
+    legend_text_size = 6,
+    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
+  scale_fill_manual(values = mycol_impact, name="Impact Score") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") +#+ ggtitle("LULC map") +
+  theme (legend.spacing.x = unit(0.2, "cm"))
+
+# Impact:tif-file
+tif <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/oilpalm_c.tif" ,sep=""))
+tif_df <- as.data.frame(tif, xy=TRUE)
+
+ggplot(data=tif_df) + 
+  geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
+  landscapetools::theme_nlm_discrete(
+    axis_text_size = 4,
+    axis_title_size = 6,
+    legend_title_size = 6,
+    legend_text_size = 6,
+    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
+  scale_fill_manual(values = mycol_impact, name="Impact Score") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") +  #+ ggtitle("LULC map") +
+  theme (legend.spacing.x = unit(0.2, "cm"))
+
+## Plots for verification of result 
+
+mycol_quality <- c("#addd8e","#00441b")
+
+#invest: habitat-quality map
+invest <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep=""))
+invest_df <- as.data.frame(invest, xy=TRUE)
+
+ggplot(data=invest_df) + 
+  geom_raster(aes(x=x,y=y,fill=factor(quality_c_localimpact))) + 
+  landscapetools::theme_nlm_discrete(
+    axis_text_size = 4,
+    axis_title_size = 6,
+    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
+  scale_fill_manual(values = mycol_quality, name="Habitat-Quality Score") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") #+ ggtitle("LULC map")
+
+# expected-map
+expected_df <- as.data.frame(expectedmap, xy=TRUE)
+
+ggplot(data=expected_df) + 
+  geom_raster(aes(x=x,y=y,fill=factor(layer))) + 
+  landscapetools::theme_nlm_discrete(
+    axis_text_size = 4,
+    axis_title_size = 6,
+    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
+  scale_fill_manual(values = mycol_quality, name="Habitat-Quality Score") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") #+ ggtitle("LULC map")
+
+### PLOTTING
+library(ggpubr)
+ggarrange(asc, tif, ncol=2, nrow=1, labels= "AUTO", common.legend = TRUE, legend="bottom")
+ggsave("impact_comp_local.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+
+ggarrange(invest, expected, ncol=2, nrow=1, labels= "AUTO", common.legend = TRUE, legend="bottom")
+ggsave("result_comp_local.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
