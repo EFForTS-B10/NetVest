@@ -1,0 +1,6 @@
+"LULC" "NAME" "HABITAT" "oilpalm" "rubber"
+0 "Unused" "0" "0" "0"
+1 "Village" "0" "0" "0"
+2 "Oilpalm" "1" "0" "1"
+3 "Rubber" "1" "1"  "0"
+4 "Forest" "1" "1" "1"
