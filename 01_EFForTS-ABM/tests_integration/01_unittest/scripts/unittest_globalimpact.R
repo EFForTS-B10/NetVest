@@ -98,76 +98,80 @@ npc_txt_west = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "West"), size
 npc_txt_impact = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "214986,9755730"), size = 8)
 
 plot.north <- ggplot(data=north, mapping = aes(x = y, y = deg_sum_c_globalimpact)) +
-  geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
-  geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-  npc_txt_north +
-  scale_colour_manual(values=cols) +
-  scale_x_continuous(breaks=seq(9755780,9758280,500)) +
-  stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                                 sep = "~~italic(\"with\")~~")),
-               eq.with.lhs = "D[x][y]~`=`~",
-               eq.x.rhs = "~Y",
-               formula = y ~ x, 
-               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.98) +
-  labs(
-    x = "Y-Coordinate (Y)", 
-    y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
-  theme_bw(base_size = 10) + theme(legend.position = "none",
-                                   axis.title.y = element_blank())
-
+              geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
+              geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
+              npc_txt_north +
+              scale_colour_manual(values=cols) +
+              scale_x_continuous(breaks=seq(9755780,9758280,500)) +
+              stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
+                               sep = "~~italic(\"with\")~~")),
+                               eq.with.lhs = "D[x][y]~`=`~",
+                               eq.x.rhs = "~Y",
+                               formula = y ~ x, 
+                               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.98) +
+              labs(
+                   x = "Y-Coordinate (Y)", 
+                   y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
+                   theme_bw(base_size = 10) + theme(legend.position = "none",
+                                                    axis.title.y = element_blank(),
+                                                    plot.margin = margin(c(5,5,5,20)))
+                                                    
 plot.east <- ggplot(data=east, mapping = aes(x = x, y = deg_sum_c_globalimpact)) +
-  geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
-  geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-  stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                                 sep = "~~italic(\"with\")~~")),
-               eq.with.lhs = "D[x][y]~`=`~",
-               eq.x.rhs = "~X",
-               formula = y ~ x, 
-               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.98) +
-  npc_txt_east +
-  scale_colour_manual(values=cols) +
-  scale_x_continuous(breaks = seq(214986, 217486, 500)) +
-  labs(
-    x = "X-Coordinate (X)", 
-    y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
-  theme_bw(base_size = 10) + theme(legend.position = "none",
-                                   axis.title.y = element_blank())
+             geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
+             geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
+             stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
+                              sep = "~~italic(\"with\")~~")),
+                              eq.with.lhs = "D[x][y]~`=`~",
+                              eq.x.rhs = "~X",
+                              formula = y ~ x, 
+                              parse = TRUE, size = 3, label.y = 0.8, label.x = 0.98) +
+             npc_txt_east +
+             scale_colour_manual(values=cols) +
+             scale_x_continuous(breaks = seq(214986, 217486, 500)) +
+             labs(
+                  x = "X-Coordinate (X)", 
+                  y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
+                  theme_bw(base_size = 10) + theme(legend.position = "none",
+                                                   axis.title.y = element_blank(),
+                                                   plot.margin = margin(c(5,5,5,20)))
 
 plot.south <- ggplot(data=south, mapping = aes(x = y, y = deg_sum_c_globalimpact)) +
-  geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
-  geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-  stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                                 sep = "~~italic(\"with\")~~")),
-               eq.with.lhs = "D[x][y]~`=`~",
-               eq.x.rhs = "~Y",
-               formula = y ~ x, 
-               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.02) +
-  npc_txt_south +
-  scale_colour_manual(values=cols, name="Habitat degradation") +
-  scale_x_continuous(breaks = seq(9753280, 9755780, 500)) + 
-  labs(
-    x = "Y-Coordinate (Y)", 
-    y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
-  theme_bw(base_size = 10) + 
-  theme(legend.position = "none")
+              geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
+              geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
+              stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
+                               sep = "~~italic(\"with\")~~")),
+                               eq.with.lhs = "D[x][y]~`=`~",
+                               eq.x.rhs = "~Y",
+                               formula = y ~ x, 
+                               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.02) +
+              npc_txt_south +
+              scale_colour_manual(values=cols, name="Habitat degradation") +
+              scale_x_continuous(breaks = seq(9753280, 9755780, 500)) + 
+              labs(
+                   x = "Y-Coordinate (Y)", 
+                   y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
+              theme_bw(base_size = 10) + 
+              theme(legend.position = "none",
+                    plot.margin = margin(c(5,5,5,20)))
 
 plot.west <- ggplot(data=west, mapping = aes(x = x, y = deg_sum_c_globalimpact)) +
-  geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
-  geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-  stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                                 sep = "~~italic(\"with\")~~")),
-               eq.with.lhs = "D[x][y]~`=`~",
-               eq.x.rhs = "~X",
-               formula = y ~ x, 
-               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.02) +
-  npc_txt_west +
-  scale_colour_manual(values=cols) +
-  scale_x_continuous(breaks = seq(212486, 214986, 500)) +
-  labs(
-    x = "X-Coordinate (X)", 
-    y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
-  theme_bw(base_size = 10) + 
-  theme(legend.position = "none")
+             geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
+             geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
+             stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
+                              sep = "~~italic(\"with\")~~")),
+                              eq.with.lhs = "D[x][y]~`=`~",
+                              eq.x.rhs = "~X",
+                              formula = y ~ x, 
+                              parse = TRUE, size = 3, label.y = 0.8, label.x = 0.02) +
+             npc_txt_west +
+             scale_colour_manual(values=cols) +
+             scale_x_continuous(breaks = seq(212486, 214986, 500)) +
+             labs(
+                  x = "X-Coordinate (X)", 
+                  y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
+                  theme_bw(base_size = 10) + 
+             theme(legend.position = "none",
+                   plot.margin = margin(c(5,5,5,20)))
 
 ### PLOTTING
 library(ggpubr)

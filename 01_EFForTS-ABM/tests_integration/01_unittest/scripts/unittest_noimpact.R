@@ -80,34 +80,53 @@ invest_df <- as.data.frame(invest, xy=TRUE)
 
 mycol_quality <- "#00441b"
      
-invest <- ggplot(data=invest_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(quality_c_noimpact)))+  
-  landscapetools::theme_nlm_discrete(
-    legend_title = "Habitat-Quality-Score",
-    axis_text_size = 4,
-    axis_title_size = 6,
-    legend_title_size = 6,
-    legend_text_size = 6,
-    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
-  scale_fill_manual(values = mycol_quality, name="Habitat-Quality Score") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") +#+ ggtitle("LULC map") +
-  theme (legend.spacing.x = unit(0.2, "cm"))
+invest_map <- ggplot(data=invest_df) + 
+          geom_raster(aes(x=x,y=y,fill=factor(quality_c_noimpact)))+  
+          scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
+          xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Habitat-quality map of InVEST") +
+          theme (plot.title = element_text(hjust = 0.1, size = 6),
+                 axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+                 axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+                 axis.text = element_text(size = 2.5),
+                 axis.ticks = element_line(size = 0),
+                 legend.title = element_text(size = 4, face = "bold"),
+                 legend.text = element_text(size = 4),
+                 legend.key.width = unit(0.3, "cm"),
+                 legend.key.height = unit(0.3, "cm"),
+                 panel.background = element_rect(fill = "white"),
+                 panel.grid.major = element_line(color = "gray90", size = 0.2),
+                 panel.grid.minor = element_line(color = "gray90", size = 0.2),
+                 aspect.ratio = 1,
+                 plot.margin = margin(c(5,-25,5,1)),
+                 legend.spacing.x = unit(0.2, "cm"),
+                )
 
 # expected result
 expected_df <- as.data.frame(expectedmap, xy=TRUE)
 
-expected <-  ggplot(data=expected_df) + 
+expected_map <-  ggplot(data=expected_df) + 
              geom_raster(aes(x=x,y=y,fill=factor(layer))) + 
-             landscapetools::theme_nlm_discrete(
-                             #legend_title = "Habitat-Quality-Score",
-                             axis_text_size = 4,
-                             axis_title_size = 6,
-                             plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
-             scale_fill_manual(values = mycol_quality, name="Habitat-Quality Score") +
-             xlab("Longitude (X)") + ylab("Latitude (Y)") #+ ggtitle("LULC map")
+             scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
+             xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Expected habitat-quality map") +
+             theme (plot.title = element_text(hjust = 0.1, size = 6),
+             axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+             axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+             axis.text = element_text(size = 2.5),
+             axis.ticks = element_line(size = 0),
+             legend.title = element_text(size = 4, face = "bold"),
+             legend.text = element_text(size = 4),
+             legend.key.width = unit(0.3, "cm"),
+             legend.key.height = unit(0.3, "cm"),
+             panel.background = element_rect(fill = "white"),
+             panel.grid.major = element_line(color = "gray90", size = 0.2),
+             panel.grid.minor = element_line(color = "gray90", size = 0.2),
+             aspect.ratio = 1,
+             plot.margin = margin(c(5,1,5,-25)),
+             legend.spacing.x = unit(0.2, "cm"),
+            )           
 
 ### PLOTTING
 library(ggpubr)
-ggarrange(invest, expected, ncol=2, nrow=1, labels= "AUTO", common.legend = TRUE, legend="bottom")
+ggarrange(invest_map, expected_map, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
 
 ggsave("quality_comp_forest.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")

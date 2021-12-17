@@ -6419,3 +6419,1139 @@ DEBUG:taskgraph.Task:joining taskgraph
 INFO:natcap.invest.habitat_quality:Habitat Quality Model complete.
 DEBUG:taskgraph.Task:shutting down workers
 DEBUG:taskgraph.Task:taskgraph terminated
+INFO:root:Starting habitat_quality.execute
+INFO:natcap.invest.habitat_quality:Starting execute of Habitat Quality model.
+INFO:natcap.invest.habitat_quality:Creating workspace
+DEBUG:taskgraph.Task:/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir already exists, no need to make it
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+INFO:natcap.invest.habitat_quality:Checking Threat and Sensitivity tables for compliance
+INFO:natcap.invest.habitat_quality:Validate threat rasters and collect unique LULC codes
+DEBUG:natcap.invest.habitat_quality:Validating path for threat: oilpalm
+DEBUG:taskgraph.Task:_call check if precalculated check_threat_values_c_oilpalm (0)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif', 'sizetimestamp', '40684::1639731657.855325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), 0.0, 1.0], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (check_threat_values_c_oilpalm (0))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384420944:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                            1),
+                                           0.0,
+                                           1.0],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639731657.855325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif')],
+                            'func_name': '_raster_values_in_bounds',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1), 0.0, 1.0], {}],
+                            'source_code_hash': '493db3edefb270d3e5c56ca606635166440d221d'},
+ 'self._result': None,
+ 'target_path_list': [],
+ 'task_id_hash': 'd28d0048ce985eca5b0c3b9abe4a2478f08bdd42',
+ 'task_name': 'check_threat_values_c_oilpalm (0)',
+ 'task_reexecution_hash': '73f4ae721e4414e273508c5038df359992043493'}
+DEBUG:taskgraph.Task:not precalculated check_threat_values_c_oilpalm (0)
+DEBUG:taskgraph.Task:direct _func for task check_threat_values_c_oilpalm (0)
+DEBUG:taskgraph.Task:successful run on task check_threat_values_c_oilpalm (0)
+DEBUG:natcap.invest.habitat_quality:Validating path for threat: rubber
+DEBUG:taskgraph.Task:_call check if precalculated check_threat_values_c_rubber (1)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif', 'sizetimestamp', '40684::1639731657.859325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), 0.0, 1.0], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (check_threat_values_c_rubber (1))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384254320:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif',
+                                            1),
+                                           0.0,
+                                           1.0],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639731657.859325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')],
+                            'func_name': '_raster_values_in_bounds',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1), 0.0, 1.0], {}],
+                            'source_code_hash': '493db3edefb270d3e5c56ca606635166440d221d'},
+ 'self._result': None,
+ 'target_path_list': [],
+ 'task_id_hash': 'f2abae0b43b45587dbb0f835cf3c4b3603a9a71d',
+ 'task_name': 'check_threat_values_c_rubber (1)',
+ 'task_reexecution_hash': '9864d950c584ddfa7ff7c4e63a55d3e900064bda'}
+DEBUG:taskgraph.Task:not precalculated check_threat_values_c_rubber (1)
+DEBUG:taskgraph.Task:direct _func for task check_threat_values_c_rubber (1)
+DEBUG:taskgraph.Task:successful run on task check_threat_values_c_rubber (1)
+INFO:natcap.invest.habitat_quality:Checking threat raster values are valid ( 0 <= x <= 1 ).
+DEBUG:taskgraph.Task:joining check_threat_values_c_oilpalm (0) done executing: <threading.Event object at 0x7fa7800a3610>
+DEBUG:taskgraph.Task:joining check_threat_values_c_rubber (1) done executing: <threading.Event object at 0x7fa78007b160>
+INFO:natcap.invest.habitat_quality:Aligning and resizing land cover and threat rasters
+DEBUG:natcap.invest.habitat_quality:Raster paths for aligning: ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif']
+DEBUG:taskgraph.Task:_call check if precalculated align_input_rasters (2)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif', 'sizetimestamp', '40684::1639731657.847325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif', 'sizetimestamp', '40684::1639731657.855325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif', 'sizetimestamp', '40684::1639731657.859325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[[None, None, None], ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'], ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near'], (50.0, -50.0), [212461.033821, 9753254.946558, 217461.033821, 9758254.946558]], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (align_input_rasters (2))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384814992:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif'],
+                                           ['in_target_path_list',
+                                            'in_target_path_list',
+                                            'in_target_path_list'],
+                                           ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near'],
+                                           (50.0, -50.0),
+                                           [212461.033821,
+                                            9753254.946558,
+                                            217461.033821,
+                                            9758254.946558]],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif',
+                                                'sizetimestamp',
+                                                '40684::1639731657.847325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639731657.855325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639731657.859325::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')],
+                            'func_name': 'align_and_resize_raster_stack',
+                            'kwargs_clean': {},
+                            'other_arguments': [[[None, None, None],
+                                                 ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'],
+                                                 ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near'],
+                                                 (50.0, -50.0),
+                                                 [212461.033821,
+                                                  9753254.946558,
+                                                  217461.033821,
+                                                  9758254.946558]],
+                                                {}],
+                            'source_code_hash': '53d5526c5e6d1b52960190a8d8c5580b948d08cd'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                      '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                      '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif'],
+ 'task_id_hash': 'ee6fce5818f90b159e243437f5c069b2331c1005',
+ 'task_name': 'align_input_rasters (2)',
+ 'task_reexecution_hash': 'fc153357faccbfaa0287b094fafe1eff523fbb2e'}
+DEBUG:taskgraph.Task:not precalculated align_input_rasters (2)
+DEBUG:taskgraph.Task:direct _func for task align_input_rasters (2)
+DEBUG:pygeoprocessing.geoprocessing:assuming manual bounding box mode of [212461.033821, 9753254.946558, 217461.033821, 9758254.946558]
+INFO:pygeoprocessing.geoprocessing:1 of 3 aligned: lulc_aligned_noimpact.tif
+INFO:pygeoprocessing.geoprocessing:2 of 3 aligned: oilpalm_c_aligned_noimpact.tif
+INFO:pygeoprocessing.geoprocessing:3 of 3 aligned: rubber_c_aligned_noimpact.tif
+INFO:pygeoprocessing.geoprocessing:aligned all 3 rasters.
+DEBUG:taskgraph.Task:successful run on task align_input_rasters (2)
+DEBUG:natcap.invest.habitat_quality:Updating dict raster paths to reflect aligned paths
+INFO:natcap.invest.habitat_quality:Starting habitat_quality biophysical calculations
+DEBUG:taskgraph.Task:_call check if precalculated access_raster (3)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[None, '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 6, [-3.4028234663852886e+38]], {'fill_value_list': [1.0]}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (access_raster (3))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384419648:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                           'in_target_path_list',
+                                           6,
+                                           [-3.4028234663852886e+38]],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')],
+                            'func_name': 'new_raster_from_base',
+                            'kwargs_clean': {'fill_value_list': [1.0]},
+                            'other_arguments': [[None,
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 6,
+                                                 [-3.4028234663852886e+38]],
+                                                {'fill_value_list': [1.0]}],
+                            'source_code_hash': '00431740ebf9af5a1b7bc608e23419bc881777d1'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif'],
+ 'task_id_hash': '96aaaa06856fcdb22f4e51e0d86c19952d3f42a2',
+ 'task_name': 'access_raster (3)',
+ 'task_reexecution_hash': '8075a55f60e2d610837370bb368c7b34ec6ada0d'}
+DEBUG:taskgraph.Task:not precalculated access_raster (3)
+DEBUG:taskgraph.Task:direct _func for task access_raster (3)
+DEBUG:taskgraph.Task:successful run on task access_raster (3)
+INFO:natcap.invest.habitat_quality:Calculating habitat quality for landuse: /home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif
+DEBUG:taskgraph.Task:_call check if precalculated habitat_raster_c (4)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif', 'sizetimestamp', '3200::1638781485.752223::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), {0: 1.0, 1: 1.0, 100: 1.0}, None, 6, -3.4028234663852886e+38, {'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC_c', 'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode', 'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (habitat_raster_c (4))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384420368:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                            1),
+                                           {0: 1.0, 1: 1.0, 100: 1.0},
+                                           '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif',
+                                           6,
+                                           -3.4028234663852886e+38,
+                                           {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                            'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC_c',
+                                            'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1638781485.752223::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')],
+                            'func_name': 'reclassify_raster',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 {0: 1.0, 1: 1.0, 100: 1.0},
+                                                 None,
+                                                 6,
+                                                 -3.4028234663852886e+38,
+                                                 {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                                  'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC_c',
+                                                  'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                                                {}],
+                            'source_code_hash': 'fbdf660fc9f66c07323b3d60264919fd7d38e998'},
+ 'self._result': None,
+ 'target_path_list': [],
+ 'task_id_hash': 'aeeb603182577aaeb1212a89894fabcff4a816d6',
+ 'task_name': 'habitat_raster_c (4)',
+ 'task_reexecution_hash': '2b2feb5dde6394305bc7068a9333eb6cbe3dcf27'}
+DEBUG:taskgraph.Task:not precalculated habitat_raster_c (4)
+DEBUG:taskgraph.Task:direct _func for task habitat_raster_c (4)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97095
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-1, started daemon 140358637238016)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task habitat_raster_c (4)
+DEBUG:natcap.invest.habitat_quality:Calculating threat: oilpalm.
+Threat data: {'threat': 'oilpalm', 'max_dist': 0.05, 'weight': 1, 'decay': 'linear', 'cur_path': 'oilpalm_c.tif'}
+DEBUG:taskgraph.Task:_call check if precalculated decay_kernel_linear_c_oilpalm (5)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639731657.959326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear', 0.05], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (decay_kernel_linear_c_oilpalm (5))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384419024:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                            1),
+                                           'in_target_path_list',
+                                           '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                           0.05],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639731657.959326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif')],
+                            'func_name': '_create_decay_kernel',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                                 0.05],
+                                                {}],
+                            'source_code_hash': '016a7b7cbf389333642e0dba8d370977dbf239af'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif'],
+ 'task_id_hash': '6f7d3d2da2c85ce58df1b089703a8248d2ee188a',
+ 'task_name': 'decay_kernel_linear_c_oilpalm (5)',
+ 'task_reexecution_hash': 'fb8c248cc059464b3702697e7b0b32704087b091'}
+DEBUG:taskgraph.Task:not precalculated decay_kernel_linear_c_oilpalm (5)
+DEBUG:taskgraph.Task:direct _func for task decay_kernel_linear_c_oilpalm (5)
+DEBUG:natcap.invest.habitat_quality:Max distance in pixels: 1.0
+DEBUG:taskgraph.Task:successful run on task decay_kernel_linear_c_oilpalm (5)
+DEBUG:taskgraph.Task:_call check if precalculated convolve_linear_c_oilpalm (6)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639731657.959326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif', 'sizetimestamp', '400::1639731658.067326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), (None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'], {'ignore_nodata_and_edges': False, 'mask_nodata': False, 'target_nodata': -3.4028234663852886e+38}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (convolve_linear_c_oilpalm (6))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357384253840:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                            1),
+                                           ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif',
+                                            1),
+                                           'in_target_path_list'],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639731657.959326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '400::1639731658.067326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif')],
+                            'func_name': 'convolve_2d',
+                            'kwargs_clean': {'ignore_nodata_and_edges': False,
+                                             'mask_nodata': False,
+                                             'target_nodata': -3.4028234663852886e+38},
+                            'other_arguments': [[(None, 1),
+                                                 (None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'],
+                                                {'ignore_nodata_and_edges': False,
+                                                 'mask_nodata': False,
+                                                 'target_nodata': -3.4028234663852886e+38}],
+                            'source_code_hash': 'fa48f08b225076d373e30d8e8f7003c5c432fb54'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif'],
+ 'task_id_hash': '5d0bef080f0bb6d21eb7f98c15f1512cc433d540',
+ 'task_name': 'convolve_linear_c_oilpalm (6)',
+ 'task_reexecution_hash': '4cee1a21548501220a64d15582ee3b8e3f97cb1c'}
+DEBUG:taskgraph.Task:not precalculated convolve_linear_c_oilpalm (6)
+DEBUG:taskgraph.Task:direct _func for task convolve_linear_c_oilpalm (6)
+INFO:pygeoprocessing.geoprocessing:starting convolve
+DEBUG:pygeoprocessing.geoprocessing:start fill work queue thread
+DEBUG:pygeoprocessing.geoprocessing:fill work queue
+DEBUG:pygeoprocessing.geoprocessing:start worker thread
+DEBUG:pygeoprocessing.geoprocessing:work queue full
+INFO:pygeoprocessing.geoprocessing:1 sent to workers, wait for worker results
+INFO:pygeoprocessing.geoprocessing:convolution worker 100.0% complete on filtered_oilpalm_c_noimpact.tif
+DEBUG:taskgraph.Task:successful run on task convolve_linear_c_oilpalm (6)
+DEBUG:taskgraph.Task:_call check if precalculated sens_raster_linear_c_oilpalm (7)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), {0: 1.0, 1: 1.0, 100: 1.0}, '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 6, -3.4028234663852886e+38, {'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC', 'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode', 'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (sens_raster_linear_c_oilpalm (7))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357387143536:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                            1),
+                                           {0: 1.0, 1: 1.0, 100: 1.0},
+                                           'in_target_path_list',
+                                           6,
+                                           -3.4028234663852886e+38,
+                                           {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                            'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC',
+                                            'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')],
+                            'func_name': 'reclassify_raster',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 {0: 1.0, 1: 1.0, 100: 1.0},
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 6,
+                                                 -3.4028234663852886e+38,
+                                                 {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                                  'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC',
+                                                  'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                                                {}],
+                            'source_code_hash': 'fbdf660fc9f66c07323b3d60264919fd7d38e998'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif'],
+ 'task_id_hash': '7cf12366926d4e82942259851a78ebdbe9c5af24',
+ 'task_name': 'sens_raster_linear_c_oilpalm (7)',
+ 'task_reexecution_hash': '836e737c8b5365171ed23bc0d3070ac1c6c3c170'}
+DEBUG:taskgraph.Task:not precalculated sens_raster_linear_c_oilpalm (7)
+DEBUG:taskgraph.Task:direct _func for task sens_raster_linear_c_oilpalm (7)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97095
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-4, started daemon 140358645630720)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task sens_raster_linear_c_oilpalm (7)
+DEBUG:natcap.invest.habitat_quality:Calculating threat: rubber.
+Threat data: {'threat': 'rubber', 'max_dist': 1.0, 'weight': 1, 'decay': 'linear', 'cur_path': 'rubber_c.tif'}
+DEBUG:taskgraph.Task:_call check if precalculated decay_kernel_linear_c_rubber (8)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639731657.967326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear', 1.0], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (decay_kernel_linear_c_rubber (8))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357383825824:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                            1),
+                                           'in_target_path_list',
+                                           '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                           1.0],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639731657.967326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif')],
+                            'func_name': '_create_decay_kernel',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                                 1.0],
+                                                {}],
+                            'source_code_hash': '016a7b7cbf389333642e0dba8d370977dbf239af'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif'],
+ 'task_id_hash': 'f6f0faa4c323ce547b023b59c0fbf54914d979ed',
+ 'task_name': 'decay_kernel_linear_c_rubber (8)',
+ 'task_reexecution_hash': 'e81ba747687019ce95ada3b563bc2152f3dc3f92'}
+DEBUG:taskgraph.Task:not precalculated decay_kernel_linear_c_rubber (8)
+DEBUG:taskgraph.Task:direct _func for task decay_kernel_linear_c_rubber (8)
+DEBUG:natcap.invest.habitat_quality:Max distance in pixels: 20.0
+DEBUG:taskgraph.Task:successful run on task decay_kernel_linear_c_rubber (8)
+DEBUG:taskgraph.Task:_call check if precalculated convolve_linear_c_rubber (9)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639731657.967326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif', 'sizetimestamp', '7088::1639731658.191326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), (None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'], {'ignore_nodata_and_edges': False, 'mask_nodata': False, 'target_nodata': -3.4028234663852886e+38}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (convolve_linear_c_rubber (9))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357383824672:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                            1),
+                                           ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif',
+                                            1),
+                                           'in_target_path_list'],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639731657.967326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '7088::1639731658.191326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif')],
+                            'func_name': 'convolve_2d',
+                            'kwargs_clean': {'ignore_nodata_and_edges': False,
+                                             'mask_nodata': False,
+                                             'target_nodata': -3.4028234663852886e+38},
+                            'other_arguments': [[(None, 1),
+                                                 (None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'],
+                                                {'ignore_nodata_and_edges': False,
+                                                 'mask_nodata': False,
+                                                 'target_nodata': -3.4028234663852886e+38}],
+                            'source_code_hash': 'fa48f08b225076d373e30d8e8f7003c5c432fb54'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif'],
+ 'task_id_hash': 'a38f3590c1cbd2199d2b04bd0b9a79aa3be53cfe',
+ 'task_name': 'convolve_linear_c_rubber (9)',
+ 'task_reexecution_hash': '8970430a5b0f9e7da5585b1ec595455ffe653986'}
+DEBUG:taskgraph.Task:not precalculated convolve_linear_c_rubber (9)
+DEBUG:taskgraph.Task:direct _func for task convolve_linear_c_rubber (9)
+INFO:pygeoprocessing.geoprocessing:starting convolve
+DEBUG:pygeoprocessing.geoprocessing:start fill work queue thread
+DEBUG:pygeoprocessing.geoprocessing:fill work queue
+DEBUG:pygeoprocessing.geoprocessing:start worker thread
+DEBUG:pygeoprocessing.geoprocessing:work queue full
+INFO:pygeoprocessing.geoprocessing:1 sent to workers, wait for worker results
+INFO:pygeoprocessing.geoprocessing:convolution worker 100.0% complete on filtered_rubber_c_noimpact.tif
+DEBUG:taskgraph.Task:successful run on task convolve_linear_c_rubber (9)
+INFO:taskgraph.Task:A task was created that had an identical args signature sans target paths, but a different target_path_list of the same length. To avoid recomputation, dynamically adding previous Task (sens_raster_linear_c_oilpalm (7)) as a dependent task to this one (sens_raster_linear_c_rubber (10)).
+DEBUG:taskgraph.Task:_call check if precalculated sens_raster_linear_c_rubber (10)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639731657.955326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), {0: 1.0, 1: 1.0, 100: 1.0}, '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 6, -3.4028234663852886e+38, {'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC', 'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode', 'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+INFO:taskgraph.Task:not precalculated (sens_raster_linear_c_rubber (10)), Task hash exists, but there are these mismatches: Recorded path not in target path list /home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif
+DEBUG:taskgraph.Task:not precalculated sens_raster_linear_c_rubber (10)
+DEBUG:taskgraph.Task:direct _func for task sens_raster_linear_c_rubber (10)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97095
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-7, started daemon 140358637238016)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task sens_raster_linear_c_rubber (10)
+INFO:natcap.invest.habitat_quality:Starting raster calculation on total degradation
+DEBUG:taskgraph.Task:_call check if precalculated tot_degradation_linear_c_rubber (10)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif', 'sizetimestamp', '2448::1639731658.139326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif', 'sizetimestamp', '3200::1639731658.167326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif', 'sizetimestamp', '2448::1639731658.251327::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif', 'sizetimestamp', '3200::1639731658.283327::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif', 'sizetimestamp', '2349::1639731657.999326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[[None, None, None, None, None], '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', array([0.5, 0.5])], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (tot_degradation_linear_c_rubber (10))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357383386928:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif'],
+                                           'in_target_path_list',
+                                           array([0.5, 0.5])],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2448::1639731658.139326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639731658.167326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2448::1639731658.251327::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639731658.283327::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2349::1639731657.999326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif')],
+                            'func_name': '_calculate_total_degradation',
+                            'kwargs_clean': {},
+                            'other_arguments': [[[None, None, None, None, None],
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 array([0.5, 0.5])],
+                                                {}],
+                            'source_code_hash': 'e13b606f3dc5c670acb1b3d02e34ed46e3ba0c4b'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif'],
+ 'task_id_hash': '2ca248b96d9f404a36dee18885595a105426a084',
+ 'task_name': 'tot_degradation_linear_c_rubber (10)',
+ 'task_reexecution_hash': '44b16ffd40ce0eb0d31f1c71744611b662692201'}
+DEBUG:taskgraph.Task:not precalculated tot_degradation_linear_c_rubber (10)
+DEBUG:taskgraph.Task:direct _func for task tot_degradation_linear_c_rubber (10)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97095
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-8, started daemon 140358637238016)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task tot_degradation_linear_c_rubber (10)
+INFO:natcap.invest.habitat_quality:Starting raster calculation on quality
+DEBUG:taskgraph.Task:_call check if precalculated habitat_quality (11)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif', 'sizetimestamp', '2328::1639731658.323327::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif', 'sizetimestamp', '3200::1639731658.043326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[[None, None], '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 0.1767766952966369], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (habitat_quality (11))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 140357383823616:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif'],
+                                           'in_target_path_list',
+                                           0.1767766952966369],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2328::1639731658.323327::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639731658.043326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')],
+                            'func_name': '_calculate_habitat_quality',
+                            'kwargs_clean': {},
+                            'other_arguments': [[[None, None],
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 0.1767766952966369],
+                                                {}],
+                            'source_code_hash': '5d5a8175cd3614b8eb724efb7e55c91b6b58212a'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/quality_c_noimpact.tif'],
+ 'task_id_hash': '5be2501b602ca6e1aef591bf31a019c841af7bf7',
+ 'task_name': 'habitat_quality (11)',
+ 'task_reexecution_hash': 'eb45d9c74986150770307e55f19ae6204aed7f4a'}
+DEBUG:taskgraph.Task:not precalculated habitat_quality (11)
+DEBUG:taskgraph.Task:direct _func for task habitat_quality (11)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97095
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-9, started daemon 140358637238016)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task habitat_quality (11)
+INFO:natcap.invest.habitat_quality:Baseline not provided to compute Rarity
+DEBUG:taskgraph.Task:Closing taskgraph.
+DEBUG:taskgraph.Task:taskgraph closed
+DEBUG:taskgraph.Task:joining taskgraph
+INFO:natcap.invest.habitat_quality:Habitat Quality Model complete.
+DEBUG:taskgraph.Task:shutting down workers
+DEBUG:taskgraph.Task:taskgraph terminated
+INFO:root:Starting habitat_quality.execute
+INFO:natcap.invest.habitat_quality:Starting execute of Habitat Quality model.
+INFO:natcap.invest.habitat_quality:Creating workspace
+DEBUG:taskgraph.Task:/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir already exists, no need to make it
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+INFO:natcap.invest.habitat_quality:Checking Threat and Sensitivity tables for compliance
+INFO:natcap.invest.habitat_quality:Validate threat rasters and collect unique LULC codes
+DEBUG:natcap.invest.habitat_quality:Validating path for threat: oilpalm
+DEBUG:taskgraph.Task:_call check if precalculated check_threat_values_c_oilpalm (0)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif', 'sizetimestamp', '40684::1639734239.640651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), 0.0, 1.0], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (check_threat_values_c_oilpalm (0))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795757035088:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                            1),
+                                           0.0,
+                                           1.0],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639734239.640651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif')],
+                            'func_name': '_raster_values_in_bounds',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1), 0.0, 1.0], {}],
+                            'source_code_hash': '493db3edefb270d3e5c56ca606635166440d221d'},
+ 'self._result': None,
+ 'target_path_list': [],
+ 'task_id_hash': 'd28d0048ce985eca5b0c3b9abe4a2478f08bdd42',
+ 'task_name': 'check_threat_values_c_oilpalm (0)',
+ 'task_reexecution_hash': '0fbe185190f516379dfc9267a1eaac80afb61255'}
+DEBUG:taskgraph.Task:not precalculated check_threat_values_c_oilpalm (0)
+DEBUG:taskgraph.Task:direct _func for task check_threat_values_c_oilpalm (0)
+DEBUG:taskgraph.Task:successful run on task check_threat_values_c_oilpalm (0)
+DEBUG:natcap.invest.habitat_quality:Validating path for threat: rubber
+DEBUG:taskgraph.Task:_call check if precalculated check_threat_values_c_rubber (1)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif', 'sizetimestamp', '40684::1639734239.644650::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), 0.0, 1.0], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (check_threat_values_c_rubber (1))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795756868464:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif',
+                                            1),
+                                           0.0,
+                                           1.0],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639734239.644650::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')],
+                            'func_name': '_raster_values_in_bounds',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1), 0.0, 1.0], {}],
+                            'source_code_hash': '493db3edefb270d3e5c56ca606635166440d221d'},
+ 'self._result': None,
+ 'target_path_list': [],
+ 'task_id_hash': 'f2abae0b43b45587dbb0f835cf3c4b3603a9a71d',
+ 'task_name': 'check_threat_values_c_rubber (1)',
+ 'task_reexecution_hash': '980ed86ddad4fb2328839ff7b86a1a0ab0073241'}
+DEBUG:taskgraph.Task:not precalculated check_threat_values_c_rubber (1)
+DEBUG:taskgraph.Task:direct _func for task check_threat_values_c_rubber (1)
+DEBUG:taskgraph.Task:successful run on task check_threat_values_c_rubber (1)
+INFO:natcap.invest.habitat_quality:Checking threat raster values are valid ( 0 <= x <= 1 ).
+DEBUG:taskgraph.Task:joining check_threat_values_c_oilpalm (0) done executing: <threading.Event object at 0x7f24bc706610>
+DEBUG:taskgraph.Task:joining check_threat_values_c_rubber (1) done executing: <threading.Event object at 0x7f24bc6de160>
+INFO:natcap.invest.habitat_quality:Aligning and resizing land cover and threat rasters
+DEBUG:natcap.invest.habitat_quality:Raster paths for aligning: ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif']
+DEBUG:taskgraph.Task:_call check if precalculated align_input_rasters (2)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif', 'sizetimestamp', '40684::1639734239.636651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif', 'sizetimestamp', '40684::1639734239.640651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif', 'sizetimestamp', '40684::1639734239.644650::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[[None, None, None], ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'], ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near'], (50.0, -50.0), [212461.033821, 9753254.946558, 217461.033821, 9758254.946558]], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (align_input_rasters (2))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795757429136:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif'],
+                                           ['in_target_path_list',
+                                            'in_target_path_list',
+                                            'in_target_path_list'],
+                                           ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near'],
+                                           (50.0, -50.0),
+                                           [212461.033821,
+                                            9753254.946558,
+                                            217461.033821,
+                                            9758254.946558]],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif',
+                                                'sizetimestamp',
+                                                '40684::1639734239.636651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/lulc.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639734239.640651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/oilpalm_c.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif',
+                                                'sizetimestamp',
+                                                '40684::1639734239.644650::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/rubber_c.tif')],
+                            'func_name': 'align_and_resize_raster_stack',
+                            'kwargs_clean': {},
+                            'other_arguments': [[[None, None, None],
+                                                 ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'],
+                                                 ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near',
+                                                  '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/near'],
+                                                 (50.0, -50.0),
+                                                 [212461.033821,
+                                                  9753254.946558,
+                                                  217461.033821,
+                                                  9758254.946558]],
+                                                {}],
+                            'source_code_hash': '53d5526c5e6d1b52960190a8d8c5580b948d08cd'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                      '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                      '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif'],
+ 'task_id_hash': 'ee6fce5818f90b159e243437f5c069b2331c1005',
+ 'task_name': 'align_input_rasters (2)',
+ 'task_reexecution_hash': '4406849e2229e3473ae5ff127211df4a9cf4192b'}
+DEBUG:taskgraph.Task:not precalculated align_input_rasters (2)
+DEBUG:taskgraph.Task:direct _func for task align_input_rasters (2)
+DEBUG:pygeoprocessing.geoprocessing:assuming manual bounding box mode of [212461.033821, 9753254.946558, 217461.033821, 9758254.946558]
+INFO:pygeoprocessing.geoprocessing:1 of 3 aligned: lulc_aligned_noimpact.tif
+INFO:pygeoprocessing.geoprocessing:2 of 3 aligned: oilpalm_c_aligned_noimpact.tif
+INFO:pygeoprocessing.geoprocessing:3 of 3 aligned: rubber_c_aligned_noimpact.tif
+INFO:pygeoprocessing.geoprocessing:aligned all 3 rasters.
+DEBUG:taskgraph.Task:successful run on task align_input_rasters (2)
+DEBUG:natcap.invest.habitat_quality:Updating dict raster paths to reflect aligned paths
+INFO:natcap.invest.habitat_quality:Starting habitat_quality biophysical calculations
+DEBUG:taskgraph.Task:_call check if precalculated access_raster (3)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[None, '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 6, [-3.4028234663852886e+38]], {'fill_value_list': [1.0]}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (access_raster (3))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795757033792:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                           'in_target_path_list',
+                                           6,
+                                           [-3.4028234663852886e+38]],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')],
+                            'func_name': 'new_raster_from_base',
+                            'kwargs_clean': {'fill_value_list': [1.0]},
+                            'other_arguments': [[None,
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 6,
+                                                 [-3.4028234663852886e+38]],
+                                                {'fill_value_list': [1.0]}],
+                            'source_code_hash': '00431740ebf9af5a1b7bc608e23419bc881777d1'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif'],
+ 'task_id_hash': '96aaaa06856fcdb22f4e51e0d86c19952d3f42a2',
+ 'task_name': 'access_raster (3)',
+ 'task_reexecution_hash': '385487820a81df30264cea027956971e59c697c9'}
+DEBUG:taskgraph.Task:not precalculated access_raster (3)
+DEBUG:taskgraph.Task:direct _func for task access_raster (3)
+DEBUG:taskgraph.Task:successful run on task access_raster (3)
+INFO:natcap.invest.habitat_quality:Calculating habitat quality for landuse: /home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif
+DEBUG:taskgraph.Task:_call check if precalculated habitat_raster_c (4)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif', 'sizetimestamp', '3200::1639731658.043326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), {0: 1.0, 1: 1.0, 100: 1.0}, None, 6, -3.4028234663852886e+38, {'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC_c', 'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode', 'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (habitat_raster_c (4))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795757034512:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                            1),
+                                           {0: 1.0, 1: 1.0, 100: 1.0},
+                                           '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif',
+                                           6,
+                                           -3.4028234663852886e+38,
+                                           {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                            'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC_c',
+                                            'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639731658.043326::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')],
+                            'func_name': 'reclassify_raster',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 {0: 1.0, 1: 1.0, 100: 1.0},
+                                                 None,
+                                                 6,
+                                                 -3.4028234663852886e+38,
+                                                 {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                                  'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC_c',
+                                                  'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                                                {}],
+                            'source_code_hash': 'fbdf660fc9f66c07323b3d60264919fd7d38e998'},
+ 'self._result': None,
+ 'target_path_list': [],
+ 'task_id_hash': 'aeeb603182577aaeb1212a89894fabcff4a816d6',
+ 'task_name': 'habitat_raster_c (4)',
+ 'task_reexecution_hash': 'd14b833e204c5985ca77b9bb852b01d72de5d5d1'}
+DEBUG:taskgraph.Task:not precalculated habitat_raster_c (4)
+DEBUG:taskgraph.Task:direct _func for task habitat_raster_c (4)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97710
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-1, started daemon 139796807460608)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task habitat_raster_c (4)
+DEBUG:natcap.invest.habitat_quality:Calculating threat: oilpalm.
+Threat data: {'threat': 'oilpalm', 'max_dist': 0.05, 'weight': 1, 'decay': 'linear', 'cur_path': 'oilpalm_c.tif'}
+DEBUG:taskgraph.Task:_call check if precalculated decay_kernel_linear_c_oilpalm (5)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639734239.752651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear', 0.05], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (decay_kernel_linear_c_oilpalm (5))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795757033168:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                            1),
+                                           'in_target_path_list',
+                                           '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                           0.05],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639734239.752651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif')],
+                            'func_name': '_create_decay_kernel',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                                 0.05],
+                                                {}],
+                            'source_code_hash': '016a7b7cbf389333642e0dba8d370977dbf239af'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif'],
+ 'task_id_hash': '6f7d3d2da2c85ce58df1b089703a8248d2ee188a',
+ 'task_name': 'decay_kernel_linear_c_oilpalm (5)',
+ 'task_reexecution_hash': '073e9cd0113e4cf0847645fb875d2e19d2ac108f'}
+DEBUG:taskgraph.Task:not precalculated decay_kernel_linear_c_oilpalm (5)
+DEBUG:taskgraph.Task:direct _func for task decay_kernel_linear_c_oilpalm (5)
+DEBUG:natcap.invest.habitat_quality:Max distance in pixels: 1.0
+DEBUG:taskgraph.Task:successful run on task decay_kernel_linear_c_oilpalm (5)
+DEBUG:taskgraph.Task:_call check if precalculated convolve_linear_c_oilpalm (6)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639734239.752651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif', 'sizetimestamp', '400::1639734239.840651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), (None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'], {'ignore_nodata_and_edges': False, 'mask_nodata': False, 'target_nodata': -3.4028234663852886e+38}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (convolve_linear_c_oilpalm (6))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795756867984:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                            1),
+                                           ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif',
+                                            1),
+                                           'in_target_path_list'],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639734239.752651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/oilpalm_c_aligned_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '400::1639734239.840651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_oilpalm_c_noimpact.tif')],
+                            'func_name': 'convolve_2d',
+                            'kwargs_clean': {'ignore_nodata_and_edges': False,
+                                             'mask_nodata': False,
+                                             'target_nodata': -3.4028234663852886e+38},
+                            'other_arguments': [[(None, 1),
+                                                 (None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'],
+                                                {'ignore_nodata_and_edges': False,
+                                                 'mask_nodata': False,
+                                                 'target_nodata': -3.4028234663852886e+38}],
+                            'source_code_hash': 'fa48f08b225076d373e30d8e8f7003c5c432fb54'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif'],
+ 'task_id_hash': '5d0bef080f0bb6d21eb7f98c15f1512cc433d540',
+ 'task_name': 'convolve_linear_c_oilpalm (6)',
+ 'task_reexecution_hash': 'c90c938f0c7e95bbd04fac43cbbfb03cc52754e7'}
+DEBUG:taskgraph.Task:not precalculated convolve_linear_c_oilpalm (6)
+DEBUG:taskgraph.Task:direct _func for task convolve_linear_c_oilpalm (6)
+INFO:pygeoprocessing.geoprocessing:starting convolve
+DEBUG:pygeoprocessing.geoprocessing:start fill work queue thread
+DEBUG:pygeoprocessing.geoprocessing:fill work queue
+DEBUG:pygeoprocessing.geoprocessing:start worker thread
+DEBUG:pygeoprocessing.geoprocessing:work queue full
+INFO:pygeoprocessing.geoprocessing:1 sent to workers, wait for worker results
+INFO:pygeoprocessing.geoprocessing:convolution worker 100.0% complete on filtered_oilpalm_c_noimpact.tif
+DEBUG:taskgraph.Task:successful run on task convolve_linear_c_oilpalm (6)
+DEBUG:taskgraph.Task:_call check if precalculated sens_raster_linear_c_oilpalm (7)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), {0: 1.0, 1: 1.0, 100: 1.0}, '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 6, -3.4028234663852886e+38, {'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC', 'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode', 'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (sens_raster_linear_c_oilpalm (7))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795759757680:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                            1),
+                                           {0: 1.0, 1: 1.0, 100: 1.0},
+                                           'in_target_path_list',
+                                           6,
+                                           -3.4028234663852886e+38,
+                                           {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                            'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC',
+                                            'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')],
+                            'func_name': 'reclassify_raster',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 {0: 1.0, 1: 1.0, 100: 1.0},
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 6,
+                                                 -3.4028234663852886e+38,
+                                                 {'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode',
+                                                  'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC',
+                                                  'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}],
+                                                {}],
+                            'source_code_hash': 'fbdf660fc9f66c07323b3d60264919fd7d38e998'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif'],
+ 'task_id_hash': '7cf12366926d4e82942259851a78ebdbe9c5af24',
+ 'task_name': 'sens_raster_linear_c_oilpalm (7)',
+ 'task_reexecution_hash': 'edaa53bd3087d56508cebe69ea85932af8dff973'}
+DEBUG:taskgraph.Task:not precalculated sens_raster_linear_c_oilpalm (7)
+DEBUG:taskgraph.Task:direct _func for task sens_raster_linear_c_oilpalm (7)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97710
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-4, started daemon 139796916516608)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task sens_raster_linear_c_oilpalm (7)
+DEBUG:natcap.invest.habitat_quality:Calculating threat: rubber.
+Threat data: {'threat': 'rubber', 'max_dist': 1.0, 'weight': 1, 'decay': 'linear', 'cur_path': 'rubber_c.tif'}
+DEBUG:taskgraph.Task:_call check if precalculated decay_kernel_linear_c_rubber (8)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639734239.756651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear', 1.0], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (decay_kernel_linear_c_rubber (8))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795756439968:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                            1),
+                                           'in_target_path_list',
+                                           '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                           1.0],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639734239.756651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif')],
+                            'func_name': '_create_decay_kernel',
+                            'kwargs_clean': {},
+                            'other_arguments': [[(None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/linear',
+                                                 1.0],
+                                                {}],
+                            'source_code_hash': '016a7b7cbf389333642e0dba8d370977dbf239af'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif'],
+ 'task_id_hash': 'f6f0faa4c323ce547b023b59c0fbf54914d979ed',
+ 'task_name': 'decay_kernel_linear_c_rubber (8)',
+ 'task_reexecution_hash': '62751f31a6e9f08433ff21a30d951eae77dd3e20'}
+DEBUG:taskgraph.Task:not precalculated decay_kernel_linear_c_rubber (8)
+DEBUG:taskgraph.Task:direct _func for task decay_kernel_linear_c_rubber (8)
+DEBUG:natcap.invest.habitat_quality:Max distance in pixels: 20.0
+DEBUG:taskgraph.Task:successful run on task decay_kernel_linear_c_rubber (8)
+DEBUG:taskgraph.Task:_call check if precalculated convolve_linear_c_rubber (9)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif', 'sizetimestamp', '1434::1639734239.756651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif', 'sizetimestamp', '7088::1639734239.956652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), (None, 1), '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'], {'ignore_nodata_and_edges': False, 'mask_nodata': False, 'target_nodata': -3.4028234663852886e+38}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (convolve_linear_c_rubber (9))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795756439248:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                            1),
+                                           ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif',
+                                            1),
+                                           'in_target_path_list'],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif',
+                                                'sizetimestamp',
+                                                '1434::1639734239.756651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/rubber_c_aligned_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '7088::1639734239.956652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/kernels/kernel_rubber_c_noimpact.tif')],
+                            'func_name': 'convolve_2d',
+                            'kwargs_clean': {'ignore_nodata_and_edges': False,
+                                             'mask_nodata': False,
+                                             'target_nodata': -3.4028234663852886e+38},
+                            'other_arguments': [[(None, 1),
+                                                 (None, 1),
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list'],
+                                                {'ignore_nodata_and_edges': False,
+                                                 'mask_nodata': False,
+                                                 'target_nodata': -3.4028234663852886e+38}],
+                            'source_code_hash': 'fa48f08b225076d373e30d8e8f7003c5c432fb54'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif'],
+ 'task_id_hash': 'a38f3590c1cbd2199d2b04bd0b9a79aa3be53cfe',
+ 'task_name': 'convolve_linear_c_rubber (9)',
+ 'task_reexecution_hash': '8d8ceb9b07d28c79eb35159fbf4314c5ccd42f19'}
+DEBUG:taskgraph.Task:not precalculated convolve_linear_c_rubber (9)
+DEBUG:taskgraph.Task:direct _func for task convolve_linear_c_rubber (9)
+INFO:pygeoprocessing.geoprocessing:starting convolve
+DEBUG:pygeoprocessing.geoprocessing:start fill work queue thread
+DEBUG:pygeoprocessing.geoprocessing:fill work queue
+DEBUG:pygeoprocessing.geoprocessing:start worker thread
+DEBUG:pygeoprocessing.geoprocessing:work queue full
+INFO:pygeoprocessing.geoprocessing:1 sent to workers, wait for worker results
+INFO:pygeoprocessing.geoprocessing:convolution worker 100.0% complete on filtered_rubber_c_noimpact.tif
+DEBUG:taskgraph.Task:successful run on task convolve_linear_c_rubber (9)
+INFO:taskgraph.Task:A task was created that had an identical args signature sans target paths, but a different target_path_list of the same length. To avoid recomputation, dynamically adding previous Task (sens_raster_linear_c_oilpalm (7)) as a dependent task to this one (sens_raster_linear_c_rubber (10)).
+DEBUG:taskgraph.Task:_call check if precalculated sens_raster_linear_c_rubber (10)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif', 'sizetimestamp', '2297::1639734239.748651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/lulc_aligned_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[(None, 1), {0: 1.0, 1: 1.0, 100: 1.0}, '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 6, -3.4028234663852886e+38, {'raster_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/LULC', 'column_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/lucode', 'table_name': '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/Sensitivity'}], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+INFO:taskgraph.Task:not precalculated (sens_raster_linear_c_rubber (10)), Task hash exists, but there are these mismatches: Recorded path not in target path list /home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif
+DEBUG:taskgraph.Task:not precalculated sens_raster_linear_c_rubber (10)
+DEBUG:taskgraph.Task:direct _func for task sens_raster_linear_c_rubber (10)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97710
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-7, started daemon 139796807460608)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task sens_raster_linear_c_rubber (10)
+INFO:natcap.invest.habitat_quality:Starting raster calculation on total degradation
+DEBUG:taskgraph.Task:_call check if precalculated tot_degradation_linear_c_rubber (10)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif', 'sizetimestamp', '2448::1639734239.908652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif', 'sizetimestamp', '3200::1639734239.936651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif', 'sizetimestamp', '2448::1639734240.020652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif', 'sizetimestamp', '3200::1639734240.056652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif', 'sizetimestamp', '2349::1639734239.788651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[[None, None, None, None, None], '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', array([0.5, 0.5])], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (tot_degradation_linear_c_rubber (10))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795756001072:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif'],
+                                           'in_target_path_list',
+                                           array([0.5, 0.5])],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2448::1639734239.908652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_oilpalm_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639734239.936651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_oilpalm_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2448::1639734240.020652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/filtered_rubber_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639734240.056652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/sens_rubber_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2349::1639734239.788651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/access_layer_noimpact.tif')],
+                            'func_name': '_calculate_total_degradation',
+                            'kwargs_clean': {},
+                            'other_arguments': [[[None, None, None, None, None],
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 array([0.5, 0.5])],
+                                                {}],
+                            'source_code_hash': 'e13b606f3dc5c670acb1b3d02e34ed46e3ba0c4b'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif'],
+ 'task_id_hash': '2ca248b96d9f404a36dee18885595a105426a084',
+ 'task_name': 'tot_degradation_linear_c_rubber (10)',
+ 'task_reexecution_hash': 'd4bc6d2ecf8f055c81f31febb1b8b84555806a62'}
+DEBUG:taskgraph.Task:not precalculated tot_degradation_linear_c_rubber (10)
+DEBUG:taskgraph.Task:direct _func for task tot_degradation_linear_c_rubber (10)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97710
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-8, started daemon 139796807460608)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task tot_degradation_linear_c_rubber (10)
+INFO:natcap.invest.habitat_quality:Starting raster calculation on quality
+DEBUG:taskgraph.Task:_call check if precalculated habitat_quality (11)
+DEBUG:taskgraph.Task:file_stat_list: [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif', 'sizetimestamp', '2328::1639734240.104652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif'), ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif', 'sizetimestamp', '3200::1639734239.820651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')]
+DEBUG:taskgraph.Task:other_arguments: [[[None, None], '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list', 0.1767766952966369], {}]
+DEBUG:taskgraph.Task:file:///home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/_taskgraph_working_dir/taskgraph_data.db?mode=ro exists: True
+DEBUG:taskgraph.Task:not precalculated, Task hash does not exist (habitat_quality (11))
+DEBUG:taskgraph.Task:is_precalculated full task info: Task object 139795756437760:
+
+{'exception_object': None,
+ 'ignore_directories': True,
+ 'ignore_path_list': [],
+ 'priority': 0,
+ 'self._reexecution_info': {'args_clean': [['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif',
+                                            '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif'],
+                                           'in_target_path_list',
+                                           0.1767766952966369],
+                            'file_stat_list': [('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '2328::1639734240.104652::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/deg_sum_c_noimpact.tif'),
+                                               ('/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif',
+                                                'sizetimestamp',
+                                                '3200::1639734239.820651::/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/habitat_c_noimpact.tif')],
+                            'func_name': '_calculate_habitat_quality',
+                            'kwargs_clean': {},
+                            'other_arguments': [[[None, None],
+                                                 '/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/in_target_path_list',
+                                                 0.1767766952966369],
+                                                {}],
+                            'source_code_hash': '5d5a8175cd3614b8eb724efb7e55c91b6b58212a'},
+ 'self._result': None,
+ 'target_path_list': ['/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/quality_c_noimpact.tif'],
+ 'task_id_hash': '5be2501b602ca6e1aef591bf31a019c841af7bf7',
+ 'task_name': 'habitat_quality (11)',
+ 'task_reexecution_hash': 'd0320798e0398ac810df1a94ea1034915ccbfe03'}
+DEBUG:taskgraph.Task:not precalculated habitat_quality (11)
+DEBUG:taskgraph.Task:direct _func for task habitat_quality (11)
+INFO:pygeoprocessing.geoprocessing:starting stats_worker
+DEBUG:pygeoprocessing.geoprocessing_core:stats worker PID: 97710
+INFO:pygeoprocessing.geoprocessing:started stats_worker <Thread(Thread-9, started daemon 139796807460608)>
+INFO:pygeoprocessing.geoprocessing:100.0% complete
+INFO:pygeoprocessing.geoprocessing:Waiting for raster stats worker result.
+DEBUG:taskgraph.Task:successful run on task habitat_quality (11)
+INFO:natcap.invest.habitat_quality:Baseline not provided to compute Rarity
+DEBUG:taskgraph.Task:Closing taskgraph.
+DEBUG:taskgraph.Task:taskgraph closed
+DEBUG:taskgraph.Task:joining taskgraph
+INFO:natcap.invest.habitat_quality:Habitat Quality Model complete.
+DEBUG:taskgraph.Task:shutting down workers
+DEBUG:taskgraph.Task:taskgraph terminated
