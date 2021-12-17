@@ -126,7 +126,7 @@ to natcap_invest_translate_lulc
     if (p_landuse = -100 and p_homebase = -1) 	[set p_landuse_invest 4] ;forest
     if (p_landuse = 1) 							[set p_landuse_invest 3] ;rubber
     if (p_landuse = 0) 							[set p_landuse_invest 2] ;oilplam
-    if (p_landuse = -100 and p_homebase >= 0) 	[set p_landuse_invest 1] ;village
+    if (p_landuse = -100 and p_homebase >= 0) 	[set p_landuse_invest 1] ;village 
   ]
   ;ask patches [ show p_landuse_invest]
 end
