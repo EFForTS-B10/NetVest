@@ -9,7 +9,6 @@
 ;###################################################################################
 
 To import-maps
-  print ["importing maps"]
   let folder-connection ""
   ;; Open map:
   ifelse (which-map = "EFForTS-LGraf")
