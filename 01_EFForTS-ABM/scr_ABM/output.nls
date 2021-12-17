@@ -245,6 +245,7 @@ end
 To write-map-files
   write-lut-map
   write-lut-map-invest
+  write-quality-map
   write-road-map
 End
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -272,7 +273,7 @@ to write-lut-map
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end
-
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 to write-lut-map-invest
   ; Write lulc map after patch variable conversion for InVEST
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
@@ -293,11 +294,35 @@ to write-lut-map-invest
     set ycount-raster ycount-raster + 1
   ]
 
-  let filename (word "output/lut_invest" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
+  let filename (word "output/lut_invest_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+to write-quality-map
+  ; Write habitat quality map after integration habitat quality scores from InVEST as aditional patch variable
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      ;print xcount
+      ;print ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_habitat_quality] of patch xcount ycount
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
 
+  let filename (word "output/lut_quality_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename  
+end
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 to write-road-map
   ;produces a raster file with 0 for non-road cells and 1 for road cells

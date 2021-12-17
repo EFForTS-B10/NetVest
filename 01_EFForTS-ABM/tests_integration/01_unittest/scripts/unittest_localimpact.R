@@ -126,7 +126,7 @@ Qxj <- hqcalculation(ry <- ry,
                      bx=bx,
                      Sjr=read_csv(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/sensitivity_table.csv" ,sep="")) %>%
                        select(oilpalm)%>%
-                       .[[5,1]],
+                       .[[3,1]],
                      k=0.5,
                      z=2.5)
 
@@ -146,77 +146,114 @@ validation_maps <- function(investmap,expectedmap){
 validation_maps(investmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep="")),
                 expectedmap=expectedmap)
 
-
 ### 3) Plots
-##Plots for verification of correct transformation
+##Plots for verification of correct conversion
 
-mycol_impact <- c("#fee391","#b2182b")
+mycol_impact <- c(NA, "#ec7014")
 
 # Impact: asc-file
 asc_df <- as.data.frame(asc, xy=TRUE)
-
-ggplot(data=asc_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
-  landscapetools::theme_nlm_discrete(
-    legend_title = "Impact-Score",
-    axis_text_size = 4,
-    axis_title_size = 6,
-    legend_title_size = 6,
-    legend_text_size = 6,
-    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
-  scale_fill_manual(values = mycol_impact, name="Impact Score") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") +#+ ggtitle("LULC map") +
-  theme (legend.spacing.x = unit(0.2, "cm"))
+asc_map <- ggplot(data=asc_df) + 
+           geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
+           scale_fill_manual(labels = c("False", "True"), values = mycol_impact, name="Impact location (oilpalm)") +
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact map before conversion") +
+           theme (plot.title = element_text(hjust = 0.1, size = 6),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+                  axis.text = element_text(size = 2.5),
+                  axis.ticks = element_line(size = 0),
+                  legend.title = element_text(size = 4, face = "bold"),
+                  legend.text = element_text(size = 4),
+                  legend.key.width = unit(0.3, "cm"),
+                  legend.key.height = unit(0.3, "cm"),
+                  panel.background = element_rect(fill = "white"),
+                  panel.grid.major = element_line(color = "gray90", size = 0.2),
+                  panel.grid.minor = element_line(color = "gray90", size = 0.2),
+                  aspect.ratio = 1,
+                  plot.margin = margin(c(5,-25,5,1)),
+                  legend.spacing.x = unit(0.2, "cm"),
+                 )
 
 # Impact:tif-file
 tif <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/oilpalm_c.tif" ,sep=""))
 tif_df <- as.data.frame(tif, xy=TRUE)
-
-ggplot(data=tif_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
-  landscapetools::theme_nlm_discrete(
-    axis_text_size = 4,
-    axis_title_size = 6,
-    legend_title_size = 6,
-    legend_text_size = 6,
-    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
-  scale_fill_manual(values = mycol_impact, name="Impact Score") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") +  #+ ggtitle("LULC map") +
-  theme (legend.spacing.x = unit(0.2, "cm"))
+tif_map <- ggplot(data=tif_df) + 
+           geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
+           scale_fill_manual(labels = c("False", "True"), values = mycol_impact, name="Impact location (oilpalm)") +
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact map after conversion") +
+           theme (plot.title = element_text(hjust = 0.1, size = 6),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+                  axis.text = element_text(size = 2.5),
+                  axis.ticks = element_line(size = 0),
+                  legend.title = element_text(size = 4, face = "bold"),
+                  legend.text = element_text(size = 4),
+                  legend.key.width = unit(0.3, "cm"),
+                  legend.key.height = unit(0.3, "cm"),
+                  panel.background = element_rect(fill = "white"),
+                  panel.grid.major = element_line(color = "gray90", size = 0.2),
+                  panel.grid.minor = element_line(color = "gray90", size = 0.2),
+                  aspect.ratio = 1,
+                  plot.margin = margin(c(5,1,5,-25)),
+                  legend.spacing.x = unit(0.2, "cm"),
+                )
 
 ## Plots for verification of result 
 
-mycol_quality <- c("#addd8e","#00441b")
+mycol_quality <- c("#ffffe5","#00441b")
 
 #invest: habitat-quality map
 invest <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep=""))
 invest_df <- as.data.frame(invest, xy=TRUE)
-
-ggplot(data=invest_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(quality_c_localimpact))) + 
-  landscapetools::theme_nlm_discrete(
-    axis_text_size = 4,
-    axis_title_size = 6,
-    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
-  scale_fill_manual(values = mycol_quality, name="Habitat-Quality Score") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") #+ ggtitle("LULC map")
+invest_map <- ggplot(data=invest_df) + 
+              geom_raster(aes(x=x,y=y,fill=factor(quality_c_localimpact))) + 
+              scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
+              xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Habitat-quality map of InVEST") +
+              theme (plot.title = element_text(hjust = 0.1, size = 6),
+                     axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+                     axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+                     axis.text = element_text(size = 2.5),
+                     axis.ticks = element_line(size = 0),
+                     legend.title = element_text(size = 4, face = "bold"),
+                     legend.text = element_text(size = 4),
+                     legend.key.width = unit(0.3, "cm"),
+                     legend.key.height = unit(0.3, "cm"),
+                     panel.background = element_rect(fill = "white"),
+                     panel.grid.major = element_line(color = "gray90", size = 0.2),
+                     panel.grid.minor = element_line(color = "gray90", size = 0.2),
+                     aspect.ratio = 1,
+                     plot.margin = margin(c(5,-25,5,1)),
+                     legend.spacing.x = unit(0.2, "cm"),
+                    )
 
 # expected-map
 expected_df <- as.data.frame(expectedmap, xy=TRUE)
 
-ggplot(data=expected_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(layer))) + 
-  landscapetools::theme_nlm_discrete(
-    axis_text_size = 4,
-    axis_title_size = 6,
-    plot_margin = ggplot2::unit(c(1,1,1,1), "lines")) +
-  scale_fill_manual(values = mycol_quality, name="Habitat-Quality Score") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") #+ ggtitle("LULC map")
+expected_map <- ggplot(data=expected_df) + 
+                geom_raster(aes(x=x,y=y,fill=factor(layer))) + 
+                scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
+                xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Expected habitat-quality map") +
+                theme (plot.title = element_text(hjust = 0.1, size = 6),
+                       axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+                       axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+                       axis.text = element_text(size = 2.5),
+                       axis.ticks = element_line(size = 0),
+                       legend.title = element_text(size = 4, face = "bold"),
+                       legend.text = element_text(size = 4),
+                       legend.key.width = unit(0.3, "cm"),
+                       legend.key.height = unit(0.3, "cm"),
+                       panel.background = element_rect(fill = "white"),
+                       panel.grid.major = element_line(color = "gray90", size = 0.2),
+                       panel.grid.minor = element_line(color = "gray90", size = 0.2),
+                       aspect.ratio = 1,
+                       plot.margin = margin(c(5,1,5,-25)),
+                       legend.spacing.x = unit(0.2, "cm"),
+                      )
 
 ### PLOTTING
 library(ggpubr)
-ggarrange(asc, tif, ncol=2, nrow=1, labels= "AUTO", common.legend = TRUE, legend="bottom")
+ggarrange(asc_map, tif_map, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
 ggsave("impact_comp_local.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
 
-ggarrange(invest, expected, ncol=2, nrow=1, labels= "AUTO", common.legend = TRUE, legend="bottom")
+ggarrange(invest_map, expected_map, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
 ggsave("result_comp_local.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
