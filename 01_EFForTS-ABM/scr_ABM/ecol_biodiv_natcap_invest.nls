@@ -298,12 +298,18 @@ to natcap_invest_aggregate_habitatquality_landuse
   set forest-hq 0
   set forest-hq mean [p_habitat_quality] of patches with [p_landuse = -100]
   print (word "forest-hq mean:" forest-hq)
+  if any? patches with [p_landuse = 0]
+  [
   set oilpalm-hq 0
   set oilpalm-hq mean [p_habitat_quality] of patches with [p_landuse = 0]
   print (word "oilpalm-hq mean:" oilpalm-hq)
+  ]
+  if any? patches with [p_landuse = 1]
+  [
   set rubber-hq 0
   set rubber-hq mean [p_habitat_quality] of patches with [p_landuse = 1]
   print (word "rubber-hq mean:" rubber-hq)
+  ]
 end
 
 
