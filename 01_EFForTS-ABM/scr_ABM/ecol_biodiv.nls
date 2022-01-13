@@ -4,7 +4,7 @@ to init_biodiversity
   ;; Check plant biodiversity initialization
   if (biodiv_plants = "SAR") [biodiv_plants_SAR_init]
   ;if (biodiv_plants = "invest_manual") [biodiv_plants_invest_manual_init]
-  if (biodiv_natcap_invest = "habitat_quality") [natcap_invest_habitatquality_init]
+  if (biodiv_natcap_invest = "habitat_quality") [natcap-invest-habitatquality-init]
 end
 
 
@@ -19,7 +19,7 @@ to run_biodiversity
     ;; Check plants biodiversity:
     if (biodiv_plants = "SAR") [biodiv_plants_SAR_update]
     ;if (biodiv_plants = "invest_manual") [biodiv_plants_invest_manual_update]
-    if (biodiv_natcap_invest = "habitat_quality") [natcap_invest_habitatquality_update]
+    if (biodiv_natcap_invest = "habitat_quality") [natcap-invest-habitatquality-update]
   ]
   
 end

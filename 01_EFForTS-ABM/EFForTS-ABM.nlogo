@@ -71,11 +71,11 @@ globals
   sar_ratio
 
   ; biodiv_natcap_invest module
-  landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
-  forest-hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
-  oilpalm-hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
-  rubber-hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse rubber
-  workdir                  ;working directory for EFForTS-ABM-InVEST Integration
+  landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+  forest_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
+  oilpalm_hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
+  rubber_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse rubber
+  workdir_natcap           ;working directory for EFForTS-ABM-InVEST Integration
   ;k                         ; half-saturation-constant for calculation of habitat quality scores
 ]
 
@@ -108,9 +108,9 @@ patches-own
   p_luDiversity
   p_bird_richness
 
-  ;; Variables used by biodiv_natcap_invest modules:
+  ; biodiv_natcap_invest module
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
-  p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
+  p_impact_location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
   p_habitat_quality        ; variable for storing habitat quality
 
 ]
@@ -231,8 +231,8 @@ To setup-with-external-maps
   setup_social_networks
 
   ; Initialize biodiversity natcap invest module and update it once for setup
-  natcap_invest_habitatquality_init
-  natcap_invest_habitatquality_update
+  natcap-invest-habitatquality-init
+  natcap-invest-habitatquality-update
 
   ; Paint world:
   paint-landuse
@@ -285,7 +285,7 @@ To go
   calculate_LUT_fractions
 
   ; Run biodiversity natcap invest module
-  natcap_invest_habitatquality_update
+  natcap-invest-habitatquality-update
 
   ; If show-output? is turned on, update plots and world output
   ifelse (show-output?)
@@ -2398,7 +2398,7 @@ rent_rate_capital_borrow
 rent_rate_capital_borrow
 0
 1
-0.1
+0.14
 0.01
 1
 NIL
@@ -2998,7 +2998,7 @@ MONITOR
 2662
 385
 landscape-level habitat quality
-precision landscape-hq 4
+precision landscape_hq 4
 17
 1
 11
@@ -3072,7 +3072,7 @@ BUTTON
 2712
 698
 NIL
-natcap_invest_translate_lulc
+natcap-invest-translate-lulc
 NIL
 1
 T
@@ -3099,6 +3099,27 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+2655
+425
+2855
+575
+Habitat quality
+NIL
+NIL
+0.0
+10.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"landscape" 1.0 0 -16777216 true "" ""
+"forest" 1.0 0 -14333415 true "" ""
+"oilpalm" 1.0 0 -3844592 true "" ""
+"rubber" 1.0 0 -4079321 true "" ""
 
 @#$#@#$#@
 ## Abstract of corresponding publication

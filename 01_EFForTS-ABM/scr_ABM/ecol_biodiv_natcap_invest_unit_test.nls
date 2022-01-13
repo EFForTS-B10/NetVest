@@ -5,42 +5,42 @@ to test-invest
 	print (word "experiment:"experiment)
    ;; clear all
    ca
-	 set workdir word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
-  print ( word "workdir:" workdir)
-  let half-saturation-constant k
+	 set workdir_natcap word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
+  print ( word "workdir_natcap:" workdir_natcap)
+  let half_saturation_constant k
 	 ;; setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
-	 natcap_invest_set_up_invest
+	 natcap-invest-set-up-invest
 	 ;; load sensitivity table and impact table and store as csv-table (defined in ecol_biodiv_natcap_invest.nls)
-	 natcap_invest_write_tables
+	 natcap-invest-write-tables
    ;; lulc.asc, oilpalm_c.asc and rubber_c.asc considered input for testing
    foreach ["lulc" "oilpalm_c" "rubber_c"]
 [
     [x] ->
-    natcap_invest_file_copy_tif (x)
+    natcap-invest-file-copy-tif (x)
   ]
    ;natcap_invest_file_copy_tif "lulc"
    ;natcap_invest_file_copy_tif "oilpalm_c"
    ;natcap_invest_file_copy_tif "rubber_c"
    ;; convert asc files from output folder to tif files
-   natcap_invest_convert_maps_tif
+   natcap-invest-convert-maps-tif
    ;; execution of Invest with working directory of InVEST
-   let invest_wd word workdir "/output"
+   let invest_wd word workdir_natcap "/output"
   print (word "invest_wd:" invest_wd)
-   natcap_invest_execute_invest invest_wd experiment half-saturation-constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
-   natcap_invest_convert_maps_asc experiment
+   natcap-invest-execute-invest invest_wd experiment half_saturation_constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+   natcap-invest-convert-maps-asc experiment
 
   print ["Success"]
   print ["Success"]
                                                      
 end
 
-to natcap_invest_file_copy_tif [file]
+to natcap-invest-file-copy-tif [file]
   print ["Copying files from input to output folder"]
-    let file_in   (word  workdir "/input/" file ".asc")
+    let file_in   (word  workdir_natcap "/input/" file ".asc")
     print file_in
-    let file_out   (word  workdir "/output/" file ".asc")
+    let file_out   (word  workdir_natcap "/output/" file ".asc")
     print file_out
-    let file_conv  (word  workdir "/output/" file)
+    let file_conv  (word  workdir_natcap "/output/" file)
 
     py:set "file_in" file_in
     py:set "file_out" file_out

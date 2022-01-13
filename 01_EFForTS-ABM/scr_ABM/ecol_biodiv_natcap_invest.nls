@@ -1,16 +1,16 @@
 
-to natcap_invest_habitatquality_init
+to natcap-invest-habitatquality-init
 ; input is located in model folder ./natcap_invest/input: input for invest is: sensitivitytable.txt, impacttable.txt, LULCmap.asc, impactmaps.asc"
 ; output will be written to model folder ./natcap_invest/output: output of EFForTS-ABM as inpt for Invest is: sensitivitytable.csv, impacttable.csv, LULCmap.tif, impacttables.tif"
-; for testing purposes workdir can be set via full path to point to the testing data files
+; for testing purposes workdir_natcap can be set via full path to point to the testing data files
 
-  set workdir "./natcap_invest"
-  natcap_invest_set_up_invest 
-  natcap_invest_write_tables 
+  set workdir_natcap "./natcap_invest"
+  natcap-invest-set-up-invest 
+  natcap-invest-write-tables 
 end
 
 ;; Setup the connection to python and import a few libraries
-to natcap_invest_set_up_invest
+to natcap-invest-set-up-invest
  print["setting up python invest"]
   py:setup py:python3
   py:run "import sys"
@@ -24,32 +24,30 @@ end
 
 
 ;; Generation of csv-tables
-to natcap_invest_write_tables
+to natcap-invest-write-tables
  print ["start write tables"]
-  natcap_invest_write_sensitivity 
-  natcap_invest_write_impact 
+  natcap-invest-write-sensitivity 
+  natcap-invest-write-impact 
 end
 
 ;; Read in sensitivity-table from natcap_invest input-folder and generate sensitivity-table
-to natcap_invest_write_sensitivity
+to natcap-invest-write-sensitivity
  print ["writing sensitivity table"]
- print (word "workdir:" workdir)
+ print (word "workdir_natcap:" workdir_natcap)
   ;; Reset global sensitivity-list
   let sensitivity_all []
   let filename  0
   ;; Read sensitivity file depending on habitat quality objective
-     set filename word workdir "/input/sensitivitytable.txt"
+     set filename word workdir_natcap "/input/sensitivitytable.txt"
      print (word "sensitivity filename:" filename)
   ifelse filename = 0 [stop]
   [
   file-open filename
-                                                          ;print ["file open"]
   while [not file-at-end?]
   [
 
     ;;Read data for previous defined research objective and correlated habitat-suitability
     let LULC file-read
-                                                           ;print LULC
     let NAME file-read
     let HABITAT file-read
     let oilpalm file-read
@@ -62,7 +60,7 @@ to natcap_invest_write_sensitivity
  
   ]
     ;; Store sensitivity_table.csv to output folder
-    let filename_out (word workdir "/output/sensitivity_table.csv")
+    let filename_out (word workdir_natcap "/output/sensitivity_table.csv")
     csv:to-file filename_out sensitivity_all
 
   file-close
@@ -72,10 +70,10 @@ end
 
 
 ;; Read in impact-table from natcap_invest input-folder and generate impact-table
-to natcap_invest_write_impact
+to natcap-invest-write-impact
  print ["writing impact table"]
   let impact_all []
-  let filename word workdir "/input/impacttable.txt"
+  let filename word workdir_natcap "/input/impacttable.txt"
  print (word "impact filename:" filename)
   ifelse filename = 0 [stop]
   [
@@ -95,7 +93,7 @@ to natcap_invest_write_impact
     set impact_all lput impact impact_all
   ]
     ;; Store impact_table.csv to output folder
-    let filename_out word workdir "/output/impact_table.csv"
+    let filename_out word workdir_natcap "/output/impact_table.csv"
     csv:to-file filename_out impact_all
 
   file-close
@@ -103,24 +101,24 @@ to natcap_invest_write_impact
 end
 
 
-to natcap_invest_habitatquality_update
-  set workdir "./natcap_invest"  
-  let invest_wd word workdir "/output"
+to natcap-invest-habitatquality-update
+  set workdir_natcap "./natcap_invest"  
+  let invest_wd word workdir_natcap "/output"
   let experiment natcap_invest_experiment 
-  let half-saturation-constant k
-   natcap_invest_translate_lulc
-   natcap_invest_write_maps 
-   natcap_invest_convert_maps_tif 
-   natcap_invest_execute_invest invest_wd experiment half-saturation-constant
-   natcap_invest_convert_maps_asc experiment 
-   natcap_invest_save_habitatquality_to_patch experiment 
-   natcap_invest_aggregate_habitatquality_landscape
-   natcap_invest_aggregate_habitatquality_landuse
+  let half_saturation_constant k
+   natcap-invest-translate-lulc
+   natcap-invest-write-maps 
+   natcap-invest-convert-maps-tif 
+   natcap-invest-execute-invest invest_wd experiment half_saturation_constant
+   natcap-invest-convert-maps-asc experiment 
+   natcap-invest-save-habitatquality-to-patch experiment 
+   natcap-invest-aggregate-habitatquality-landscape
+   natcap-invest-aggregate-habitatquality-landuse
 end
 
 
 ;; Create new variable for lulc-classification used by natcap InVEST
-to natcap_invest_translate_lulc
+to natcap-invest-translate-lulc
  print["translating lulc values"]
   ask patches
   [
@@ -129,37 +127,37 @@ to natcap_invest_translate_lulc
 end
 
 ;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
-to natcap_invest_write_maps
+to natcap-invest-write-maps
  print["start write maps to output folder"]
-  natcap_invest_write_lulc_map 
-  natcap_invest_write_impact_map "oilpalm" 
-  natcap_invest_write_impact_map "rubber" 
+  natcap-invest-write-lulc-map 
+  natcap-invest-write-impact-map "oilpalm" 
+  natcap-invest-write-impact-map "rubber" 
 end
 
 
 ;; Generation of LULC-map
-to natcap_invest_write_lulc_map
+to natcap-invest-write-lulc-map
  print ["writing lulc map"]
   let new-raster gis:patch-dataset p_landuse_invest
-  let filename (word workdir "/output/lulc.asc")
+  let filename (word workdir_natcap "/output/lulc.asc")
   print filename
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
 end
 
 ;; Generation of impact-maps
-to natcap_invest_write_impact_map [impact-name]
+to natcap-invest-write-impact-map [impact-name]
   ask patches
-  [set p_impact-location FALSE]
+  [set p_impact_location FALSE]
  print["writing impact map(s)"]
   ;; iterate throug all possible impacts
   show impact-name
   (ifelse
     impact-name = "oilpalm"
-    [ask patches with [p_landuse_invest = 0] [set p_impact-location TRUE] 
+    [ask patches with [p_landuse_invest = 0] [set p_impact_location TRUE] 
        print ["generating oilpalm impact map"]]
     impact-name = "rubber"
-      [ask patches with [p_landuse_invest = 1 ] [set p_impact-location TRUE] 
+      [ask patches with [p_landuse_invest = 1 ] [set p_impact_location TRUE] 
        print ["generating rubber impact map"]]
   )
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
@@ -170,7 +168,7 @@ to natcap_invest_write_impact_map [impact-name]
   [
     while[xcount <= max-pxcor]
     [
-      ifelse ([p_impact-location] of patch xcount ycount = TRUE)
+      ifelse ([p_impact_location] of patch xcount ycount = TRUE)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
       set xcount xcount + 1
@@ -181,28 +179,28 @@ to natcap_invest_write_impact_map [impact-name]
   ]
 
   ;; store impact-map
-  let filename (word workdir "/output/" (word (impact-name)) "_c.asc")
+  let filename (word workdir_natcap "/output/" (word (impact-name)) "_c.asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
 
-  ask patches [set p_impact-location FALSE]
+  ask patches [set p_impact_location FALSE]
 end
 
 
 ;; Conversion of asc-maps to tif-maps for transferation to InVEST
-to natcap_invest_convert_maps_tif
+to natcap-invest-convert-maps-tif
  print ["converting maps"]
- print (word "workdir: "workdir)
+ print (word "workdir_natcap: "workdir_natcap)
   foreach ["lulc" "oilpalm_c" "rubber_c"]
 [
     [x] ->
-    natcap_invest_convert_to_tif (x)
+    natcap-invest-convert-to-tif (x)
   ]
 end
 
 
-to natcap_invest_convert_to_tif [file]
-let filepath (word workdir "/output/" file)
+to natcap-invest-convert-to-tif [file]
+let filepath (word workdir_natcap "/output/" file)
   py:set "filepath" filepath
  print (word "filepath:" filepath)
   (py:run
@@ -220,13 +218,13 @@ end
 
 
 ;; Invoke model InVEST and transfer output
-to natcap_invest_execute_invest [invest_wd experiment half-saturation-constant]
+to natcap-invest-execute-invest [invest_wd experiment half_saturation_constant]
  print (word "[invoking model InVEST with working directory: " invest_wd "]")
  print (word "experiment name: " experiment)
  print (word "half saturation constant:" k)
   py:set "working_directory" invest_wd
   py:set "experiment_name" experiment
-  py:set "half_saturation_constant" half-saturation-constant
+  py:set "half_saturation_constant" half_saturation_constant
   (py:run
  "print('setting up parameters')"
   "logfile = working_directory + '/invest_log_' + experiment_name + '.log'" 
@@ -248,9 +246,9 @@ end
 
 
 ;; Convertion of tif-file from InVEST to asc-file for netlogo
-to natcap_invest_convert_maps_asc [experiment]
+to natcap-invest-convert-maps-asc [experiment]
   print (word "[converting invest results to asc for " experiment "]")
-  py:set "working_directory" workdir
+  py:set "working_directory" workdir_natcap
   (py:run
     "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
     "in_name = f'{filename}.tif'"
@@ -268,11 +266,11 @@ end
 
 
 ;; save habitat quality of every parcel as patch-variable
-to natcap_invest_save_habitatquality_to_patch [experiment]
+to natcap-invest-save-habitatquality-to-patch [experiment]
   print ["saving habitat quality scores as patch variable within EFForTS-ABM"]
   let quality-outputfile-name ""
 
-  set quality-outputfile-name (word workdir "/output/quality_c_" experiment ".asc")
+  set quality-outputfile-name (word workdir_natcap "/output/quality_c_" experiment ".asc")
 
   file-open quality-outputfile-name
   let temp []
@@ -286,29 +284,29 @@ to natcap_invest_save_habitatquality_to_patch [experiment]
  ] )
 end
 
-to natcap_invest_aggregate_habitatquality_landscape
+to natcap-invest-aggregate-habitatquality-landscape
   print ["aggregating habitat quality scores"]
-  set landscape-hq 0
-  set landscape-hq mean [p_habitat_quality] of patches
-  print (word "landscape-hq mean:" landscape-hq)
+  set landscape_hq 0
+  set landscape_hq mean [p_habitat_quality] of patches
+  print (word "landscape-hq mean:" landscape_hq)
 end
 
-to natcap_invest_aggregate_habitatquality_landuse
+to natcap-invest-aggregate-habitatquality-landuse
   print ["aggregating habitat quality scores for each landuse"]
-  set forest-hq 0
-  set forest-hq mean [p_habitat_quality] of patches with [p_landuse = -100]
-  print (word "forest-hq mean:" forest-hq)
+  set forest_hq 0
+  set forest_hq mean [p_habitat_quality] of patches with [p_landuse = -100]
+  print (word "forest-hq mean:" forest_hq)
   if any? patches with [p_landuse = 0]
   [
-  set oilpalm-hq 0
-  set oilpalm-hq mean [p_habitat_quality] of patches with [p_landuse = 0]
-  print (word "oilpalm-hq mean:" oilpalm-hq)
+  set oilpalm_hq 0
+  set oilpalm_hq mean [p_habitat_quality] of patches with [p_landuse = 0]
+  print (word "oilpalm-hq mean:" oilpalm_hq)
   ]
   if any? patches with [p_landuse = 1]
   [
-  set rubber-hq 0
-  set rubber-hq mean [p_habitat_quality] of patches with [p_landuse = 1]
-  print (word "rubber-hq mean:" rubber-hq)
+  set rubber_hq 0
+  set rubber_hq mean [p_habitat_quality] of patches with [p_landuse = 1]
+  print (word "rubber-hq mean:" rubber_hq)
   ]
 end
 

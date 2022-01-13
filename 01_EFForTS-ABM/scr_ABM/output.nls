@@ -17,6 +17,7 @@ to do-plots
  
   ;; Landscape level plots:
   paint-plot-carbon
+  paint-plot-habitatquality
   paint-plot-price
   paint-plot-LUT-fractions
   paint-plot-wealth
@@ -94,6 +95,28 @@ to paint-plot-carbon
   set-plot-pen-color black
   plot (lut-carbon-sum / area_under_agriculture)
 
+end
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to paint-plot-habitatquality
+  
+  set-current-plot "Habitat quality" 
+  set-current-plot-pen "landscape"
+  set-plot-pen-color black
+  plot landscape_hq
+  
+  set-current-plot-pen "forest"
+  set-plot-pen-color green
+  plot forest_hq
+  
+  set-current-plot-pen "oilpalm"
+  set-plot-pen-color runresult (word "LUT-" 0 "-color")
+  plot oilpalm_hq
+  
+  set-current-plot-pen "rubber"
+  set-plot-pen-color runresult (word "LUT-" 1 "-color")
+  plot rubber_hq
 end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
