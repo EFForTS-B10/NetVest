@@ -114,7 +114,8 @@ to natcap_invest_habitatquality_update
    natcap_invest_execute_invest invest_wd experiment half-saturation-constant
    natcap_invest_convert_maps_asc experiment 
    natcap_invest_save_habitatquality_to_patch experiment 
-   natcap_invest_aggregate_habitatquality
+   natcap_invest_aggregate_habitatquality_landscape
+   natcap_invest_aggregate_habitatquality_landuse
 end
 
 
@@ -285,9 +286,24 @@ to natcap_invest_save_habitatquality_to_patch [experiment]
  ] )
 end
 
-to natcap_invest_aggregate_habitatquality
+to natcap_invest_aggregate_habitatquality_landscape
   print ["aggregating habitat quality scores"]
   set landscape-hq 0
   set landscape-hq mean [p_habitat_quality] of patches
   print (word "landscape-hq mean:" landscape-hq)
 end
+
+to natcap_invest_aggregate_habitatquality_landuse
+  print ["aggregating habitat quality scores for each landuse"]
+  set forest-hq 0
+  set forest-hq mean [p_habitat_quality] of patches with [p_landuse = -100]
+  print (word "forest-hq mean:" forest-hq)
+  set oilpalm-hq 0
+  set oilpalm-hq mean [p_habitat_quality] of patches with [p_landuse = 0]
+  print (word "oilpalm-hq mean:" oilpalm-hq)
+  set rubber-hq 0
+  set rubber-hq mean [p_habitat_quality] of patches with [p_landuse = 1]
+  print (word "rubber-hq mean:" rubber-hq)
+end
+
+

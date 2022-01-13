@@ -70,8 +70,11 @@ globals
   sar_t0
   sar_ratio
 
-  ;invest:habitat-quality variables
+  ; biodiv_natcap_invest module
   landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+  forest-hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
+  oilpalm-hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
+  rubber-hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse rubber
   workdir                  ;working directory for EFForTS-ABM-InVEST Integration
   ;k                         ; half-saturation-constant for calculation of habitat quality scores
 ]
