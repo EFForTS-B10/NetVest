@@ -288,7 +288,7 @@ to natcap-invest-aggregate-habitatquality-landscape
   print ["aggregating habitat quality scores"]
   set landscape_hq 0
   set landscape_hq mean [p_habitat_quality] of patches
-  print (word "landscape-hq mean:" landscape_hq)
+  print (word "landscape_hq mean:" landscape_hq)
 end
 
 to natcap-invest-aggregate-habitatquality-landuse
