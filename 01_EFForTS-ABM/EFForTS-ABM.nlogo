@@ -15,7 +15,7 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_natcap_invest.nls"  "scr_ABM/ecol_dummy_invest.nls" "scr_ABM/ecol_biodiv_natcap_invest_unit_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_integration_test.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_natcap_invest.nls"  "scr_ABM/ecol_dummy_invest.nls" "scr_ABM/ecol_biodiv_natcap_invest_unit_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_integration_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_habitatfrag.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
 ]
 

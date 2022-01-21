@@ -16,7 +16,7 @@ to habitat-frag
    foreach ["lulc" "agri_c"]
 [
     [x] ->
-    natcap-invest-file-copy-tif (x)
+    natcap-invest-file-copy-tif-habitatfrag (x)
   ]
    ;natcap_invest_file_copy_tif "lulc"
    ;natcap_invest_file_copy_tif "oilpalm_c"
@@ -34,7 +34,7 @@ to habitat-frag
                                                      
 end
 
-to natcap-invest-file-copy-tif [file]
+to natcap-invest-file-copy-tif-habitatfrag [file]
   print ["Copying files from input to output folder"]
     let file_in   (word  workdir_natcap "/input/" file ".asc")
     print file_in
@@ -49,5 +49,5 @@ to natcap-invest-file-copy-tif [file]
     print (word "copied to file_out:" file_out)
 end
 
-to do-nothing ;because nlrx demands to run an additional function
+to do-nothing-habitatfrag ;because nlrx demands to run an additional function
 end
