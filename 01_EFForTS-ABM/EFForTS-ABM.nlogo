@@ -17,7 +17,7 @@ __includes [
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
   "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls"   "scr_ABM/ecol_biodiv_natcap_invest.nls"   "scr_ABM/ecol_biodiv_natcap_invest_unit_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_integration_test.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls"  "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
-;"scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_dummy_invest.nls" "scr_ABM/ecol_biodiv_natcap_invest_habitatfrag.nls" "scr_ABM/util_testing.nls"
+"scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_dummy_invest.nls" "scr_ABM/ecol_biodiv_natcap_invest_habitatfrag.nls" "scr_ABM/util_testing.nls"
 ]
 
 ; Extensions used in this NetLogo model:
@@ -61,15 +61,15 @@ globals
   mean_hh_consumption        ; mean level of consumption of all households in one year
 
   ; biodiv_birds_mahken_module:
-  ;bird_richness
+  bird_richness
 
   ; biodiv_plants_SAR module:
-  ;plantdiv_all_probs
-  ;ws_list
-  ;sar
-  ;sar_t
-  ;sar_t0
-  ;sar_ratio
+  plantdiv_all_probs
+  ws_list
+  sar
+  sar_t
+  sar_t0
+  sar_ratio
 
   ; biodiv_natcap_invest module
   landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
@@ -103,11 +103,11 @@ patches-own
   p_optimal_production     ; optimal production of this cell
 
   ;; Variables used by biodiv_birds_mahnken module:
-  ;p_beetlesRichness
-  ;p_antsRichness
-  ;p_canopy
-  ;p_luDiversity
-  ;p_bird_richness
+  p_beetlesRichness
+  p_antsRichness
+  p_canopy
+  p_luDiversity
+  p_bird_richness
 
   ; biodiv_natcap_invest module
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
@@ -2926,7 +2926,7 @@ INPUTBOX
 645
 800
 natcap_invest_experiment
-NIL
+spatial_landuse
 1
 0
 String
