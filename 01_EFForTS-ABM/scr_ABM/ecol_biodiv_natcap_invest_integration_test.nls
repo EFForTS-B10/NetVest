@@ -4,7 +4,6 @@ to test-integration
 	print (word "experiment:"experiment)
 	let half_saturation_constant k
   ;; initialize EFForTS-ABM model and executing InVEST once for loading hq-values    ;; into landscape(defined in initialization.nls and ecol_biodiv_natcap_invest.nls
-  ;print ["setting up EFForTS-ABM and InVEST"]
   setup-with-external-maps
   print["testing integration: go"]
   go

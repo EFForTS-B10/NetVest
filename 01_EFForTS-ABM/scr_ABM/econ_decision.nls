@@ -63,9 +63,6 @@ To perform-lu-and-production-decision
         
         ;; store the expected predicted netcashflow in a turtle variable:
         set h_netcashflow_exp max-expected-cashflow
-        
-        ;; If this netcashflow is negative and the hh uses rubber, it can now switch management to fallow:
-        ;if (allow-fallow?) [test-decide-management]
       
         apply-landuse-and-production-decision-one-hh choosen-option
         

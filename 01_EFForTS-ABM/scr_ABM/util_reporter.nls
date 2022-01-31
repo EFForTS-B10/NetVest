@@ -59,9 +59,6 @@ end
 to-report hh.count
   report count hhs
 end
-;to-report hh.count.immigrant
- ; report count hhs with [h_immigrant? = TRUE]
-;end
 to-report hh.area.mean
   let hh.area 0
   if (any? hhs)
@@ -93,10 +90,6 @@ end
 
 
 ;; BIODIVERSITY
-;to-report p.sar
- ; report sar_ratio
-;end
-
 to-report p.hq
   report landscape_hq
 end

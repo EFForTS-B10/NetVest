@@ -18,9 +18,6 @@ to test-invest
     [x] ->
     natcap-invest-file-copy-tif (x)
   ]
-   ;natcap_invest_file_copy_tif "lulc"
-   ;natcap_invest_file_copy_tif "oilpalm_c"
-   ;natcap_invest_file_copy_tif "rubber_c"
    ;; convert asc files from output folder to tif files
    natcap-invest-convert-maps-tif
    ;; execution of Invest with working directory of InVEST

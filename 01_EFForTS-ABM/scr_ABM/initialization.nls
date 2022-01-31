@@ -19,9 +19,6 @@ To set_global_constants
   set prices-matrix matrix:copy create-prices-matrix ; set prices-matrix as matrix (global variable) and assign values from data to it
   set prices but-first matrix:get-row prices-matrix 0
   set carbon []
-  ;set bird_richness [0 0 0 0 0]
-  
-  ;landmarket-globals-reset
   
 End  
 
@@ -172,26 +169,6 @@ To init-household-area
   ] 
    
 End  
-
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-;To init-household-age
- ; ask hhs
-  ;[
-   ; set h_age draw-hh-age
-  ;] 
-   
-;End  
-
-;To-report draw-hh-age
- ; let draw_age 0
-  
-  ;while [draw_age < hh_age_min or draw_age > hh_age_max]
-   ; [
-    ;  set draw_age round (random-gamma hh_age_alpha hh_age_lambda)
-    ;] 
-  ;report draw_age
-;end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
