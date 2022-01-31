@@ -2963,6 +2963,26 @@ PENS
 "oilpalm" 1.0 0 -3844592 true "" ""
 "rubber" 1.0 0 -4079321 true "" ""
 
+CHOOSER
+765
+790
+903
+835
+biodiv_birds
+biodiv_birds
+"none" "mahnken"
+0
+
+CHOOSER
+740
+870
+878
+915
+biodiv_plants
+biodiv_plants
+"none" "SAR" "invest-manual"
+0
+
 @#$#@#$#@
 ## Abstract of corresponding publication
 
