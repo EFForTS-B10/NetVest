@@ -18,6 +18,13 @@ alpha.o<-nrow(sm.o[sm.o$abundance_sum >= 1, ])
 sm.r <- subset(sm, sm$plotID=="R")
 alpha.r <- nrow(sm.r[sm.r$abundance_sum >= 1, ])
 
+#Test for statistical significance of species richness 
+# Mean and sd over all 8 plots
+# 95% Confidence interval test with t-test
+sm<- data.frame(read.csv("C:/Users/JuliaHenzler/Documents/01_GitHub/EFForTS-ABM/00_Parameterization/01_ImpactWeighting/understorey_plants/B06_Plants_plot.csv", header=TRUE, sep=",", dec = ".", fill=TRUE, na.strings="NA"))#%>%
+  
+
+
 #impact weighting (w)
 alpha.sum <- alpha.o + alpha.r
 

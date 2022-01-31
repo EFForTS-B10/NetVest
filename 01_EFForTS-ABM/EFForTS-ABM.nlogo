@@ -231,8 +231,10 @@ To setup-with-external-maps
   setup_social_networks
 
   ; Initialize biodiversity natcap invest module and update it once for setup
-  natcap-invest-habitatquality-init
-  natcap-invest-habitatquality-update
+  init_biodiversity
+
+  ;natcap-invest-habitatquality-init
+  ;natcap-invest-habitatquality-update
 
   ; Paint world:
   paint-landuse
