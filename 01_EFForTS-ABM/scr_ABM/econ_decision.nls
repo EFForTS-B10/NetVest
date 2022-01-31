@@ -65,7 +65,7 @@ To perform-lu-and-production-decision
         set h_netcashflow_exp max-expected-cashflow
         
         ;; If this netcashflow is negative and the hh uses rubber, it can now switch management to fallow:
-        if (allow-fallow?) [test-decide-management]
+        ;if (allow-fallow?) [test-decide-management]
       
         apply-landuse-and-production-decision-one-hh choosen-option
         

@@ -15,8 +15,9 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_natcap_invest.nls"  "scr_ABM/ecol_dummy_invest.nls" "scr_ABM/ecol_biodiv_natcap_invest_unit_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_integration_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_habitatfrag.nls"
-  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls"   "scr_ABM/ecol_biodiv_natcap_invest.nls"   "scr_ABM/ecol_biodiv_natcap_invest_unit_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_integration_test.nls"
+  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls"  "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
+;"scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_dummy_invest.nls" "scr_ABM/ecol_biodiv_natcap_invest_habitatfrag.nls" "scr_ABM/util_testing.nls"
 ]
 
 ; Extensions used in this NetLogo model:
@@ -60,15 +61,15 @@ globals
   mean_hh_consumption        ; mean level of consumption of all households in one year
 
   ; biodiv_birds_mahken_module:
-  bird_richness
+  ;bird_richness
 
   ; biodiv_plants_SAR module:
-  plantdiv_all_probs
-  ws_list
-  sar
-  sar_t
-  sar_t0
-  sar_ratio
+  ;plantdiv_all_probs
+  ;ws_list
+  ;sar
+  ;sar_t
+  ;sar_t0
+  ;sar_ratio
 
   ; biodiv_natcap_invest module
   landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
@@ -102,11 +103,11 @@ patches-own
   p_optimal_production     ; optimal production of this cell
 
   ;; Variables used by biodiv_birds_mahnken module:
-  p_beetlesRichness
-  p_antsRichness
-  p_canopy
-  p_luDiversity
-  p_bird_richness
+  ;p_beetlesRichness
+  ;p_antsRichness
+  ;p_canopy
+  ;p_luDiversity
+  ;p_bird_richness
 
   ; biodiv_natcap_invest module
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
@@ -287,7 +288,9 @@ To go
   calculate_LUT_fractions
 
   ; Run biodiversity natcap invest module
-  natcap-invest-habitatquality-update
+  run_biodiversity
+
+  ;natcap-invest-habitatquality-update
 
   ; If show-output? is turned on, update plots and world output
   ifelse (show-output?)
@@ -378,8 +381,8 @@ PLOT
 2295
 195
 Prices
-Year
-NIL
+Time [years]
+Price [US$/ton]
 0.0
 10.0
 0.0
@@ -395,7 +398,7 @@ PLOT
 1850
 195
 LUT-fractions (owned patches)
-NIL
+Time [years]
 NIL
 0.0
 10.0
@@ -743,9 +746,9 @@ NIL
 1
 
 MONITOR
-2300
+2505
 40
-2375
+2580
 85
 active_hhs
 count hhs
@@ -2442,9 +2445,9 @@ TEXTBOX
 1
 
 TEXTBOX
-2305
+2510
 10
-2455
+2660
 31
 == Monitors ==
 17
@@ -2670,17 +2673,6 @@ TEXTBOX
 105.0
 1
 
-SWITCH
-2475
-85
-2597
-118
-allow-fallow?
-allow-fallow?
-1
-1
--1000
-
 BUTTON
 1390
 35
@@ -2736,9 +2728,9 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 MONITOR
-2300
+2505
 85
-2432
+2637
 130
 hh_area_mean (cells)
 precision mean [h_area] of hhs 3
@@ -2779,34 +2771,6 @@ LUT-1-price-mu
 0
 Number
 
-BUTTON
-475
-800
-585
-833
-show bird richness
-visualize-bird-richness
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-MONITOR
-705
-755
-780
-800
-sar_ratio
-precision sar_ratio 4
-17
-1
-11
-
 INPUTBOX
 5
 535
@@ -2828,36 +2792,6 @@ NIL
 1
 0
 String
-
-TEXTBOX
-2475
-10
-2650
-28
-== TESTING AREA ==
-17
-105.0
-1
-
-TEXTBOX
-595
-725
-795
-743
-Preliminary inVEST biodiversity module:
-11
-0.0
-1
-
-TEXTBOX
-475
-725
-610
-750
-Preliminary bird species richness model:
-11
-0.0
-1
 
 INPUTBOX
 735
@@ -2892,16 +2826,6 @@ LUT-4-price-mu
 0
 Number
 
-TEXTBOX
-2480
-40
-2630
-81
-Preliminary fallow option.\nOnly works with specific land-use folders
-11
-0.0
-1
-
 BUTTON
 420
 35
@@ -2919,26 +2843,6 @@ NIL
 NIL
 1
 
-CHOOSER
-595
-755
-705
-800
-biodiv_plants
-biodiv_plants
-"none" "SAR" "invest_manual"
-0
-
-CHOOSER
-475
-755
-585
-800
-biodiv_birds
-biodiv_birds
-"none" "mahnken"
-0
-
 TEXTBOX
 645
 30
@@ -2950,40 +2854,20 @@ nlrx exchange:
 1
 
 TEXTBOX
-525
+495
 635
-710
+680
 653
 == Biodiversity ==
 17
 53.0
 1
 
-TEXTBOX
-475
-705
-510
-723
-Birds
-12
-0.0
-1
-
-TEXTBOX
-595
-705
-630
-723
-Plants
-12
-0.0
-1
-
 SLIDER
-520
-665
-707
-698
+495
+660
+645
+693
 ecol_biodiv_interval
 ecol_biodiv_interval
 1
@@ -2995,10 +2879,10 @@ ticks
 HORIZONTAL
 
 MONITOR
-2485
-340
-2662
-385
+2505
+130
+2682
+175
 landscape-level habitat quality
 precision landscape_hq 4
 17
@@ -3006,20 +2890,20 @@ precision landscape_hq 4
 11
 
 TEXTBOX
-2485
-430
-2635
-456
+655
+660
+805
+686
 Unittest InVEST\n
 11
 0.0
 1
 
 INPUTBOX
-2485
-450
-2610
-510
+655
+680
+780
+740
 inv-test
 NIL
 1
@@ -3027,30 +2911,20 @@ NIL
 String
 
 CHOOSER
-2485
-225
-2627
-270
+495
+695
+645
+740
 biodiv_natcap_invest
 biodiv_natcap_invest
 "none" "habitatquality"
 0
 
-TEXTBOX
-2485
-190
-2635
-216
-Preliminary Natcap Invest Module\n
-11
-0.0
-1
-
 INPUTBOX
-2485
-275
-2702
-335
+495
+740
+645
+800
 natcap_invest_experiment
 NIL
 1
@@ -3058,58 +2932,24 @@ NIL
 String
 
 INPUTBOX
-2485
-515
-2637
-575
+495
+800
+645
+860
 k
 0.0
 1
 0
 Number
 
-BUTTON
-2525
-665
-2712
-698
-NIL
-natcap-invest-translate-lulc
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2535
-720
-2632
-753
-NIL
-import-maps\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 PLOT
-2655
-425
-2855
-575
+2295
+40
+2495
+195
 Habitat quality
-NIL
-NIL
+Time [years]
+hq Score
 0.0
 10.0
 0.0

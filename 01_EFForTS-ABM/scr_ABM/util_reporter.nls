@@ -93,9 +93,9 @@ end
 
 
 ;; BIODIVERSITY
-to-report p.sar
-  report sar_ratio
-end
+;to-report p.sar
+ ; report sar_ratio
+;end
 
 to-report p.hq
   report landscape_hq

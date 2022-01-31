@@ -74,8 +74,8 @@ to set-efforts-abm-defaults
   set hh-color 8
   
   set ecol_biodiv_interval 1
-  set biodiv_plants "none"
-  set biodiv_birds "none"
+  ;set biodiv_plants "none"
+  ;set biodiv_birds "none"
   set biodiv_natcap_invest "none"
   
 end
