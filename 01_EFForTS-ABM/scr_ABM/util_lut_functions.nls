@@ -175,7 +175,7 @@ End
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To-report lut_function_invest_oilpalm [age]
   ; reports investment costs
-  let investment-costs [600 175 175]
+  let investment-costs [600 200 150]
   set investment-costs ifelse-value (age < length investment-costs) [(item age investment-costs)][0]
   set investment-costs investment-costs * patch_size 
   report investment-costs
