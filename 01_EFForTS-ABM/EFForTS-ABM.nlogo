@@ -284,7 +284,7 @@ To go
   set simulation_year (simulation_year + 1)
   tick
 
-  ; If moutput maps should be written, do it now
+  ; If output maps should be written, do it now
   if (write-maps?) [write-map-files]
 
   ;; Check stop condition:
