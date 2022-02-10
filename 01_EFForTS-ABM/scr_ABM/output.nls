@@ -342,8 +342,8 @@ to write-quality-map
     set ycount-raster ycount-raster + 1
   ]
 
-  let filename (word "output/lut_quality_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
-  ;if (file-exists? filename) [file-delete filename]
+  let filename (word "output/lut_quality_" new-seed "_" but-first (word (1000 + ticks)) ".asc")
+  if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
