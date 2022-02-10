@@ -318,12 +318,12 @@ to write-lut-map-invest
   ]
 
   let filename (word "output/lut_invest_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
-  ;if (file-exists? filename) [file-delete filename]
+  if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 to write-quality-map
-  ; Write habitat quality map after integration habitat quality scores from InVEST as aditional patch variable
+  ; Write habitat quality map after integration habitat quality scores from InVEST as additional patch variable
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
   let xcount 0
   let ycount max-pycor
@@ -343,7 +343,7 @@ to write-quality-map
   ]
 
   let filename (word "output/lut_quality_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
-  if (file-exists? filename) [file-delete filename]
+  ;if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
