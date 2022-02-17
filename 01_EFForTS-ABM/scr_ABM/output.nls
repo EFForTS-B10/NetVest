@@ -342,7 +342,7 @@ to write-quality-map
     set ycount-raster ycount-raster + 1
   ]
 
-  let filename (word "output/lut_quality_" idrunnum "_" behaviorspace-run-number "_" but-first (word (1000 + ticks)) ".asc")
+  let filename (word "output/lut_quality_" behaviorspace-experiment-name "_" behaviorspace-run-number "_" but-first (word (1000 + ticks)) ".asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end
