@@ -61,6 +61,7 @@ fileexist(qualitymap=file.exists((paste("/home/dockerj/EFForTS-ABM/01_EFForTS-AB
 ## Aim 2: Validating linear decrease of degradation scores over space
 
 # Impact location
+library(raster)
 asc <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 xyimpact <- xyFromCell(asc, which(asc[] == 1)) 
 
@@ -173,8 +174,40 @@ plot.west <- ggplot(data=west, mapping = aes(x = x, y = deg_sum_c_globalimpact))
              theme(legend.position = "none",
                    plot.margin = margin(c(5,5,5,20)))
 
+deg <- ggplot(data=deg.map_df) + 
+  geom_raster(aes(x=x,y=y,fill=deg_sum_c_globalimpact)) +  
+  scale_fill_gradient(low = "#ffffe5", high = "#800026", name = "Degradation Scores ") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") + #ggtitle("Generated degradation map") +
+  theme (plot.title = element_text(hjust = 0.1, size = 6),
+         axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+         axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+         axis.text = element_text(size = 5),
+         axis.ticks = element_line(size = 0),
+         legend.title = element_text(size = 10, face = "bold"),
+         legend.text = element_text(size = 8),
+         legend.key.width = unit(0.3, "cm"),
+         legend.key.height = unit(0.3, "cm"),
+         panel.background = element_rect(fill = "white"),
+         panel.grid.major = element_line(color = "gray90", size = 0.2),
+         panel.grid.minor = element_line(color = "gray90", size = 0.2),
+         aspect.ratio = 1,
+         plot.margin = margin(c(5,-117,5,1)),
+         legend.spacing.x = unit(0.2, "cm")
+  )
+
 ### PLOTTING
 library(ggpubr)
-ggarrange(plot.south, plot.north, plot.west, plot.east, ncol=2, nrow=2, labels= "AUTO", common.legend = TRUE, legend="bottom")
+ggarrange(ggarrange(plot.south, plot.north, ncol =2, labels = c("A", "B")),  
+          ggarrange(plot.west, plot.east, ncol =2, labels = c("C", "D")),
+          ggarrange(deg, ncol = 1, labels = "E"),
+          nrow = 3, 
+          heights = c(1, 1, 1, 1, 100),
+          widths = c(1, 1, 1, 1, 100),
+          align = "v",
+          labels = "A"                                        
+)
 # !xyimpact is location of impact: 214986 9755730
 ggsave("degradation_landscape.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/", scale = 3 )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+
+
+ 

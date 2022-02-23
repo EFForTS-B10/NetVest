@@ -76,7 +76,7 @@ lut_trans <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/output/lut_invest_
 validation_translation <- function (inputmap, outputmap) {
   translation <- abs(inputmap) - outputmap
   translation_df <- as.data.frame(translation)
-  print ("Checking translation of patch LULC values")
+  print ("Comparing maps")
   if (sum(translation_df$layer) == 0) {print (TRUE)} else {print (FALSE)}
 }
 # Comparison
@@ -156,8 +156,8 @@ lutabm <- ggplot(data=lutabm_df) +
            geom_raster(aes(x=x,y=y,fill=factor(lut__001))) + 
            scale_fill_manual(labels = c("forest", "oilpalm", "rubber"), values = mycol_lut, name="Land-use types") +
            xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Land-use map before translation") +
-           title("Land-use map before translation") +
-           theme (plot.title = element_text(hjust = 0.1, size = 6),
+           #title("Land-use map before translation") +
+           theme (plot.title = element_text(hjust = 0.1, size = 5),
                   axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
                   axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
                   axis.text = element_text(size = 2.5),
@@ -166,19 +166,21 @@ lutabm <- ggplot(data=lutabm_df) +
                   legend.text = element_text(size = 4),
                   legend.key.width = unit(0.3, "cm"),
                   legend.key.height = unit(0.3, "cm"),
+                  legend.position = "none",
                   panel.background = element_rect(fill = "white"),
                   panel.grid.major = element_line(color = "gray90", size = 0.2),
                   panel.grid.minor = element_line(color = "gray90", size = 0.2),
                   aspect.ratio = 1,
-                  plot.margin = margin(c(5,-25,5,1)),
+                  plot.margin = margin(c(5,0,5,0)),
                   legend.spacing.x = unit(0.2, "cm"),
+                  #legend.box.margin = unit(c(0,0,20,0), "mm"),
                  )
 
 luttrans <- ggplot(data=luttrans_df) + 
              geom_raster(aes(x=x,y=y,fill=factor(lut_invest__001))) + 
              scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
              xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Land-use map after translation") +
-             theme (plot.title = element_text(hjust = 0.1, size = 6),
+             theme (plot.title = element_text(hjust = 0.1, size = 5),
                     axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
                     axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
                     axis.text = element_text(size = 2.5),
@@ -187,17 +189,65 @@ luttrans <- ggplot(data=luttrans_df) +
                     legend.text = element_text(size = 4),
                     legend.key.width = unit(0.3, "cm"),
                     legend.key.height = unit(0.3, "cm"),
+                    legend.position = "none", 
                     panel.background = element_rect(fill = "white"),
                     panel.grid.major = element_line(color = "gray90", size = 0.2),
                     panel.grid.minor = element_line(color = "gray90", size = 0.2),
                     aspect.ratio = 1,
-                    plot.margin = margin(c(5,1,5,-25)),
-                    legend.spacing.x = unit(0.2, "cm")
+                    plot.margin = margin(c(5,0,5,0)),
+                    legend.spacing.x = unit(0.2, "cm"),
+                    #legend.box.margin = unit(c(0,0,20,0), "mm"),
                    )
 
+lulc_df <- as.data.frame(lulc, xy=TRUE)
+
+lulcplot <- ggplot(data=lulc_df) + 
+  geom_raster(aes(x=x,y=y,fill=factor(lulc))) + 
+  scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated land-use map") +
+  theme (plot.title = element_text(hjust = 0.1, size = 5),
+         axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
+         axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
+         axis.text = element_text(size = 2.5),
+         axis.ticks = element_line(size = 0),
+         legend.title = element_text(size = 4, face = "bold"),
+         legend.text = element_text(size = 4),
+         legend.key.width = unit(0.3, "cm"),
+         legend.key.height = unit(0.3, "cm"),
+         legend.position = "right",
+         panel.background = element_rect(fill = "white"),
+         panel.grid.major = element_line(color = "gray90", size = 0.2),
+         panel.grid.minor = element_line(color = "gray90", size = 0.2),
+         aspect.ratio = 1,
+         plot.margin = margin(c(5,0,5,0)),
+         legend.spacing.x = unit(0.2, "cm"),
+         #legend.box.margin = unit(c(0,0,20,0), "mm"),
+  )
+
+#leg <- ggplot(data=lulc_df) + 
+ # geom_raster(aes(x=x,y=y,fill=factor(lulc))) + 
+#  scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
+ # xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated land-use map") +
+#  theme(legend.position = c(0.5,0.5),
+ #       legend.key.size = unit(1, "cm"),
+  #      legend.text = element_text(size =  12),
+   #     legend.title = element_text(size = 15, face = "bold"))+
+  #guides(colour = guide_legend(override.aes = list(size=8)))
+
+#legend <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species))+
+ # geom_point()+
+  #lims(x = c(0,0), y = c(0,0))+
+  #theme_void()+
+  #theme(legend.position = c(0.5,0.5),
+   #     legend.key.size = unit(1, "cm"),
+    #    legend.text = element_text(size =  12),
+     #   legend.title = element_text(size = 15, face = "bold"))+
+  #guides(colour = guide_legend(override.aes = list(size=8)))
+
 library(ggpubr)
-ggarrange(lutabm, luttrans, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("lutabm_luttrans.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+ggarrange(lutabm, luttrans, lulcplot, ncol = 3, nrow = 1, common.legend = TRUE, legend = "right" )#%>%
+ # gridExtra::grid.arrange (heights = unit(c(80, 10), "mm"))
+ggsave("lutabm_luttrans_lulc.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
 
 ################################################################################
 ## Aim 2.2 Correct generation of LULC map
@@ -243,7 +293,7 @@ lulcplot <- ggplot(data=lulc_df) +
                    panel.grid.minor = element_line(color = "gray90", size = 0.2),
                    aspect.ratio = 1,
                    plot.margin = margin(c(5,1,5,-25)),
-                   legend.spacing.x = unit(0.2, "cm")
+                   legend.spacing.x = unit(0.2, "cm"),
                   )
   
 ggarrange(luttrans, lulcplot, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
