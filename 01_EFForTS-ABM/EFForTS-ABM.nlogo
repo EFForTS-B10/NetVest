@@ -15,7 +15,7 @@ __includes [
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls"   "scr_ABM/ecol_biodiv_natcap_invest.nls"   "scr_ABM/ecol_biodiv_natcap_invest_unit_test.nls" "scr_ABM/ecol_biodiv_natcap_invest_integration_test.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls"   "scr_ABM/ecol_biodiv_ncinv.nls"   "scr_ABM/ecol_biodiv_ncinv_unit_test.nls" "scr_ABM/ecol_biodiv_ncinv_integration_test.nls"
   "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls"  "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
 ]
 
@@ -59,12 +59,15 @@ globals
   max_hh_consumption         ; maximum level of consumption of all households in one year
   mean_hh_consumption        ; mean level of consumption of all households in one year
 
-  ; biodiv_natcap_invest module
+  ; ncinv variables
+  workdir_ncinv            ;working directory for EFForTS-ABM-InVEST Integration
+
+  ; ecol_biodiv_ncinv module
   landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
   forest_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
   oilpalm_hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
   rubber_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse rubber
-  workdir_natcap           ;working directory for EFForTS-ABM-InVEST Integration
+
 ]
 
 ; Define patch properties:
@@ -89,7 +92,7 @@ patches-own
   p_actual_production      ; actual production of this cell
   p_optimal_production     ; optimal production of this cell
 
-  ; biodiv_natcap_invest module
+  ; ecol_biodiv_ncinv module
   p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
   p_impact_location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
   p_habitat_quality        ; variable for storing habitat quality
@@ -1254,7 +1257,7 @@ CHOOSER
 gr-inaccessible-area-location
 gr-inaccessible-area-location
 "random" "road-connected"
-0
+1
 
 CHOOSER
 720
@@ -2829,20 +2832,20 @@ nlrx exchange:
 1
 
 TEXTBOX
-495
-635
-680
-653
-== Biodiversity ==
-17
-53.0
+335
+730
+520
+746
+Habitat Quality
+12
+74.0
 1
 
 SLIDER
-495
-660
-645
-693
+330
+750
+480
+783
 ecol_biodiv_interval
 ecol_biodiv_interval
 1
@@ -2864,54 +2867,44 @@ precision landscape_hq 4
 1
 11
 
-TEXTBOX
-655
-660
-805
-686
-Unittest InVEST\n
-11
-0.0
-1
-
 INPUTBOX
-655
-680
-780
-740
-inv-test
+480
+665
+605
+725
+ncinv_test
 NIL
 1
 0
 String
 
 CHOOSER
-495
-695
-645
-740
-biodiv_natcap_invest
-biodiv_natcap_invest
+330
+785
+480
+830
+biodiv_ncinv
+biodiv_ncinv
 "none" "habitatquality"
 0
 
 INPUTBOX
-495
-740
-645
-800
-natcap_invest_experiment
+330
+665
+480
+725
+ncinv_experiment
 spatial_landuse
 1
 0
 String
 
 INPUTBOX
-495
-800
-645
-860
-k
+330
+830
+480
+890
+biodiv_ncinv_k
 0.0
 1
 0
@@ -2937,6 +2930,50 @@ PENS
 "forest" 1.0 0 -14333415 true "" ""
 "oilpalm" 1.0 0 -3844592 true "" ""
 "rubber" 1.0 0 -4079321 true "" ""
+
+BUTTON
+495
+750
+657
+783
+Unit test Habitat Quality
+unittest-biodiv-ncinv
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+495
+790
+697
+823
+Integration test Habitat Quality
+integrationtest-biodiv-ncinv
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+335
+635
+630
+676
+== InVEST Integration Parameters ==
+17
+74.0
+1
 
 @#$#@#$#@
 ## Abstract of corresponding publication

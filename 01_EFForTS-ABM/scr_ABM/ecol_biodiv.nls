@@ -2,8 +2,8 @@
 to init-biodiversity
   
   ;; Check biodiversity initialization
-  if (biodiv_natcap_invest = "habitatquality") [natcap-invest-habitatquality-init 
-                                                natcap-invest-habitatquality-update]
+  if (biodiv_ncinv = "habitatquality") [biodiv-ncinv-init 
+                                        biodiv-ncinv-update]
 end
 
 
@@ -12,7 +12,7 @@ to run-biodiversity
   if (ticks mod ecol_biodiv_interval = 0)
   [
     ;; Check biodiversity:
-    if (biodiv_natcap_invest = "habitatquality") [natcap-invest-habitatquality-update]
+    if (biodiv_ncinv = "habitatquality") [biodiv-ncinv-update]
   ]
   
 end
