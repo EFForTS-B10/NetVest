@@ -16,7 +16,7 @@ natcapinvestexperiment <- invtest
 hsc <- 0.05
 netlogopath <- file.path("/home/dockerj/nl")
 modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/natcap_invest/output")
+outpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
 netlogoversion <- "6.1.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -28,7 +28,7 @@ nl@experiment <- experiment(expname=experiment,
                             outpath=outpath,
                             repetition=1,
                             tickmetrics="false",
-                            idsetup="test-integration",
+                            idsetup="integrationtest-biodiv-ncinv",
                             idgo="do-nothing",
                             runtime=1,
                             #metrics=c("edu-calc-index"),
@@ -36,9 +36,9 @@ nl@experiment <- experiment(expname=experiment,
                             constants = get.abm.defaults()
                                              )
                                              
-nl <- set.nl.constant(nl, "inv-test", invtest)
-nl <- set.nl.constant(nl, "k", hsc)
-nl <- set.nl.constant(nl, "natcap_invest_experiment", natcapinvestexperiment)
+nl <- set.nl.constant(nl, "ncinv_test", invtest)
+nl <- set.nl.constant(nl, "biodiv_ncinv_k", hsc)
+nl <- set.nl.constant(nl, "ncinv_experiment", natcapinvestexperiment)
 nl <- set.nl.constant(nl, "write-maps?", TRUE)
 
 nl@simdesign <- simdesign_simple(nl=nl,

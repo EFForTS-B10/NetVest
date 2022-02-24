@@ -4,7 +4,7 @@
 
 # specify experiment 
 # specify hsc (half-saturation-constant), default: 0.05. Has to be adapted after first simulation to ca. 1/2 of Dmax
-# Input folder of natcap_invest has to include sensitivitytable.txt, impacttable.txt  
+# Input folder of ncinv/habitatquality has to include sensitivitytable.txt, impacttable.txt  
 # adapt netlogopath, modelpath, outpath and netlogoversion
 
 ### 1) Integrationtest execution
@@ -16,7 +16,7 @@ natcapinvestexperiment <- invtest
 hsc <- 0.05
 netlogopath <- file.path("/home/dockerj/nl")
 modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/natcap_invest/output")
+outpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
 netlogoversion <- "6.1.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -38,9 +38,9 @@ nl@experiment <- experiment(expname=experiment,
 
 nl <- set.nl.constant(nl, "heterogeneous-hhs?", "false")
 nl <- set.nl.constant(nl, "learning-spillover?", "false")
-nl <- set.nl.constant(nl, "inv-test", invtest)
-nl <- set.nl.constant(nl, "k", hsc)
-nl <- set.nl.constant(nl, "natcap_invest_experiment", natcapinvestexperiment)
+nl <- set.nl.constant(nl, "ncinv_test", invtest)
+nl <- set.nl.constant(nl, "biodiv_ncinv_k", hsc)
+nl <- set.nl.constant(nl, "ncinv_experiment", natcapinvestexperiment)
 nl <- set.nl.constant(nl, "sim-time", 51)
 nl <- set.nl.constant(nl, "write-maps?", TRUE)
 

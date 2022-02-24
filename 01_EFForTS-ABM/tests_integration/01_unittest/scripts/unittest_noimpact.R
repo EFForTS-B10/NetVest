@@ -26,13 +26,13 @@ nl@experiment <- experiment(expname=experiment,
                             outpath=outpath,
                             repetition=1,
                             tickmetrics="false",
-                            idsetup="test-invest",
+                            idsetup="unittest-biodiv-ncinv",
                             idgo="do-nothing",
                             runtime=1,
                             #metrics=c("edu-calc-index"),
                             variables = list(),
-                            constants = list("inv-test"=invtest,
-                                             "k"=hsc))
+                            constants = list("ncinv_test"=invtest,
+                                             "biodiv_ncinv_k"=hsc))
 
 nl@simdesign <- simdesign_simple(nl=nl,
                                  nseeds=1)
