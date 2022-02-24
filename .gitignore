@@ -10,3 +10,6 @@
 01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/*.*
 01_EFForTS-ABM/tests_integration/01_unittest/localimpact/output/*.*
 01_EFForTS-ABM/tests_integration/01_unittest/globalimpact/output/*.*
+01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/intermediate/*.*
+01_EFForTS-ABM/tests_integration/01_unittest/localimpact/output/intermediate/*.*
+01_EFForTS-ABM/tests_integration/01_unittest/globalimpact/output/intermediate/*.*
