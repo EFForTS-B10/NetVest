@@ -2,8 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
-.log
-.db
+*.log
+*.db
+*.asc
+*.tif
+*.prj
 01_EFForTS-ABM/output/**/*.*
 01_EFForTS-ABM/ncinv/habitatquality/output/*.*
 01_EFForTS-ABM/ncinv/habitatquality/output/**/*.*
