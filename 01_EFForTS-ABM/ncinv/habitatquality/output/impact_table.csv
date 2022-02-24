@@ -1,3 +1,0 @@
-THREAT,MAX_DIST,WEIGHT,DECAY,CUR_PATH
-oilpalm,1,1,linear,oilpalm_c.tif
-rubber,1,1,linear,rubber_c.tif
