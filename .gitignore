@@ -2,5 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
+.log
+.db
 01_EFForTS-ABM/output/**/*.*
+01_EFForTS-ABM/ncinv/habitatquality/output/*.*
 01_EFForTS-ABM/ncinv/habitatquality/output/**/*.*
+01_EFForTS-ABM/tests_integration/01_unittest/noimpact/output/*.*
+01_EFForTS-ABM/tests_integration/01_unittest/localimpact/output/*.*
+01_EFForTS-ABM/tests_integration/01_unittest/globalimpact/output/*.*
