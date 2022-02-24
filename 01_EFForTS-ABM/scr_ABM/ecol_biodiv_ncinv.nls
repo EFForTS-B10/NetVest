@@ -122,7 +122,7 @@ to biodiv-ncinv-translate-lulc
  print["translating lulc values"]
   ask patches
   [
-    set p_landuse_invest abs p_landuse  
+    set p_landuse_ncinv abs p_landuse  
   ]
 end
 
@@ -138,7 +138,7 @@ end
 ;; Generation of LULC-map
 to biodiv-ncinv-write-lulc-map
  print ["writing lulc map"]
-  let new-raster gis:patch-dataset p_landuse_invest
+  let new-raster gis:patch-dataset p_landuse_ncinv
   let filename (word workdir_ncinv "/output/lulc.asc")
   print filename
   if (file-exists? filename) [file-delete filename]
@@ -148,16 +148,16 @@ end
 ;; Generation of impact-maps
 to biodiv-ncinv-write-impact-map [impact-name]
   ask patches
-  [set p_impact_location FALSE]
+  [set p_impact_ncinv FALSE]
  print["writing impact map(s)"]
   ;; iterate throug all possible impacts
   show impact-name
   (ifelse
     impact-name = "oilpalm"
-    [ask patches with [p_landuse_invest = 0] [set p_impact_location TRUE] 
+    [ask patches with [p_landuse_ncinv = 0] [set p_impact_ncinv TRUE] 
        print ["generating oilpalm impact map"]]
     impact-name = "rubber"
-      [ask patches with [p_landuse_invest = 1 ] [set p_impact_location TRUE] 
+      [ask patches with [p_landuse_ncinv = 1 ] [set p_impact_ncinv TRUE] 
        print ["generating rubber impact map"]]
   )
   let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
@@ -168,7 +168,7 @@ to biodiv-ncinv-write-impact-map [impact-name]
   [
     while[xcount <= max-pxcor]
     [
-      ifelse ([p_impact_location] of patch xcount ycount = TRUE)
+      ifelse ([p_impact_ncinv] of patch xcount ycount = TRUE)
           [gis:set-raster-value new-raster xcount ycount-raster 1]
           [gis:set-raster-value new-raster xcount ycount-raster 0]
       set xcount xcount + 1
@@ -183,7 +183,7 @@ to biodiv-ncinv-write-impact-map [impact-name]
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename
 
-  ask patches [set p_impact_location FALSE]
+  ask patches [set p_impact_ncinv FALSE]
 end
 
 
@@ -280,32 +280,32 @@ to biodiv-ncinv-save-habitatquality-to-patch [experiment]
         ]
  file-close
 (foreach sort patches temp [
-       [a b] -> ask a [ set p_habitat_quality b] 
+       [a b] -> ask a [ set p_hq_ncinv b] 
  ] )
 end
 
 to biodiv-ncinv-aggregate-habitatquality-landscape
   print ["aggregating habitat quality scores"]
   set landscape_hq 0
-  set landscape_hq mean [p_habitat_quality] of patches
+  set landscape_hq mean [p_hq_ncinv] of patches
   print (word "landscape_hq mean:" landscape_hq)
 end
 
 to biodiv-ncinv-aggregate-habitatquality-landuse
   print ["aggregating habitat quality scores for each landuse"]
   set forest_hq 0
-  set forest_hq mean [p_habitat_quality] of patches with [p_landuse = -100]
+  set forest_hq mean [p_hq_ncinv] of patches with [p_landuse = -100]
   print (word "forest-hq mean:" forest_hq)
   if any? patches with [p_landuse = 0]
   [
   set oilpalm_hq 0
-  set oilpalm_hq mean [p_habitat_quality] of patches with [p_landuse = 0]
+  set oilpalm_hq mean [p_hq_ncinv] of patches with [p_landuse = 0]
   print (word "oilpalm-hq mean:" oilpalm_hq)
   ]
   if any? patches with [p_landuse = 1]
   [
   set rubber_hq 0
-  set rubber_hq mean [p_habitat_quality] of patches with [p_landuse = 1]
+  set rubber_hq mean [p_hq_ncinv] of patches with [p_landuse = 1]
   print (word "rubber-hq mean:" rubber_hq)
   ]
 end

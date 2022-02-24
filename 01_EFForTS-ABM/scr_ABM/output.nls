@@ -309,7 +309,7 @@ to write-lut-map-invest
     [
       ;print xcount
       ;print ycount
-      gis:set-raster-value new-raster xcount ycount-raster [p_landuse_invest] of patch xcount ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_landuse_ncinv] of patch xcount ycount
       set xcount xcount + 1
     ]
     set xcount 0
@@ -334,7 +334,7 @@ to write-quality-map
     [
       ;print xcount
       ;print ycount
-      gis:set-raster-value new-raster xcount ycount-raster [p_habitat_quality] of patch xcount ycount
+      gis:set-raster-value new-raster xcount ycount-raster [p_hq_ncinv] of patch xcount ycount
       set xcount xcount + 1
     ]
     set xcount 0

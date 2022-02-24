@@ -93,9 +93,9 @@ patches-own
   p_optimal_production     ; optimal production of this cell
 
   ; ecol_biodiv_ncinv module
-  p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
-  p_impact_location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
-  p_habitat_quality        ; variable for storing habitat quality
+  p_landuse_ncinv         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
+  p_impact_ncinv        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
+  p_hq_ncinv        ; variable for storing habitat quality
 
 ]
 
@@ -2835,7 +2835,7 @@ TEXTBOX
 335
 730
 520
-746
+748
 Habitat Quality
 12
 74.0
