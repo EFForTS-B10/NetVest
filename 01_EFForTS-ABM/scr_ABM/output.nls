@@ -317,7 +317,7 @@ to write-lut-map-invest
     set ycount-raster ycount-raster + 1
   ]
 
-  let filename (word "output/lut_invest_" idrunnum "_" but-first (word (1000 + ticks)) ".asc")
+  let filename (word "output/lut_invest_" behaviorspace-experiment-name "_" behaviorspace-run-number"_" but-first (word (1000 + ticks)) ".asc")
   if (file-exists? filename) [file-delete filename]
   gis:store-dataset new-raster filename  
 end

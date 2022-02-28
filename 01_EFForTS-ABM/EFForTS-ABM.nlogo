@@ -62,7 +62,7 @@ globals
   ; ncinv variables
   workdir_ncinv            ;working directory for EFForTS-ABM-InVEST Integration
 
-  ; ecol_biodiv_ncinv module
+  ; ecol_biodiv module
   landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
   forest_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
   oilpalm_hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
