@@ -2804,23 +2804,6 @@ LUT-4-price-mu
 0
 Number
 
-BUTTON
-420
-35
-505
-68
-NIL
-go-biodiversity
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 TEXTBOX
 645
 30
@@ -2843,9 +2826,9 @@ Habitat Quality
 
 SLIDER
 330
-750
+795
 480
-783
+828
 ecol_biodiv_interval
 ecol_biodiv_interval
 1
@@ -2880,9 +2863,9 @@ String
 
 CHOOSER
 330
-785
+750
 480
-830
+795
 biodiv_ncinv
 biodiv_ncinv
 "none" "habitatquality"
