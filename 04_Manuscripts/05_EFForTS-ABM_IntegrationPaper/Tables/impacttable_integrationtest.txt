@@ -1,0 +1,5 @@
+"IMPACT"	"MAX_DIST"	"WEIGHT"	"DECAY"
+"village"	0.05	1	"linear"
+"oilpalm"	0.05	1	"linear"
+"rubber"	0.05	1	"linear"
+

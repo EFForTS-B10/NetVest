@@ -1,27 +1,18 @@
 
-to init_biodiversity
+to init-biodiversity
   
-  ;; Check plant biodiversity initialization
-  if (biodiv_plants = "SAR") [biodiv_plants_SAR_init]
-  if (biodiv_plants = "invest_manual") [biodiv_plants_invest_manual_init]
-  if (biodiv_plants = "invest_python") [biodiv_plants_invest_python_init]
-  
+  ;; Check biodiversity initialization
+  if (biodiv_ncinv = "habitatquality") [biodiv-ncinv-init 
+                                        biodiv-ncinv-update]
 end
 
 
-to run_biodiversity
+to run-biodiversity
   
   if (ticks mod ecol_biodiv_interval = 0)
   [
-    
-    ;; Check bird biodiversity:
-    if(biodiv_birds = "mahnken")[biodiv_bird_richness]
-  
-    ;; Check plants biodiversity:
-    if (biodiv_plants = "SAR") [biodiv_plants_SAR_update]
-    if (biodiv_plants = "invest_manual") [biodiv_plants_invest_manual_update]
-    if (biodiv_plants = "invest_python") [biodiv_plants_invest_python_update]
-    
+    ;; Check biodiversity:
+    if (biodiv_ncinv = "habitatquality") [biodiv-ncinv-update]
   ]
   
 end

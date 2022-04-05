@@ -1,0 +1,313 @@
+
+to biodiv-ncinv-init
+; input is located in model folder ./natcap_invest/input: input for invest is: sensitivitytable.txt, impacttable.txt, LULCmap.asc, impactmaps.asc"
+; output will be written to model folder ./natcap_invest/output: output of EFForTS-ABM as inpt for Invest is: sensitivitytable.csv, impacttable.csv, LULCmap.tif, impacttables.tif"
+; for testing purposes workdir_ncinv can be set via full path to point to the testing data files
+
+  set workdir_ncinv "./ncinv/habitatquality"
+  biodiv-ncinv-set-up-invest 
+  biodiv-ncinv-write-tables 
+end
+
+;; Setup the connection to python and import a few libraries
+to biodiv-ncinv-set-up-invest
+ print["setting up python invest"]
+  py:setup py:python3
+  py:run "import sys"
+  py:run "import os"
+  py:run "import logging"
+  py:run "import natcap.invest"
+  py:run "from natcap.invest import habitat_quality"
+  py:run "from osgeo import gdal, osr"
+end
+
+
+
+;; Generation of csv-tables
+to biodiv-ncinv-write-tables
+ print ["start write tables"]
+  biodiv-ncinv-write-sensitivity 
+  biodiv-ncinv-write-impact 
+end
+
+;; Read in sensitivity-table from natcap_invest input-folder and generate sensitivity-table
+to biodiv-ncinv-write-sensitivity
+ print ["writing sensitivity table"]
+ print (word "workdir_ncinv:" workdir_ncinv)
+  ;; Reset global sensitivity-list
+  let sensitivity_all []
+  let filename  0
+  ;; Read sensitivity file depending on habitat quality objective
+     set filename word workdir_ncinv "/input/sensitivitytable.txt"
+     print (word "sensitivity filename:" filename)
+  ifelse filename = 0 [stop]
+  [
+  file-open filename
+  while [not file-at-end?]
+  [
+
+    ;;Read data for previous defined research objective and correlated habitat-suitability
+    let LULC file-read
+    let NAME file-read
+    let HABITAT file-read
+    let oilpalm file-read
+    let rubber file-read
+
+    ;; Generate temporary sensitivity-list
+    let sensitivity (list LULC NAME HABITAT oilpalm rubber)
+    set sensitivity_all lput sensitivity sensitivity_all
+
+ 
+  ]
+    ;; Store sensitivity_table.csv to output folder
+    let filename_out (word workdir_ncinv "/output/sensitivity_table.csv")
+    csv:to-file filename_out sensitivity_all
+
+  file-close
+  ]
+
+end
+
+
+;; Read in impact-table from natcap_invest input-folder and generate impact-table
+to biodiv-ncinv-write-impact
+ print ["writing impact table"]
+  let impact_all []
+  let filename word workdir_ncinv "/input/impacttable.txt"
+ print (word "impact filename:" filename)
+  ifelse filename = 0 [stop]
+  [
+  file-open filename
+
+  while [not file-at-end?]
+  [
+    ;;Read data for impact-table
+    let THREAT file-read
+    let MAX_DIST file-read
+    let WEIGHT file-read
+    let DECAY file-read
+    let CUR_PATH file-read    
+
+    ;; Generate temporary impact-list
+    let impact (list THREAT MAX_DIST WEIGHT DECAY CUR_PATH)
+    set impact_all lput impact impact_all
+  ]
+    ;; Store impact_table.csv to output folder
+    let filename_out word workdir_ncinv "/output/impact_table.csv"
+    csv:to-file filename_out impact_all
+
+  file-close
+  ]
+end
+
+
+to biodiv-ncinv-update
+  set workdir_ncinv "./ncinv/habitatquality"  
+  let invest_wd word workdir_ncinv "/output"
+  let experiment ncinv_experiment 
+  let half_saturation_constant biodiv_ncinv_k
+   biodiv-ncinv-translate-lulc
+   biodiv-ncinv-write-maps 
+   biodiv-ncinv-convert-maps-tif 
+   biodiv-ncinv-execute-invest invest_wd experiment half_saturation_constant
+   biodiv-ncinv-convert-maps-asc experiment 
+   biodiv-ncinv-save-habitatquality-to-patch experiment 
+   biodiv-ncinv-aggregate-habitatquality-landscape
+   biodiv-ncinv-aggregate-habitatquality-landuse
+end
+
+
+;; Create new variable for lulc-classification used by natcap InVEST
+to biodiv-ncinv-translate-lulc
+ print["translating lulc values"]
+  ask patches
+  [
+    set p_landuse_ncinv abs p_landuse  
+  ]
+end
+
+;; Generation of LULC-raster-map and impact-maps (as much as impacts we have)
+to biodiv-ncinv-write-maps
+ print["start write maps to output folder"]
+  biodiv-ncinv-write-lulc-map 
+  biodiv-ncinv-write-impact-map "oilpalm" 
+  biodiv-ncinv-write-impact-map "rubber" 
+end
+
+
+;; Generation of LULC-map
+to biodiv-ncinv-write-lulc-map
+ print ["writing lulc map"]
+  let new-raster gis:patch-dataset p_landuse_ncinv
+  let filename (word workdir_ncinv "/output/lulc.asc")
+  print filename
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+end
+
+;; Generation of impact-maps
+to biodiv-ncinv-write-impact-map [impact-name]
+  ask patches
+  [set p_impact_ncinv FALSE]
+ print["writing impact map(s)"]
+  ;; iterate throug all possible impacts
+  show impact-name
+  (ifelse
+    impact-name = "oilpalm"
+    [ask patches with [p_landuse_ncinv = 0] [set p_impact_ncinv TRUE] 
+       print ["generating oilpalm impact map"]]
+    impact-name = "rubber"
+      [ask patches with [p_landuse_ncinv = 1 ] [set p_impact_ncinv TRUE] 
+       print ["generating rubber impact map"]]
+  )
+  let new-raster gis:create-raster (max-pxcor + 1) (max-pycor + 1) gis:world-envelope
+  let xcount 0
+  let ycount max-pycor
+  let ycount-raster 0
+  while [ycount >= 0]
+  [
+    while[xcount <= max-pxcor]
+    [
+      ifelse ([p_impact_ncinv] of patch xcount ycount = TRUE)
+          [gis:set-raster-value new-raster xcount ycount-raster 1]
+          [gis:set-raster-value new-raster xcount ycount-raster 0]
+      set xcount xcount + 1
+    ]
+    set xcount 0
+    set ycount ycount - 1
+    set ycount-raster ycount-raster + 1
+  ]
+
+  ;; store impact-map
+  let filename (word workdir_ncinv "/output/" (word (impact-name)) "_c.asc")
+  if (file-exists? filename) [file-delete filename]
+  gis:store-dataset new-raster filename
+
+  ask patches [set p_impact_ncinv FALSE]
+end
+
+
+;; Conversion of asc-maps to tif-maps for transferation to InVEST
+to biodiv-ncinv-convert-maps-tif
+ print ["converting maps"]
+ print (word "workdir_ncinv: "workdir_ncinv)
+  foreach ["lulc" "oilpalm_c" "rubber_c"]
+[
+    [x] ->
+    biodiv-ncinv-convert-to-tif (x)
+  ]
+end
+
+
+to biodiv-ncinv-convert-to-tif [file]
+let filepath (word workdir_ncinv "/output/" file)
+  py:set "filepath" filepath
+ print (word "filepath:" filepath)
+  (py:run
+    "drv = gdal.GetDriverByName('GTiff')"
+    "ds_in = gdal.Open(f'{filepath}.asc')"
+    "ds_out = drv.CreateCopy(f'{filepath}.tif', ds_in)"
+    "srs = osr.SpatialReference()"
+    "srs.ImportFromEPSG(32748)"
+    "ds_out.SetProjection(srs.ExportToWkt())"
+    "ds_out.GetRasterBand(1).SetNoDataValue(-9999)"
+    "ds_in = None"
+    "ds_out = None"
+  )
+end
+
+
+;; Invoke model InVEST and transfer output
+to biodiv-ncinv-execute-invest [invest_wd experiment half_saturation_constant]
+ print (word "[invoking model InVEST with working directory: " invest_wd "]")
+ print (word "experiment name: " experiment)
+ print (word "half saturation constant:" biodiv_ncinv_k)
+  py:set "working_directory" invest_wd
+  py:set "experiment_name" experiment
+  py:set "half_saturation_constant" half_saturation_constant
+  (py:run
+ "print('setting up parameters')"
+  "logfile = working_directory + '/invest_log_' + experiment_name + '.log'" 
+  "logging.basicConfig(filename=logfile, level=logging.DEBUG)"
+	"logging.info('Starting habitat_quality.execute')"
+	
+    "args = {"
+    "'half_saturation_constant': half_saturation_constant,"
+    "'results_suffix': experiment_name,"
+    "'workspace_dir': working_directory,"
+    "'lulc_cur_path': os.path.join(working_directory, 'lulc.tif'),"
+    "'sensitivity_table_path': os.path.join(working_directory, 'sensitivity_table.csv'),"
+    "'threat_raster_folder': working_directory,"
+    "'threats_table_path': os.path.join(working_directory, 'impact_table.csv'),"
+    "}"
+    "habitat_quality.execute(args)"
+  )
+end
+
+
+;; Convertion of tif-file from InVEST to asc-file for netlogo
+to biodiv-ncinv-convert-maps-asc [experiment]
+  print (word "[converting invest results to asc for " experiment "]")
+  py:set "working_directory" workdir_ncinv
+  (py:run
+    "filename = f'{working_directory}/output/quality_c_{experiment_name}'"
+    "in_name = f'{filename}.tif'"
+    "out_name = f'{filename}.asc'"
+    "gdal.Translate(out_name, in_name,format='AAIGrid')"
+  )
+   (py:run
+    "filename = f'{working_directory}/output/deg_sum_c_{experiment_name}'"
+    "in_name = f'{filename}.tif'"
+    "out_name = f'{filename}.asc'"
+    "gdal.Translate(out_name, in_name,format='AAIGrid')"
+  )
+end
+
+
+
+;; save habitat quality of every parcel as patch-variable
+to biodiv-ncinv-save-habitatquality-to-patch [experiment]
+  print ["saving habitat quality scores as patch variable within EFForTS-ABM"]
+  let quality-outputfile-name ""
+
+  set quality-outputfile-name (word workdir_ncinv "/output/quality_c_" experiment ".asc")
+
+  file-open quality-outputfile-name
+  let temp []
+  repeat 6 [let header file-read-line] ; skip first 6 lines of header
+  while [file-at-end? = FALSE][
+         set temp lput file-read temp 
+        ]
+ file-close
+(foreach sort patches temp [
+       [a b] -> ask a [ set p_hq_ncinv b] 
+ ] )
+end
+
+to biodiv-ncinv-aggregate-habitatquality-landscape
+  print ["aggregating habitat quality scores"]
+  set landscape_hq 0
+  set landscape_hq mean [p_hq_ncinv] of patches
+  print (word "landscape_hq mean:" landscape_hq)
+end
+
+to biodiv-ncinv-aggregate-habitatquality-landuse
+  print ["aggregating habitat quality scores for each landuse"]
+  set forest_hq 0
+  set forest_hq mean [p_hq_ncinv] of patches with [p_landuse = -100]
+  print (word "forest-hq mean:" forest_hq)
+  if any? patches with [p_landuse = 0]
+  [
+  set oilpalm_hq 0
+  set oilpalm_hq mean [p_hq_ncinv] of patches with [p_landuse = 0]
+  print (word "oilpalm-hq mean:" oilpalm_hq)
+  ]
+  if any? patches with [p_landuse = 1]
+  [
+  set rubber_hq 0
+  set rubber_hq mean [p_hq_ncinv] of patches with [p_landuse = 1]
+  print (word "rubber-hq mean:" rubber_hq)
+  ]
+end
+
+

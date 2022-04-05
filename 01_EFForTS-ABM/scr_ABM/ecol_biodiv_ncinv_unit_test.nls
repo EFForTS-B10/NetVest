@@ -1,0 +1,50 @@
+to unittest-biodiv-ncinv
+  print["testing invest"]
+   ;; definition of experiment name and working directory
+   let experiment ncinv_test
+	print (word "experiment:"experiment)
+   ;; clear all
+   ca
+	 set workdir_ncinv word "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/" experiment
+  print ( word "workdir_ncinv:" workdir_ncinv)
+  let half_saturation_constant biodiv_ncinv_k
+	 ;; setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
+	 biodiv-ncinv-set-up-invest
+	 ;; load sensitivity table and impact table and store as csv-table (defined in ecol_biodiv_natcap_invest.nls)
+	 biodiv-ncinv-write-tables
+   ;; lulc.asc, oilpalm_c.asc and rubber_c.asc considered input for testing
+   foreach ["lulc" "oilpalm_c" "rubber_c"]
+[
+    [x] ->
+    biodiv-ncinv-file-copy-tif (x)
+  ]
+   ;; convert asc files from output folder to tif files
+   biodiv-ncinv-convert-maps-tif
+   ;; execution of Invest with working directory of InVEST
+   let invest_wd word workdir_ncinv "/output"
+  print (word "invest_wd:" invest_wd)
+   biodiv-ncinv-execute-invest invest_wd experiment half_saturation_constant ;expects working_directory, 'sensitivity_table.csv' 'impact_table.csv' 'lulc.tif'
+   biodiv-ncinv-convert-maps-asc experiment
+
+  print ["Success"]
+  print ["Success"]
+                                                     
+end
+
+to biodiv-ncinv-file-copy-tif [file]
+  print ["Copying files from input to output folder"]
+    let file_in   (word  workdir_ncinv "/input/" file ".asc")
+    print file_in
+    let file_out   (word  workdir_ncinv "/output/" file ".asc")
+    print file_out
+    let file_conv  (word  workdir_ncinv "/output/" file)
+
+    py:set "file_in" file_in
+    py:set "file_out" file_out
+    py:run "from shutil import copyfile"
+    py:run "copyfile(file_in, file_out)"
+    print (word "copied to file_out:" file_out)
+end
+
+to do-nothing ;because nlrx demands to run an additional function
+end

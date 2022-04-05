@@ -9,24 +9,21 @@
 ;############################################################################################################
 
 
-; Additional code files included in this NetLogo model (accessable via the "Includes" dropdown menu)
+; Additional code files included in this NetLogo model (accessable via the "Included Files" dropdown menu)
 __includes [
   "scr_ABM/input_maps.nls" "scr_ABM/input_prices.nls"
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
-  "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls" "scr_ABM/econ_landmarket.nls" "scr_ABM/econ_age.nls"
-  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls" "scr_ABM/ecol_biodiv_birds_mahnken.nls" "scr_ABM/ecol_biodiv_plants_SAR.nls" "scr_ABM/ecol_biodiv_plants_invest_manual.nls" "scr_ABM/ecol_biodiv_plants_invest_python.nls" "scr_ABM/ecol_dummy_invest.nls"
-  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls" "scr_ABM/util_testing.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
-  "scr_ABM/unit_tests.nls"
+  "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
+  "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls"   "scr_ABM/ecol_biodiv_ncinv.nls"   "scr_ABM/ecol_biodiv_ncinv_unit_test.nls" "scr_ABM/ecol_biodiv_ncinv_integration_test.nls"
+  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls"  "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
 ]
 
 ; Extensions used in this NetLogo model:
-;print["loading extensions"]
 extensions [gis matrix nw ls profiler csv py]
-;print["finished loading extensions"]
+
 
 breed[luts a-lut]
-breed[lms lm]
 breed[hhs hh]
 
 ; Define global variables/parameters:
@@ -62,40 +59,15 @@ globals
   max_hh_consumption         ; maximum level of consumption of all households in one year
   mean_hh_consumption        ; mean level of consumption of all households in one year
 
-  ; Landmarket variables:
-  lm_new                    ; number of newly created landmarkets
-  lm_seller_wealth_log      ; wealth of all agents who sold land on a landmarket auction
-  lm_seller_area_log        ; area of all agents who sold land on a landmarket auction
-  lm_seller_lut0_ineff_log  ; lut0 inefficiency of all agents who sold land on a landmarket auction
-  lm_seller_lut1_ineff_log  ; lut1 inefficiency of all agents who sold land on a landmarket auction
-  lm_buyer_wealth_log      ; wealth of all agents who bought land on a landmarket auction
-  lm_buyer_area_log        ; area of all agents who bought land on a landmarket auction
-  lm_buyer_lut0_ineff_log  ; lut0 inefficiency of all agents who bought land on a landmarket auction
-  lm_buyer_lut1_ineff_log  ; lut1 inefficiency of all agents who bought land on a landmarket auction
+  ; ncinv variables
+  workdir_ncinv            ;working directory for EFForTS-ABM-InVEST Integration
 
-  ; biodiv_birds_mahken_module:
-  bird_richness
+  ; ecol_biodiv module
+  landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
+  forest_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
+  oilpalm_hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
+  rubber_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse rubber
 
-  ; biodiv_plants_SAR module:
-  plantdiv_all_probs
-  ws_list
-  sar
-  sar_t
-  sar_t0
-  sar_ratio
-
-  ;invest:habitat-quality
-  landscape-hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
-  impact_all               ;impact-list
-  impact_max               ;greatest maximum distance of all impacts in impact-table
-
-  habitat_all_probs        ;list with probabilites of species occurance in a rarefied community
-  f_prob                   ;probability of occurance in forest
-  sensitivity_table        ;table with sensitivity of LULCs to threats
-  lulc_habitat_relation         ;list of habitat-relation for sensitivity table
-  filename_probs           ;can be removed soon
-  ;which-machine?            ;just to discern between windows and linux and locate python
-    ;biodiv_invest_objective ;what was this for again?
 ]
 
 ; Define patch properties:
@@ -120,18 +92,10 @@ patches-own
   p_actual_production      ; actual production of this cell
   p_optimal_production     ; optimal production of this cell
 
-  ;; Variables used by biodiv_birds_mahnken module:
-  p_beetlesRichness
-  p_antsRichness
-  p_canopy
-  p_luDiversity
-  p_bird_richness
-
-  ;; Variables used by biodiv_plants_invest modules:
-  p_landuse_invest         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
- ; p_impact-value
-  p_impact-location        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
-  p_habitat_quality        ; variable for storing habitat quality
+  ; ecol_biodiv_ncinv module
+  p_landuse_ncinv         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
+  p_impact_ncinv        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
+  p_hq_ncinv        ; variable for storing habitat quality
 
 ]
 
@@ -160,35 +124,11 @@ luts-own
   l_mng_external_income_factor
 ]
 
-lms-own
-[
-  lm_ticks
-  ; Landmarket output:
-  lm_seller_who
-  lm_seller_area
-  lm_seller_fields
-  lm_seller_wealth
-  lm_seller_lut0_ineff
-  lm_seller_lut1_ineff
-  lm_land_price
-  lm_poolall_wealth
-  lm_poolall_immigrant
-  lm_poolpot_wealth
-  lm_poolpot_immigrant
-  lm_buyer_who
-  lm_buyer_area
-  lm_buyer_wealth
-  lm_buyer_immigrant
-  lm_buyer_lut0_ineff
-  lm_buyer_lut1_ineff
-]
-
 ; Define agent properties:
 hhs-own
 [
   h_homebase          ; location of the household homebase
   h_id                ; household identification number
-  h_age               ; household age
   h_area              ; actual number of patches that belong to the household
   h_patches           ; agentset of patches beloning to the household
   h_field_id_list     ; list of field_ids that belong to the household
@@ -213,9 +153,7 @@ hhs-own
   h_inefficiencies    ; inefficiency factors [0,1]
   h_inefficiencies_temp ; inefficiency factors [0,1]
   h_connected_hhs             ; other households that are connected within the social network
-  h_immigrant?
   h_management       ; List with management ids for each LUT
-  h_landmarket
   h_land-use-change
 ]
 
@@ -232,7 +170,7 @@ end
 
 ; Main Setup procedure:
 To setup-with-external-maps
-   print["setting up"]
+  print["setting up EFForTS-ABM and InVEST"]
   ca
 
   ; control randomness
@@ -262,7 +200,6 @@ To setup-with-external-maps
   ; Initialize households
   init-household-area
   init-household-wealth
-  init-household-age
   init-household-inefficiencies
   init-log-land-use-change-list
   assign-hh-capital-stock
@@ -277,8 +214,8 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize biodiversity modules
-  init_biodiversity
+  ; Initialize biodiversity natcap invest module and update it once for setup
+  init-biodiversity
 
   ; Paint world:
   paint-landuse
@@ -297,6 +234,7 @@ End
 ;###################################################################################
 
 To go
+  print ["executing EFForTS-ABM"]
 
   ;; Check if screenshot output should be created
   store-screenshot
@@ -306,8 +244,6 @@ To go
 
   ; Check if households have to many consecutive years with debts and freeze them if needed
   sort-out-bankrupt-turtles
-  landmarket-auction
-  increase-hh-age
 
   ; Update agricultaral area (if households have been frozen)
   calculate-area-under-agriculture
@@ -331,8 +267,8 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-  ; Run biodiversity module
-  run_biodiversity
+  ; Run biodiversity natcap invest module
+  run-biodiversity
 
   ; If show-output? is turned on, update plots and world output
   ifelse (show-output?)
@@ -351,7 +287,7 @@ To go
   set simulation_year (simulation_year + 1)
   tick
 
-  ; If moutput maps should be written, do it now
+  ; If output maps should be written, do it now
   if (write-maps?) [write-map-files]
 
   ;; Check stop condition:
@@ -361,7 +297,7 @@ End
 
 to go-biodiversity
 
-  run_biodiversity
+  run-biodiversity
 
   ;; Increase time step
   set simulation_year (simulation_year + 1)
@@ -423,8 +359,8 @@ PLOT
 2295
 195
 Prices
-Year
-NIL
+Time [years]
+Price [US$/ton]
 0.0
 10.0
 0.0
@@ -440,7 +376,7 @@ PLOT
 1850
 195
 LUT-fractions (owned patches)
-NIL
+Time [years]
 NIL
 0.0
 10.0
@@ -677,7 +613,7 @@ SWITCH
 103
 SHOW-OUTPUT?
 SHOW-OUTPUT?
-1
+0
 1
 -1000
 
@@ -787,35 +723,13 @@ NIL
 NIL
 1
 
-SWITCH
-325
-435
-465
-468
-landmarket?
-landmarket?
-0
-1
--1000
-
 MONITOR
-2300
+2505
 40
-2375
+2580
 85
 active_hhs
 count hhs
-17
-1
-11
-
-MONITOR
-2375
-40
-2447
-85
-immigrants
-count hhs with [h_immigrant? = TRUE]
 17
 1
 11
@@ -869,7 +783,7 @@ INPUTBOX
 155
 245
 rnd-seed
-3478436.0
+100.0
 1
 0
 Number
@@ -1114,7 +1028,7 @@ SWITCH
 183
 heterogeneous-hhs?
 heterogeneous-hhs?
-0
+1
 1
 -1000
 
@@ -1125,7 +1039,7 @@ SWITCH
 218
 learning-spillover?
 learning-spillover?
-0
+1
 1
 -1000
 
@@ -1137,7 +1051,7 @@ CHOOSER
 setup-hh-network
 setup-hh-network
 "hh-nw-none" "hh-nw-kernel" "hh-nw-kernel-distance" "hh-nw-n-nearest-neighbors" "hh-nw-distance"
-3
+2
 
 TEXTBOX
 165
@@ -1343,7 +1257,7 @@ CHOOSER
 gr-inaccessible-area-location
 gr-inaccessible-area-location
 "random" "road-connected"
-0
+1
 
 CHOOSER
 720
@@ -1694,7 +1608,7 @@ INPUTBOX
 900
 295
 LUT-0-price-sd
-1.9
+50.0
 1
 0
 Number
@@ -1705,7 +1619,7 @@ INPUTBOX
 900
 355
 LUT-1-price-sd
-11.0
+500.0
 1
 0
 Number
@@ -1814,16 +1728,6 @@ LUT-ids-manage
 17
 1
 11
-
-TEXTBOX
-330
-415
-480
-433
-Land market
-12
-0.0
-1
 
 INPUTBOX
 695
@@ -2454,51 +2358,6 @@ NIL
 HORIZONTAL
 
 SLIDER
-325
-470
-465
-503
-buyer_pool_n
-buyer_pool_n
-1
-50
-20.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-325
-505
-465
-538
-immigrant_probability
-immigrant_probability
-0
-1
-0.5
-0.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-325
-540
-465
-573
-land_price_increase
-land_price_increase
-0
-1
-0.05
-0.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
 165
 680
 320
@@ -2522,7 +2381,7 @@ rent_rate_capital_borrow
 rent_rate_capital_borrow
 0
 1
-0.15
+0.14
 0.01
 1
 NIL
@@ -2564,9 +2423,9 @@ TEXTBOX
 1
 
 TEXTBOX
-2305
+2510
 10
-2455
+2660
 31
 == Monitors ==
 17
@@ -2792,100 +2651,6 @@ TEXTBOX
 105.0
 1
 
-INPUTBOX
-330
-695
-410
-755
-hh_age_alpha
-14.24
-1
-0
-Number
-
-INPUTBOX
-410
-695
-500
-755
-hh_age_lambda
-0.31
-1
-0
-Number
-
-INPUTBOX
-330
-755
-410
-815
-hh_age_min
-18.0
-1
-0
-Number
-
-INPUTBOX
-410
-755
-500
-815
-hh_age_max
-80.0
-1
-0
-Number
-
-TEXTBOX
-335
-675
-485
-693
-Household age
-12
-0.0
-1
-
-INPUTBOX
-330
-815
-420
-875
-age_generation
-40.0
-1
-0
-Number
-
-PLOT
-2195
-680
-2450
-900
-household age
-NIL
-NIL
-15.0
-90.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 1 -16777216 true "" "histogram [h_age] of hhs"
-
-SWITCH
-2475
-85
-2597
-118
-allow-fallow?
-allow-fallow?
-1
-1
--1000
-
 BUTTON
 1390
 35
@@ -2941,41 +2706,15 @@ PENS
 "outlier" 1.0 2 -16777216 true "" ""
 
 MONITOR
-2300
+2505
 85
-2432
+2637
 130
 hh_area_mean (cells)
 precision mean [h_area] of hhs 3
 17
 1
 11
-
-INPUTBOX
-325
-575
-465
-635
-immigrant-xp-bonus
-[0 0]
-1
-0
-String
-
-SLIDER
-325
-635
-465
-668
-immigrant-wealth-factor
-immigrant-wealth-factor
-1
-100
-1.0
-1
-1
-NIL
-HORIZONTAL
 
 INPUTBOX
 125
@@ -2994,7 +2733,7 @@ INPUTBOX
 820
 295
 LUT-0-price-mu
-1.9
+0.0
 1
 0
 Number
@@ -3005,38 +2744,10 @@ INPUTBOX
 820
 355
 LUT-1-price-mu
-11.0
+0.0
 1
 0
 Number
-
-BUTTON
-520
-800
-630
-833
-show bird richness
-visualize-bird-richness
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-MONITOR
-760
-755
-835
-800
-sar_ratio
-precision sar_ratio 4
-17
-1
-11
 
 INPUTBOX
 5
@@ -3059,47 +2770,6 @@ NIL
 1
 0
 String
-
-MONITOR
-2300
-130
-2380
-175
-NIL
-count lms
-17
-1
-11
-
-TEXTBOX
-2475
-10
-2650
-28
-== TESTING AREA ==
-17
-105.0
-1
-
-TEXTBOX
-650
-725
-850
-743
-Preliminary inVEST biodiversity module:
-11
-0.0
-1
-
-TEXTBOX
-520
-725
-655
-750
-Preliminary bird species richness model:
-11
-0.0
-1
 
 INPUTBOX
 735
@@ -3135,182 +2805,6 @@ LUT-4-price-mu
 Number
 
 TEXTBOX
-2480
-40
-2630
-81
-Preliminary fallow option.\nOnly works with specific land-use folders
-11
-0.0
-1
-
-BUTTON
-420
-35
-505
-68
-NIL
-go-biodiversity
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-170
-2655
-203
-NIL
-biodiv_plants_invest_python_init\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-310
-2662
-343
-NIL
-run-invest \"output\" \"spatial\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-240
-2605
-273
-NIL
-write-maps
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-275
-2605
-308
-NIL
-convert-maps
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-205
-2605
-238
-NIL
-translate-to-lulc-invest
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-CHOOSER
-650
-800
-802
-845
-biodiv_invest_objective
-biodiv_invest_objective
-"general" "modelorg_plants" "all_plants"
-0
-
-BUTTON
-2480
-380
-2772
-413
-NIL
-save-habitat-quality-to-patch \"output\" \"spatial\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2480
-345
-2772
-378
-NIL
-convert-habitat-quality-to-asc \"output\" \"spatial\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-CHOOSER
-650
-755
-760
-800
-biodiv_plants
-biodiv_plants
-"none" "SAR" "invest_manual" "invest_python"
-1
-
-CHOOSER
-520
-755
-630
-800
-biodiv_birds
-biodiv_birds
-"none" "mahnken"
-0
-
-TEXTBOX
 645
 30
 745
@@ -3320,52 +2814,21 @@ nlrx exchange:
 0.0
 1
 
-INPUTBOX
-420
-815
-500
-875
-takeover_prob
-0.5
-1
-0
-Number
-
 TEXTBOX
-525
-635
-710
-653
-== Biodiversity ==
-17
-53.0
-1
-
-TEXTBOX
+335
+730
 520
-705
-555
-723
-Birds
+748
+Habitat Quality
 12
-0.0
-1
-
-TEXTBOX
-650
-705
-685
-723
-Plants
-12
-0.0
+74.0
 1
 
 SLIDER
-520
-665
-707
-698
+330
+795
+480
+828
 ecol_biodiv_interval
 ecol_biodiv_interval
 1
@@ -3376,78 +2839,88 @@ ecol_biodiv_interval
 ticks
 HORIZONTAL
 
-TEXTBOX
-2485
-140
-2655
-165
-INVEST Python test Buttons\ncan be removed soon:
-11
-0.0
-1
-
-CHOOSER
-2485
-425
-2623
-470
-which-machine?
-which-machine?
-"local-windows" "local-linux" "server"
-2
-
-BUTTON
-2510
-500
-2627
-533
-NIL
-write-sensitivity\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-2535
-565
-2632
-598
-NIL
-write-impact
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
-835
-820
-1012
-865
+2505
+130
+2682
+175
 landscape-level habitat quality
-precision landscape-hq 4
+precision landscape_hq 4
 17
 1
 11
 
-BUTTON
-2630
-265
-2762
-298
+INPUTBOX
+480
+665
+605
+725
+ncinv_test
 NIL
-run-dummy-invest
+1
+0
+String
+
+CHOOSER
+330
+750
+480
+795
+biodiv_ncinv
+biodiv_ncinv
+"none" "habitatquality"
+0
+
+INPUTBOX
+330
+665
+480
+725
+ncinv_experiment
+spatial_landuse
+1
+0
+String
+
+INPUTBOX
+330
+830
+480
+890
+biodiv_ncinv_k
+0.0
+1
+0
+Number
+
+PLOT
+2295
+40
+2495
+195
+Habitat quality
+Time [years]
+hq Score
+0.0
+10.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"landscape" 1.0 0 -16777216 true "" ""
+"forest" 1.0 0 -14333415 true "" ""
+"oilpalm" 1.0 0 -3844592 true "" ""
+"rubber" 1.0 0 -4079321 true "" ""
+
+BUTTON
+495
+750
+657
+783
+Unit test Habitat Quality
+unittest-biodiv-ncinv
 NIL
 1
 T
@@ -3459,12 +2932,12 @@ NIL
 1
 
 BUTTON
-2720
-375
-2892
-408
-NIL
-aggregate-habitat-quality
+495
+790
+697
+823
+Integration test Habitat Quality
+integrationtest-biodiv-ncinv
 NIL
 1
 T
@@ -3473,6 +2946,16 @@ NIL
 NIL
 NIL
 NIL
+1
+
+TEXTBOX
+335
+635
+630
+676
+== InVEST Integration Parameters ==
+17
+74.0
 1
 
 @#$#@#$#@
@@ -3569,7 +3052,7 @@ Dislich C, Hettig E, Salecker J, Heinonen J, Lay J, Meyer KM, et al. (2018) Land
 
 Feature changes:
 
-* Consolidation: Fields of bankrupt households are not removed anymore. Instead a pool of interested households is created (partly from already existing households - consolidation, partly from newly initialized households - immigrants). Ownership of these fields is gained by the household with the highest expected netcashflow for these fields
+* Habitat Quality: Can be set with the parameter"bidiv_natcap_invest". The managed landscape of EFForTS-ABM can be transferred at every user defined timestep to InVEST for calculating habitat quality values depending on impacts of land use on habitat. 
 
 * Soical option matrix: Can be set with the parameter land-use-options. Social options matrix is created by using information from within the social network of the agent. First it is checked how many households converted to each landuse-type. If not at least one household converted to a specific landuse-type such conversion is only done under a certain proability (interface)
 
@@ -5238,16 +4721,13 @@ export-inefficiency-distribution</setup>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
     <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;local-linux&quot;"/>
+      <value value="&quot;server&quot;"/>
     </enumeratedValueSet>
   </experiment>
   <experiment name="nils_test_full_refforts" repetitions="1" runMetricsEveryStep="true">
     <setup>test-invest</setup>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
-    <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;local-linux&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="reproducable?">
       <value value="false"/>
     </enumeratedValueSet>
@@ -5416,9 +4896,6 @@ export-inefficiency-distribution</setup>
     <enumeratedValueSet variable="biodiv_invest_objective">
       <value value="&quot;general&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="which-machine?">
-      <value value="&quot;server&quot;"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="allow-fallow?">
       <value value="false"/>
     </enumeratedValueSet>
@@ -5443,8 +4920,8 @@ export-inefficiency-distribution</setup>
     <enumeratedValueSet variable="show-roads?">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="p_impact-location">
-      <value value="false"/>
+    <enumeratedValueSet variable="which-machine?">
+      <value value="&quot;server&quot;"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
