@@ -783,7 +783,7 @@ INPUTBOX
 155
 245
 rnd-seed
-100.0
+1234.0
 1
 0
 Number
@@ -1257,7 +1257,7 @@ CHOOSER
 gr-inaccessible-area-location
 gr-inaccessible-area-location
 "random" "road-connected"
-1
+0
 
 CHOOSER
 720
@@ -1465,7 +1465,7 @@ INPUTBOX
 590
 415
 LUT-2-folder
-NA
+0
 1
 0
 String
@@ -1476,7 +1476,7 @@ INPUTBOX
 590
 535
 LUT-4-folder
-NA
+0
 1
 0
 String
@@ -1487,7 +1487,7 @@ INPUTBOX
 590
 475
 LUT-3-folder
-NA
+0
 1
 0
 String
@@ -1608,7 +1608,7 @@ INPUTBOX
 900
 295
 LUT-0-price-sd
-50.0
+10.0
 1
 0
 Number
@@ -1619,7 +1619,7 @@ INPUTBOX
 900
 355
 LUT-1-price-sd
-500.0
+100.0
 1
 0
 Number
@@ -2381,7 +2381,7 @@ rent_rate_capital_borrow
 rent_rate_capital_borrow
 0
 1
-0.14
+0.15
 0.01
 1
 NIL
@@ -2959,6 +2959,149 @@ TEXTBOX
 1
 
 @#$#@#$#@
+# Version 3.0
+## Functionality
+
+The ecological submodel is extended by habitat quality. Therefore, EFForTS-ABM and NATCAP InVEST models were integrated via nlInVEST, enabling synchronous spatio-temporal simulation of complex economic-ecological trade-offs. InVEST landscape maps and impact maps are generated based on patch-related variables in EFForTS-ABM. LULC types can be mapped between EFForTS-ABM and InVEST. InVEST habitat quality score is returned as new patch variable in EFForTS-ABM for every time step, enabling convenient post-processing of the results of InVEST within EFForTS-ABM and to analyse from cell-level to landscape-level. The new feature (general biodiversity) is proven by modern software engineering techniques, comprising unit test, integration test and acceptance test. The acceptance test as a meanigful test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM.
+
+## Test scenario runs
+
+Please see the technical software documentation in corresponing publication for details on installation of Linux, InVEST Python API, NetLogo along with NetLogo Extensions and EFForTS-ABM and for configuration details.  
+
+When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the Netlogo GUI Interface tab.
+
+Run the unit tests via the Netlogo GUI Interface tab of EFForTS-ABM "Unit test Habitat Quality". Depending on which unit test to be executed enter "noimpact", "localimpact" or "globalimpact" into the input box "test_ncinv" on the Interface tab.
+
+Run the integration tests via the Netlogo GUI Interface tab of EFForTS-ABM "Integration test Habitat Quality".
+
+Run the acceptance test scenario via the Netlogo GUI Interface tab of EFForTS-ABM.
+To initialize the model press the "setup" Button on the main interface.
+To run the model press either
+  "Go-loop" to run the model in a loop (for predefined simulation time)
+  "Go-once" to run the model for one time step.
+
+Find the resulting InVEST Habitat Quality maps in the specified output folder.
+
+## CREDITS AND REFERENCES
+
+This model version relies on the version 1.0, 1.0.1b and version 2.0.
+
+Copyright 2017. Claudia Dislich, Elisabeth Hettig, Jan Salecker, Johannes Heinonen, Jann Lay, Katrin M. Meyer, Kerstin Wiegand, Suria Tarigan. All rights reserved.
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+http://creativecommons.org/licenses/by-nc-nd/4.0/
+
+Contact julia.henzler(at)uni-goettingen.de for license related questions.
+
+# Version 2.0
+## Abstract of corresponding publication
+
+Land-use changes have dramatically transformed tropical landscapes. We describe an
+ecological-economic land-use change model for use as an integrated, exploratory tool to
+analyze how tropical land-use change affects ecological and socio-economic functions.
+The model analysis seeks to determine what kind of landscape mosaic can improve the
+ensemble of ecosystem functioning, biodiversity and economic benefit based on the
+synergies and trade-offs that we have to account for. More specifically (1) How do
+specific ecosystem services, such as carbon storage, and economic benefits, such as
+household consumption, relate to each other? (2) How do external factors such as
+output prices of crops affect these relationships? (3) How do these relationships change
+when productivity differentials between smallholder farmers and production inefficiency
+are considered and when learning is incorporated?
+We initialized the ecological-economic model with artificially generated land-use
+maps, parameterized to our study region. The economic submodel simulates smallholder
+land-use management decisions based on a profit maximization assumption. Each
+household determines factor inputs for all household fields and decides about land-use
+change based on available wealth. The ecological submodel includes a simple account of
+carbon sequestration in above- and below-ground vegetation. We demonstrate model
+capabilities with results on household consumption and carbon sequestration from
+different output price and farming efficiency scenarios. The overall results reveal
+complex interactions between the economic and ecological sphere, especially when
+fluctuating prices and household heterogeneity are considered. These findings underline
+the utility of exploratory tools, such as our ecological-economic model, that will advance our understanding of the mechanisms underlying the trade-offs and synergies of
+ecological and economic functions in tropical landscapes.
+
+## Instructions to run the model
+
+Please see the readme file, distributed with model version 1.0 for details on NetLogo installation and extensions.
+
+When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the Netlogo GUI Interface tab.
+
+To initialize the model press the "setup" Button on the main interface!
+
+Afterwards, the model can be run by pressing one of the go Buttons:
+"Go-loop" will run the model in a loop
+"Go-once" will run the model for one time step
+
+## Other Scenarios and things to try
+
+Explore the maps that are provided with the model (different number of households)
+
+## CREDITS AND REFERENCES
+
+Copyright 2017. Claudia Dislich, Elisabeth Hettig, Jan Salecker, Johannes Heinonen, Jann Lay, Katrin M. Meyer, Kerstin Wiegand, Suria Tarigan. All rights reserved.
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+http://creativecommons.org/licenses/by-nc-nd/4.0/
+
+Contact jsaleck(at)gwdg.de for license related questions.
+
+# Version 1.0.1.b
+## Abstract of corresponding publication
+
+Land-use changes have dramatically transformed tropical landscapes. We describe an
+ecological-economic land-use change model for use as an integrated, exploratory tool to
+analyze how tropical land-use change affects ecological and socio-economic functions.
+The model analysis seeks to determine what kind of landscape mosaic can improve the
+ensemble of ecosystem functioning, biodiversity and economic benefit based on the
+synergies and trade-offs that we have to account for. More specifically (1) How do
+specific ecosystem services, such as carbon storage, and economic benefits, such as
+household consumption, relate to each other? (2) How do external factors such as
+output prices of crops affect these relationships? (3) How do these relationships change
+when productivity differentials between smallholder farmers and production inefficiency
+are considered and when learning is incorporated?
+We initialized the ecological-economic model with artificially generated land-use
+maps, parameterized to our study region. The economic submodel simulates smallholder
+land-use management decisions based on a profit maximization assumption. Each
+household determines factor inputs for all household fields and decides about land-use
+change based on available wealth. The ecological submodel includes a simple account of
+carbon sequestration in above- and below-ground vegetation. We demonstrate model
+capabilities with results on household consumption and carbon sequestration from
+different output price and farming efficiency scenarios. The overall results reveal
+complex interactions between the economic and ecological sphere, especially when
+fluctuating prices and household heterogeneity are considered. These findings underline
+the utility of exploratory tools, such as our ecological-economic model, that will advance
+our understanding of the mechanisms underlying the trade-offs and synergies of
+ecological and economic functions in tropical landscapes.
+
+## Instructions to run the model
+
+Please see the readme file, distributed with model version 1.0 for details on NetLogo installation and extensions.
+
+When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the Netlogo GUI Interface tab.
+
+To initialize the model press the "setup" Button on the main interface!
+
+Afterwards, the model can be run by pressing one of the go Buttons:
+"Go-loop" will run the model in a loop
+"Go-once" will run the model for one time step
+
+## Other Scenarios and things to try
+
+Explore the maps that are provided with the model (different number of households)
+
+## CREDITS AND REFERENCES
+
+Copyright 2017. Claudia Dislich, Elisabeth Hettig, Jan Salecker, Johannes Heinonen, Jann Lay, Katrin M. Meyer, Kerstin Wiegand, Suria Tarigan. All rights reserved.
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+http://creativecommons.org/licenses/by-nc-nd/4.0/
+
+Contact jsaleck(at)gwdg.de for license related questions.
+
+# Version 1.0
 ## Abstract of corresponding publication
 
 Land-use changes have dramatically transformed tropical landscapes. We describe an
@@ -3037,29 +3180,39 @@ Contact jsaleck(at)gwdg.de for license related questions.
 
 
 
-## CHANGELOG
+# CHANGELOG
 
-### v_1.0 - Published version:
+## v_1.0 - Published version:
 
 This model is attached as supplementary material to the following publication:
 
 Dislich C, Hettig E, Salecker J, Heinonen J, Lay J, Meyer KM, et al. (2018) Land-use change in oil palm dominated tropical landscapes—An agent-based model to explore ecological and socio-economic trade-offs. PLoS ONE 13(1): e0190506. https://doi.org/10.1371/journal.pone.0190506
 
 
-### v_1.0.1b - Development version
+## v_1.0.1b - Development version
 
 * EFForTS-ABM and EFForTS-LGraf have been updated to NetLogo v6.0.2
 
-Feature changes:
-
-* Habitat Quality: Can be set with the parameter"bidiv_natcap_invest". The managed landscape of EFForTS-ABM can be transferred at every user defined timestep to InVEST for calculating habitat quality values depending on impacts of land use on habitat. 
+Feature changes: 
 
 * Soical option matrix: Can be set with the parameter land-use-options. Social options matrix is created by using information from within the social network of the agent. First it is checked how many households converted to each landuse-type. If not at least one household converted to a specific landuse-type such conversion is only done under a certain proability (interface)
 
 
-### v_2.0 - ModularExtension
+## v_2.0 - ModularExtension
 
 * Landuses/Management: A big part of model parameters is now set within landuse parameter files in the subfolder "par_ABM". Defining new landuses and management options is now very easy. 1. Create a new subfolder in "par_ABM" (e.g. "rice") 2. Create a main parameterfile, just as the one for oilpalm and rubber. 3. Create at least one management parameter file. 4. Create the needed functions and define them correctly in the parameter files (e.g. one needs functions for carbon, yield, invest, labor and tinput - predefined functions for oilpalm, rubber and junglerubber are located in the subfile util_lut_functions.nls)
+
+## v_3.0 - Published version
+
+This model version is published in the following publication:
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+EFForTS-ABM and EFForTS-LGraf have been updated to NetLogo 6.1.1
+
+Feature changes:
+
+* Habitat Quality: Can be set with the parameter "bidiv_ncinv". The managed landscape of EFForTS-ABM can be transferred at every user defined timestep to InVEST for calculating habitat quality values depending on the impacts oil palm plantation and rubber plantation on habitat quality.
 @#$#@#$#@
 default
 true

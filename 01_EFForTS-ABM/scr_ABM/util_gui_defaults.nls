@@ -73,8 +73,11 @@ to set-efforts-abm-defaults
   set inacc-color 5
   set hh-color 8
   
+  set ncinv_experiment "exp1"
+  set ncinv_test "exp1"
+  set biodiv_ncinv "habitatquality"
   set ecol_biodiv_interval 1
-  set biodiv_ncinv "none"
+  set biodiv_ncinv_k 0.05
   
 end
 
