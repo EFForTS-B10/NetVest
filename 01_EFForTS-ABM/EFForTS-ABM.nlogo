@@ -2962,21 +2962,21 @@ TEXTBOX
 # Version 3.0
 ## Functionality
 
-The ecological submodel is extended by habitat quality. Therefore, EFForTS-ABM and NATCAP InVEST models were integrated via nlInVEST, enabling synchronous spatio-temporal simulation of complex economic-ecological trade-offs. InVEST landscape maps and impact maps are generated based on patch-related variables in EFForTS-ABM. LULC types can be mapped between EFForTS-ABM and InVEST. InVEST habitat quality score is returned as new patch variable in EFForTS-ABM for every time step, enabling convenient post-processing of the results of InVEST within EFForTS-ABM and to analyse from cell-level to landscape-level. The new feature (general biodiversity) is proven by modern software engineering techniques, comprising unit test, integration test and acceptance test. The acceptance test as a meanigful test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM.
+The ecological submodel is extended by habitat quality as a proxy for biodiversity. Therefore, EFForTS-ABM and NATCAP InVEST models were integrated via nlInVEST, enabling synchronous spatio-temporal simulation of complex economic-ecological trade-offs. InVEST landscape maps and impact maps are generated based on patch-related variables in EFForTS-ABM. Land use and land cover (LULC) types can be mapped between EFForTS-ABM and InVEST. The habitat quality score calculated by InVEST is returned as new patch variable in EFForTS-ABM for every time step, enabling convenient post-processing of the results of InVEST within EFForTS-ABM and to analyse from cell-level to landscape-level. This new feature is proven by modern software engineering techniques, comprising unit test, integration test and acceptance test. The acceptance test as a meaningful test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM.
 
 ## Test scenario runs
 
-Please see the technical software documentation in corresponing publication for details on installation of Linux, InVEST Python API, NetLogo along with NetLogo Extensions and EFForTS-ABM and for configuration details.  
+Please see the technical software documentation in corresponding publication for details on installation of Linux, InVEST Python API, NetLogo along with NetLogo Extensions and EFForTS-ABM and for configuration details.  
 
-When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the Netlogo GUI Interface tab.
+When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the NetLogo GUI Interface tab.
 
-Run the unit tests via the Netlogo GUI Interface tab of EFForTS-ABM "Unit test Habitat Quality". Depending on which unit test to be executed enter "noimpact", "localimpact" or "globalimpact" into the input box "test_ncinv" on the Interface tab.
+Run the unit tests via the NetLogo GUI Interface tab of EFForTS-ABM "Unit test Habitat Quality". Depending on which unit test to be executed enter "noimpact", "localimpact" or "globalimpact" into the input box "test_ncinv" on the NetLogo GUI Interface tab.
 
-Run the integration tests via the Netlogo GUI Interface tab of EFForTS-ABM "Integration test Habitat Quality".
+Run the integration tests via the NetLogo GUI Interface tab of EFForTS-ABM "Integration test Habitat Quality".
 
-Run the acceptance test scenario via the Netlogo GUI Interface tab of EFForTS-ABM.
-To initialize the model press the "setup" Button on the main interface.
-To run the model press either
+Run the acceptance test scenario via the NetLogo GUI Interface tab of EFForTS-ABM.
+To initialize the model, press the "setup" button on the NetLogo GUI Interface tab.
+To run the model, press either
   "Go-loop" to run the model in a loop (for predefined simulation time)
   "Go-once" to run the model for one time step.
 
@@ -3027,7 +3027,7 @@ Please see the readme file, distributed with model version 1.0 for details on Ne
 
 When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the Netlogo GUI Interface tab.
 
-To initialize the model press the "setup" Button on the main interface!
+To initialize the model, press the "setup" Button on the main interface!
 
 Afterwards, the model can be run by pressing one of the go Buttons:
 "Go-loop" will run the model in a loop
@@ -3071,8 +3071,7 @@ capabilities with results on household consumption and carbon sequestration from
 different output price and farming efficiency scenarios. The overall results reveal
 complex interactions between the economic and ecological sphere, especially when
 fluctuating prices and household heterogeneity are considered. These findings underline
-the utility of exploratory tools, such as our ecological-economic model, that will advance
-our understanding of the mechanisms underlying the trade-offs and synergies of
+the utility of exploratory tools, such as our ecological-economic model, that will advance our understanding of the mechanisms underlying the trade-offs and synergies of
 ecological and economic functions in tropical landscapes.
 
 ## Instructions to run the model
@@ -3081,7 +3080,7 @@ Please see the readme file, distributed with model version 1.0 for details on Ne
 
 When opening the model, load the default parameter settings via the button "set-gui-parameters-to-default". Parameters can be changed in the Netlogo GUI Interface tab.
 
-To initialize the model press the "setup" Button on the main interface!
+To initialize the model, press the "setup" Button on the main interface!
 
 Afterwards, the model can be run by pressing one of the go Buttons:
 "Go-loop" will run the model in a loop
@@ -3125,8 +3124,7 @@ capabilities with results on household consumption and carbon sequestration from
 different output price and farming efficiency scenarios. The overall results reveal
 complex interactions between the economic and ecological sphere, especially when
 fluctuating prices and household heterogeneity are considered. These findings underline
-the utility of exploratory tools, such as our ecological-economic model, that will advance
-our understanding of the mechanisms underlying the trade-offs and synergies of
+the utility of exploratory tools, such as our ecological-economic model, that will advance our understanding of the mechanisms underlying the trade-offs and synergies of
 ecological and economic functions in tropical landscapes.
 
 
@@ -3136,7 +3134,7 @@ ecological and economic functions in tropical landscapes.
 
 * When the model is openend, it loads the default parameter settings that are located in the EFForTS-ABM Parameters Tab. Parameters can be changed there!
 
-* To initialize the model press the "setup" Button on the main interface!
+* To initialize the model, press the "setup" Button on the main interface!
 
 * Afterwards, the model can be run by pressing one of the go Buttons:
 ** "Go-loop" will run the model in a loop
