@@ -8,27 +8,31 @@
 ;#                                                                                                          #
 ;############################################################################################################
 
-
-; Additional code files included in this NetLogo model (accessable via the "Included Files" dropdown menu)
+; Additional code files included in this NetLogo model (accessable via the "Includes" dropdown menu)
 __includes [
   "scr_ABM/input_maps.nls" "scr_ABM/input_prices.nls"
   "scr_ABM/output.nls"
   "scr_ABM/initialization.nls"
   "scr_ABM/econ_capitalstock.nls" "scr_ABM/econ_invest.nls" "scr_ABM/econ_costs.nls" "scr_ABM/econ_consumption.nls" "scr_ABM/econ_production.nls" "scr_ABM/econ_cashflow.nls" "scr_ABM/econ_decision.nls" "scr_ABM/econ_optionmatrix.nls" "scr_ABM/econ_socialnw.nls" "scr_ABM/econ_factorinputs.nls"
   "scr_ABM/ecol_carbon.nls" "scr_ABM/ecol_biodiv.nls"   "scr_ABM/ecol_biodiv_ncinv.nls"   "scr_ABM/ecol_biodiv_ncinv_unit_test.nls" "scr_ABM/ecol_biodiv_ncinv_integration_test.nls"
-  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_gui_defaults.nls"  "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls"
+  "scr_ABM/util_lut_functions.nls" "scr_ABM/util_paramfiles.nls" "scr_ABM/util_reporter.nls" "scr_ABM/util_gui_defaults.nls"
 ]
 
+
 ; Extensions used in this NetLogo model:
-extensions [gis matrix nw ls profiler csv py]
+;print["loading extensions"]
+extensions [gis matrix nw ls csv py]
+;print["finished loading extensions"]
 
-
-breed[luts a-lut]
-breed[hhs hh]
+breed[luts a-lut] ; land use types
+breed[hhs hh] ; households
 
 ; Define global variables/parameters:
 globals
 [
+  edu-NoS-version? ; education Version for Night of Science?
+  edu-scenarios-version? ; education version with different scenarios (Dislich  2018)?
+  extra-parameters-tab? ; are parameteres mainly choosen in extra Parameters Tab (and not main Intereface tab)?
   LUT-ids
   LUT-ids-manage
   LUT-fractions          ; List to store the fractions of each landuse
@@ -40,6 +44,7 @@ globals
   landscape_size         ; size of landscape in ha
   area_under_agriculture ; size of area under agriculture in ha
   ineff_precision        ; number of digits for household inefficiencies
+  carbon_forest          ; carbon storage in forest [t / ha]
 
   ;variables
   carbon
@@ -59,15 +64,14 @@ globals
   max_hh_consumption         ; maximum level of consumption of all households in one year
   mean_hh_consumption        ; mean level of consumption of all households in one year
 
-  ; ncinv variables
+  ; ncinv variables: ncinv modules
   workdir_ncinv            ;working directory for EFForTS-ABM-InVEST Integration
 
-  ; ecol_biodiv module
+  ; ncinv variables: ecol_biodiv_ncinv module
   landscape_hq             ;landscape-level habitat quality score calculated as mean habitat quality over all patches
   forest_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse forest
   oilpalm_hq               ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse oilpalm
   rubber_hq                ;forest-level habitat quality score calculated as mean habitat quality over all patches with landuse rubber
-
 ]
 
 ; Define patch properties:
@@ -92,11 +96,10 @@ patches-own
   p_actual_production      ; actual production of this cell
   p_optimal_production     ; optimal production of this cell
 
-  ; ecol_biodiv_ncinv module
-  p_landuse_ncinv         ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
-  p_impact_ncinv        ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
-  p_hq_ncinv        ; variable for storing habitat quality
-
+  ; ncinv variables: ecol_biodiv_ncinv module
+  p_landuse_ncinv          ; patch land use and land cover (LULC) integer, converted from p_landuse for generation of maps
+  p_impact_ncinv           ; location of corresponding impacts; TRUE means impact located on patch FALSE means no impact located
+  p_hq_ncinv               ; variable for storing habitat quality
 ]
 
 luts-own
@@ -124,11 +127,13 @@ luts-own
   l_mng_external_income_factor
 ]
 
+
 ; Define agent properties:
 hhs-own
 [
   h_homebase          ; location of the household homebase
   h_id                ; household identification number
+  h_age               ; household age
   h_area              ; actual number of patches that belong to the household
   h_patches           ; agentset of patches beloning to the household
   h_field_id_list     ; list of field_ids that belong to the household
@@ -152,10 +157,11 @@ hhs-own
   h_debt_years        ; consecutive years where household has debts > 0
   h_inefficiencies    ; inefficiency factors [0,1]
   h_inefficiencies_temp ; inefficiency factors [0,1]
-  h_connected_hhs             ; other households that are connected within the social network
+  h_connected_hhs     ; other households that are connected within the social network
   h_management       ; List with management ids for each LUT
   h_land-use-change
 ]
+
 
 
 ;###################################################################################
@@ -164,14 +170,11 @@ hhs-own
 ; ╚═╝└─┘ ┴ └─┘┴
 ;###################################################################################
 
-to test-setup
-  print["test setup"]
-end
-
 ; Main Setup procedure:
 To setup-with-external-maps
-  print["setting up EFForTS-ABM and InVEST"]
-  ca
+  print " "
+  print " "
+  print["setting up"]
 
   ; control randomness
   set-rand-seed
@@ -179,7 +182,7 @@ To setup-with-external-maps
   ; Read land-use parameter from files in "par_ABM" folder
   read-lut-parameters
 
-  ; Set global constants/parameters
+  ; Set further global constants/parameters
   set_global_constants
 
   ; Generate a list with optimal capitalstocks:
@@ -214,7 +217,7 @@ To setup-with-external-maps
   ; Initialize social networks
   setup_social_networks
 
-  ; Initialize biodiversity natcap invest module and update it once for setup
+  ; Initialize biodiversity and update it once for setup: ecol_biodiv_ncinv module
   init-biodiversity
 
   ; Paint world:
@@ -222,10 +225,10 @@ To setup-with-external-maps
 
   ; Reset the time counter
   reset-ticks
+  print ["Set up finished!"]
+  print " "
 
 End
-
-
 
 ;###################################################################################
 ; ╔═╗┌─┐
@@ -234,13 +237,14 @@ End
 ;###################################################################################
 
 To go
+
   print ["executing EFForTS-ABM"]
 
   ;; Check if screenshot output should be created
   store-screenshot
 
   ; If learning is turned on, start the learning procedure
-  if(learning-spillover?) [learning-spillover]
+  if(learning-spillover? = TRUE) [learning-spillover]
 
   ; Check if households have to many consecutive years with debts and freeze them if needed
   sort-out-bankrupt-turtles
@@ -267,64 +271,27 @@ To go
   ; Calculate current Land-use type fractions
   calculate_LUT_fractions
 
-  ; Run biodiversity natcap invest module
+  ; Run biodiversity: ecol_biodiv_ncinv module
   run-biodiversity
 
-  ; If show-output? is turned on, update plots and world output
-  ifelse (show-output?)
-  [
-    display
-    do-plots-and-output
-  ]
-  [
-    no-display
-  ]
+  paint
 
   ; If hh-data should be written to an output file, do it
   if (write-hh-data-to-file?) [write-hh-data-to-file]
 
+   ; If moutput maps should be written, do it now
+  if (write-maps?) [write-map-files]
+end
+
+to update-time
   ; Increase time step
   set simulation_year (simulation_year + 1)
   tick
 
-  ; If output maps should be written, do it now
-  if (write-maps?) [write-map-files]
-
   ;; Check stop condition:
-  if (ticks = sim-time) [print "Simulation finished!" stop]
-
+  if (ticks = sim-time) [
+    print "Simulation finished!" stop]
 End
-
-to go-biodiversity
-
-  run-biodiversity
-
-  ;; Increase time step
-  set simulation_year (simulation_year + 1)
-  tick
-
-  ;; Check stop condition:
-  if (ticks = sim-time) [print "Simulation finished!" stop]
-end
-
-
-to go-profiler
-
-  if (go-once-profiler?)
-  [
-    profiler:reset
-    profiler:start
-  ]
-
-  go
-
-  if (go-once-profiler?)
-  [
-    profiler:stop
-    print profiler:report
-  ]
-
-end
 @#$#@#$#@
 GRAPHICS-WINDOW
 900
@@ -423,7 +390,7 @@ BUTTON
 310
 68
 setup
-setup-with-external-maps
+ca\nsetup-with-external-maps
 NIL
 1
 T
@@ -440,25 +407,8 @@ BUTTON
 365
 68
 Go - loop
-go
+go\ndo-plots\nupdate-time
 T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-365
-35
-420
-68
-Go - once
-go-profiler
-NIL
 1
 T
 OBSERVER
@@ -605,17 +555,6 @@ PENS
 "whisker.top" 1.0 0 -16777216 true "" ""
 "whisker.bottom" 1.0 0 -16777216 true "" ""
 "outlier" 1.0 2 -16777216 true "" ""
-
-SWITCH
-505
-70
-635
-103
-SHOW-OUTPUT?
-SHOW-OUTPUT?
-0
-1
--1000
 
 PLOT
 2195
@@ -771,8 +710,8 @@ SWITCH
 150
 155
 183
-reproducable?
-reproducable?
+reproducible?
+reproducible?
 1
 1
 -1000
@@ -1116,8 +1055,8 @@ SWITCH
 940
 120
 973
-gr-reproducable?
-gr-reproducable?
+gr-reproducible?
+gr-reproducible?
 1
 1
 -1000
@@ -1760,17 +1699,6 @@ Colors
 12
 0.0
 1
-
-SWITCH
-505
-35
-635
-68
-go-once-profiler?
-go-once-profiler?
-1
-1
--1000
 
 SLIDER
 125
@@ -2917,7 +2845,7 @@ PENS
 BUTTON
 495
 750
-657
+695
 783
 Unit test Habitat Quality
 unittest-biodiv-ncinv

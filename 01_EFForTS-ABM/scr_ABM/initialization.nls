@@ -18,9 +18,12 @@ To set_global_constants
   set ineff_precision 2 ;;Set the number of digits for household inefficiency values
   set prices-matrix matrix:copy create-prices-matrix ; set prices-matrix as matrix (global variable) and assign values from data to it
   set prices but-first matrix:get-row prices-matrix 0
+  set carbon_forest 180 ; Carbon storage in forest (=matrix) [t / ha] ; (Dislich 2018)
   set carbon []
-  
+
 End  
+
+
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -52,7 +55,14 @@ to-report calc_external_income
   
   ;; External income depends on management
   ;; We first calculate the fractions of landuse this household is cultivating:
-  let myluts map [i -> count h_patches with [p_landuse = i] / count h_patches] LUT-ids
+  let myluts []
+  ifelse count h_patches > 0 
+  [ 
+    set myluts map [i ->  count h_patches with [p_landuse = i] / count h_patches] LUT-ids
+  ] [
+    set myluts map [i ->  0] LUT-ids
+  ]
+    
   let i 0
   let external_income_factor 0
   foreach myluts
@@ -73,7 +83,7 @@ end
 
 To set-rand-seed
   ;; Set/write random seed
-  ifelse (reproducable?) 
+  ifelse (reproducible? = TRUE) 
   [
     random-seed rnd-seed
   ]
@@ -169,6 +179,7 @@ To init-household-area
   ] 
    
 End  
+
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -277,11 +288,18 @@ To init-household-inefficiencies
   ask hhs ;initialize inefficiencies
   [
     set h_inefficiencies n-values length LUT-ids [0]
+  ;; Alternative: add inefficiency sliders to Interface Tab (and don't use extern files to import l_inefficiency_lambda/_alpha)
+  ;; and outcomment heterogenous-hhs? code
+;    let palm-oil-inefficiency 0.5 ;
+;    let rubber-inefficiency 0.5 ; 
+;    set h_inefficiencies replace-item 0 h_inefficiencies palm-oil-inefficiency
+;    set h_inefficiencies replace-item 1 h_inefficiencies rubber-inefficiency
   ]
   
   ;; ONLY DISTRIBUTE HETEROGENOUS INEFFICIENCIES IF OPTION IS SET ON THE INTERFACE:
+
   
-  if (heterogeneous-hhs?)
+  if (heterogeneous-hhs?) ; if there are no heterogeneous inefficiencies, there are no inefficiencies at all....
   [
     ask hhs
     [

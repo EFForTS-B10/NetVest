@@ -12,9 +12,9 @@ To import-maps
   let folder-connection ""
   ;; Open map:
   ifelse (which-map = "EFForTS-LGraf")
-  [
+  [ 
     ls_run_graffe
-    set folder-connection "../02_EFForTS-LGraf/1_Model/EFForTS-LGraf/output"
+    set folder-connection "../02_EFForTS-LGraf/1_Model/EFForTS-LGraf/output" 
   ]
   [
     set folder-connection (word "input/maps/" which-map) ;read-folder-connection
@@ -27,6 +27,7 @@ To import-maps
   read-ownership-file folder-connection
   read-patch-id-file folder-connection
   read-land-use-type-file folder-connection
+  print "Map import finished!"
 end
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,7 +76,7 @@ To create-and-put-turtles-in-homebase
     sprout-hhs 1
     [
       ;set shape "person"
-      set shape "house2"
+      set shape "house"
       set color hh-color
       set size 2
       set h_homebase patch-here
@@ -191,11 +192,11 @@ to ls_run_graffe
   ifelse (LGraf-GUI?)[ls:create-interactive-models 1 EFForTS-LGraf][ls:create-models 1 EFForTS-LGraf]
   print "--EFForTS-LGraf successfully loaded--"
   
-  ;; Send all parameters from the xw LGraf Tab to the LGraf model instance
-  
+  ;; Load parameters into the LGraf model instance
+
   ;; Basic model setup
-  ls:let gr-reproducable? gr-reproducable?
-  ls:ask ls:models [set reproducable? gr-reproducable?]  
+  ls:let gr-reproducible? gr-reproducible?
+  ls:ask ls:models [set reproducable? gr-reproducible?]  
   ls:let gr-rnd-seed gr-rnd-seed
   ls:ask ls:models [set rnd-seed gr-rnd-seed]
   ls:let gr-width gr-width
@@ -321,6 +322,7 @@ to ls_run_graffe
   ls:let gr-LUT-4-specialize gr-LUT-4-specialize
   ls:ask ls:models [set LUT-5-specialize gr-LUT-4-specialize]  
   ls:let gr-foldername "output"
+ 
   ls:ask ls:models [set foldername gr-foldername]
   ls:let gr-default.maps gr-default.maps
   ls:ask ls:models [set default.maps gr-default.maps]
@@ -346,4 +348,3 @@ to ls_run_graffe
   ls:close ls:models
 
 end
-

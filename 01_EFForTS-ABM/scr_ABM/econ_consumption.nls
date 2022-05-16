@@ -80,7 +80,7 @@ To sort-out-bankrupt-turtles
   [
     ;; Check if a household has too much debts
     if h_debt_years >= h_debt_years_max_bankrupt
-    [  
+    [
       die
     ]
   ]

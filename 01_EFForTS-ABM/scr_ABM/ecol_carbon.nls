@@ -20,7 +20,7 @@ To calculate_patch_carbon
     ;; Calculate carbon for matrix:
     if (p_landuse = -100)
     [
-      set p_carbon  180  * patch_size
+      set p_carbon  carbon_forest  * patch_size
     ]
     
     ;; Calculate carbon for inacc. areas (use oilpalm carbon function)

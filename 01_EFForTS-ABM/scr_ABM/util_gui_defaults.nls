@@ -8,7 +8,7 @@ end
 
 to set-efforts-abm-defaults
   
-  set reproducable? FALSE
+  set reproducible? FALSE
   set rnd-seed 1234
   set write-maps? FALSE
   set export-view? FALSE
@@ -73,6 +73,7 @@ to set-efforts-abm-defaults
   set inacc-color 5
   set hh-color 8
   
+  ; ecol_biodiv_ncinv module
   set ncinv_experiment "exp1"
   set ncinv_test "exp1"
   set biodiv_ncinv "habitatquality"
@@ -85,7 +86,7 @@ end
 to set-efforts-lgraf-defaults
   
   
-  set gr-reproducable? FALSE
+  set gr-reproducible? FALSE
   set gr-rnd-seed 100
   set gr-width 100
   set gr-height 100
