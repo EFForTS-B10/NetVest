@@ -26,10 +26,10 @@ nl <- nl(nlversion = netlogoversion,
 
 nl@experiment <- experiment(expname=experiment,
                             outpath=outpath,
-                            repetition=20,
+                            repetition=1,
                             tickmetrics="true",
-                            idsetup="setup-with-external-maps",
-                            idgo="go",
+                            idsetup=c("ca","setup-with-external-maps"),
+                            idgo=c("go", "update-time"),
                             idrunnum = "idrunnum",
                             #idfinal = "write-quality-map",
                             runtime=51,
@@ -43,6 +43,7 @@ nl <- set.nl.constant(nl, "biodiv_ncinv_k", hsc)
 nl <- set.nl.constant(nl, "ncinv_experiment", natcapinvestexperiment)
 nl <- set.nl.constant(nl, "sim-time", 51)
 nl <- set.nl.constant(nl, "write-maps?", TRUE)
+#nl <- set.nl.constant(nl, "biodiv_ncinv", "\"none\"")
 
 nl@simdesign <- simdesign_simple(nl=nl,
                                  nseeds=1)
