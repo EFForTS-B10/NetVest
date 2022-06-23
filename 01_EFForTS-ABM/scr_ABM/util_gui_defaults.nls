@@ -78,7 +78,7 @@ to set-efforts-abm-defaults
   set ncinv_test "exp1"
   set biodiv_ncinv "habitatquality"
   set ecol_biodiv_interval 1
-  set biodiv_ncinv_k 0.05
+  set biodiv_ncinv_k 0.05 ; has to be >0 to run ecol_biodiv_ncinv module, otherwise Setup won't work
   
 end
 

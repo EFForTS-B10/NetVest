@@ -2784,7 +2784,7 @@ INPUTBOX
 605
 725
 ncinv_test
-NIL
+exp1
 1
 0
 String
@@ -2797,7 +2797,7 @@ CHOOSER
 biodiv_ncinv
 biodiv_ncinv
 "none" "habitatquality"
-0
+1
 
 INPUTBOX
 330
@@ -2805,7 +2805,7 @@ INPUTBOX
 480
 725
 ncinv_experiment
-spatial_landuse
+exp1
 1
 0
 String
@@ -2816,7 +2816,7 @@ INPUTBOX
 480
 890
 biodiv_ncinv_k
-0.0
+0.05
 1
 0
 Number
