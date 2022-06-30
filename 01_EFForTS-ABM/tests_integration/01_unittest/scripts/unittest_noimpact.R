@@ -1,20 +1,25 @@
-#########################################################
-##### Unittest for Natcap Invest Integration: no impact #
-#########################################################
+############################################
+##### Unittest for NL-InVEST: no impact ####
+############################################
 
-# specify experiment and create folder named after experiment with one input folder and one output folder within
-# specify hsc (half-saturation-constant), default: 0.5
+# specify experiment and create folder named after experiment with one input folder and one output folder nested
+# specify hsc (half-saturation-constant), default: 0.05
 # Input folder has to include sensitivitytable.txt, impacttable.txt, lulc.asc, oilpalm_c.asc and rubber_c.asc 
 # adapt netlogopath, modelpath, outpath and netlogoversion
 
-### 1) Unittest execution
+#needed libraries
 library(nlrx)
+library(raster)
+library(ggplot2)   
+library(ggpubr)
+
+### 1) Unittest execution
 experiment <- "noimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
-hsc <- 0.5
-netlogopath <- file.path("/home/dockerj/nl")
-modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
+hsc <- 0.05
+netlogopath <- file.path("{home}/netlogofolder")
+modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
 netlogoversion <- "6.1.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -29,7 +34,6 @@ nl@experiment <- experiment(expname=experiment,
                             idsetup="unittest-biodiv-ncinv",
                             idgo="do-nothing",
                             runtime=1,
-                            #metrics=c("edu-calc-index"),
                             variables = list(),
                             constants = list("ncinv_test"=invtest,
                                              "biodiv_ncinv_k"=hsc))
@@ -43,7 +47,7 @@ print(nl)
 
 results <- run_nl_one(nl, seed = 1, siminputrow = 1)
 
-
+###############################################################################
 ### 2) Validation of results
 
 ## Aim 1: Correct execution of unittest: [Success] [Success]
@@ -54,7 +58,7 @@ fileexist <- function(qualitymap){
   if (qualitymap == TRUE) {print ("Habitat-quality map exists")}  else {print ("Habitat-quality map is missing")}
 }
 
-fileexist(qualitymap=file.exists((paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep=""))))
+fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc" ,sep=""))))
 
 ## Aim 2: Comparison of expected result with result of InVEST
 ## Generation of expected result
@@ -69,17 +73,18 @@ validation_maps <- function(investmap,expectedmap){
   if (equalmaps == TRUE) {print ("Validating expected result")}  else {print ("Unexpected result")}
 }
 
-validation_maps(investmap=raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep="")),
+validation_maps(investmap=raster(paste(outpath,"/quality_c_", experiment, ".asc" ,sep="")),
                 expectedmap=expectedmap)
 
-### 3) Plots
+###############################################################################
+### 3) Plotting
 
 # quality_c_noimpact.asc
-invest <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep=""))
+invest <- raster(paste(outpath,"/quality_c_", experiment, ".asc" ,sep=""))
 invest_df <- as.data.frame(invest, xy=TRUE)
 
 mycol_quality <- "#00441b"
-     
+
 invest_map <- ggplot(data=invest_df) + 
           geom_raster(aes(x=x,y=y,fill=factor(quality_c_noimpact)))+  
           scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
@@ -125,8 +130,6 @@ expected_map <-  ggplot(data=expected_df) +
              legend.spacing.x = unit(0.2, "cm"),
             )           
 
-### PLOTTING
-library(ggpubr)
 ggarrange(invest_map, expected_map, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
 
-ggsave("quality_comp_forest.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+ggsave("quality_comp_forest.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")

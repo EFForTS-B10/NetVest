@@ -1,22 +1,27 @@
-#########################################################
-##### Integrationtest for Natcap Invest: 01 #
-#########################################################
+#############################################
+##### Integrationtest for Natcap Invest #####
+#############################################
 
 # specify experiment 
 # specify hsc (half-saturation-constant), default: 0.05. Has to be adapted after first simulation to ca. 1/2 of Dmax
-# Input folder has to include sensitivitytable.txt, impacttable.txt  
+# Input folder of ncinv/habitatquality has to include sensitivitytable.txt, impacttable.txt  
 # adapt netlogopath, modelpath, outpath and netlogoversion
 
-### 1) Integrationtest execution
+#needed libraries
 library(nlrx)
-library(Refforts)
-experiment <- "integrationtest01"
+library(Refforts) #when the RStudioServer is new and you work not on the main branch of EFForTS-ABM install the version-specific Refforts: https://github.com/EFForTS-B10/Refforts 
+library(raster)
+library(ggplot2)
+library(ggpubr)
+
+### 1) Integrationtest execution
+experiment <- "integrationtest"
 invtest <- paste("\"",experiment,"\"",sep="")
 natcapinvestexperiment <- invtest
 hsc <- 0.05
-netlogopath <- file.path("/home/dockerj/nl")
-modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
+netlogopath <- file.path("{home}/netlogofolder")
+modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
 netlogoversion <- "6.1.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -31,7 +36,6 @@ nl@experiment <- experiment(expname=experiment,
                             idsetup="integrationtest-biodiv-ncinv",
                             idgo="do-nothing",
                             runtime=1,
-                            #metrics=c("edu-calc-index"),
                             variables = list(),
                             constants = get.abm.defaults()
                                              )
@@ -48,6 +52,7 @@ eval_variables_constants(nl)
 print(nl)
 
 results <- run_nl_one(nl, seed = 1, siminputrow = 1)
+
 ###############################################################################
 ### 2) Validation of results
 
@@ -63,14 +68,12 @@ fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc
 
 ## Aim 2: LULC-map 
 ## Aim 2.1: Correct translation of land-use type values
-library(raster)
-library(ggplot2)
 
 # land-use map within EFForTS-ABM before translation (lut_abm)
-lut_abm <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/output/lut__001.asc")
+lut_abm <- raster("{home}/EFForTS-ABM/01_EFForTS-ABM/output/lut__000.asc")
 
 # land-use map within EFFOrTS-ABM after translation (lut_trans)
-lut_trans <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/output/lut_invest__001.asc")
+lut_trans <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/output/lut_invest_",experiment,"_1_000.asc"))
 
 # Function for comparison of maps: Substract rasters with absoulte values to validate that they are equal
 validation_translation <- function (inputmap, outputmap) {
@@ -85,7 +88,7 @@ validation_translation(lut_abm, lut_trans)
 
 ## Aim 2.2: Correct generation of LULC map
 # lulc map for InVEST
-lulc <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/natcap_invest/output/lulc.asc")
+lulc <- raster(paste(outpath,"/lulc.asc"))
 
 # Comparison
 validation_translation(lut_trans, lulc)
@@ -126,10 +129,10 @@ validation_translation(rb_abm_map, rb_trans_map)
 
 ## Aim 3.2: Correct generation of impact map
 # impact-map for InVEST for oilpaln (op_invest)
-op_invest <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/natcap_invest/output/oilpalm_c.asc")
+op_invest <- raster(outpath,"/oilpalm_c.asc")
 
 # impact-map for InVEST for rubber (rb_invest)
-rb_invest <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/natcap_invest/output/rubber_c.asc")
+rb_invest <- raster(paste(outpath,"/rubber_c.asc"))
 
 # Comparison
 validation_translation(op_trans, op_invest)
@@ -138,15 +141,15 @@ validation_translation(rb_trans, rb_invest)
 
 ## Aim 4: Storing values of map of InVEST within EFForTS-ABM
 # habitat quality map
-quality_invest <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/natcap_invest/output/quality_c_" ,experiment, ".asc",sep=""))
+quality_invest <- raster(paste(outpath,"/quality_c_" ,experiment, ".asc",sep=""))
 
 # map with stored values from InVEST within EFForTS-ABM
-quality_abm <- raster("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/output/lut_quality__001.asc")
+quality_abm <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/output/lut_quality_",experiment,"_1_000.asc"))
 
 # Comparison
 validation_translation(quality_invest, quality_abm)
 ################################################################################
-### PLOTTING###
+### 3) PLOTTING
 ## Aim 2.1: Correct translation of land-use type values
 
 mycol_lut <- c("#238443", "#ec7014", "#fed976")
@@ -220,34 +223,11 @@ lulcplot <- ggplot(data=lulc_df) +
          panel.grid.minor = element_line(color = "gray90", size = 0.2),
          aspect.ratio = 1,
          plot.margin = margin(c(5,0,5,0)),
-         legend.spacing.x = unit(0.2, "cm"),
-         #legend.box.margin = unit(c(0,0,20,0), "mm"),
+         legend.spacing.x = unit(0.2, "cm")
   )
 
-#leg <- ggplot(data=lulc_df) + 
- # geom_raster(aes(x=x,y=y,fill=factor(lulc))) + 
-#  scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
- # xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated land-use map") +
-#  theme(legend.position = c(0.5,0.5),
- #       legend.key.size = unit(1, "cm"),
-  #      legend.text = element_text(size =  12),
-   #     legend.title = element_text(size = 15, face = "bold"))+
-  #guides(colour = guide_legend(override.aes = list(size=8)))
-
-#legend <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species))+
- # geom_point()+
-  #lims(x = c(0,0), y = c(0,0))+
-  #theme_void()+
-  #theme(legend.position = c(0.5,0.5),
-   #     legend.key.size = unit(1, "cm"),
-    #    legend.text = element_text(size =  12),
-     #   legend.title = element_text(size = 15, face = "bold"))+
-  #guides(colour = guide_legend(override.aes = list(size=8)))
-
-library(ggpubr)
 ggarrange(lutabm, luttrans, lulcplot, ncol = 3, nrow = 1, common.legend = TRUE, legend = "right" )#%>%
- # gridExtra::grid.arrange (heights = unit(c(80, 10), "mm"))
-ggsave("lutabm_luttrans_lulc.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+ggsave("lutabm_luttrans_lulc.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 
 ################################################################################
 ## Aim 2.2 Correct generation of LULC map
@@ -255,7 +235,6 @@ luttrans <- ggplot(data=luttrans_df) +
   geom_raster(aes(x=x,y=y,fill=factor(lut_invest__001))) + 
   scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
   xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Land-use map after translation") +
-  #title("Land-use map after translation") +
   theme (plot.title = element_text(hjust = 0.1, size = 6),
          axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
          axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
@@ -297,7 +276,7 @@ lulcplot <- ggplot(data=lulc_df) +
                   )
   
 ggarrange(luttrans, lulcplot, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("luttrans_lulc.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+ggsave("luttrans_lulc.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
   
 ###############################################################################
 ##Aim 3.1 Correct translation of impact values 
@@ -349,7 +328,7 @@ optrans <- ggplot(data=luttrans_df) +
 
 
 ggarrange(opabm, optrans, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("opabm_optrans.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+ggsave("opabm_optrans.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 
 
 rbabm <- ggplot(data=lutabm_df) + 
@@ -395,7 +374,7 @@ rbtrans <- ggplot(data=luttrans_df) +
                  )
 
 ggarrange(rbabm, rbtrans, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("rbabm_rbtrans.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+ggsave("rbabm_rbtrans.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 
 ###############################################################################
 #Aim 3.2 Correct generation of impact maps
@@ -486,10 +465,10 @@ impactrb <- ggplot(data=rbinvest_df) +
            )
  
 ggarrange(optrans, impactop, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("optrans_impactop.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+ggsave("optrans_impactop.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 
 ggarrange(rbtrans, impactrb, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("rbtrans_impactrb.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+ggsave("rbtrans_impactrb.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 
 ###############################################################################
 ##Aim 4 Correct storing of habitat quality values
@@ -538,4 +517,4 @@ quality2 <- ggplot(data=qualityabm_df) +
                  )
 
 ggarrange(quality, quality2, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("quality_quality2.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+ggsave("quality_quality2.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")

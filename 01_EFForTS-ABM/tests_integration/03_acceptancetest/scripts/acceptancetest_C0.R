@@ -1,22 +1,24 @@
-#########################################################
-##### Acceptancetest for Natcap Invest: C0 Scenario #
-#########################################################
+#####################################################
+##### Acceptancetest for NL-InVEST: C0 Scenario #####
+#####################################################
 
 # specify experiment 
 # specify hsc (half-saturation-constant), default: 0.05. Has to be adapted after first simulation to ca. 1/2 of Dmax
 # Input folder of ncinv/habitatquality has to include sensitivitytable.txt, impacttable.txt  
 # adapt netlogopath, modelpath, outpath and netlogoversion
 
-### 1) Integrationtest execution
+#needed libraries
 library(nlrx)
-library(Refforts)
+library(Refforts) #when the RStudioServer is new and you work not on the main branch of EFForTS-ABM install the version-specific Refforts: https://github.com/EFForTS-B10/Refforts 
+
+### 1) Acceptancetest execution
 experiment <- "C0"
 invtest <- paste("\"",experiment,"\"",sep="")
 natcapinvestexperiment <- invtest
 hsc <- 0.05
-netlogopath <- file.path("/home/dockerj/nl")
-modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
+netlogopath <- file.path("{home}/netlogofolder")
+modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
 netlogoversion <- "6.1.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -26,12 +28,11 @@ nl <- nl(nlversion = netlogoversion,
 
 nl@experiment <- experiment(expname=experiment,
                             outpath=outpath,
-                            repetition=1,
+                            repetition=20,
                             tickmetrics="true",
                             idsetup=c("ca","setup-with-external-maps"),
                             idgo=c("go", "update-time"),
                             idrunnum = "idrunnum",
-                            #idfinal = "write-quality-map",
                             runtime=51,
                             metrics= get.abm.metrics(),
                             constants = get.abm.defaults())
@@ -43,7 +44,6 @@ nl <- set.nl.constant(nl, "biodiv_ncinv_k", hsc)
 nl <- set.nl.constant(nl, "ncinv_experiment", natcapinvestexperiment)
 nl <- set.nl.constant(nl, "sim-time", 51)
 nl <- set.nl.constant(nl, "write-maps?", TRUE)
-#nl <- set.nl.constant(nl, "biodiv_ncinv", "\"none\"")
 
 nl@simdesign <- simdesign_simple(nl=nl,
                                  nseeds=1)

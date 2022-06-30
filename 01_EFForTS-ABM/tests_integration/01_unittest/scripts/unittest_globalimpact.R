@@ -1,21 +1,26 @@
-#########################################################
-##### Unittest for Natcap Invest Integration: local #####
-#########################################################
+##########################################
+##### Unittest for NL-InVEST: global #####
+##########################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder within
 # specify hsc (half-saturation-constant), default: 0.5
 # Input folder has to include sensitivitytable.txt, impacttable.txt, lulc.asc, oilpalm_c.asc and rubber_c.asc 
 # adapt netlogopath, modelpath, outpath and netlogoversion
 
+# needed libraries
+library(nlrx)
+library(raster)
+library(tidyverse)
+library(ggpmisc)
+library(ggpubr)
 
 ### 1) Unittest execution
-library(nlrx)
 experiment <- "globalimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("/home/dockerj/nl")
-modelpath <- file.path("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogopath <- file.path("{home}/netlogofolder")
+modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
 netlogoversion <- "6.1.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -44,7 +49,7 @@ print(nl)
 
 results <- run_nl_one(nl, seed = 1, siminputrow = 1)
 
-
+################################################################################
 ### 2) Validation of results
 
 ## Aim 1: Correct execution of unittest: [Success] [Success]
@@ -55,20 +60,18 @@ fileexist <- function(qualitymap){
   if (qualitymap == TRUE) {print ("Habitat-quality map exists")}  else {print ("Habitat-quality map is missing")}
 }
 
-fileexist(qualitymap=file.exists((paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/quality_c_", experiment, ".asc" ,sep=""))))
+fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc" ,sep=""))))
 
 
 ## Aim 2: Validating linear decrease of degradation scores over space
 
 # Impact location
-library(raster)
-asc <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+asc <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 xyimpact <- xyFromCell(asc, which(asc[] == 1)) 
 
 # Linear Regression: Checking linear relationship between distance from impact and degradation score
 # Expectation: circular and linear decrease of degradation score with increasing distance from impact location
-library(tidyverse)
-deg.map <- raster(paste("/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/output/deg_sum_c_" , experiment, ".tif" ,sep=""))
+deg.map <- raster(paste(outpath,"/deg_sum_c_" , experiment, ".tif" ,sep=""))
 deg.map_df <- as.data.frame(deg.map, xy = TRUE)
 deg.map_tib <- as_tibble(deg.map_df)
 
@@ -88,9 +91,8 @@ west <- deg.map_tib%>%
   filter(x <= 214986) %>%
   filter(y >= 9755730 & y <=9755780)
 
-
+###############################################################################
 ### 3) Plots
-library(ggpmisc)
 cols <- c("Scores (points) with linear regression (transparent line)"="tomato3")
 npc_txt_south = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "South"), size = 8)
 npc_txt_north = geom_text_npc(aes(npcx = 0.98, npcy = 0.95, label = "North"), size = 8)
@@ -195,8 +197,6 @@ deg <- ggplot(data=deg.map_df) +
          legend.spacing.x = unit(0.2, "cm")
   )
 
-### PLOTTING
-library(ggpubr)
 ggarrange(ggarrange(plot.south, plot.north, ncol =2, labels = c("A", "B")),  
           ggarrange(plot.west, plot.east, ncol =2, labels = c("C", "D")),
           ggarrange(deg, ncol = 1, labels = "E"),
@@ -207,7 +207,7 @@ ggarrange(ggarrange(plot.south, plot.north, ncol =2, labels = c("A", "B")),
           labels = "A"                                        
 )
 # !xyimpact is location of impact: 214986 9755730
-ggsave("degradation_landscape.png", path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/", scale = 3 )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+ggsave("degradation_landscape.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/", scale = 3 )#, plot="plot1",device = png) #, path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
 
 
  
