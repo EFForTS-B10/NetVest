@@ -11,17 +11,17 @@
 library(nlrx)
 library(raster)
 library(tidyverse)
+library(patchwork)
 library(ggpmisc)
-library(ggpubr)
 
 ### 1) Unittest execution
 experiment <- "globalimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("{home}/netlogofolder")
-modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
-netlogoversion <- "6.1.1"
+netlogopath <- file.path("{HOME}/netlogofolder6.2.1")
+modelpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
          nlpath = netlogopath,
@@ -66,7 +66,7 @@ fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc
 ## Aim 2: Validating linear decrease of degradation scores over space
 
 # Impact location
-asc <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+asc <- raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 xyimpact <- xyFromCell(asc, which(asc[] == 1)) 
 
 # Linear Regression: Checking linear relationship between distance from impact and degradation score
@@ -91,27 +91,60 @@ west <- deg.map_tib%>%
   filter(x <= 214986) %>%
   filter(y >= 9755730 & y <=9755780)
 
+lm_north = lm(north$deg_sum_c_globalimpact ~ north$y)
+rsquared_north <- (summary(lm_north)$r.squared)
+rsquared_north <- round(rsquared_north, 2)
+c1_north<- lm_north$coefficients[1]
+c1_north <- round(c1_north, 2)
+c2_north<- lm_north$coefficients[2]
+c2_north <- round(c2_north, 8)
+
+lm_east = lm(east$deg_sum_c_globalimpact ~ east$x)
+rsquared_east <- (summary(lm_east)$r.squared)
+rsquared_east <- round(rsquared_east, 2)
+c1_east<- lm_east$coefficients[1]
+c1_east <- round(c1_east, 2)
+c2_east<- lm_east$coefficients[2]
+c2_east <- round(c2_east, 8)
+
+lm_south = lm(south$deg_sum_c_globalimpact ~ south$y)
+rsquared_south <- (summary(lm_south)$r.squared)
+rsquared_south <- round(rsquared_south, 2)
+c1_south<- lm_south$coefficients[1]
+c1_south <- round(c1_south, 2)
+c2_south<- lm_south$coefficients[2]
+c2_south <- round(c2_south, 8)
+
+lm_west = lm(west$deg_sum_c_globalimpact ~ west$x)
+rsquared_west <- (summary(lm_west)$r.squared)
+rsquared_west <- round(rsquared_west, 2)
+c1_west<- lm_west$coefficients[1]
+c1_west <- round(c1_west, 2)
+c2_west<- lm_west$coefficients[2]
+c2_west <- round(c2_west, 8)
+
 ###############################################################################
 ### 3) Plots
 cols <- c("Scores (points) with linear regression (transparent line)"="tomato3")
-npc_txt_south = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "South"), size = 8)
-npc_txt_north = geom_text_npc(aes(npcx = 0.98, npcy = 0.95, label = "North"), size = 8)
-npc_txt_east = geom_text_npc(aes(npcx = 0.98, npcy = 0.95, label = "East"), size = 8)
-npc_txt_west = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "West"), size = 8)
+npc_txt_south = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "South"), size = 5)
+npc_txt_north = geom_text_npc(aes(npcx = 0.98, npcy = 0.95, label = "North"), size = 5)
+npc_txt_east = geom_text_npc(aes(npcx = 0.98, npcy = 0.95, label = "East"), size = 5)
+npc_txt_west = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "West"), size = 5)
 npc_txt_impact = geom_text_npc(aes(npcx = 0.02, npcy = 0.95, label = "214986,9755730"), size = 8)
+
+npc_txt_north_reg = geom_text_npc(aes(npcx = 0.97, npcy = 0.8, label = paste("Model =", c1_north, "+", c2_north, "y")), size = 3)
+npc_txt_east_reg = geom_text_npc(aes(npcx = 0.97, npcy = 0.8, label = paste("Model =", c1_east, "+", c2_east, "x")), size = 3)
+npc_txt_south_reg = geom_text_npc(aes(npcx = 0.02, npcy = 0.8, label = paste("Model =", c1_south, "+", c2_south, "y")), size = 3)
+npc_txt_west_reg = geom_text_npc(aes(npcx = 0.02, npcy = 0.8, label = paste("Model =", c1_west, "+", c2_west, "x")), size = 3)
+
 
 plot.north <- ggplot(data=north, mapping = aes(x = y, y = deg_sum_c_globalimpact)) +
               geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
               geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
               npc_txt_north +
+              npc_txt_east_reg +
               scale_colour_manual(values=cols) +
               scale_x_continuous(breaks=seq(9755780,9758280,500)) +
-              stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                               sep = "~~italic(\"with\")~~")),
-                               eq.with.lhs = "D[x][y]~`=`~",
-                               eq.x.rhs = "~Y",
-                               formula = y ~ x, 
-                               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.98) +
               labs(
                    x = "Y-Coordinate (Y)", 
                    y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
@@ -122,13 +155,8 @@ plot.north <- ggplot(data=north, mapping = aes(x = y, y = deg_sum_c_globalimpact
 plot.east <- ggplot(data=east, mapping = aes(x = x, y = deg_sum_c_globalimpact)) +
              geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
              geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-             stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                              sep = "~~italic(\"with\")~~")),
-                              eq.with.lhs = "D[x][y]~`=`~",
-                              eq.x.rhs = "~X",
-                              formula = y ~ x, 
-                              parse = TRUE, size = 3, label.y = 0.8, label.x = 0.98) +
              npc_txt_east +
+             npc_txt_east_reg +
              scale_colour_manual(values=cols) +
              scale_x_continuous(breaks = seq(214986, 217486, 500)) +
              labs(
@@ -141,18 +169,13 @@ plot.east <- ggplot(data=east, mapping = aes(x = x, y = deg_sum_c_globalimpact))
 plot.south <- ggplot(data=south, mapping = aes(x = y, y = deg_sum_c_globalimpact)) +
               geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
               geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-              stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                               sep = "~~italic(\"with\")~~")),
-                               eq.with.lhs = "D[x][y]~`=`~",
-                               eq.x.rhs = "~Y",
-                               formula = y ~ x, 
-                               parse = TRUE, size = 3, label.y = 0.8, label.x = 0.02) +
               npc_txt_south +
+              npc_txt_south_reg +
               scale_colour_manual(values=cols, name="Habitat degradation") +
               scale_x_continuous(breaks = seq(9753280, 9755780, 500)) + 
               labs(
                    x = "Y-Coordinate (Y)", 
-                   y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
+                   y = expression(paste("D"["x"]["y"]))) +
               theme_bw(base_size = 10) + 
               theme(legend.position = "none",
                     plot.margin = margin(c(5,5,5,20)))
@@ -160,18 +183,13 @@ plot.south <- ggplot(data=south, mapping = aes(x = y, y = deg_sum_c_globalimpact
 plot.west <- ggplot(data=west, mapping = aes(x = x, y = deg_sum_c_globalimpact)) +
              geom_point(mapping = aes(color = "Scores (points) with linear regression (transparent line)")) +
              geom_line(mapping = aes(color = "Scores (points) with linear regression (transparent line)"), stat="smooth", method="lm", alpha = 0.4) +
-             stat_poly_eq(aes(label = paste(stat(eq.label), stat(rr.label), 
-                              sep = "~~italic(\"with\")~~")),
-                              eq.with.lhs = "D[x][y]~`=`~",
-                              eq.x.rhs = "~X",
-                              formula = y ~ x, 
-                              parse = TRUE, size = 3, label.y = 0.8, label.x = 0.02) +
              npc_txt_west +
+             npc_txt_west_reg +
              scale_colour_manual(values=cols) +
              scale_x_continuous(breaks = seq(212486, 214986, 500)) +
              labs(
                   x = "X-Coordinate (X)", 
-                  y = expression(paste("Habitat-degradation Score (D"["x"]["y"],")"))) +
+                  y = expression(paste("D"["x"]["y"],))) +
                   theme_bw(base_size = 10) + 
              theme(legend.position = "none",
                    plot.margin = margin(c(5,5,5,20)))
@@ -197,17 +215,10 @@ deg <- ggplot(data=deg.map_df) +
          legend.spacing.x = unit(0.2, "cm")
   )
 
-ggarrange(ggarrange(plot.south, plot.north, ncol =2, labels = c("A", "B")),  
-          ggarrange(plot.west, plot.east, ncol =2, labels = c("C", "D")),
-          ggarrange(deg, ncol = 1, labels = "E"),
-          nrow = 3, 
-          heights = c(1, 1, 1, 1, 100),
-          widths = c(1, 1, 1, 1, 100),
-          align = "v",
-          labels = "A"                                        
-)
+(plot.south + plot.north) / (plot.west + plot.east) / (plot_spacer() + deg + plot_spacer())
+
 # !xyimpact is location of impact: 214986 9755730
-ggsave("degradation_landscape.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/", scale = 3 )#, plot="plot1",device = png) #, path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+ggsave("degradation_landscape.png", path = "{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/", scale = 3 )
 
 
  

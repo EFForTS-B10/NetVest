@@ -9,17 +9,17 @@
 
 #needed libraries
 library(nlrx)
-library(Refforts) #when the RStudioServer is new and you work not on the main branch of EFForTS-ABM install the version-specific Refforts: https://github.com/EFForTS-B10/Refforts 
+library(Refforts) 
 
 ### 1) Acceptancetest execution
 experiment <- "C0"
 invtest <- paste("\"",experiment,"\"",sep="")
 natcapinvestexperiment <- invtest
 hsc <- 0.05
-netlogopath <- file.path("{home}/netlogofolder")
-modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
-netlogoversion <- "6.1.1"
+netlogopath <- file.path("{HOME}/netlogofolder6.2.1")
+modelpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
+netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
          nlpath = netlogopath,

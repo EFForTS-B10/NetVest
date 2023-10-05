@@ -3,7 +3,7 @@
 #########################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder nested
-# specify hsc (half-saturation-constant), default: 0.05
+# specify hsc (half-saturation-constant), default: 0.5
 # Input folder has to include sensitivitytable.txt, impacttable.txt, lulc.asc, oilpalm_c.asc and rubber_c.asc 
 # adapt netlogopath, modelpath, outpath and netlogoversion
 
@@ -11,16 +11,16 @@
 library(nlrx)
 library(raster)
 library(tidyverse)
-library(ggpubr)
+library(patchwork)
 
 ### 1) Unittest execution
 experiment <- "localimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("{home}/netlogofolder")
-modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
-netlogoversion <- "6.1.1"
+netlogopath <- file.path("{HOME}/netlogofolder6.2.1")
+modelpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
          nlpath = netlogopath,
@@ -68,7 +68,7 @@ validation_transformation <- function(inputmap,outputmap){
 }
 
 # asc to tif
-validation_transformation(inputmap=raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
+validation_transformation(inputmap=raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
                           outputmap=raster(paste(outpath,"/oilpalm_c.tif" ,sep="")))
 # tif to asc
 validation_transformation(inputmap=raster(paste(outpath,"/quality_c_", experiment, ".tif" ,sep="")),
@@ -79,7 +79,7 @@ validation_transformation(inputmap=raster(paste(outpath,"/quality_c_", experimen
 ## Generation of expected result
 
 # Extract dimension of impact location from oilpalm_c.asc
-asc <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+asc <- raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 rowColimpact <- rowColFromCell(asc, which(asc[] == 1 ))
 
 # Function for calculation of habitat-quality score
@@ -160,14 +160,14 @@ asc_df <- as.data.frame(asc, xy=TRUE)
 asc_map <- ggplot(data=asc_df) + 
            geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
            scale_fill_manual(labels = c("False", "True"), values = mycol_impact, name="Impact location (oilpalm)") +
-           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact map before conversion") +
-           theme (plot.title = element_text(hjust = 0.1, size = 6),
-                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                  axis.text = element_text(size = 2.5),
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("A") +
+           theme (plot.title = element_text(hjust = 0.1, size = 10),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                  axis.text = element_text(size = 5),
                   axis.ticks = element_line(size = 0),
-                  legend.title = element_text(size = 4, face = "bold"),
-                  legend.text = element_text(size = 4),
+                  legend.title = element_text(size = 10, face = "bold"),
+                  legend.text = element_text(size = 10),
                   legend.key.width = unit(0.3, "cm"),
                   legend.key.height = unit(0.3, "cm"),
                   panel.background = element_rect(fill = "white"),
@@ -184,14 +184,14 @@ tif_df <- as.data.frame(tif, xy=TRUE)
 tif_map <- ggplot(data=tif_df) + 
            geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
            scale_fill_manual(labels = c("False", "True"), values = mycol_impact, name="Impact location (oilpalm)") +
-           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact map after conversion") +
-           theme (plot.title = element_text(hjust = 0.1, size = 6),
-                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                  axis.text = element_text(size = 2.5),
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("B") +
+           theme (plot.title = element_text(hjust = 0.1, size = 10),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                  axis.text = element_text(size = 5),
                   axis.ticks = element_line(size = 0),
-                  legend.title = element_text(size = 4, face = "bold"),
-                  legend.text = element_text(size = 4),
+                  legend.title = element_text(size = 10, face = "bold"),
+                  legend.text = element_text(size = 10),
                   legend.key.width = unit(0.3, "cm"),
                   legend.key.height = unit(0.3, "cm"),
                   panel.background = element_rect(fill = "white"),
@@ -212,14 +212,14 @@ invest_df <- as.data.frame(invest, xy=TRUE)
 invest_map <- ggplot(data=invest_df) + 
               geom_raster(aes(x=x,y=y,fill=factor(quality_c_localimpact))) + 
               scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
-              xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Habitat-quality map of InVEST") +
-              theme (plot.title = element_text(hjust = 0.1, size = 6),
-                     axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                     axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                     axis.text = element_text(size = 2.5),
+              xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("A") +
+              theme (plot.title = element_text(hjust = 0.1, size = 10),
+                     axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                     axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                     axis.text = element_text(size = 5),
                      axis.ticks = element_line(size = 0),
-                     legend.title = element_text(size = 4, face = "bold"),
-                     legend.text = element_text(size = 4),
+                     legend.title = element_text(size = 10, face = "bold"),
+                     legend.text = element_text(size = 10),
                      legend.key.width = unit(0.3, "cm"),
                      legend.key.height = unit(0.3, "cm"),
                      panel.background = element_rect(fill = "white"),
@@ -236,14 +236,14 @@ expected_df <- as.data.frame(expectedmap, xy=TRUE)
 expected_map <- ggplot(data=expected_df) + 
                 geom_raster(aes(x=x,y=y,fill=factor(layer))) + 
                 scale_fill_manual(values = mycol_quality, name="Habitat-Quality Scores") +
-                xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Expected habitat-quality map") +
-                theme (plot.title = element_text(hjust = 0.1, size = 6),
-                       axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                       axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                       axis.text = element_text(size = 2.5),
+                xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("B") +
+                theme (plot.title = element_text(hjust = 0.1, size = 10),
+                       axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                       axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                       axis.text = element_text(size = 5),
                        axis.ticks = element_line(size = 0),
-                       legend.title = element_text(size = 4, face = "bold"),
-                       legend.text = element_text(size = 4),
+                       legend.title = element_text(size = 10, face = "bold"),
+                       legend.text = element_text(size = 10),
                        legend.key.width = unit(0.3, "cm"),
                        legend.key.height = unit(0.3, "cm"),
                        panel.background = element_rect(fill = "white"),
@@ -254,8 +254,8 @@ expected_map <- ggplot(data=expected_df) +
                        legend.spacing.x = unit(0.2, "cm"),
                       )
 
-ggarrange(asc_map, tif_map, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("impact_comp_local.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+asc_map + tif_map + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
+ggsave("impact_comp_local.png", path = "/homer/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )
 
-ggarrange(invest_map, expected_map, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("result_comp_local.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )#, plot="plot1",device = png) #, path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+invest_map + expected_map+ plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
+ggsave("result_comp_local.png", path = "/homer/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )

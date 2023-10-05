@@ -9,20 +9,19 @@
 
 #needed libraries
 library(nlrx)
-library(Refforts) #when the RStudioServer is new and you work not on the main branch of EFForTS-ABM install the version-specific Refforts: https://github.com/EFForTS-B10/Refforts 
+library(Refforts)
 library(raster)
 library(ggplot2)
-library(ggpubr)
 
 ### 1) Integrationtest execution
 experiment <- "integrationtest"
 invtest <- paste("\"",experiment,"\"",sep="")
 natcapinvestexperiment <- invtest
 hsc <- 0.05
-netlogopath <- file.path("{home}/netlogofolder")
-modelpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("{home}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
-netlogoversion <- "6.1.1"
+netlogopath <- file.path("{HOME}/netlogofolder6.2.1")
+modelpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
+outpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
+netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
          nlpath = netlogopath,
@@ -66,14 +65,13 @@ fileexist <- function(qualitymap){
 
 fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc" ,sep=""))))
 
-## Aim 2: LULC-map 
-## Aim 2.1: Correct translation of land-use type values
+## Aim 2: LULC-map: Correct translation of land-use type values 
 
 # land-use map within EFForTS-ABM before translation (lut_abm)
-lut_abm <- raster("{home}/EFForTS-ABM/01_EFForTS-ABM/output/lut__000.asc")
+lut_abm <- raster("{HOME}/EFForTS-ABM/01_EFForTS-ABM/output/lut__000.asc")
 
 # land-use map within EFFOrTS-ABM after translation (lut_trans)
-lut_trans <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/output/lut_invest_",experiment,"_1_000.asc"))
+lut_trans <- raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/output/lut_invest_",experiment,"_1_000.asc",sep=""))
 
 # Function for comparison of maps: Substract rasters with absoulte values to validate that they are equal
 validation_translation <- function (inputmap, outputmap) {
@@ -88,7 +86,7 @@ validation_translation(lut_abm, lut_trans)
 
 ## Aim 2.2: Correct generation of LULC map
 # lulc map for InVEST
-lulc <- raster(paste(outpath,"/lulc.asc"))
+lulc <- raster(paste(outpath,"/lulc.asc",sep=""))
 
 # Comparison
 validation_translation(lut_trans, lulc)
@@ -98,26 +96,26 @@ validation_translation(lut_trans, lulc)
 ## Aim 3.1: Correct translation of impact values
 # land-use map within EFForTS-ABM for oilpalm before translation (op_abm_map)
 lutabm_df <- as.data.frame(lut_abm, xy=TRUE) 
-op_abm<- lutabm_df$lut__001 == 0
+op_abm <- lutabm_df$lut__000 == 0
 op_abm_map <- raster(ncol=100, nrow= 100, xmn=212461, xmx=217461, ymn=9753255, ymx=9758255)
 projection(op_abm_map) <- "+proj=utm +zone=48 +south +datum=WGS84"
 values(op_abm_map) <- op_abm
 
 # land-use map within EFForTS-ABM for oilpalm after translation (op_trans_map)
 luttrans_df <- as.data.frame(lut_trans, xy=TRUE)
-op_trans<- luttrans_df$lut_invest__001 == 0
+op_trans<- luttrans_df$lut_invest_integrationtest_1_000 == 0
 op_trans_map <- raster(ncol=100, nrow= 100, xmn=212461, xmx=217461, ymn=9753255, ymx=9758255)
 projection(op_trans_map) <- "+proj=utm +zone=48 +south +datum=WGS84"
 values(op_trans_map) <- op_trans
 
 # land-use map within EFForTS-ABM for rubber before translation (rb_abm_map)
-rb_abm<- lutabm_df$lut__001 == 1
+rb_abm<- lutabm_df$lut__000 == 1
 rb_abm_map <- raster(ncol=100, nrow= 100, xmn=212461, xmx=217461, ymn=9753255, ymx=9758255)
 projection(rb_abm_map) <- "+proj=utm +zone=48 +south +datum=WGS84"
 values(rb_abm_map) <- rb_abm
 
 # land-use map within EFForTS-ABM for rubber after translation (rb_trans_map)
-rb_trans<- luttrans_df$lut_invest__001 == 1
+rb_trans<- luttrans_df$lut_invest_integrationtest_1_000 == 1
 rb_trans_map <- raster(ncol=100, nrow= 100, xmn=212461, xmx=217461, ymn=9753255, ymx=9758255)
 projection(rb_trans_map) <- "+proj=utm +zone=48 +south +datum=WGS84"
 values(rb_trans_map) <- rb_trans
@@ -129,10 +127,10 @@ validation_translation(rb_abm_map, rb_trans_map)
 
 ## Aim 3.2: Correct generation of impact map
 # impact-map for InVEST for oilpaln (op_invest)
-op_invest <- raster(outpath,"/oilpalm_c.asc")
+op_invest <- raster(paste(outpath,"/oilpalm_c.asc",sep=""))
 
 # impact-map for InVEST for rubber (rb_invest)
-rb_invest <- raster(paste(outpath,"/rubber_c.asc"))
+rb_invest <- raster(paste(outpath,"/rubber_c.asc",sep=""))
 
 # Comparison
 validation_translation(op_trans, op_invest)
@@ -144,29 +142,29 @@ validation_translation(rb_trans, rb_invest)
 quality_invest <- raster(paste(outpath,"/quality_c_" ,experiment, ".asc",sep=""))
 
 # map with stored values from InVEST within EFForTS-ABM
-quality_abm <- raster(paste("{home}/EFForTS-ABM/01_EFForTS-ABM/output/lut_quality_",experiment,"_1_000.asc"))
+quality_abm <- raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/output/lut_quality_",experiment,"_1_000.asc",sep=""))
 
 # Comparison
 validation_translation(quality_invest, quality_abm)
 ################################################################################
 ### 3) PLOTTING
-## Aim 2.1: Correct translation of land-use type values
+## Aim 2: Correct translation and genereration of land-use type values
 
 mycol_lut <- c("#238443", "#ec7014", "#fed976")
 mycol_lutinvest <- c("#ec7014", "#fed976", "#238443" )
 
 lutabm <- ggplot(data=lutabm_df) + 
-           geom_raster(aes(x=x,y=y,fill=factor(lut__001))) + 
+           geom_raster(aes(x=x,y=y,fill=factor(lut__000))) + 
            scale_fill_manual(labels = c("forest", "oilpalm", "rubber"), values = mycol_lut, name="Land-use types") +
-           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Land-use map before translation") +
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Before translation") +
            #title("Land-use map before translation") +
-           theme (plot.title = element_text(hjust = 0.1, size = 5),
-                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                  axis.text = element_text(size = 2.5),
+           theme (plot.title = element_text(hjust = 0.1, size = 10),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                  axis.text = element_text(size = 5),
                   axis.ticks = element_line(size = 0),
-                  legend.title = element_text(size = 4, face = "bold"),
-                  legend.text = element_text(size = 4),
+                  legend.title = element_text(size = 10, face = "bold"),
+                  legend.text = element_text(size = 10),
                   legend.key.width = unit(0.3, "cm"),
                   legend.key.height = unit(0.3, "cm"),
                   legend.position = "none",
@@ -176,20 +174,19 @@ lutabm <- ggplot(data=lutabm_df) +
                   aspect.ratio = 1,
                   plot.margin = margin(c(5,0,5,0)),
                   legend.spacing.x = unit(0.2, "cm"),
-                  #legend.box.margin = unit(c(0,0,20,0), "mm"),
                  )
 
 luttrans <- ggplot(data=luttrans_df) + 
-             geom_raster(aes(x=x,y=y,fill=factor(lut_invest__001))) + 
+             geom_raster(aes(x=x,y=y,fill=factor(lut_invest_integrationtest_1_000))) + 
              scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
-             xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Land-use map after translation") +
-             theme (plot.title = element_text(hjust = 0.1, size = 5),
-                    axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                    axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                    axis.text = element_text(size = 2.5),
+             xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("After translation") +
+             theme (plot.title = element_text(hjust = 0.1, size = 10),
+                    axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                    axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                    axis.text = element_text(size = 5),
                     axis.ticks = element_line(size = 0),
-                    legend.title = element_text(size = 4, face = "bold"),
-                    legend.text = element_text(size = 4),
+                    legend.title = element_text(size = 10, face = "bold"),
+                    legend.text = element_text(size = 10),
                     legend.key.width = unit(0.3, "cm"),
                     legend.key.height = unit(0.3, "cm"),
                     legend.position = "none", 
@@ -199,7 +196,6 @@ luttrans <- ggplot(data=luttrans_df) +
                     aspect.ratio = 1,
                     plot.margin = margin(c(5,0,5,0)),
                     legend.spacing.x = unit(0.2, "cm"),
-                    #legend.box.margin = unit(c(0,0,20,0), "mm"),
                    )
 
 lulc_df <- as.data.frame(lulc, xy=TRUE)
@@ -207,14 +203,14 @@ lulc_df <- as.data.frame(lulc, xy=TRUE)
 lulcplot <- ggplot(data=lulc_df) + 
   geom_raster(aes(x=x,y=y,fill=factor(lulc))) + 
   scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated land-use map") +
-  theme (plot.title = element_text(hjust = 0.1, size = 5),
-         axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-         axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-         axis.text = element_text(size = 2.5),
+  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated") +
+  theme (plot.title = element_text(hjust = 0.1, size = 10),
+         axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+         axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+         axis.text = element_text(size = 5),
          axis.ticks = element_line(size = 0),
-         legend.title = element_text(size = 4, face = "bold"),
-         legend.text = element_text(size = 4),
+         legend.title = element_text(size = 10, face = "bold"),
+         legend.text = element_text(size = 10),
          legend.key.width = unit(0.3, "cm"),
          legend.key.height = unit(0.3, "cm"),
          legend.position = "right",
@@ -226,60 +222,11 @@ lulcplot <- ggplot(data=lulc_df) +
          legend.spacing.x = unit(0.2, "cm")
   )
 
-ggarrange(lutabm, luttrans, lulcplot, ncol = 3, nrow = 1, common.legend = TRUE, legend = "right" )#%>%
-ggsave("lutabm_luttrans_lulc.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
-
-################################################################################
-## Aim 2.2 Correct generation of LULC map
-luttrans <- ggplot(data=luttrans_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(lut_invest__001))) + 
-  scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Land-use map after translation") +
-  theme (plot.title = element_text(hjust = 0.1, size = 6),
-         axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-         axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-         axis.text = element_text(size = 2.5),
-         axis.ticks = element_line(size = 0),
-         legend.title = element_text(size = 4, face = "bold"),
-         legend.text = element_text(size = 4),
-         legend.key.width = unit(0.3, "cm"),
-         legend.key.height = unit(0.3, "cm"),
-         panel.background = element_rect(fill = "white"),
-         panel.grid.major = element_line(color = "gray90", size = 0.2),
-         panel.grid.minor = element_line(color = "gray90", size = 0.2),
-         aspect.ratio = 1,
-         plot.margin = margin(c(5,-25,5,1)),
-         legend.spacing.x = unit(0.2, "cm")
-  )
-
-lulc_df <- as.data.frame(lulc, xy=TRUE)
-
-lulcplot <- ggplot(data=lulc_df) + 
-            geom_raster(aes(x=x,y=y,fill=factor(lulc))) + 
-            scale_fill_manual(labels = c("oilpalm", "rubber", "forest"), values = mycol_lutinvest, name="Land-use types") +
-            xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated land-use map") +
-            theme (plot.title = element_text(hjust = 0.1, size = 6),
-                   axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                   axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                   axis.text = element_text(size = 2.5),
-                   axis.ticks = element_line(size = 0),
-                   legend.title = element_text(size = 4, face = "bold"),
-                   legend.text = element_text(size = 4),
-                   legend.key.width = unit(0.3, "cm"),
-                   legend.key.height = unit(0.3, "cm"),
-                   panel.background = element_rect(fill = "white"),
-                   panel.grid.major = element_line(color = "gray90", size = 0.2),
-                   panel.grid.minor = element_line(color = "gray90", size = 0.2),
-                   aspect.ratio = 1,
-                   plot.margin = margin(c(5,1,5,-25)),
-                   legend.spacing.x = unit(0.2, "cm"),
-                  )
-  
-ggarrange(luttrans, lulcplot, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("luttrans_lulc.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+lutabm + luttrans + lulcplot
+ggsave("lutabm_luttrans_lulc.png", path = "{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
   
 ###############################################################################
-##Aim 3.1 Correct translation of impact values 
+##Aim 3 Correct translation and generation of impact values 
 
 mycol_op <- c(NA, "#ec7014")
 mycol_rb <- c(NA, "#fed976")
@@ -287,61 +234,84 @@ mycol_rb <- c(NA, "#fed976")
 opabm <- ggplot(data=lutabm_df) + 
          geom_raster(aes(x=x,y=y,fill=factor(op_abm)))+  
          scale_fill_manual(labels = c("matrix", "oilpalm"), values = mycol_op, name="Impact location (oilpalm)") +
-         xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact-map before translation") +
-         theme (plot.title = element_text(hjust = 0.1, size = 6),
-                axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                axis.text = element_text(size = 2.5),
+         xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Before translation") +
+         theme (plot.title = element_text(hjust = 0.1, size = 10),
+                axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                axis.text = element_text(size = 5),
                 axis.ticks = element_line(size = 0),
-                legend.title = element_text(size = 4, face = "bold"),
-                legend.text = element_text(size = 4),
+                legend.title = element_text(size = 10, face = "bold"),
+                legend.text = element_text(size = 10),
                 legend.key.width = unit(0.3, "cm"),
                 legend.key.height = unit(0.3, "cm"),
                 panel.background = element_rect(fill = "white"),
                 panel.grid.major = element_line(color = "gray90", size = 0.2),
                 panel.grid.minor = element_line(color = "gray90", size = 0.2),
                 aspect.ratio = 1,
-                plot.margin = margin(c(5,-25,5,1)),
+                plot.margin = margin(c(5,0,5,0)),
                 legend.spacing.x = unit(0.2, "cm")
                )
 
 optrans <- ggplot(data=luttrans_df) + 
            geom_raster(aes(x=x,y=y,fill=factor(op_trans)))+  
            scale_fill_manual(labels = c("matrix", "oilpalm"), values = mycol_op, name="Impact location (oilpalm)") +
-           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact-map after translation") +
-           theme (plot.title = element_text(hjust = 0.1, size = 6),
-                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                  axis.text = element_text(size = 2.5),
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("After translation") +
+           theme (plot.title = element_text(hjust = 0.1, size = 10),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                  axis.text = element_text(size = 5),
                   axis.ticks = element_line(size = 0),
-                  legend.title = element_text(size = 4, face = "bold"),
-                  legend.text = element_text(size = 4),
+                  legend.title = element_text(size = 10, face = "bold"),
+                  legend.text = element_text(size = 10),
                   legend.key.width = unit(0.3, "cm"),
                   legend.key.height = unit(0.3, "cm"),
                   panel.background = element_rect(fill = "white"),
                   panel.grid.major = element_line(color = "gray90", size = 0.2),
                   panel.grid.minor = element_line(color = "gray90", size = 0.2),
                   aspect.ratio = 1,
-                  plot.margin = margin(c(5,1,5,-25)),
+                  plot.margin = margin(c(5,0,5,0)),
                   legend.spacing.x = unit(0.2, "cm")
   )
 
 
-ggarrange(opabm, optrans, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("opabm_optrans.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+opinvest_df <- as.data.frame(op_invest, xy=TRUE)
+
+impactop <- ggplot(data=opinvest_df) + 
+  geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
+  scale_fill_manual(labels = c("matrix", "oilpalm"), values = mycol_op, name="Impact location (oilpalm)") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated") +
+  theme (plot.title = element_text(hjust = 0.1, size = 10),
+         axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+         axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+         axis.text = element_text(size = 5),
+         axis.ticks = element_line(size = 0),
+         legend.title = element_text(size = 10, face = "bold"),
+         legend.text = element_text(size = 10),
+         legend.key.width = unit(0.3, "cm"),
+         legend.key.height = unit(0.3, "cm"),
+         panel.background = element_rect(fill = "white"),
+         panel.grid.major = element_line(color = "gray90", size = 0.2),
+         panel.grid.minor = element_line(color = "gray90", size = 0.2),
+         aspect.ratio = 1,
+         plot.margin = margin(c(5,0,5,0)),
+         legend.spacing.x = unit(0.2, "cm")
+  )
+
+opabm + optrans + impactop + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
+ggsave("opabm_optrans.png", path = "{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 
 
 rbabm <- ggplot(data=lutabm_df) + 
          geom_raster(aes(x=x,y=y,fill=factor(rb_abm)))+  
          scale_fill_manual(labels = c("matrix", "rubber"), values = mycol_rb, name="Impact location (rubber)") +
-         xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact-map before translation") +
-         theme (plot.title = element_text(hjust = 0.1, size = 6),
-                axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                axis.text = element_text(size = 2.5),
+         xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Before translation") +
+         theme (plot.title = element_text(hjust = 0.1, size = 10),
+                axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                axis.text = element_text(size = 5),
                 axis.ticks = element_line(size = 0),
-                legend.title = element_text(size = 4, face = "bold"),
-                legend.text = element_text(size = 4),
+                legend.title = element_text(size = 10, face = "bold"),
+                legend.text = element_text(size = 10),
                 legend.key.width = unit(0.3, "cm"),
                 legend.key.height = unit(0.3, "cm"),
                 panel.background = element_rect(fill = "white"),
@@ -355,14 +325,14 @@ rbabm <- ggplot(data=lutabm_df) +
 rbtrans <- ggplot(data=luttrans_df) + 
            geom_raster(aes(x=x,y=y,fill=factor(rb_trans)))+  
            scale_fill_manual(labels = c("matrix", "rubber"), values = mycol_rb, name="Impact location (rubber)") +
-           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact-map after translation") +
-           theme (plot.title = element_text(hjust = 0.1, size = 6),
-                  axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                  axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                  axis.text = element_text(size = 2.5),
+           xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("After translation") +
+           theme (plot.title = element_text(hjust = 0.1, size = 10),
+                  axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+                  axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+                  axis.text = element_text(size = 5),
                   axis.ticks = element_line(size = 0),
-                  legend.title = element_text(size = 4, face = "bold"),
-                  legend.text = element_text(size = 4),
+                  legend.title = element_text(size = 10, face = "bold"),
+                  legend.text = element_text(size = 10),
                   legend.key.width = unit(0.3, "cm"),
                   legend.key.height = unit(0.3, "cm"),
                   panel.background = element_rect(fill = "white"),
@@ -373,109 +343,36 @@ rbtrans <- ggplot(data=luttrans_df) +
                   legend.spacing.x = unit(0.2, "cm")
                  )
 
-ggarrange(rbabm, rbtrans, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("rbabm_rbtrans.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
-
-###############################################################################
-#Aim 3.2 Correct generation of impact maps
-optrans <- ggplot(data=luttrans_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(op_trans)))+  
-  scale_fill_manual(labels = c("matrix", "oilpalm"), values = mycol_op, name="Impact location (oilpalm)") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact-map after translation") +
-  theme (plot.title = element_text(hjust = 0.1, size = 6),
-         axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-         axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-         axis.text = element_text(size = 2.5),
-         axis.ticks = element_line(size = 0),
-         legend.title = element_text(size = 4, face = "bold"),
-         legend.text = element_text(size = 4),
-         legend.key.width = unit(0.3, "cm"),
-         legend.key.height = unit(0.3, "cm"),
-         panel.background = element_rect(fill = "white"),
-         panel.grid.major = element_line(color = "gray90", size = 0.2),
-         panel.grid.minor = element_line(color = "gray90", size = 0.2),
-         aspect.ratio = 1,
-         plot.margin = margin(c(5,-25,5,1)),
-         legend.spacing.x = unit(0.2, "cm")
-  )
-
-opinvest_df <- as.data.frame(op_invest, xy=TRUE)
-impactop <- ggplot(data=opinvest_df) + 
-            geom_raster(aes(x=x,y=y,fill=factor(oilpalm_c))) + 
-            scale_fill_manual(labels = c("matrix", "oilpalm"), values = mycol_op, name="Impact location (oilpalm)") +
-            xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated Impact-map for oilpalm") +
-            theme (plot.title = element_text(hjust = 0.1, size = 6),
-                   axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-                   axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-                   axis.text = element_text(size = 2.5),
-                   axis.ticks = element_line(size = 0),
-                   legend.title = element_text(size = 4, face = "bold"),
-                   legend.text = element_text(size = 4),
-                   legend.key.width = unit(0.3, "cm"),
-                   legend.key.height = unit(0.3, "cm"),
-                   panel.background = element_rect(fill = "white"),
-                   panel.grid.major = element_line(color = "gray90", size = 0.2),
-                   panel.grid.minor = element_line(color = "gray90", size = 0.2),
-                   aspect.ratio = 1,
-                   plot.margin = margin(c(5,1,5,-25)),
-                   legend.spacing.x = unit(0.2, "cm")
-                  )
-
-rbtrans <- ggplot(data=luttrans_df) + 
-  geom_raster(aes(x=x,y=y,fill=factor(rb_trans)))+  
-  scale_fill_manual(labels = c("matrix", "rubber"), values = mycol_rb, name="Impact location (rubber)") +
-  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Impact-map after translation") +
-  theme (plot.title = element_text(hjust = 0.1, size = 6),
-         axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-         axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-         axis.text = element_text(size = 2.5),
-         axis.ticks = element_line(size = 0),
-         legend.title = element_text(size = 4, face = "bold"),
-         legend.text = element_text(size = 4),
-         legend.key.width = unit(0.3, "cm"),
-         legend.key.height = unit(0.3, "cm"),
-         panel.background = element_rect(fill = "white"),
-         panel.grid.major = element_line(color = "gray90", size = 0.2),
-         panel.grid.minor = element_line(color = "gray90", size = 0.2),
-         aspect.ratio = 1,
-         plot.margin = margin(c(5,-25,5,1)),
-         legend.spacing.x = unit(0.2, "cm")
-  )
-
 rbinvest_df <- as.data.frame(rb_invest, xy=TRUE)
 impactrb <- ggplot(data=rbinvest_df) + 
-            geom_raster(aes(x=x,y=y,fill=factor(rubber_c)))+  
-            scale_fill_manual(labels = c("matrix", "rubber"), values = mycol_rb, name="Impact location (rubber)") +
-            xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated Impact-map for rubber") +
-            theme (plot.title = element_text(hjust = 0.1, size = 6),
-            axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
-            axis.title.y = element_text(hjust=1, vjust= 2, size = 3),
-            axis.text = element_text(size = 2.5),
-            axis.ticks = element_line(size = 0),
-            legend.title = element_text(size = 4, face = "bold"),
-            legend.text = element_text(size = 4),
-            legend.key.width = unit(0.3, "cm"),
-            legend.key.height = unit(0.3, "cm"),
-            panel.background = element_rect(fill = "white"),
-            panel.grid.major = element_line(color = "gray90", size = 0.2),
-            panel.grid.minor = element_line(color = "gray90", size = 0.2),
-            aspect.ratio = 1,
-            plot.margin = margin(c(5,1,5,-25)),
-            legend.spacing.x = unit(0.2, "cm")
-           )
- 
-ggarrange(optrans, impactop, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("optrans_impactop.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
+  geom_raster(aes(x=x,y=y,fill=factor(rubber_c)))+  
+  scale_fill_manual(labels = c("matrix", "rubber"), values = mycol_rb, name="Impact location (rubber)") +
+  xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated") +
+  theme (plot.title = element_text(hjust = 0.1, size = 10),
+         axis.title.x = element_text(hjust=1, vjust= -1, size = 10),
+         axis.title.y = element_text(hjust=1, vjust= 2, size = 10),
+         axis.text = element_text(size = 5),
+         axis.ticks = element_line(size = 0),
+         legend.title = element_text(size = 10, face = "bold"),
+         legend.text = element_text(size = 10),
+         legend.key.width = unit(0.3, "cm"),
+         legend.key.height = unit(0.3, "cm"),
+         panel.background = element_rect(fill = "white"),
+         panel.grid.major = element_line(color = "gray90", size = 0.2),
+         panel.grid.minor = element_line(color = "gray90", size = 0.2),
+         aspect.ratio = 1,
+         plot.margin = margin(c(5,1,5,-25)),
+         legend.spacing.x = unit(0.2, "cm")
+  )
 
-ggarrange(rbtrans, impactrb, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("rbtrans_impactrb.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
-
+rbabm + rbtrans + impactrb + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
+ggsave("rbabm_rbtrans.png", path = "{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )
 ###############################################################################
 ##Aim 4 Correct storing of habitat quality values
 qualityinvest_df <- as.data.frame(quality_invest, xy=TRUE)
 quality <- ggplot(data=qualityinvest_df) + 
-           geom_raster(aes(x=x,y=y,fill=quality_c_integrationtest01)) +  
-           scale_fill_gradient(low = "#ffffe5", high = "#00441b", name = "Habitat-Quality Scores ") +
+           geom_raster(aes(x=x,y=y,fill=quality_c_integrationtest)) +  
+           scale_fill_gradient(low = "#ffffe5", high = "#00441b", name = "Habitat-Quality Scores") +
            xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Generated habitat-quality map") +
            theme (plot.title = element_text(hjust = 0.1, size = 6),
                   axis.title.x = element_text(hjust=1, vjust= -1, size = 3),
@@ -496,7 +393,7 @@ quality <- ggplot(data=qualityinvest_df) +
 
 qualityabm_df <- as.data.frame(quality_abm, xy=TRUE)
 quality2 <- ggplot(data=qualityabm_df) + 
-            geom_raster(aes(x=x,y=y,fill=lut_quality__001)) +  
+            geom_raster(aes(x=x,y=y,fill=lut_quality_integrationtest_1_000)) +  
             scale_fill_gradient(low = "#ffffe5", high = "#00441b", name = "Habitat-Quality Scores") +
             xlab("Longitude (X)") + ylab("Latitude (Y)") + ggtitle("Integrated habitat-quality map") +
            theme (plot.title = element_text(hjust = 0.1, size = 6),
@@ -515,6 +412,5 @@ quality2 <- ggplot(data=qualityabm_df) +
                   plot.margin = margin(c(5,1,5,-25)),
                   legend.spacing.x = unit(0.2, "cm")
                  )
-
-ggarrange(quality, quality2, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
-ggsave("quality_quality2.png", path = "{home}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/" )#, plot="plot1",device = png) #, path = "/home/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/")
+quality + quality2 + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
+ggsave("quality_quality2.png", path = "{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/02_integrationtest/Plots/")
