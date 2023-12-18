@@ -1,7 +1,7 @@
 
 to biodiv-ncinv-init
-; input is located in model folder ./natcap_invest/input: input for invest is: sensitivitytable.txt, impacttable.txt, LULCmap.asc, impactmaps.asc"
-; output will be written to model folder ./natcap_invest/output: output of EFForTS-ABM as inpt for Invest is: sensitivitytable.csv, impacttable.csv, LULCmap.tif, impacttables.tif"
+; input is located in model folder ./ncinv/input: input for InVEST Habitat Quality is: sensitivitytable.txt, impacttable.txt, LULCmap.asc, impactmaps.asc"
+; output will be written to model folder ./ncinv/output: output of EFForTS-ABM as input for Invest is: sensitivitytable.csv, impacttable.csv, LULCmap.tif, impacttables.tif"
 ; for testing purposes workdir_ncinv can be set via full path to point to the testing data files
 
   set workdir_ncinv "./ncinv/habitatquality"
@@ -69,7 +69,7 @@ to biodiv-ncinv-write-sensitivity
 end
 
 
-;; Read in impact-table from natcap_invest input-folder and generate impact-table
+;; Read in impact-table from ncinv input-folder and generate impact-table
 to biodiv-ncinv-write-impact
  print ["writing impact table"]
   let impact_all []
@@ -117,7 +117,7 @@ to biodiv-ncinv-update
 end
 
 
-;; Create new variable for lulc-classification used by natcap InVEST
+;; Create new variable for lulc-classification used by InVEST Habitat Quality
 to biodiv-ncinv-translate-lulc
  print["translating lulc values"]
   ask patches
@@ -187,7 +187,7 @@ to biodiv-ncinv-write-impact-map [impact-name]
 end
 
 
-;; Conversion of asc-maps to tif-maps for transferation to InVEST
+;; Conversion of asc-maps to tif-maps for transferation to InVEST Habitat Quality
 to biodiv-ncinv-convert-maps-tif
  print ["converting maps"]
  print (word "workdir_ncinv: "workdir_ncinv)
@@ -217,9 +217,9 @@ let filepath (word workdir_ncinv "/output/" file)
 end
 
 
-;; Invoke model InVEST and transfer output
+;; Invoke model InVEST Habitat Quality and transfer output
 to biodiv-ncinv-execute-invest [invest_wd experiment half_saturation_constant]
- print (word "[invoking model InVEST with working directory: " invest_wd "]")
+ print (word "[invoking model InVEST Habitat Quality with working directory: " invest_wd "]")
  print (word "experiment name: " experiment)
  print (word "half saturation constant:" biodiv_ncinv_k)
   py:set "working_directory" invest_wd
@@ -245,7 +245,7 @@ to biodiv-ncinv-execute-invest [invest_wd experiment half_saturation_constant]
 end
 
 
-;; Convertion of tif-file from InVEST to asc-file for netlogo
+;; Convertion of tif-file from InVEST Habitat Quality to asc-file for netlogo
 to biodiv-ncinv-convert-maps-asc [experiment]
   print (word "[converting invest results to asc for " experiment "]")
   py:set "working_directory" workdir_ncinv

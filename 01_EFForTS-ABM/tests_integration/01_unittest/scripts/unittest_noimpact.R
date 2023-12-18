@@ -1,5 +1,5 @@
 ############################################
-##### Unittest for NL-InVEST: no impact ####
+##### Unittest for NL-ncINV: no impact ####
 ############################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder nested
@@ -133,4 +133,4 @@ expected_map <-  ggplot(data=expected_df) +
 
 invest_map + expected_map + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
 
-ggsave("quality_comp_forest.png", path = "{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )
+ggsave("quality_comp_forest.png", path = "/homer/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )

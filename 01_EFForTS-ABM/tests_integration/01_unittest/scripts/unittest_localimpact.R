@@ -1,5 +1,5 @@
 #########################################
-##### Unittest for NL-InVEST: local #####
+##### Unittest for NL-ncINV: local #####
 #########################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder nested
@@ -68,7 +68,7 @@ validation_transformation <- function(inputmap,outputmap){
 }
 
 # asc to tif
-validation_transformation(inputmap=raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
+validation_transformation(inputmap=raster(paste("{HOME}EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
                           outputmap=raster(paste(outpath,"/oilpalm_c.tif" ,sep="")))
 # tif to asc
 validation_transformation(inputmap=raster(paste(outpath,"/quality_c_", experiment, ".tif" ,sep="")),
@@ -79,7 +79,7 @@ validation_transformation(inputmap=raster(paste(outpath,"/quality_c_", experimen
 ## Generation of expected result
 
 # Extract dimension of impact location from oilpalm_c.asc
-asc <- raster(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+asc <- raster(paste("{HOME}EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 rowColimpact <- rowColFromCell(asc, which(asc[] == 1 ))
 
 # Function for calculation of habitat-quality score
@@ -143,7 +143,7 @@ expectedmap[rowColimpact] <- Qxj
 validation_maps <- function(investmap,expectedmap){
   equalmaps <- all.equal(investmap, expectedmap)
   print ("Comparison of expected result and result of InVEST")
-  if (equalmaps == TRUE) {print ("Valdiating expected result")}  else {print ("Unexpected result")}
+  if (equalmaps == TRUE) {print ("Valdating expected result")}  else {print ("Unexpected result")}
 }
 
 validation_maps(investmap=raster(paste(outpath,"/quality_c_", experiment, ".asc" ,sep="")),

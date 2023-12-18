@@ -1,5 +1,5 @@
 ##########################################
-##### Unittest for NL-InVEST: global #####
+##### Unittest for NL-ncINV: global #####
 ##########################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder within
