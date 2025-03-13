@@ -3,17 +3,17 @@ This repository contains the release of EFForTS-ABM v1.1. This model version 1.1
 ## Technical Software Documentation
 ### Folder structure
 
-input: input folder of EFForTS-ABM
+•	input: input folder of EFForTS-ABM
 
-ncinv: input and output folder for InVEST Habitat Quality
+•	ncinv: input and output folder for InVEST Habitat Quality
 
-output: output folder of EFForTS-ABM
+•	output: output folder of EFForTS-ABM
 
-par_ABM: Parameter files of EFForTS-ABM
+•	par_ABM: Parameter files of EFForTS-ABM
 
-scr_ABM: NetLogo Source (nls) files of EFForTS-ABM
+•	scr_ABM: NetLogo Source (nls) files of EFForTS-ABM
 
-test_integration: Software Testing scripts
+•	test_integration: Software Testing scripts
 
 ### NetLogo Source (nls) Files of NetVest
 
@@ -78,9 +78,14 @@ Adapt workdir_ncinv within ecol_biodiv_ncinv_unit_test.nls.
 •	Adapt the software testing to another use case.
 
 ## References
+
 [B1] https://www.uni-goettingen.de/en/software/593072.html
+
 [B2] https://naturalcapitalproject.stanford.edu/software/invest
+
 [B3] https://releases.ubuntu.com/20.04/
+
 [B4] https://www.python.org/downloads/
+
 [B5] https://ccl.northwestern.edu/netlogo/
 
