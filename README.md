@@ -1,5 +1,5 @@
 # NetVest
-This repository contains the EFForTS-ABM v1.1 which includes the implementation of NetVest to couple EFForTS-ABM with InVEST® Habitat Quality.
+This repository contains the release of EFForTS-ABM v1.1. This model version 1.1 extends the version 1.0 published with Dislich et al. 2018 by implementing NetVest to couple EFForTS-ABM with InVEST® Habitat Quality.
 ## Technical Software Documentation
 ### Folder structure
 input: input folder of EFForTS-ABM
@@ -39,7 +39,7 @@ It is highly recommended to install and execute the models on a Linux System run
 
 •	Install NetLogo version 6.2.1 see [B1]
 
-•	Open EFForTS-ABM version 1.1 (clone this repository)
+•	Install EFForTS-ABM version 1.1 (clone this repository)
 
 Installation and execution on other system setups might be possible but is not thoroughly tested.
 ### Configuration
