@@ -1,5 +1,5 @@
 # NetVest
-Coupling framework NetVest repository
+This repository contains the EFForTS-ABM v1.1 which includes the implementation of NetVest to couple EFForTS-ABM with InVEST® Habitat Quality.
 ## Technical Software Documentation
 ### Folder structure
 input: input folder of EFForTS-ABM
@@ -14,24 +14,32 @@ test_integration: Software Testing scripts
 •	ecol_biodiv_ncinv.nls
 
 •	ecol_biodiv_ncinv_unit_test.nls
+
 •	ecol_biodiv_ncinv_integration_test.nls
 
 
 ### Functionality
 
 •	Application of NetVest to couple programming language and environment NetLogo [B1] with NATCAP InVEST® models [B2] for simulation of complex economic-ecological trade-offs
+
 •	InVEST maps are generated based on agent-related variables in NetLogo 
+
 •	LULC types can be mapped between NetLogo and InVEST®
+
 •	InVEST® ecosystem-service score is returned as NetLogo agent property for each time step
+
 •	For testing purposes unit test, integration test and system test are attached. The system test as test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM [B3]
 
 ### Installation 
 It is highly recommended to install and execute the models on a Linux System running the Ubuntu 20.04 version. 
 
 •	Install Ubuntu 20.04 see [B4]
+
 •	Install InVEST® Python API see [B5]
+
 •	Install NetLogo version 6.2.1 see [B1]
-•	Install EFForTS-ABM version 1.1 see [B6]
+
+•	Open EFForTS-ABM version 1.1 (clone this repository)
 
 Installation and execution on other system setups might be possible but is not thoroughly tested.
 ### Configuration
@@ -45,13 +53,28 @@ Adapt workdir_ncinv within ecol_biodiv_ncinv_unit_test.nls.
 ### Test Scenario Runs
 
 •	Run the unit tests via the NetLogo GUI Interface tab of EFForTS-ABM "Unit test Habitat Quality". Depending on which unit test to be executed enter "noimpact", "localimpact" or "globalimpact" into the input box "ncinv_test" on the Interface tab.
+
 •	Run the integration tests via the NetLogo GUI Interface tab of EFForTS-ABM "Integration test Habitat Quality".
+
 •	Run the system test scenario via the NetLogo GUI Interface tabs of EFForTS-ABM „setup“ and „go“. 
+
 •	Find the resulting InVEST® Habitat Quality maps in the specified output folder.
 
 ### Model Scenario Run
 •	Identify your list of relevant LULC types and list of impacts and relate them to the corresponding variables in EFForTS-ABM
+
 •	Create the input files for InVEST® (sensitivitytable.txt, impacttable.txt) 
+
 •	Implement mapping for LULC types in ecol_biodiv_ncinv.nls procedures biodiv-ncinv-translate-lulc and biodiv-ncinv-aggregate-habitatquality-landuse
+
 •	Implement definition for impacts in ecol_biodiv_ncinv.nls procedures biodiv-ncinv-write-maps, biodiv-ncinv-write-impact-map and biodiv-ncinv-convert-maps-tif
+
 •	Adapt the software testing to another use case.
+
+## References
+[B1] https://www.uni-goettingen.de/en/software/593072.html
+[B2] https://naturalcapitalproject.stanford.edu/software/invest
+[B3] https://releases.ubuntu.com/20.04/
+[B4] https://www.python.org/downloads/
+[B5] https://ccl.northwestern.edu/netlogo/
+
