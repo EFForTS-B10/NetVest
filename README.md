@@ -2,11 +2,17 @@
 This repository contains the release of EFForTS-ABM v1.1. This model version 1.1 extends the version 1.0 published with Dislich et al. 2018 by implementing NetVest to couple EFForTS-ABM with InVEST® Habitat Quality.
 ## Technical Software Documentation
 ### Folder structure
+
 input: input folder of EFForTS-ABM
+
 ncinv: input and output folder for InVEST Habitat Quality
+
 output: output folder of EFForTS-ABM
+
 par_ABM: Parameter files of EFForTS-ABM
+
 scr_ABM: NetLogo Source (nls) files of EFForTS-ABM
+
 test_integration: Software Testing scripts
 
 ### NetLogo Source (nls) Files of NetVest
