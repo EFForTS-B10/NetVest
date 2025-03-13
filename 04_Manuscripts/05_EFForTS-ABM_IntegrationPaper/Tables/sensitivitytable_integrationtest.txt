@@ -1,7 +1,0 @@
-"LULC"	"NAME"	"HABITAT"	"L_oilplam"	"L_rubber"	
-1	"village"	0	0	0	
-2	"oilpalm"	0	1	1	
-3	"rubber"	0	1	1	
-4	"forest"	1	1	1	
-
-
