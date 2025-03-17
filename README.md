@@ -88,7 +88,7 @@ set workdir_ncinv word "{HOME}/NetVest/tests_integration/01_unittest/" experimen
 
 • Create the input files for InVEST® Habitat Quality (sensitivitytable.txt, impacttable.txt)
 
-• Implement mapping of LULC types between EFForTS-ABM and InVEST® Habitat Quality in ecol_biodiv_ncinv.nls by adapting reference of LULC classification for InVEST® Habitat Quality (p_landuse_ncinv) within EFForTS-ABM:
+• To implement the mapping of LULC types between EFForTS-ABM and InVEST® Habitat Quality in ecol_biodiv_ncinv.nls, adapt the agent property within EFForTS-ABM (p_landuse) as a basis for LULC classification for InVEST® Habitat Quality (p_landuse_ncinv):
 
 ```
 ;; Create new variable for lulc-classification used by InVEST Habitat Quality
@@ -101,7 +101,7 @@ to biodiv-ncinv-translate-lulc
 end
 ```
 
-• Implement definition of impacts (here: oilpalm and rubber) and corresponding agent property (here: p_landuse_ncinv) in ecol_biodiv_ncinv.nls:
+• To implement the mapping of impacts, adapt "oilpalm" and "rubber" to your list of relevant impacts and adapt the agent property "p_landuse_ncinv" as basis for impact mapping in ecol_biodiv_ncinv.nls:
 
 ```
 to biodiv-ncinv-write-maps
@@ -166,7 +166,7 @@ to biodiv-ncinv-convert-maps-tif
   ]
 ```
 
-• Implement aggregation of habitat quality scores by land-use types (here: forest, oilpalm, rubber):
+• To implement aggregation of habitat quality scores by land-use types, adapt forest, oilpalm and rubberto your list of relevant land-use types:
 
 ```
 to biodiv-ncinv-aggregate-habitatquality-landuse
