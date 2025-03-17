@@ -20,7 +20,7 @@ For further information see Henzler et al. unpublished.
 
 • test_integration: Software Testing scripts
 
-##NetLogo Source (nls) Files of NetVest
+## NetLogo Source (nls) Files of NetVest
 
 • ecol_biodiv_ncinv.nls
 
@@ -30,27 +30,27 @@ For further information see Henzler et al. unpublished.
 
 ## Functionality
 
-	•Implementation of NetVest to couple the spatio-temporal land-use change model EFForTS-ABM (Dislich et al., 2018), built in NetLogo [https://www.uni-goettingen.de/en/software/593072.html] with the Habitat Quailty model (Nelson et al., 2012) from the InVEST® model suite [https://naturalcapitalproject.stanford.edu/software/invest], built in Python (https://www.python.org/downloads/) for simulation of complex economic-ecological trade-offs
+•Implementation of NetVest to couple the spatio-temporal land-use change model EFForTS-ABM (Dislich et al., 2018), built in NetLogo [https://www.uni-goettingen.de/en/software/593072.html] with the Habitat Quailty model (Nelson et al., 2012) from the InVEST® model suite [https://naturalcapitalproject.stanford.edu/software/invest], built in Python (https://www.python.org/downloads/) for simulation of complex economic-ecological trade-offs
 
-	• Input data for the Habitat Quality model is derived from EFForTS-ABM. Non-spatial input data is derived once at initialization from the input folder of EFFOrTS-ABM, whereas spatial input data (Land use and land cover (LULC) maps and impact maps) for the Habitat Quality model are generated based on agent-related variables in EFForTS-ABM
+• Input data for the Habitat Quality model is derived from EFForTS-ABM. Non-spatial input data is derived once at initialization from the input folder of EFFOrTS-ABM, whereas spatial input data (Land use and land cover (LULC) maps and impact maps) for the Habitat Quality model are generated dynamically based on agent-related variables in EFForTS-ABM
 
-	• LULC types can be mapped between EFForTS-ABM and InVEST® Habitat Quality
+• LULC types can be mapped between EFForTS-ABM and InVEST® Habitat Quality
 
-	• InVEST® habitat quality score is returned as EFForTS-ABM agent property for each time step
+• InVEST® habitat quality score is returned as EFForTS-ABM agent property for each time step
 
-	• For testing purposes unit test, integration test and system test are attached. The system test as test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM.
+• For testing purposes unit test, integration test and system test are attached. The system test as test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM.
 	
-[![Figure2-v3.png](https://i.postimg.cc/GpKHM86P/Figure2-v3.png)](https://postimg.cc/Jyyr0nrt)
+[![Figure2-v3.png](https://i.postimg.cc/W4z1b5tC/Figure2-v3.png)](https://postimg.cc/943hLtdY)
 
 ## Installation
 
 It is highly recommended to install and execute the models on a Linux System running the Ubuntu 20.04 version.
 
-• Install Ubuntu 20.04 see https://releases.ubuntu.com/20.04/
+• Install Ubuntu 20.04, see https://releases.ubuntu.com/20.04/
 
-• Install InVEST® Python API see https://www.python.org/downloads/
+• Install InVEST® Python API, see https://www.python.org/downloads/
 
-• Install NetLogo version 6.2.1 see https://ccl.northwestern.edu/netlogo/
+• Install NetLogo version 6.2.1, see https://ccl.northwestern.edu/netlogo/
 
 • Install EFForTS-ABM version 1.1 (clone this repository)
 
@@ -60,7 +60,7 @@ Installation and execution on other system setups might be possible but is not t
 
 • EFForTS-ABM uses several NetLogo extensions that may not be bundled within NetLogo version 6.2.1. Extensions that have been used for this model are: gis, matrix, nw, ls, csv and py. The extension versions we used for this model are distributed within this model folder and should be found by NetLogo 6.2.1 automatically when the model is loaded. However, in order to use these extensions in other models, the extension folders can also be copied to the NetLogo extensions folder which can be found here: "..path.to.your.NetLogo.6.2.1.installation\app\extensions"
 
-• To run the unit test, adapt workdir_ncinv within ecol_biodiv_ncinv_unit_test.nls:
+• To run the unit test, adapt {HOME} of workdir_ncinv within ecol_biodiv_ncinv_unit_test.nls:
  
 ```
 set workdir_ncinv word "{HOME}/NetVest/tests_integration/01_unittest/" experiment
@@ -68,19 +68,19 @@ set workdir_ncinv word "{HOME}/NetVest/tests_integration/01_unittest/" experimen
 
 ## Test Scenario Runs
 
-• Run the unit tests via the NetLogo GUI Interface tab of EFForTS-ABM "Unit test Habitat Quality". Depending on which unit test to be executed enter "noimpact", "localimpact" or "globalimpact" into the input box "ncinv_test" on the Interface tab.
+• Run the unit tests by clicking on "Unit test Habitat Quality" in the NetLogo GUI Interface tab of EFForTS-ABM. Depending on which unit test to be executed enter "noimpact", "localimpact" or "globalimpact" into the input box "ncinv_test" on the Interface tab.
 
-Screenshot 1
+• Run the integration test by clicking on "Integration test Habitat Quality" in the NetLogo GUI Interface tab of EFForTS-ABM .
 
-• Run the integration tests via the NetLogo GUI Interface tab of EFForTS-ABM "Integration test Habitat Quality".
-
-Screenshot 2
+[![Screenshot-Unittest.png](https://i.postimg.cc/L5gSZsPM/Screenshot-Unittest.png)](https://postimg.cc/QKDw2hS6)
 
 • Run the system test scenario via the NetLogo GUI Interface tabs of EFForTS-ABM „setup“ and „go“.
 
-Screenshot 2
+[![Screenshot-modelrun.png](https://i.postimg.cc/3NLdBNSf/Screenshot-modelrun.png)](https://postimg.cc/m1HLZLG7)
 
-• Find the resulting InVEST® Habitat Quality maps in the specified output folder: "{HOME}/NetVest/ncinv/habitatquality/output"
+• Find the resulting InVEST® Habitat Quality maps in the specified output folder:
+"{HOME}/NetVest/ncinv/habitatquality/output" for tif-files
+"{HOME}/NetVest/output" for asc-files
 
 ## Customized Model Scenario Run
 
@@ -88,7 +88,7 @@ Screenshot 2
 
 • Create the input files for InVEST® Habitat Quality (sensitivitytable.txt, impacttable.txt)
 
-• Implement mapping for LULC types in ecol_biodiv_ncinv.nls procedures biodiv-ncinv-translate-lulc and biodiv-ncinv-aggregate-habitatquality-landuse
+• Implement mapping of LULC types between EFForTS-ABM and InVEST® Habitat Quality in ecol_biodiv_ncinv.nls by adapting reference of LULC classification for InVEST® Habitat Quality (p_landuse_ncinv) within EFForTS-ABM:
 
 ```
 ;; Create new variable for lulc-classification used by InVEST Habitat Quality
@@ -101,28 +101,7 @@ to biodiv-ncinv-translate-lulc
 end
 ```
 
-```
-to biodiv-ncinv-aggregate-habitatquality-landuse
-  print ["aggregating habitat quality scores for each landuse"]
-  set forest_hq 0
-  set forest_hq mean [p_hq_ncinv] of patches with [p_landuse = -100]
-  print (word "forest-hq mean:" forest_hq)
-  if any? patches with [p_landuse = 0]
-  [
-  set oilpalm_hq 0
-  set oilpalm_hq mean [p_hq_ncinv] of patches with [p_landuse = 0]
-  print (word "oilpalm-hq mean:" oilpalm_hq)
-  ]
-  if any? patches with [p_landuse = 1]
-  [
-  set rubber_hq 0
-  set rubber_hq mean [p_hq_ncinv] of patches with [p_landuse = 1]
-  print (word "rubber-hq mean:" rubber_hq)
-  ]
-end
-```
-
-• Implement definition for impacts (here: oilpalm, oilpalm_c, rubber, and rubber_c) and corresponding agent property (here: p_landuse_ncinv) in ecol_biodiv_ncinv.nls procedures biodiv-ncinv-write-maps, biodiv-ncinv-write-impact-map and biodiv-ncinv-convert-maps-tif
+• Implement definition of impacts (here: oilpalm and rubber) and corresponding agent property (here: p_landuse_ncinv) in ecol_biodiv_ncinv.nls:
 
 ```
 to biodiv-ncinv-write-maps
@@ -187,4 +166,26 @@ to biodiv-ncinv-convert-maps-tif
   ]
 ```
 
+• Implement aggregation of habitat quality scores by land-use types (here: forest, oilpalm, rubber):
+
+```
+to biodiv-ncinv-aggregate-habitatquality-landuse
+  print ["aggregating habitat quality scores for each landuse"]
+  set forest_hq 0
+  set forest_hq mean [p_hq_ncinv] of patches with [p_landuse = -100]
+  print (word "forest-hq mean:" forest_hq)
+  if any? patches with [p_landuse = 0]
+  [
+  set oilpalm_hq 0
+  set oilpalm_hq mean [p_hq_ncinv] of patches with [p_landuse = 0]
+  print (word "oilpalm-hq mean:" oilpalm_hq)
+  ]
+  if any? patches with [p_landuse = 1]
+  [
+  set rubber_hq 0
+  set rubber_hq mean [p_hq_ncinv] of patches with [p_landuse = 1]
+  print (word "rubber-hq mean:" rubber_hq)
+  ]
+end
+```
 • Adapt the software testing to another use case.
