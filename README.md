@@ -79,7 +79,9 @@ set workdir_ncinv word "{HOME}/NetVest/tests_integration/01_unittest/" experimen
 [![Screenshot-modelrun.png](https://i.postimg.cc/3NLdBNSf/Screenshot-modelrun.png)](https://postimg.cc/m1HLZLG7)
 
 • Find the resulting InVEST® Habitat Quality maps in the specified output folder:
+
 "{HOME}/NetVest/ncinv/habitatquality/output" for tif-files
+
 "{HOME}/NetVest/output" for asc-files
 
 ## Customized Model Scenario Run
