@@ -40,7 +40,7 @@ For further information see Henzler et al. unpublished.
 
 • For testing purposes unit test, integration test and system test are attached. The system test as test scenario allows to simulate the impact of rubber and oil palm plantations on habitat quality in a test model landscape within EFForTS-ABM.
 	
-[![Figure2-v3.png](https://i.postimg.cc/W4z1b5tC/Figure2-v3.png)](https://postimg.cc/9DQ7Rrqg)
+[![Figure2-v3.png](https://i.postimg.cc/HkQ4NMWm/Figure2-v45drawio.png)]([https://postimg.cc/9DQ7Rrqg])
 
 ## Installation
 
