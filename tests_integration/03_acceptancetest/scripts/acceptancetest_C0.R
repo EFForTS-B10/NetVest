@@ -1,5 +1,5 @@
 #####################################################
-##### Acceptancetest for NL-InVEST: C0 Scenario #####
+##### Acceptancetest for NetVest: C0 Scenario #####
 #####################################################
 
 # specify experiment 
