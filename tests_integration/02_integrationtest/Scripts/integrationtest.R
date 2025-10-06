@@ -13,9 +13,17 @@ library(Refforts)
 library(raster)
 library(ggplot2)
 
-# Set JAVA_HOME according to your needs
-# (see details: https://github.com/ropensci/nlrx/issues/32#issuecomment-555475538)
+# ensure Java 11 for NL 6.x
 Sys.setenv(JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64")
+Sys.setenv(PATH = paste(file.path(Sys.getenv("JAVA_HOME"), "bin"),
+                        Sys.getenv("PATH"), sep = .Platform$path.sep))
+
+# add the --add-opens flags (append to whatever is already set)
+flags <- c(
+  "--add-opens=java.base/java.lang.ref=ALL-UNNAMED",
+  "--add-opens=java.base/java.lang=ALL-UNNAMED"
+)
+Sys.setenv(JAVA_TOOL_OPTIONS = paste(c(Sys.getenv("JAVA_TOOL_OPTIONS"), flags), collapse = " "))
 
 ### 1) Integrationtest execution
 experiment <- "integrationtest"
