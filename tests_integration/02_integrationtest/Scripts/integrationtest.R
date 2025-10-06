@@ -30,9 +30,9 @@ experiment <- "integrationtest"
 invtest <- paste("\"",experiment,"\"",sep="")
 natcapinvestexperiment <- invtest
 hsc <- 0.05
-netlogopath <- file.path("{HOME}/netlogo/6.2.1")
-modelpath <- file.path("{HOME}/NetVest/EFForTS-ABM.nlogo")
-outpath <- file.path("{HOME}/NetVest/ncinv/habitatquality/output")
+netlogopath <- file.path("{NetLogo}/6.2.1")
+modelpath <- file.path("{NetVest}/EFForTS-ABM.nlogo")
+outpath <- file.path("{NetVest}/ncinv/habitatquality/output")
 netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -80,10 +80,10 @@ fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc
 ## Aim 2: LULC-map: Correct translation of land-use type values 
 
 # land-use map within EFForTS-ABM before translation (lut_abm)
-lut_abm <- raster("{HOME}/NetVest/output/lut__000.asc")
+lut_abm <- raster("{NetVest}/output/lut__000.asc")
 
 # land-use map within EFFOrTS-ABM after translation (lut_trans)
-lut_trans <- raster(paste("{HOME}/NetVest/output/lut_invest_",experiment,"_1_000.asc",sep=""))
+lut_trans <- raster(paste("{NetVest}/output/lut_invest_",experiment,"_1_000.asc",sep=""))
 
 # Function for comparison of maps: Substract rasters with absoulte values to validate that they are equal
 validation_translation <- function (inputmap, outputmap) {
@@ -154,7 +154,7 @@ validation_translation(rb_trans, rb_invest)
 quality_invest <- raster(paste(outpath,"/quality_c_" ,experiment, ".asc",sep=""))
 
 # map with stored values from InVEST within EFForTS-ABM
-quality_abm <- raster(paste("{HOME}/NetVest/output/lut_quality_",experiment,"_1_000.asc",sep=""))
+quality_abm <- raster(paste("{NetVest}/output/lut_quality_",experiment,"_1_000.asc",sep=""))
 
 # Comparison
 validation_translation(quality_invest, quality_abm)
@@ -235,7 +235,7 @@ lulcplot <- ggplot(data=lulc_df) +
   )
 
 lutabm + luttrans + lulcplot
-ggsave("lutabm_luttrans_lulc.png", path = "{HOME}/NetVest/tests_integration/02_integrationtest/Plots/" )
+ggsave("lutabm_luttrans_lulc.png", path = "{NetVest}/tests_integration/02_integrationtest/Plots/" )
   
 ###############################################################################
 ##Aim 3 Correct translation and generation of impact values 
@@ -310,7 +310,7 @@ impactop <- ggplot(data=opinvest_df) +
   )
 
 opabm + optrans + impactop + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
-ggsave("opabm_optrans.png", path = "{HOME}/NetVest/tests_integration/02_integrationtest/Plots/" )
+ggsave("opabm_optrans.png", path = "{NetVest}/tests_integration/02_integrationtest/Plots/" )
 
 
 rbabm <- ggplot(data=lutabm_df) + 
@@ -378,7 +378,7 @@ impactrb <- ggplot(data=rbinvest_df) +
   )
 
 rbabm + rbtrans + impactrb + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
-ggsave("rbabm_rbtrans.png", path = "{HOME}/NetVest/tests_integration/02_integrationtest/Plots/" )
+ggsave("rbabm_rbtrans.png", path = "{NetVest}/tests_integration/02_integrationtest/Plots/" )
 ###############################################################################
 ##Aim 4 Correct storing of habitat quality values
 qualityinvest_df <- as.data.frame(quality_invest, xy=TRUE)
@@ -425,4 +425,4 @@ quality2 <- ggplot(data=qualityabm_df) +
                   legend.spacing.x = unit(0.2, "cm")
                  )
 quality + quality2 + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
-ggsave("quality_quality2.png", path = "/opt/NetVest/tests_integration/02_integrationtest/Plots/")
+ggsave("quality_quality2.png", path = "{NetVest}/tests_integration/02_integrationtest/Plots/")
