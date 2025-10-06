@@ -1,5 +1,5 @@
 #############################################
-##### Integrationtest for Natcap Invest #####
+##### Integrationtest for NetVest #####
 #############################################
 
 # specify experiment 
