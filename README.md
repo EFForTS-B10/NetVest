@@ -68,7 +68,7 @@ Instead of installing every component manually, a docker container containing ev
 
 • within docker container execute netvest-init
 
-• adapt {HOME} R Skripts for exeution of NetVest) 
+• adapt {NetLogo} and {NetVest} in R scripts for exeution of NetVest 
 
 
 
