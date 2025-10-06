@@ -1,5 +1,5 @@
 ##########################################
-##### Unittest for NL-ncINV: global #####
+##### Unittest for NetVest: global #####
 ##########################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder within
@@ -22,9 +22,9 @@ Sys.setenv(JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64")
 experiment <- "globalimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("/opt/netlogo/6.2.1")
-modelpath <- file.path("/opt/NetVest/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("/opt/NetVest/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogopath <- file.path("{HOME}/netlogo/6.2.1")
+modelpath <- file.path("{HOME}/NetVest/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{HOME}/NetVest/tests_integration/01_unittest/",experiment,"/output",sep=""))
 netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -70,7 +70,7 @@ fileexist(qualitymap=file.exists((paste(outpath,"/quality_c_", experiment, ".asc
 ## Aim 2: Validating linear decrease of degradation scores over space
 
 # Impact location
-asc <- raster(paste("/opt/NetVest/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+asc <- raster(paste("{HOME}/NetVest/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 xyimpact <- xyFromCell(asc, which(asc[] == 1)) 
 
 # Linear Regression: Checking linear relationship between distance from impact and degradation score
@@ -222,7 +222,7 @@ deg <- ggplot(data=deg.map_df) +
 (plot.south + plot.north) / (plot.west + plot.east) / (plot_spacer() + deg + plot_spacer())
 
 # !xyimpact is location of impact: 214986 9755730
-ggsave("degradation_landscape.png", path = "/opt/NetVest/tests_integration/01_unittest/Plots/", scale = 3 )
+ggsave("degradation_landscape.png", path = "{HOME}/NetVest/tests_integration/01_unittest/Plots/", scale = 3 )
 
 
  
