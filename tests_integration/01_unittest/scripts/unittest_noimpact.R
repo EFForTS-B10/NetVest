@@ -146,4 +146,4 @@ expected_map <-  ggplot(data=expected_df) +
 
 invest_map + expected_map + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
 
-ggsave("quality_comp_forest.png", path = "{HOME}/NetVest/tests_integration/01_unittest/Plots/" )
+ggsave("quality_comp_forest.png", path = "{NetVest}/tests_integration/01_unittest/Plots/" )
