@@ -5,7 +5,7 @@ to unittest-biodiv-ncinv
 	print (word "experiment:"experiment)
    ;; clear all
    ca
-	 set workdir_ncinv word "{HOME}/NetVest/tests_integration/01_unittest/" experiment
+	 set workdir_ncinv word "../NetVest/tests_integration/01_unittest/" experiment
   print ( word "workdir_ncinv:" workdir_ncinv)
   let half_saturation_constant biodiv_ncinv_k
 	 ;; setup python, load invest package (defined in ecol_biodiv_natcap_invest.nls)
