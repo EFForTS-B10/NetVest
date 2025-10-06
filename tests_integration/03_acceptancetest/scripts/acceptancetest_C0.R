@@ -20,9 +20,9 @@ experiment <- "C0"
 invtest <- paste("\"",experiment,"\"",sep="")
 natcapinvestexperiment <- invtest
 hsc <- 0.05
-netlogopath <- file.path("{HOME}/netlogofolder6.2.1")
-modelpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/ncinv/habitatquality/output")
+netlogopath <- file.path("/opt/NetVest/netlogo/6.2.1")
+modelpath <- file.path("/opt/NetVest/EFForTS-ABM.nlogo")
+outpath <- file.path("/opt/NetVest/ncinv/habitatquality/output")
 netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
