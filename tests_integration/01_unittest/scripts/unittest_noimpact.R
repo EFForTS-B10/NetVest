@@ -23,9 +23,9 @@ Sys.setenv(JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64")
 experiment <- "noimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("{HOME}/netlogofolder6.2.1")
-modelpath <- file.path("{HOME}/EFForTS-ABM/01_EFForTS-ABM/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("{HOME}/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogopath <- file.path("/opt/netlogo/6.2.1")
+modelpath <- file.path("/opt/NetVest/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("/opt/NetVest/tests_integration/01_unittest/",experiment,"/output",sep=""))
 netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -138,4 +138,4 @@ expected_map <-  ggplot(data=expected_df) +
 
 invest_map + expected_map + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
 
-ggsave("quality_comp_forest.png", path = "/homer/dockerj/EFForTS-ABM/01_EFForTS-ABM/tests_integration/01_unittest/Plots/" )
+ggsave("quality_comp_forest.png", path = "/opt/NetVest/tests_integration/01_unittest/Plots/" )
