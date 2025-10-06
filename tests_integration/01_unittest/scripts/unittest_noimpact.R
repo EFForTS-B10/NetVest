@@ -31,9 +31,9 @@ Sys.setenv(JAVA_TOOL_OPTIONS = paste(c(Sys.getenv("JAVA_TOOL_OPTIONS"), flags), 
 experiment <- "noimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("{HOME}/netlogo/6.2.1")
-modelpath <- file.path("{HOME}/NetVest/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("{HOME}/NetVest/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogopath <- file.path("{NetLogo}/6.2.1")
+modelpath <- file.path("{NetVest}/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{NetVest}/tests_integration/01_unittest/",experiment,"/output",sep=""))
 netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
