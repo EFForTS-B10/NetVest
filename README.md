@@ -62,6 +62,8 @@ Installation and execution on other system setups might be possible but is not t
 
 Instead of installing every component manually, a docker container containing every component can be used:
 
+• install docker, see https://www.docker.com/get-started/ 
+
 • docker pull ecomod/rstudio:NetVest
 
 • adapt {HOME} for netlogopath in the R Skripts for exeution of NetVest to /opt/netlogo/6.2.1) 
