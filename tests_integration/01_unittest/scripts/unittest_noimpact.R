@@ -14,6 +14,11 @@ library(ggplot2)
 library(patchwork)
 library(ggpubr)
 
+# Set JAVA_HOME according to your needs
+# (see details: https://github.com/ropensci/nlrx/issues/32#issuecomment-555475538)
+Sys.setenv(JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64")
+
+
 ### 1) Unittest execution
 experiment <- "noimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
