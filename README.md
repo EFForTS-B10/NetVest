@@ -46,6 +46,8 @@ For further information see Henzler et al. unpublished.
 
 It is highly recommended to install and execute the models on a Linux System running the Ubuntu 20.04 version.
 
+### Manual installation
+
 • Install Ubuntu 20.04, see https://releases.ubuntu.com/20.04/
 
 • Install InVEST® Python API, see https://www.python.org/downloads/
@@ -55,6 +57,17 @@ It is highly recommended to install and execute the models on a Linux System run
 • Install EFForTS-ABM version 1.1 (clone this repository)
 
 Installation and execution on other system setups might be possible but is not thoroughly tested.
+
+### Docker container
+
+Instead of installing every component manually, a docker container containing every component can be used:
+
+• docker pull ecomod/rstudio:NetVest
+
+• adapt {HOME} for netlogopath in the R Skripts for exeution of NetVest to /opt/netlogo/6.2.1) 
+
+
+
 
 ## Configuration
 
