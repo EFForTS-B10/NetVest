@@ -73,11 +73,6 @@ Instead of installing every component manually, a docker container containing ev
 
 • EFForTS-ABM uses several NetLogo extensions that may not be bundled within NetLogo version 6.2.1. Extensions that have been used for this model are: gis, matrix, nw, ls, csv and py. The extension versions we used for this model are distributed within this model folder and should be found by NetLogo 6.2.1 automatically when the model is loaded. However, in order to use these extensions in other models, the extension folders can also be copied to the NetLogo extensions folder which can be found here: "..path.to.your.NetLogo.6.2.1.installation\app\extensions"
 
-• To run the unit test, adapt {HOME} of workdir_ncinv within ecol_biodiv_ncinv_unit_test.nls:
- 
-```
-set workdir_ncinv word "{HOME}/NetVest/tests_integration/01_unittest/" experiment
-```
 
 ## Test Scenario Runs
 
