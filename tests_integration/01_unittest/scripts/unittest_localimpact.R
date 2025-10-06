@@ -29,9 +29,9 @@ Sys.setenv(JAVA_TOOL_OPTIONS = paste(c(Sys.getenv("JAVA_TOOL_OPTIONS"), flags), 
 experiment <- "localimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
 hsc <- 0.5
-netlogopath <- file.path("{HOME}/netlogo/6.2.1")
-modelpath <- file.path("{HOME}/NetVest/EFForTS-ABM.nlogo")
-outpath <- file.path(paste("{HOME}/NetVest/tests_integration/01_unittest/",experiment,"/output",sep=""))
+netlogopath <- file.path("{NetLogo}/6.2.1")
+modelpath <- file.path("{NetVest}/EFForTS-ABM.nlogo")
+outpath <- file.path(paste("{NetVest}/tests_integration/01_unittest/",experiment,"/output",sep=""))
 netlogoversion <- "6.2.1"
 
 nl <- nl(nlversion = netlogoversion,
@@ -80,7 +80,7 @@ validation_transformation <- function(inputmap,outputmap){
 }
 
 # asc to tif
-validation_transformation(inputmap=raster(paste("{HOME}/NetVest/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
+validation_transformation(inputmap=raster(paste("{NetVest}/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep="")),
                           outputmap=raster(paste(outpath,"/oilpalm_c.tif" ,sep="")))
 # tif to asc
 validation_transformation(inputmap=raster(paste(outpath,"/quality_c_", experiment, ".tif" ,sep="")),
@@ -91,7 +91,7 @@ validation_transformation(inputmap=raster(paste(outpath,"/quality_c_", experimen
 ## Generation of expected result
 
 # Extract dimension of impact location from oilpalm_c.asc
-asc <- raster(paste("{HOME}/NetVest/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
+asc <- raster(paste("{NetVest}/tests_integration/01_unittest/", experiment, "/input/oilpalm_c.asc" ,sep=""))
 rowColimpact <- rowColFromCell(asc, which(asc[] == 1 ))
 
 # Function for calculation of habitat-quality score
@@ -267,7 +267,7 @@ expected_map <- ggplot(data=expected_df) +
                       )
 
 asc_map + tif_map + plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
-ggsave("impact_comp_local.png", path = "{HOME}/NetVest/tests_integration/01_unittest/Plots/" )
+ggsave("impact_comp_local.png", path = "{NetVest}/tests_integration/01_unittest/Plots/" )
 
 invest_map + expected_map+ plot_layout(guides = 'collect')& theme(legend.position = 'bottom')
-ggsave("result_comp_local.png", path = "/opt/NetVest/tests_integration/01_unittest/Plots/" )
+ggsave("result_comp_local.png", path = "{NetVest}/tests_integration/01_unittest/Plots/" )
