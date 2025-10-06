@@ -1,5 +1,5 @@
 ############################################
-##### Unittest for NL-ncINV: no impact ####
+##### Unittest for NetVest: no impact ####
 ############################################
 
 # specify experiment and create folder named after experiment with one input folder and one output folder nested
