@@ -14,6 +14,10 @@ library(tidyverse)
 library(patchwork)
 library(ggpmisc)
 
+# Set JAVA_HOME according to your needs
+# (see details: https://github.com/ropensci/nlrx/issues/32#issuecomment-555475538)
+Sys.setenv(JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64")
+
 ### 1) Unittest execution
 experiment <- "globalimpact"
 invtest <- paste("\"",experiment,"\"",sep="")
