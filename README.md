@@ -66,6 +66,8 @@ Instead of installing every component manually, a docker container containing ev
 
 • docker pull ecomod/rstudio:NetVest
 
+• within docker container execute netvest-init
+
 • adapt {HOME} R Skripts for exeution of NetVest) 
 
 
