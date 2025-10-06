@@ -66,7 +66,7 @@ Instead of installing every component manually, a docker container containing ev
 
 • docker pull ecomod/rstudio:NetVest
 
-• adapt {HOME} for netlogopath in the R Skripts for exeution of NetVest to /opt/netlogo/6.2.1) 
+• adapt {HOME} R Skripts for exeution of NetVest) 
 
 
 
